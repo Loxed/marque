@@ -94,12 +94,14 @@ Every `.mq` file is standard markdown plus layout directives.
 title: My Page
 nav: Home
 order: 1
+theme: editorial
 ---
 ```
 
 - `title` — page title and browser tab
 - `nav` — label shown in the nav bar
 - `order` — sort order in nav (lower = first)
+- `theme` — optional per-page theme override
 
 ### Layout blocks
 
@@ -260,7 +262,27 @@ Links are auto-detected as buttons when they start with an action verb or contai
 
 ## Themes
 
-The default theme lives in `themes/default/`. To create a custom theme:
+Built-in themes live in `themes/`:
+
+- `default`
+- `editorial`
+
+Set your site-wide theme in `marque.toml`:
+
+```toml
+theme = "default"
+```
+
+Override theme for a single page in frontmatter:
+
+```yaml
+---
+title: Fancy Landing
+theme: editorial
+---
+```
+
+To create a custom theme:
 
 ```bash
 # inside your site folder

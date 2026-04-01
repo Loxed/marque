@@ -7,18 +7,18 @@ const { render } = require('./renderer');
 function build(siteDir, outDir) {
   const configPath = path.join(siteDir, 'marque.toml');
   const config = loadConfig(configPath);
-
-  // resolve theme
-  const themeDir = resolveTheme(config.theme, siteDir);
-  const baseTemplate = fs.readFileSync(path.join(themeDir, 'base.html'), 'utf8');
-  const themeCSS = fs.readFileSync(path.join(themeDir, 'theme.css'), 'utf8');
+  const defaultThemeName = config.theme || 'default';
 
   // clean + create dist
   fs.rmSync(outDir, { recursive: true, force: true });
   fs.mkdirSync(outDir, { recursive: true });
 
-  // write theme css
-  fs.writeFileSync(path.join(outDir, 'theme.css'), themeCSS);
+  // cache theme assets so each theme is loaded and written once per build
+  const themeCache = new Map();
+
+  // keep a legacy alias for templates that still link /theme.css directly
+  const defaultAssets = getThemeAssets(defaultThemeName, siteDir, outDir, themeCache);
+  fs.writeFileSync(path.join(outDir, 'theme.css'), defaultAssets.css);
 
   // find all .mq files
   const pagesDir = path.join(siteDir, 'pages');
@@ -30,6 +30,9 @@ function build(siteDir, outDir) {
   for (const file of pages) {
     const src = fs.readFileSync(file, 'utf8');
     const { fm, body } = extractFrontmatter(src);
+    const pageThemeName = fm.theme || defaultThemeName;
+    const pageTheme = getThemeAssets(pageThemeName, siteDir, outDir, themeCache);
+
     const ast = parse(body);
     const content = render(ast);
 
@@ -40,13 +43,19 @@ function build(siteDir, outDir) {
     fs.mkdirSync(path.dirname(outFile), { recursive: true });
 
     const title = fm.title || config.title || 'Marque Site';
-    const html = applyTemplate(baseTemplate, {
+    let html = applyTemplate(pageTheme.baseTemplate, {
       title,
       content,
       nav: renderNav(nav, outName),
       site_title: config.title || 'Marque',
       description: fm.description || config.description || '',
+      theme_css: pageTheme.href,
     });
+
+    // Backward compatibility for templates that hardcode /theme.css.
+    if (!/\{\{\s*theme_css\s*\}\}/.test(pageTheme.baseTemplate)) {
+      html = html.replace(/href="\/theme\.css"/g, `href="${pageTheme.href}"`);
+    }
 
     fs.writeFileSync(outFile, html);
     built++;
@@ -88,6 +97,33 @@ function resolveTheme(theme, siteDir) {
   const builtin = path.join(__dirname, '..', 'themes', theme);
   if (fs.existsSync(builtin)) return builtin;
   throw new Error(`Theme "${theme}" not found`);
+}
+
+function getThemeAssets(themeName, siteDir, outDir, cache) {
+  const key = themeName || 'default';
+  if (cache.has(key)) return cache.get(key);
+
+  const themeDir = resolveTheme(key, siteDir);
+  const baseTemplate = fs.readFileSync(path.join(themeDir, 'base.html'), 'utf8');
+  const css = fs.readFileSync(path.join(themeDir, 'theme.css'), 'utf8');
+
+  const cssFile = `theme-${safeName(key)}.css`;
+  fs.writeFileSync(path.join(outDir, cssFile), css);
+
+  const assets = {
+    baseTemplate,
+    css,
+    href: `/${cssFile}`,
+  };
+  cache.set(key, assets);
+  return assets;
+}
+
+function safeName(name) {
+  return String(name || 'default')
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'default';
 }
 
 function findMQ(dir) {

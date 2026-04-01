@@ -102,6 +102,8 @@ function renderNode(node, opts) {
 }
 
 function renderMarkdown(src) {
+  src = dedentMarkdown(src);
+
   // Handle inline badge syntax: :badge[text]{.cls}
   src = src.replace(/:badge\[([^\]]+)\](\{\.([a-z]+)\})?/g,
     (_, label, __, cls) => `<span class="mq-badge${cls ? ' ' + cls : ''}">${label}</span>`
@@ -121,6 +123,26 @@ function renderMarkdown(src) {
   });
 
   return html;
+}
+
+function dedentMarkdown(src) {
+  const lines = String(src || '').split('\n');
+  let minIndent = Infinity;
+
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const match = line.match(/^[ \t]*/);
+    const indent = match ? match[0].length : 0;
+    if (indent < minIndent) minIndent = indent;
+  }
+
+  if (!Number.isFinite(minIndent) || minIndent === 0) return src;
+
+  return lines.map(line => {
+    const match = line.match(/^[ \t]*/);
+    const indent = match ? match[0].length : 0;
+    return indent >= minIndent ? line.slice(minIndent) : line;
+  }).join('\n');
 }
 
 module.exports = { render };

@@ -84,7 +84,7 @@ function consumeBlock(tokens, start, end, openTag) {
 
   const flushText = () => {
     if (textBuf.length) {
-      nodes.push({ type: 'markdown', content: textBuf.join('\n') });
+      nodes.push({ type: 'markdown', content: dedentLines(textBuf).join('\n') });
       textBuf = [];
     }
   };
@@ -119,13 +119,31 @@ function consumeBlock(tokens, start, end, openTag) {
       continue;
     }
 
-    // strip up to 4 spaces of cosmetic indentation
-    textBuf.push(tok.line.replace(/^ {0,4}/, ''));
+    textBuf.push(tok.line);
     i++;
   }
 
   flushText();
   return { nodes, next: i };
+}
+
+function dedentLines(lines) {
+  let minIndent = Infinity;
+
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const m = line.match(/^[ \t]*/);
+    const indent = m ? m[0].length : 0;
+    if (indent < minIndent) minIndent = indent;
+  }
+
+  if (!Number.isFinite(minIndent) || minIndent === 0) return lines;
+
+  return lines.map(line => {
+    const m = line.match(/^[ \t]*/);
+    const indent = m ? m[0].length : 0;
+    return indent >= minIndent ? line.slice(minIndent) : line;
+  });
 }
 
 function buildNode(tag, mods, name, children) {
