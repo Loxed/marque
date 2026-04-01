@@ -1,0 +1,20 @@
+{
+  "name": "marque",
+  "version": "1.0.0",
+  "description": "A .mq site compiler",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chokidar": "^5.0.0",
+    "marked": "^17.0.5",
+    "ws": "^8.20.0"
+  },
+  "bin": {
+    "marque": "./bin/cli.js"
+  }
+}

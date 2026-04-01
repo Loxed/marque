@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }} — {{ site_title }}</title>
+<meta name="description" content="{{ description }}">
+<link rel="stylesheet" href="/theme.css">
+</head>
+<body>
+  <nav class="mq-nav">
+    <a class="mq-nav-brand" href="/">{{ site_title }}</a>
+    <div class="mq-nav-links">
+      {{ nav }}
+    </div>
+  </nav>
+
+  <main class="mq-main">
+    {{ content }}
+  </main>
+
+  <footer class="mq-footer">
+    Built with <a href="https://github.com/marque">Marque</a>
+  </footer>
+
+  <script>
+  function mqTab(id, idx) {
+    const el = document.getElementById(id);
+    el.querySelectorAll('.mq-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+    el.querySelectorAll('.mq-tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+  }
+  </script>
+</body>
+</html>
