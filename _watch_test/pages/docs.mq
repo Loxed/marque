@@ -1,0 +1,50 @@
+---
+title: Docs
+nav: docs
+order: 2
+---
+
+# Documentation
+
+Welcome to the Marque documentation set. Start with quickstart, then move to configuration and advanced layout/theme usage.
+
+@row docs-index
+  @card .accent
+    ## Quickstart
+    Install flow, local serve workflow, and publishing sequence.
+    [Go to quickstart →](/start.html){.primary}
+  @end card
+
+  @card
+    ## Configuration
+    Learn `marque.toml`, frontmatter precedence, and page-level overrides.
+    [Open configuration →](/config.html)
+  @end card
+
+  @card
+    ## Showcase
+    See nested docs pages with per-page layout/theme overrides.
+    [Open showcase →](/docs/showcase.html)
+  @end card
+@end row docs-index
+
+## Core directives
+
+- `@row` + `@card`
+- `@callout`
+- `@stat`
+- `@steps` / `@step`
+- `@tabs` / `@tab`
+- `@hero` / `@section`
+- `@divider`
+
+## Frontmatter essentials
+
+- `title`: browser title segment and nav display label.
+- `nav`: output slug / target HTML filename.
+- `order`: sorting inside its nav scope.
+- `layout`, `theme`, `width`: page-level overrides.
+
+@callout .ok
+  Use `title` for human-readable labels and `nav` for stable machine-friendly URLs.
+@end callout

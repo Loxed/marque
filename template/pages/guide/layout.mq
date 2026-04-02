@@ -1,0 +1,23 @@
+---
+title: Layout Guide
+nav: layout
+order: 1
+---
+
+# Layout Guide
+
+@section
+	## Rows
+
+	Use rows to group content.
+@end section
+
+@row
+	@card
+		Block 1
+	@end card
+
+	@card
+		Block 2
+	@end card
+@end row

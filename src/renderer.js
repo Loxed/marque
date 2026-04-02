@@ -28,12 +28,18 @@ function renderNode(node, opts) {
       return '<div class="mq-divider"></div>';
 
     case 'row': {
-      const cardCount = node.children.filter(c =>
-        ['card', 'stat', 'step'].includes(c.type)
+      const columnCount = node.children.filter(c =>
+        ['card', 'stat', 'step', 'column'].includes(c.type)
       ).length;
-      const cols = Math.max(1, cardCount || node.children.length);
+      const cols = Math.max(1, columnCount || node.children.length);
       const inner = renderNodes(node.children, opts);
       return `<div class="mq-row" style="grid-template-columns: repeat(${cols}, 1fr);">${inner}</div>`;
+    }
+
+    case 'column': {
+      const inner = renderNodes(node.children, opts);
+      const cls = node.mod ? ` ${node.mod}` : '';
+      return `<div class="mq-column${cls}">${inner}</div>`;
     }
 
     case 'card': {
@@ -82,13 +88,24 @@ function renderNode(node, opts) {
     }
 
     case 'steps': {
-      const inner = renderNodes(node.children, opts);
+      const inner = renderSteps(node.children, opts);
       return `<div class="mq-steps">${inner}</div>`;
     }
 
     case 'step': {
       const inner = renderNodes(node.children, opts);
-      return `<div class="mq-step"><div class="mq-step-num"></div><div class="mq-step-body">${inner}</div></div>`;
+      const cfg = parseStepConfig(node.name);
+      let label = '1';
+      let cls = 'mq-step';
+
+      if (cfg.mode === 'skip') {
+        label = '*';
+        cls += ' mq-step-skip';
+      } else if (cfg.mode === 'set') {
+        label = String(cfg.value);
+      }
+
+      return `<div class="${cls}"><div class="mq-step-num" data-step="${escapeAttr(label)}"></div><div class="mq-step-body">${inner}</div></div>`;
     }
 
     case 'generic': {
@@ -143,6 +160,66 @@ function dedentMarkdown(src) {
     const indent = match ? match[0].length : 0;
     return indent >= minIndent ? line.slice(minIndent) : line;
   }).join('\n');
+}
+
+function renderSteps(children, opts) {
+  let nextNumber = 1;
+  const parts = [];
+
+  for (const child of children) {
+    if (child.type !== 'step') {
+      parts.push(renderNode(child, opts));
+      continue;
+    }
+
+    const cfg = parseStepConfig(child.name);
+    let stepLabel = '';
+    let stepClass = 'mq-step';
+
+    if (cfg.mode === 'skip') {
+      stepLabel = '*';
+      stepClass += ' mq-step-skip';
+    } else if (cfg.mode === 'set') {
+      stepLabel = String(cfg.value);
+      nextNumber = cfg.value + 1;
+    } else {
+      stepLabel = String(nextNumber);
+      nextNumber += 1;
+    }
+
+    const body = renderNodes(child.children || [], opts);
+    parts.push(`<div class="${stepClass}"><div class="mq-step-num" data-step="${escapeAttr(stepLabel)}"></div><div class="mq-step-body">${body}</div></div>`);
+  }
+
+  return parts.join('\n');
+}
+
+function parseStepConfig(name) {
+  const raw = String(name || '').trim();
+  if (!raw) return { mode: 'auto' };
+
+  if (raw === '*') return { mode: 'skip' };
+
+  if (/^\d+$/.test(raw)) {
+    const value = parseInt(raw, 10);
+    return Number.isFinite(value) && value > 0 ? { mode: 'set', value } : { mode: 'auto' };
+  }
+
+  const resetMatch = raw.match(/^reset(?:\s*[:=]\s*(\d+))?$/i);
+  if (resetMatch) {
+    const start = resetMatch[1] ? parseInt(resetMatch[1], 10) : 1;
+    return Number.isFinite(start) && start > 0 ? { mode: 'set', value: start } : { mode: 'set', value: 1 };
+  }
+
+  return { mode: 'auto' };
+}
+
+function escapeAttr(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 module.exports = { render };

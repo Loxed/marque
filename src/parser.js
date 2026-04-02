@@ -150,6 +150,7 @@ function buildNode(tag, mods, name, children) {
   const mod = mods.join(' ');
   switch (tag) {
     case 'row':     return { type: 'row',     name, children };
+    case 'column':  return { type: 'column',  mod, name, children };
     case 'card':    return { type: 'card',    mod, name, children };
     case 'callout': return { type: 'callout', variant: mods[0] || 'info', name, children };
     case 'stat':    return { type: 'stat',    name, children };

@@ -1,0 +1,115 @@
+---
+title: Quickstart
+nav: quickstart
+order: 1
+---
+
+# Quickstart
+
+Get from zero to a running site in a few minutes.
+
+@row
+
+@column
+
+  @card reqs
+    @step
+    ## Requirements
+    @divider
+
+    Before installing Marque, make sure you have:
+
+    - [Node.js 18](https://nodejs.org/en/download) or newer
+    - npm (comes with Node.js)
+
+    Check your versions:
+
+    ```bash
+    node -v # >= v18.0.0
+    npm -v #
+    ````
+    @end step
+  @end card reqs
+
+  @card install
+  @step 2
+    ## Installation
+    @divider
+
+    ### Install from source (recommended)
+
+    Clone the repository and install dependencies:
+
+    ```bash
+    git clone https://github.com/Loxed/marque.git
+    cd marque
+    npm install
+    npm link
+    ```
+
+    This makes the `marque` command available globally.
+
+    ### Verify installation
+
+    ```bash
+    marque --help
+    ```
+
+    If the command runs, you're ready to go.
+
+  @end step
+  @end card install
+
+@end column
+
+@card create
+@step 3
+  ## Create and run your site
+  @divider
+@end step
+
+  @steps quickstart
+  @step
+  ## Create a project
+  Scaffold a new site:
+
+  ````
+  ```bash
+  marque new my-site
+  cd my-site
+  ```
+  ````
+
+  @end step
+
+  @step
+  ## Start the dev server
+  Run the local server with live reload:
+
+  ````
+  ```bash
+  marque serve .
+  ```
+
+  Then open http://localhost:3000
+  ````
+
+  @end step
+
+  @step
+  ## Edit content
+  Modify files inside `pages/`.
+  Changes are reflected instantly in your browser.
+  @end step
+
+  @step
+  ## Build for production
+  Generate static files:
+
+  ```bash
+  marque build .
+  ```
+
+  Output is written to `dist/`.
+  @end card
+@end row

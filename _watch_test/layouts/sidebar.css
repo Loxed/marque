@@ -86,12 +86,6 @@ body {
   padding: 3.4rem 2rem;
 }
 
-.mq-column {
-  display: grid;
-  gap: 1.25rem;
-  align-content: start;
-}
-
 .mq-footer {
   padding: 2rem;
 }
@@ -148,14 +142,6 @@ body {
 .mq-page-nav-next {
   align-items: flex-end;
   text-align: right;
-}
-
-.mq-step-num {
-  counter-increment: none !important;
-}
-
-.mq-step-num::before {
-  content: attr(data-step) !important;
 }
 
 @media (max-width: 700px) {

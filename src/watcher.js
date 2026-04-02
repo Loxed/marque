@@ -27,6 +27,8 @@ const RELOAD_SNIPPET = `
 </script>`;
 
 function serve(siteDir, outDir, port = 3000) {
+  const releaseServeLock = acquireServeLock(siteDir, port);
+
   const wsPort = port + 1;
   const isMntPath = /^\/mnt\/[a-z]\//i.test(siteDir);
   const forcePolling = process.env.MARQUE_WATCH_POLLING === '1';
@@ -56,7 +58,7 @@ function serve(siteDir, outDir, port = 3000) {
 
   // initial build
   try {
-    build(siteDir, outDir);
+    build(siteDir, outDir, { cleanDist: true, softFsErrors: true });
   } catch (e) {
     printBuildError(e);
   }
@@ -104,6 +106,19 @@ function serve(siteDir, outDir, port = 3000) {
     }
   });
 
+  const cleanup = () => {
+    try { releaseServeLock(); } catch (_) {}
+  };
+  process.on('exit', cleanup);
+  process.on('SIGINT', () => {
+    cleanup();
+    process.exit(0);
+  });
+  process.on('SIGTERM', () => {
+    cleanup();
+    process.exit(0);
+  });
+
   // file watcher
   chokidar
     .watch(watchTargets, watchOptions)
@@ -130,12 +145,49 @@ function serve(siteDir, outDir, port = 3000) {
       const rel = path.relative(siteDir, file);
       console.log(`  ${event} → ${rel}`);
       try {
-        build(siteDir, outDir);
+        build(siteDir, outDir, { cleanDist: false, softFsErrors: true });
         broadcast();
       } catch (e) {
         printBuildError(e);
       }
     });
+}
+
+function acquireServeLock(siteDir, port) {
+  const lockPath = path.join(siteDir, '.marque-serve.lock');
+  const now = new Date().toISOString();
+
+  if (fs.existsSync(lockPath)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
+      const pid = parseInt(data.pid, 10);
+      if (Number.isFinite(pid)) {
+        try {
+          process.kill(pid, 0);
+          throw new Error(`Another marque serve process is already running for this site (pid ${pid}, port ${data.port || 'unknown'}). Stop it first.`);
+        } catch (err) {
+          if (err && err.code !== 'ESRCH') throw err;
+          // stale lock, safe to replace
+        }
+      }
+    } catch (err) {
+      // If the lock is malformed, replace it.
+      if (/Another marque serve process/.test(String(err && err.message))) throw err;
+    }
+  }
+
+  fs.writeFileSync(lockPath, JSON.stringify({ pid: process.pid, port, startedAt: now }, null, 2));
+
+  return () => {
+    if (!fs.existsSync(lockPath)) return;
+    try {
+      const data = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
+      if (parseInt(data.pid, 10) !== process.pid) return;
+    } catch (_) {
+      // best effort cleanup
+    }
+    try { fs.rmSync(lockPath, { force: true }); } catch (_) {}
+  };
 }
 
 function printBuildError(err) {

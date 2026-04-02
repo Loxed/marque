@@ -4,7 +4,9 @@ const path = require('path');
 const { parse, extractFrontmatter } = require('./parser');
 const { render } = require('./renderer');
 
-function build(siteDir, outDir) {
+function build(siteDir, outDir, options = {}) {
+  const cleanDist = options.cleanDist !== false;
+  const softFsErrors = options.softFsErrors === true;
   const configPath = path.join(siteDir, 'marque.toml');
   const config = loadConfig(configPath);
   const defaultThemeName = config.theme || 'default';
@@ -13,20 +15,23 @@ function build(siteDir, outDir) {
   const defaultPageWidth = normalizeWidth(config.width);
 
   // clean + create dist
-  fs.rmSync(outDir, { recursive: true, force: true });
-  fs.mkdirSync(outDir, { recursive: true });
+  if (cleanDist) {
+    ensureEmptyDir(outDir);
+  } else {
+    mkdirWithRetry(outDir, { recursive: true });
+  }
 
   // cache theme assets so each theme is loaded and written once per build
   const themeCache = new Map();
   const layoutCache = new Map();
 
   // keep a legacy alias for templates that still link /theme.css directly
-  const defaultAssets = getThemeAssets(defaultThemeName, siteDir, outDir, themeCache);
-  fs.writeFileSync(path.join(outDir, 'theme.css'), defaultAssets.css);
+  const defaultAssets = getThemeAssets(defaultThemeName, siteDir, outDir, themeCache, softFsErrors);
+  writeFileWithRetry(path.join(outDir, 'theme.css'), defaultAssets.css, softFsErrors);
 
   let defaultLayout;
   try {
-    defaultLayout = getLayoutAssets(defaultLayoutName, siteDir, outDir, layoutCache);
+    defaultLayout = getLayoutAssets(defaultLayoutName, siteDir, outDir, layoutCache, softFsErrors);
   } catch (err) {
     if (/^Layout ".+" not found$/.test(err.message)) {
       const line = findConfigKeyLine(configPath, 'layout');
@@ -40,7 +45,7 @@ function build(siteDir, outDir) {
     }
     throw err;
   }
-  fs.writeFileSync(path.join(outDir, 'layout.css'), defaultLayout.css);
+  writeFileWithRetry(path.join(outDir, 'layout.css'), defaultLayout.css, softFsErrors);
 
   // find all .mq files
   const pagesDir = path.join(siteDir, 'pages');
@@ -48,6 +53,7 @@ function build(siteDir, outDir) {
 
   const pageEntries = buildPageEntries(pages, pagesDir, config);
   const nav = buildNav(pageEntries);
+  const pageSequence = buildPageSequence(pageEntries);
 
   let built = 0;
   for (const page of pageEntries) {
@@ -55,10 +61,10 @@ function build(siteDir, outDir) {
     const pageThemeName = fm.theme || defaultThemeName;
     const rawPageLayoutName = fm.layout || defaultLayoutName;
     const pageLayoutName = normalizeLayoutName(rawPageLayoutName);
-    const pageTheme = getThemeAssets(pageThemeName, siteDir, outDir, themeCache);
+    const pageTheme = getThemeAssets(pageThemeName, siteDir, outDir, themeCache, softFsErrors);
     let pageLayout;
     try {
-      pageLayout = getLayoutAssets(pageLayoutName, siteDir, outDir, layoutCache);
+      pageLayout = getLayoutAssets(pageLayoutName, siteDir, outDir, layoutCache, softFsErrors);
     } catch (err) {
       if (/^Layout ".+" not found$/.test(err.message)) {
         throw new Error(buildMissingLayoutDiagnostic({
@@ -77,7 +83,7 @@ function build(siteDir, outDir) {
 
     const outFile = path.join(outDir, outName);
 
-    fs.mkdirSync(path.dirname(outFile), { recursive: true });
+    mkdirWithRetry(path.dirname(outFile), { recursive: true });
 
     const siteTitle = config.title || 'Marque';
     const title = fm.title || config.title || 'Marque Site';
@@ -88,6 +94,7 @@ function build(siteDir, outDir) {
       title,
       content,
       nav: renderNav(nav, outName),
+      page_nav: renderPageNav(pageSequence, outName),
       site_title: siteTitle,
       description: fm.description || config.description || '',
       layout_css: pageLayout.href,
@@ -105,7 +112,7 @@ function build(siteDir, outDir) {
       html = html.replace(/href="\/theme\.css"/g, `href="${pageTheme.href}"`);
     }
 
-    fs.writeFileSync(outFile, html);
+    writeFileWithRetry(outFile, html, softFsErrors);
     built++;
     console.log(`  built → ${outName}`);
   }
@@ -115,8 +122,8 @@ function build(siteDir, outDir) {
   for (const page of pageEntries) {
     if (!page.redirectFrom || page.redirectFrom === page.href) continue;
     const redirectFile = path.join(outDir, page.redirectFrom);
-    fs.mkdirSync(path.dirname(redirectFile), { recursive: true });
-    fs.writeFileSync(redirectFile, buildRedirectPage(`/${page.href}`));
+    mkdirWithRetry(path.dirname(redirectFile), { recursive: true });
+    writeFileWithRetry(redirectFile, buildRedirectPage(`/${page.href}`), softFsErrors);
     console.log(`  redirect → ${page.redirectFrom} -> ${page.href}`);
   }
 
@@ -157,7 +164,7 @@ function resolveTheme(theme, siteDir) {
   throw new Error(`Theme "${theme}" not found`);
 }
 
-function getThemeAssets(themeName, siteDir, outDir, cache) {
+function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false) {
   const key = themeName || 'default';
   if (cache.has(key)) return cache.get(key);
 
@@ -166,7 +173,7 @@ function getThemeAssets(themeName, siteDir, outDir, cache) {
   const css = fs.readFileSync(path.join(themeDir, 'theme.css'), 'utf8');
 
   const cssFile = `theme-${safeName(key)}.css`;
-  fs.writeFileSync(path.join(outDir, cssFile), css);
+  writeFileWithRetry(path.join(outDir, cssFile), css, softFsErrors);
 
   const assets = {
     baseTemplate,
@@ -177,13 +184,13 @@ function getThemeAssets(themeName, siteDir, outDir, cache) {
   return assets;
 }
 
-function getLayoutAssets(layoutName, siteDir, outDir, cache) {
+function getLayoutAssets(layoutName, siteDir, outDir, cache, softFsErrors = false) {
   const key = normalizeLayoutName(layoutName || 'topnav');
   if (cache.has(key)) return cache.get(key);
 
   const css = fs.readFileSync(resolveLayoutCSSPath(key, siteDir), 'utf8');
   const cssFile = `layout-${safeName(key)}.css`;
-  fs.writeFileSync(path.join(outDir, cssFile), css);
+  writeFileWithRetry(path.join(outDir, cssFile), css, softFsErrors);
 
   const assets = {
     css,
@@ -490,6 +497,42 @@ function renderNav(nav, current) {
   }).join('\n');
 }
 
+function buildPageSequence(pageEntries) {
+  const sequence = [];
+  const seen = new Set();
+
+  const pushItem = (item) => {
+    if (!item || !item.href || seen.has(item.href)) return;
+    seen.add(item.href);
+    sequence.push({ href: item.href, label: item.label || item.href });
+  };
+
+  for (const page of pageEntries) {
+    pushItem(page);
+  }
+
+  return sequence;
+}
+
+function renderPageNav(sequence, currentHref) {
+  const index = sequence.findIndex(item => item.href === currentHref);
+  if (index === -1) return '';
+
+  const prev = index > 0 ? sequence[index - 1] : null;
+  const next = index < sequence.length - 1 ? sequence[index + 1] : null;
+  if (!prev && !next) return '';
+
+  const prevHtml = prev
+    ? `<a class="mq-page-nav-link mq-page-nav-prev" href="/${prev.href}" aria-label="Previous page: ${escapeHtml(prev.label)}"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ ${escapeHtml(prev.label)}</span></a>`
+    : '<span class="mq-page-nav-spacer" aria-hidden="true"></span>';
+
+  const nextHtml = next
+    ? `<a class="mq-page-nav-link mq-page-nav-next" href="/${next.href}" aria-label="Next page: ${escapeHtml(next.label)}"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">${escapeHtml(next.label)} ↪</span></a>`
+    : '<span class="mq-page-nav-spacer" aria-hidden="true"></span>';
+
+  return `<nav class="mq-page-nav" aria-label="Page navigation">${prevHtml}${nextHtml}</nav>`;
+}
+
 function buildNavGroups(nav) {
   const map = new Map();
 
@@ -563,6 +606,106 @@ function copyDir(src, dest) {
       fs.copyFileSync(s, d);
     }
   }
+}
+
+function ensureEmptyDir(dirPath) {
+  mkdirWithRetry(dirPath, { recursive: true });
+  const entries = fs.readdirSync(dirPath);
+  for (const name of entries) {
+    const removed = removePathWithRetry(path.join(dirPath, name));
+    if (!removed) {
+      // Best effort on Windows: keep serving even if some files are temporarily locked.
+      console.warn(`  warn → could not remove ${name} from dist (file lock), continuing`);
+    }
+  }
+}
+
+function removePathWithRetry(targetPath) {
+  const maxAttempts = 5;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      fs.rmSync(targetPath, { recursive: true, force: true });
+      return true;
+    } catch (err) {
+      const isTransient = err && ['ENOTEMPTY', 'EPERM', 'EBUSY'].includes(err.code);
+      if (!isTransient || attempt === maxAttempts) return false;
+      // Briefly back off to let Windows release file/directory handles.
+      const waitUntil = Date.now() + attempt * 20;
+      while (Date.now() < waitUntil) {
+        // busy wait (small and deterministic, avoids async refactor)
+      }
+    }
+  }
+
+  return false;
+}
+
+function mkdirWithRetry(dirPath, options) {
+  const maxAttempts = 12;
+  const parentDir = path.dirname(dirPath);
+  const baseName = path.basename(dirPath);
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      fs.mkdirSync(dirPath, options);
+      return;
+    } catch (err) {
+      // Another process may have created the directory while we retried.
+      try {
+        if (fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory()) return;
+      } catch (_) {
+        // keep retrying below
+      }
+
+      // Windows can occasionally deny mkdir on an existing directory.
+      // If parent is readable and the entry is already present, treat as success.
+      try {
+        if (fs.existsSync(parentDir)) {
+          const names = fs.readdirSync(parentDir);
+          if (names.includes(baseName)) return;
+        }
+      } catch (_) {
+        // keep retrying below
+      }
+
+      const isTransient = err && ['EPERM', 'EBUSY', 'EACCES', 'ENOENT'].includes(err.code);
+      if (!isTransient || attempt === maxAttempts) throw err;
+
+      const waitUntil = Date.now() + Math.min(800, attempt * 60);
+      while (Date.now() < waitUntil) {
+        // busy wait (small and deterministic, avoids async refactor)
+      }
+    }
+  }
+}
+
+function writeFileWithRetry(filePath, content, softFsErrors = false) {
+  const maxAttempts = 12;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      mkdirWithRetry(path.dirname(filePath), { recursive: true });
+      fs.writeFileSync(filePath, content);
+      return;
+    } catch (err) {
+      const isTransient = err && ['EPERM', 'EBUSY', 'EACCES'].includes(err.code);
+      if (!isTransient || attempt === maxAttempts) {
+        if (isTransient && softFsErrors) {
+          console.warn(`  warn → could not write ${path.basename(filePath)} (file lock), keeping previous file`);
+          return false;
+        }
+        throw err;
+      }
+
+      const waitUntil = Date.now() + Math.min(900, attempt * 70);
+      while (Date.now() < waitUntil) {
+        // busy wait (small and deterministic, avoids async refactor)
+      }
+    }
+  }
+
+  return true;
 }
 
 function resolveMainStyle(fm, defaultPageWidth) {
