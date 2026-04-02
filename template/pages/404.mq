@@ -1,0 +1,12 @@
+---
+title: Not Found
+nav: 404
+---
+
+# 404: Page not found
+
+@divider
+
+The route you opened does not have a page yet.
+
+@[Create this page](){!mq-create-missing-page .secondary}

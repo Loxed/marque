@@ -1,4 +1,4 @@
---
+---
 title: Syntax
 nav: syntax
 ---
@@ -27,3 +27,4 @@ Steps
 		Content
 	@end step
 @end steps
+```

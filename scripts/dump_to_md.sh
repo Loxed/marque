@@ -20,7 +20,7 @@ OUT="$ROOT/${PROJECT_NAME}_dump.md"
 DEFAULT_EXTENSIONS=("py" "js" "jsx" "ts" "tsx" "css" "scss"
                     "html" "yaml" "yml" "toml" "json" "sh" "bash"
                     "rs" "go" "java" "cpp" "c" "h" "cs" "rb" "php"
-                    "swift" "kt" "vue" "svelte" "mdx")
+                    "swift" "kt" "vue" "svelte" "mdx" "mq")
 
 BUILD_EXTENSIONS=("spec" "cfg" "ini" "env")
 
@@ -202,6 +202,7 @@ find "$ROOT" -type f | sort | while read -r file; do
         json)        lang="json" ;;
         spec|cfg)    lang="python" ;;
         ini)         lang="ini" ;;
+        mq)          lang="markdown" ;;
         *)           lang="$ext" ;;
     esac
 

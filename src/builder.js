@@ -837,100 +837,74 @@ function renderNav(nav, current) {
 }
 
 function renderStructuredSummaryNav(nav, current) {
-  const blocks = [];
+  const out = [];
+  let linkBuffer = [];
 
-  for (let i = 0; i < nav.length; i++) {
-    const item = nav[i];
+  const flushLinks = () => {
+    if (!linkBuffer.length) return;
+    out.push(renderSummaryLinkSegment(linkBuffer, current));
+    linkBuffer = [];
+  };
+
+  for (const item of nav) {
+    if (item.type === 'link') {
+      linkBuffer.push(item);
+      continue;
+    }
+
+    flushLinks();
 
     if (item.type === 'divider') {
-      blocks.push({ type: 'divider' });
+      out.push('<div class="mq-nav-divider" role="separator" aria-hidden="true"></div>');
       continue;
     }
 
     if (item.type === 'heading') {
-      const headingLevel = Number(item.level || 0);
-      const children = [];
-      let j = i + 1;
-      while (j < nav.length) {
-        const next = nav[j];
-        if (!next) break;
-        if (next.type === 'divider' || next.type === 'heading') break;
-        if (next.type !== 'link') break;
+      out.push(`<div class="mq-nav-heading">${escapeHtml(item.label)}</div>`);
+    }
+  }
 
-        const nextLevel = Number(next.level || 0);
-        if (nextLevel <= headingLevel) break;
+  flushLinks();
+  return out.join('\n');
+}
 
-        children.push(next);
-        j++;
-      }
+function renderSummaryLinkSegment(links, current) {
+  const result = [];
 
-      if (children.length) {
-        blocks.push({ type: 'heading-group', label: item.label, links: children });
-        i = j - 1;
-        continue;
-      }
+  for (let i = 0; i < links.length; i++) {
+    const root = links[i];
+    const rootPrefix = hrefPrefix(root.href);
+    const children = [];
+    let j = i + 1;
 
-      blocks.push({ type: 'heading', label: item.label });
+    while (j < links.length) {
+      const candidate = links[j];
+      const candidatePrefix = hrefPrefix(candidate.href);
+      const isChild = !!rootPrefix && !!candidatePrefix && candidatePrefix.startsWith(`${rootPrefix}/`);
+      if (!isChild) break;
+      children.push(candidate);
+      j++;
+    }
+
+    if (!children.length) {
+      result.push(renderNavLink(root, current));
       continue;
     }
 
-    const level = Number(item.level || 0);
-    if (item.type === 'link' && level === 0) {
-      const children = [];
-      let j = i + 1;
-      while (j < nav.length) {
-        const next = nav[j];
-        if (!next || next.type !== 'link') break;
+    const hasActive = root.href === current || children.some(link => link.href === current);
+    const groupClass = hasActive ? 'mq-nav-group mq-nav-summary-group active' : 'mq-nav-group mq-nav-summary-group';
+    const triggerClass = hasActive ? 'mq-nav-group-trigger mq-nav-group-trigger-link active' : 'mq-nav-group-trigger mq-nav-group-trigger-link';
+    const submenu = children.map(link => renderNavLink(link, current)).join('');
+    result.push(`<div class="${groupClass}"><a class="${triggerClass}" href="/${root.href}">${escapeHtml(root.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`);
 
-        const nextLevel = Number(next.level || 0);
-        if (nextLevel <= level) break;
-
-        children.push(next);
-        j++;
-      }
-
-      if (children.length) {
-        blocks.push({ type: 'link-group', root: item, links: children });
-        i = j - 1;
-        continue;
-      }
-    }
-
-    blocks.push({ type: 'link', item });
+    i = j - 1;
   }
 
-  return blocks.map(block => {
-    if (block.type === 'divider') {
-      return '<div class="mq-nav-divider" role="separator" aria-hidden="true"></div>';
-    }
+  return result.join('\n');
+}
 
-    if (block.type === 'heading') {
-      return `<div class="mq-nav-heading">${escapeHtml(block.label)}</div>`;
-    }
-
-    if (block.type === 'heading-group') {
-      const links = block.links || [];
-      const hasActive = links.some(link => link.href === current);
-      const groupClass = hasActive ? 'mq-nav-group mq-nav-summary-group active' : 'mq-nav-group mq-nav-summary-group';
-      const triggerClass = 'mq-nav-group-trigger mq-nav-group-trigger-label';
-      const submenu = links.map(link => renderNavLink(link, current)).join('');
-      return `<div class="${groupClass}"><span class="${triggerClass}">${escapeHtml(block.label)}</span><div class="mq-nav-submenu">${submenu}</div></div>`;
-    }
-
-    if (block.type === 'link') {
-      return renderNavLink(block.item, current);
-    }
-
-    const rootLink = block.root;
-    const links = block.links || [];
-
-    const hasActive = (rootLink && rootLink.href === current) || links.some(link => link.href === current);
-    const groupClass = hasActive ? 'mq-nav-group mq-nav-summary-group active' : 'mq-nav-group mq-nav-summary-group';
-    const triggerClass = hasActive ? 'mq-nav-group-trigger active' : 'mq-nav-group-trigger';
-    const submenu = links.map(link => renderNavLink(link, current)).join('');
-
-    return `<div class="${groupClass}"><a class="${triggerClass} mq-nav-group-trigger-link" href="/${rootLink.href}">${escapeHtml(rootLink.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`;
-  }).join('\n');
+function hrefPrefix(href) {
+  return String(href || '').replace(/\.html$/i, '').replace(/^\/+/, '').trim().toLowerCase();
 }
 
 function renderNavLink(item, current) {

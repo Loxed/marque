@@ -137,15 +137,18 @@ function renderMarkdown(src, opts = {}) {
     (_, label, __, cls) => `<span class="mq-badge${cls ? ' ' + cls : ''}">${label}</span>`
   );
 
-  // Explicit button syntax: @[text](url){.cls .other}
+  // Explicit button syntax: @[text](url){!id .cls .other}
   // Examples:
   //   @[Read docs](/docs.html){}
   //   @[Download](/archive.zip){.primary}
-  src = src.replace(/@\[([^\]]+)\]\(([^)]+)\)(?:\{([^}]*)\})?/g,
-    (_, text, url, clsRaw) => {
-      const extraClasses = normalizeButtonClasses(clsRaw);
+  //   @[Create this page](){!mq-create-missing-page .secondary}
+  src = src.replace(/@\[([^\]]+)\]\(([^)]*)\)(?:\{([^}]*)\})?/g,
+    (_, text, url, attrsRaw) => {
+      const attrs = parseButtonAttrs(attrsRaw);
+      const extraClasses = attrs.className;
+      const idAttr = attrs.id ? ` id="${escapeAttr(attrs.id)}"` : '';
       const safeHref = resolveHref(url, opts);
-      return `<a href="${safeHref}" class="mq-btn${extraClasses}">${text}</a>`;
+      return `<a href="${safeHref}" class="mq-btn${extraClasses}"${idAttr}>${text}</a>`;
     }
   );
 
@@ -272,17 +275,28 @@ function highlightCode(source, lang) {
   }
 }
 
-function normalizeButtonClasses(raw) {
+function parseButtonAttrs(raw) {
   const text = String(raw || '').trim();
-  if (!text) return '';
+  if (!text) return { className: '', id: null };
 
-  const classes = text
-    .split(/\s+/)
-    .map(token => token.replace(/^\./, '').trim())
-    .filter(token => /^[a-z0-9_-]+$/i.test(token));
+  let id = null;
+  const classes = [];
 
-  if (!classes.length) return '';
-  return ` ${classes.join(' ')}`;
+  for (const token of text.split(/\s+/).filter(Boolean)) {
+    if (token.startsWith('!')) {
+      const candidate = token.slice(1).trim();
+      if (!id && /^[a-z0-9_-]+$/i.test(candidate)) id = candidate;
+      continue;
+    }
+
+    const classToken = token.replace(/^\./, '').trim();
+    if (/^[a-z0-9_-]+$/i.test(classToken)) {
+      classes.push(classToken);
+    }
+  }
+
+  const className = classes.length ? ` ${classes.join(' ')}` : '';
+  return { className, id };
 }
 
 function normalizeAnchorHrefs(html, opts = {}) {

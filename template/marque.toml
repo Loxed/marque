@@ -1,7 +1,7 @@
 title = Marque
 description = Built with Marque
-layout = topnav
-theme = pycorino
+layout = sidebar
+theme = default
 width = 82
 
 # Marque config
@@ -12,3 +12,4 @@ width = 82
 #
 # theme options (built-in):
 #   default, rustique, pycorino, gouda, javarti, test
+

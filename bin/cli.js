@@ -114,6 +114,7 @@ function ensureStarterScaffold(siteDir, defaults = {}) {
   const summaryFile = path.join(siteDir, 'summary.mq');
   const indexFile = path.join(pagesDir, 'index.mq');
   const docsFile = path.join(pagesDir, 'docs.mq');
+  const notFoundFile = path.join(pagesDir, '404.mq');
   const defaultLayout = defaults.layout || 'topnav';
   const defaultTheme = defaults.theme || 'default';
 
@@ -208,6 +209,25 @@ Quick reference for writing pages.
 \`title\` controls page title text.
 \`nav\` controls URL slug/output name.
 Page ordering/navigation is defined in \`summary.mq\`.
+`);
+  }
+
+  if (!fs.existsSync(notFoundFile)) {
+    fs.writeFileSync(notFoundFile, `---
+title: Not Found
+nav: 404
+layout: sidebar
+---
+
+# Page not found
+
+The route you opened does not have a page yet.
+
+<p id="mq-create-missing-hint" style="opacity:.75"></p>
+<p>
+  @[Create this page](){!mq-create-missing-page}
+</p>
+<p id="mq-create-missing-status" style="opacity:.85"></p>
 `);
   }
 

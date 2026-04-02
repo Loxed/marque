@@ -2,7 +2,12 @@
 
 [Home](index.mq)
 
-[Quickstart](quickstart.mq)
+User Guide
+
+[Quick Start](quickstart.mq)
+[CLI Commands](cli.mq)
+
+Doc
 
 [Docs](docs.mq)
 [Theme](docs/theme.mq)
@@ -14,9 +19,11 @@
 [Cards](components/cards.mq)
 [Tabs](components/tabs.mq)
 
+[Getting Started](getting-started.mq)
 [Install](getting-started/install.mq)
 [First Page](getting-started/first-page.mq)
 
+[Guide](guide.mq)
 [Layout](guide/layout.mq)
 [Syntax](guide/syntax.mq)
 
