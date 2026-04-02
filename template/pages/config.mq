@@ -1,69 +1,57 @@
 ---
 title: Configuration
 nav: config
-order: 5
+order: 4
 layout: sidebar
-theme: default
 ---
 
 # Configuration
 
-Use `marque.toml` for site-level defaults, then override per page with frontmatter.
+Marque configuration is split between site defaults (`marque.toml`) and per-page frontmatter.
 
-@row config-overview
+@row config-sources
   @card .ghost
-    ## Site-level (`marque.toml`)
+    ## Site defaults (`marque.toml`)
 
     ```toml
     title = Marque
     description = Built with Marque
-    layout = sidebar
-    theme = rustique
-    width = 85
+    layout = topnav
+    theme = default
+    width = 82
     ```
   @end card
 
   @card .ghost
-    ## Page-level (frontmatter)
+    ## Page overrides (frontmatter)
 
     ```yaml
     ---
-    title: Landing
-    nav: landing
+    title: Showcase
+    nav: showcase
     order: 1
-    layout: default
+    layout: topnav
     theme: pycorino
-    width: full
+    width: wide
     ---
     ```
   @end card
-@end row config-overview
+@end row config-sources
 
-## Keys
+## Precedence
 
-- `title`: page title segment used in browser title.
-- `nav`: navigation label and canonical output slug.
-- `order`: nav ordering weight (ascending).
+1. Frontmatter values override `marque.toml` per page.
+2. Missing frontmatter keys fall back to global config.
+
+## Key fields
+
+- `title`: page title text.
+- `nav`: output slug (`*.html`) and routing identity.
+- `order`: sorting within its nav scope.
 - `layout`: page layout override.
 - `theme`: page theme override.
-- `width`: page width override (`narrow`, `normal`, `wide`, `full`, numeric).
-- `description`: meta description.
+- `width`: page width override.
 
 @callout .warn
-  If you change `nav` for an existing page, its output filename changes too.
+  Renaming `nav` changes the output filename. Keep slugs stable for external links.
 @end callout
-
-## Built-in layouts
-
-- `default`
-- `sidebar`
-
-## Built-in themes
-
-- `default`
-- `rustique`
-- `pycorino`
-- `gouda`
-- `javarti`
-
-[See advanced examples →](/showcase.html)

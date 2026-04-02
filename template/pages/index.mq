@@ -4,76 +4,75 @@ nav: home
 order: 1
 ---
 
-# Build Your Site With Marque
+# Build Fast, Structured Docs With Marque
 
-Marque is a markdown-first static site compiler with layout directives, themed components, and a live-reload workflow.
+Marque is a markdown-first static docs workflow designed for speed, clarity, and per-page customization.
 
 @callout .info
-  This template is intentionally built with Marque itself. Treat it as both a starter and a complete reference project.
+  This starter is intentionally production-like: docs index, quickstart, config guide, and a nested showcase page.
 @end callout
 
 @row hero-actions
   @card .accent
-    ## Start in 30 seconds
-    Create pages in `pages/`, run `marque serve .`, then ship the generated `dist/` folder.
+    ## Start in minutes
+    Generate, run, and publish a complete docs site with a tiny toolchain.
     [Open quickstart →](/start.html){.primary}
   @end card
 
   @card
-    ## Learn every directive
-    Explore rows, cards, callouts, stats, tabs, steps, hero sections, divider blocks, and markdown enhancements.
-    [See directives →](/directives.html)
+    ## Learn by examples
+    Every built-in directive is documented with real usage patterns.
+    [Read docs →](/docs.html)
   @end card
 
   @card
-    ## Explore advanced examples
-    Browse page-level theme/layout overrides, custom button colors, and composition recipes.
-    [Open showcase →](/showcase.html)
+    ## Customize safely
+    Edit themes and layouts directly in-project with live rebuild.
+    [Open config guide →](/config.html)
   @end card
 @end row hero-actions
 
-@row project-snapshot
+@row highlights
   @stat pages
-    ## 6
-    curated template pages
+    ## 5
+    starter pages included
   @end stat pages
 
-  @stat workflows
-    ## 3
-    write, serve, publish
-  @end stat workflows
-
-  @stat output
+  @stat runtime
     ## static
-    zero-runtime deployment
-  @end stat output
-@end row project-snapshot
+    zero JS framework runtime
+  @end stat runtime
 
-## What this template demonstrates
+  @stat workflow
+    ## local-first
+    edit, serve, build, deploy
+  @end stat workflow
+@end row highlights
 
-- Frontmatter-driven filenames and nav labels.
-- Automatic `index.html` redirect behavior when `index.mq` uses a non-index nav slug.
-- Live rebuild on page/toml changes while serving.
-- Layout-specific navigation behavior (including grouped hover menus).
-- Theme-only styling, with layout structure handled separately.
+## Why teams use Marque
+
+- Markdown authoring with structured directives when needed.
+- Predictable navigation and frontmatter-driven routing.
+- Theme and layout overrides per page.
+- Local assets copied as-is from `static/`.
 
 @divider
 
-## Suggested flow
+## Typical workflow
 
-@steps onboarding
+@steps workflow
   @step
-    ## Read
-    Start with [quickstart](/start.html) to understand folder conventions and commands.
+    ## Author
+    Create pages in `pages/` with frontmatter (`title`, `nav`, `order`).
   @end step
 
   @step
-    ## Reference
-    Use [directives](/directives.html) while authoring pages.
+    ## Preview
+    Run `marque serve .` and iterate with live reload.
   @end step
 
   @step
-    ## Compose
-    Pull patterns from [showcase](/showcase.html) and adapt to your project.
+    ## Publish
+    Run `marque build .` and deploy `dist/` to any static host.
   @end step
-@end steps onboarding
+@end steps workflow

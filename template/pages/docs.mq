@@ -1,316 +1,50 @@
 ---
 title: Docs
 nav: docs
-order: 3
-layout: sidebar
+order: 2
 ---
 
-# Directive Reference
+# Documentation
 
-This page documents every directive and markdown enhancement currently supported by Marque.
+Welcome to the Marque documentation set. Start with quickstart, then move to configuration and advanced layout/theme usage.
 
-@callout .info
-  Standard markdown always works. Marque directives are additive: use them where structure and reusable patterns help.
+@row docs-index
+  @card .accent
+    ## Quickstart
+    Install flow, local serve workflow, and publishing sequence.
+    [Go to quickstart →](/start.html){.primary}
+  @end card
+
+  @card
+    ## Configuration
+    Learn `marque.toml`, frontmatter precedence, and page-level overrides.
+    [Open configuration →](/config.html)
+  @end card
+
+  @card
+    ## Showcase
+    See nested docs pages with per-page layout/theme overrides.
+    [Open showcase →](/docs/showcase.html)
+  @end card
+@end row docs-index
+
+## Core directives
+
+- `@row` + `@card`
+- `@callout`
+- `@stat`
+- `@steps` / `@step`
+- `@tabs` / `@tab`
+- `@hero` / `@section`
+- `@divider`
+
+## Frontmatter essentials
+
+- `title`: browser title segment and nav display label.
+- `nav`: output slug / target HTML filename.
+- `order`: sorting inside its nav scope.
+- `layout`, `theme`, `width`: page-level overrides.
+
+@callout .ok
+  Use `title` for human-readable labels and `nav` for stable machine-friendly URLs.
 @end callout
-
-## Frontmatter
-
-@row frontmatter-example
-  @card .ghost
-    Code:
-    ```
-    ---
-    title: Team Handbook
-    nav: handbook
-    order: 2
-    layout: sidebar
-    theme: rustique
-    width: 92
-    description: Internal docs for contributors
-    ---
-    ```
-  @end card
-
-  @card .ghost
-    Notes:
-
-    - `title` sets the browser page title segment.
-    - `nav` sets nav label and filename slug.
-    - `order` controls nav ordering.
-    - `layout` and `theme` override defaults for this page.
-    - `width` overrides content width for this page.
-  @end card
-@end row frontmatter-example
-
-## Row and card
-
-@row row-card-example
-  @card .ghost
-    Code:
-    ```
-    @row pricing
-      @card .accent starter
-        ## Starter
-        Great for tiny docs.
-      @end card starter
-
-      @card .dark pro
-        ## Pro
-        Advanced docs + demos.
-      @end card pro
-    @end row pricing
-    ```
-  @end card
-
-  @card .ghost
-    Result:
-
-    @row pricing
-      @card .accent starter
-        ## Starter
-        Great for tiny docs.
-      @end card starter
-
-      @card .dark pro
-        ## Pro
-        Advanced docs + demos.
-      @end card pro
-    @end row pricing
-  @end card
-@end row row-card-example
-
-## Callout
-
-@row callout-example
-  @card .ghost
-    Code:
-    ```
-    @callout .warn
-      Watch for breaking changes when renaming nav slugs.
-    @end callout
-    ```
-  @end card
-
-  @card .ghost
-    Result:
-
-    @callout .warn
-      Watch for breaking changes when renaming nav slugs.
-    @end callout
-  @end card
-@end row callout-example
-
-Variants: `.info`, `.warn`, `.danger`, `.ok`.
-
-## Stat
-
-@row stat-example
-  @card .ghost
-    Code:
-    ```
-    @row stats
-      @stat pages
-        ## 124
-        generated pages
-      @end stat pages
-    @end row stats
-    ```
-  @end card
-
-  @card .ghost
-    Result:
-
-    @row stats
-      @stat pages
-        ## 124
-        generated pages
-      @end stat pages
-    @end row stats
-  @end card
-@end row stat-example
-
-## Steps
-
-@row steps-example
-  @card .ghost
-    Code:
-    ```
-    @steps workflow
-      @step
-        ## Draft
-        Write markdown and directives.
-      @end step
-
-      @step
-        ## Preview
-        Run `marque serve .`.
-      @end step
-
-      @step
-        ## Publish
-        Upload `dist/`.
-      @end step
-    @end steps workflow
-    ```
-  @end card
-
-  @card .ghost
-    Result:
-
-    @steps workflow
-      @step
-        ## Draft
-        Write markdown and directives.
-      @end step
-
-      @step
-        ## Preview
-        Run `marque serve .`.
-      @end step
-
-      @step
-        ## Publish
-        Upload `dist/`.
-      @end step
-    @end steps workflow
-  @end card
-@end row steps-example
-
-## Tabs
-
-@row tabs-example
-  @card .ghost
-    Code:
-    ```
-    @tabs snippets
-      @tab .js
-        ```js
-        console.log("hello marque")
-        ```
-      @end tab
-
-      @tab .bash
-        ```bash
-        marque serve .
-        ```
-      @end tab
-    @end tabs snippets
-    ```
-  @end card
-
-  @card .ghost
-    Result:
-
-    @tabs snippets
-      @tab .js
-        ```js
-        console.log("hello marque")
-        ```
-      @end tab
-
-      @tab .bash
-        ```bash
-        marque serve .
-        ```
-      @end tab
-    @end tabs snippets
-  @end card
-@end row tabs-example
-
-## Hero and section
-
-@row hero-section-example
-  @card .ghost
-    Code:
-    ```
-    @hero .accent launch
-      # Ship docs faster
-      Keep writing in markdown, add structure only when useful.
-    @end hero launch
-
-    @section .ghost why
-      ## Why this works
-      Less boilerplate, more content velocity.
-    @end section why
-    ```
-  @end card
-
-  @card .ghost
-    Result:
-
-    @hero .accent launch
-      # Ship docs faster
-      Keep writing in markdown, add structure only when useful.
-    @end hero launch
-
-    @section .ghost why
-      ## Why this works
-      Less boilerplate, more content velocity.
-    @end section why
-  @end card
-@end row hero-section-example
-
-## Divider
-
-@row divider-example
-  @card .ghost
-    Code:
-    ```
-    @divider
-    ```
-  @end card
-
-  @card .ghost
-    Result:
-
-    @divider
-  @end card
-@end row divider-example
-
-## Markdown enhancements
-
-@row markdown-enhancements
-  @card .ghost
-    Code:
-    ```
-    [Read docs ?](/directives.html)
-    [Download release](/downloads/marque.zip){.download}
-
-    :badge[Stable]{.ok}
-    :badge[Preview]{.warn}
-    ```
-  @end card
-
-  @card .ghost
-    Result:
-
-    [Read docs ?](/directives.html)
-    [Download release](#){.download}
-
-    :badge[Stable]{.ok}
-    :badge[Preview]{.warn}
-  @end card
-@end row markdown-enhancements
-
-The download-link color trick:
-
-1. Use a custom class in markdown link shorthand: `{.download}`.
-2. Style that class in your theme: `.mq-btn.download { ... }`.
-
-## Generic directives
-
-Unknown directives become generic wrappers, so this:
-
-```
-@feature-grid
-  ...
-@end feature-grid
-```
-
-renders as `.mq-feature-grid`, which you can target in theme CSS.
-
-## Practical tips
-
-- Use directive names (`@row pricing`) for readability.
-- Keep pages markdown-first, then add directive structure.
-- Prefer reusable patterns over one-off custom HTML.

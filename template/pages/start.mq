@@ -1,60 +1,51 @@
 ---
 title: Quickstart
 nav: start
-order: 2
+order: 3
 ---
 
 # Quickstart
 
-Get from empty folder to published static site quickly.
+This guide gets you from scaffold to published docs quickly.
 
 @steps quickstart
   @step
-    ## Initialize
-    Start from the template scaffold and edit `marque.toml`.
+    ## Create project
+    Run `marque new my-site` and move into the generated folder.
   @end step
 
   @step
-    ## Author
-    Add `.mq` pages under `pages/` and define frontmatter (`title`, `nav`, `order`).
+    ## Write pages
+    Add `.mq` files under `pages/` with frontmatter at the top.
   @end step
 
   @step
-    ## Preview
-    Run `marque serve .` for live rebuild + reload.
+    ## Serve locally
+    Run `marque serve .` and preview changes in real time.
   @end step
 
   @step
-    ## Publish
-    Run `marque build .` and deploy the generated `dist/` folder.
+    ## Build and deploy
+    Run `marque build .` and publish the generated `dist/` directory.
   @end step
 @end steps quickstart
 
 @row commands
   @card .ghost
-    ## Core commands
+    ## Common commands
 
     ```bash
-    marque build .
-    marque serve .
     marque new my-site
+    marque serve .
+    marque build .
     ```
   @end card
 
   @card
-    ## Recommended page flow
+    ## Authoring tips
 
-    1. Create page with frontmatter.
-    2. Set `nav` to the URL slug you want.
-    3. Set `order` to control navigation order.
-    4. Link pages with markdown links.
+    - Keep filenames simple and let `nav` control final slug.
+    - Use `order` to control local nav order.
+    - Put raw assets in `static/`.
   @end card
 @end row commands
-
-## Routing notes
-
-- Output filenames are frontmatter-driven (`nav`, fallback `title`).
-- `index.mq` can target a non-index slug; in that case `index.html` is generated as an automatic redirect.
-- Keep links stable by using explicit nav slugs early.
-
-[Open directive reference →](/directives.html)

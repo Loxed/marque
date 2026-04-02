@@ -68,15 +68,15 @@ my-site/
 ```toml
 title = "My Site"
 description = "Built with Marque"
-layout = "default"
+layout = "topnav"
 theme = "default"
 width = "82"
 ```
 
 - `title`: site title used in templates.
 - `description`: fallback page meta description.
-- `layout`: global layout name (`default` or `sidebar`).
-  legacy values `xmb` and `crossmediabar` resolve to `default`.
+- `layout`: global layout name (`topnav` or `sidebar`).
+  legacy values `default`, `xmb`, and `crossmediabar` resolve to `topnav`.
 - `theme`: global theme name.
 - `width`: global page width occupancy (percentage-based, see below).
 

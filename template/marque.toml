@@ -1,21 +1,15 @@
-
 title = Marque
 description = Built with Marque
 layout = sidebar
 theme = default
-width = 85
+width = 82
 
 # Marque config
 #
 # layout options:
-#   default   -> top navigation layout
+#   topnav    -> top navigation layout
 #   sidebar   -> mdbook-like left sidebar layout
-#   legacy values xmb/crossmediabar now resolve to default
+#   aliases default/xmb/crossmediabar -> topnav
 #
 # theme options (built-in):
 #   default, rustique, pycorino, gouda, javarti
-#
-# width is percentage-based page occupancy on desktop:
-#   named: narrow | normal | wide | full
-#   numeric: 50 -> 50%
-#   explicit: 72%

@@ -1,4 +1,4 @@
-/* layout: default (top navigation) */
+/* layout: topnav (top navigation) */
 *, *::before, *::after { box-sizing: border-box; }
 img { max-width: 100%; display: block; }
 
@@ -16,8 +16,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
-  height: 60px;
+  padding: 0 1.6rem;
+  height: 58px;
 }
 
 .mq-nav-toggle {
@@ -33,7 +33,7 @@ body {
 
 .mq-nav-links {
   display: flex;
-  gap: 0;
+  gap: 0.35rem;
   align-items: center;
   overflow: visible;
 }
@@ -42,8 +42,11 @@ body {
 .mq-nav-links > .mq-nav-group > .mq-nav-group-trigger {
   display: flex;
   align-items: center;
-  height: 60px;
-  padding: 0 1rem;
+  justify-content: center;
+  height: 34px;
+  padding: 0 0.78rem;
+  line-height: 1;
+  border-radius: 8px;
 }
 
 .mq-nav-group {

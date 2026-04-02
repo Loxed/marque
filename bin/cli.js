@@ -20,7 +20,12 @@ switch (cmd) {
     const siteDir = path.resolve(args[0] || '.');
     const outDir = path.join(siteDir, 'dist');
     console.log(`\nmarque building ${siteDir}/\n`);
-    require('../src/builder').build(siteDir, outDir);
+    try {
+      require('../src/builder').build(siteDir, outDir);
+    } catch (e) {
+      printBuildError(e);
+      process.exit(1);
+    }
     break;
   }
 
@@ -42,6 +47,15 @@ switch (cmd) {
     console.log(help);
 }
 
+function printBuildError(err) {
+  const message = String((err && err.message) || err || 'Unknown build error');
+  if (/^error\[MQ\d+\]:/m.test(message)) {
+    console.error(`\nBuild error\n${message}\n`);
+    return;
+  }
+  console.error(`\nBuild error: ${message}\n`);
+}
+
 // ── Scaffolder ─────────────────────────────────────────────────────────────
 
 function scaffold(siteDir) {
@@ -50,417 +64,137 @@ function scaffold(siteDir) {
     process.exit(1);
   }
 
-  fs.mkdirSync(path.join(siteDir, 'pages'), { recursive: true });
-  fs.mkdirSync(path.join(siteDir, 'static'), { recursive: true });
+  const packageRoot = path.resolve(__dirname, '..');
+  const starterTemplateDir = path.join(packageRoot, 'template');
+  const builtinLayoutsDir = path.join(packageRoot, 'layouts');
+  const builtinThemesDir = path.join(packageRoot, 'themes');
 
-  fs.writeFileSync(path.join(siteDir, 'marque.toml'), `
-title = Marque
+  fs.mkdirSync(siteDir, { recursive: true });
+
+  // Copy canonical starter content (excluding generated dist output).
+  copyDir(starterTemplateDir, siteDir, new Set(['dist']));
+
+  // Guarantee essential starter files even if template/ is incomplete.
+  ensureStarterScaffold(siteDir);
+
+  // Copy layouts and themes into project for direct customization.
+  copyDir(builtinLayoutsDir, path.join(siteDir, 'layouts'));
+  copyDir(builtinThemesDir, path.join(siteDir, 'themes'));
+
+  console.log(`\nmarque: scaffolded → ${siteDir}/`);
+  console.log(`\n  cd ${siteDir}`);
+  console.log(`  marque serve .\n`);
+}
+
+function copyDir(src, dest, excludeNames = new Set()) {
+  if (!fs.existsSync(src)) return;
+  fs.mkdirSync(dest, { recursive: true });
+
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    if (excludeNames.has(entry.name)) continue;
+
+    const sourcePath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDir(sourcePath, destPath, excludeNames);
+    } else {
+      fs.copyFileSync(sourcePath, destPath);
+    }
+  }
+}
+
+function ensureStarterScaffold(siteDir) {
+  const pagesDir = path.join(siteDir, 'pages');
+  const staticDir = path.join(siteDir, 'static');
+  const configFile = path.join(siteDir, 'marque.toml');
+  const indexFile = path.join(pagesDir, 'index.mq');
+  const docsFile = path.join(pagesDir, 'docs.mq');
+
+  fs.mkdirSync(pagesDir, { recursive: true });
+  fs.mkdirSync(staticDir, { recursive: true });
+
+  if (!fs.existsSync(configFile)) {
+    fs.writeFileSync(configFile, `title = Marque
 description = Built with Marque
-layout = default
+layout = topnav
 theme = default
-width = 50
-
+width = 82
 
 # Marque config
 #
 # layout options:
-#   default   -> top navigation layout
+#   topnav    -> top navigation layout
 #   sidebar   -> mdbook-like left sidebar layout
-#   legacy values xmb/crossmediabar now resolve to default
+#   aliases default/xmb/crossmediabar -> topnav
 #
 # theme options (built-in):
 #   default, rustique, pycorino, gouda, javarti
-#
-# width is percentage-based page occupancy on desktop:
-#   named: narrow | normal | wide | full
-#   numeric: 50 -> 50%
-#   explicit: 72%
 `);
+  }
 
-  fs.writeFileSync(path.join(siteDir, 'pages', 'index.mq'),
-`---
+  if (!fs.existsSync(indexFile)) {
+    fs.writeFileSync(indexFile, `---
 title: Home
-nav: Home
+nav: home
 order: 1
 ---
 
 # Welcome
 
-This is your Marque site. Edit \`pages/index.mq\` to get started.
+Your Marque project is ready.
 
-@row intro
-  @card .accent write-card
-    ## Write
-    Use the .mq format — markdown with layout directives.
-    [Syntax reference →](/docs.html)
-  @end card write-card
+@row starter
+  @card .accent
+    ## Start writing
+    Edit files in \`pages/\` and keep frontmatter at the top.
+    [Open docs →](/docs.html)
+  @end card
 
-  @card build-card
-    ## Build
-    Run \`marque build\` to compile your site to \`dist/\`.
-  @end card build-card
+  @card
+    ## Live preview
+    Run \`marque serve .\` for rebuild + reload.
+  @end card
 
-  @card deploy-card
-    ## Deploy
-    Upload \`dist/\` to any static host — Netlify, GitHub Pages, a VPS.
-  @end card deploy-card
-@end row intro
+  @card
+    ## Publish
+    Run \`marque build .\` and deploy \`dist/\`.
+  @end card
+@end row starter
 `);
+  }
 
-  fs.writeFileSync(path.join(siteDir, 'pages', 'docs.mq'),
-`---
-title: Syntax Reference
-nav: Docs
+  if (!fs.existsSync(docsFile)) {
+    fs.writeFileSync(docsFile, `---
+title: Docs
+nav: docs
 order: 2
 layout: sidebar
 ---
 
-# Syntax Reference
+# Marque Docs
 
-A complete guide to the .mq layout directives.
+Quick reference for writing pages.
 
 @callout .info
-  All standard markdown works as expected. The directives below are Marque extensions.
+  Use markdown normally, then add Marque directives when needed.
 @end callout
 
-## Reading this page
+## Core directives
 
-Each section uses the same pattern:
-
-- Left card: source code you can copy.
-- Right card: what that source renders.
+- \`@row\` and \`@card\`
+- \`@callout\`
+- \`@stat\`
+- \`@steps\` / \`@step\`
+- \`@tabs\` / \`@tab\`
+- \`@hero\` / \`@section\`
+- \`@divider\`
 
 ## Frontmatter
 
-@row frontmatter-example
-  @card .ghost frontmatter-code
-    Code:
-    \`\`\`
-    ---
-    title: Syntax Reference
-    nav: Docs
-    order: 2
-    layout: sidebar
-    theme: rustique
-    description: Full directive reference
-    ---
-    \`\`\`
-  @end card frontmatter-code
-
-  @card .ghost frontmatter-result
-    Notes:
-
-    - \`title\` is used for page title.
-    - \`nav\` is used in navigation.
-    - \`order\` controls nav sorting.
-    - \`layout\` overrides the site layout for this page only.
-    - \`theme\` overrides the site theme for this page only.
-    - \`description\` can be consumed by the theme template.
-  @end card frontmatter-result
-@end row frontmatter-example
-
-## Theme override per page
-
-@row theme-override-example
-  @card .ghost theme-override-code
-    Code:
-    \`\`\`
-    ---
-    title: Press Kit
-    nav: Press
-    order: 5
-    layout: sidebar
-    theme: rustique
-    ---
-    \`\`\`
-  @end card theme-override-code
-
-  @card .ghost theme-override-result
-    Result:
-
-    - This page uses the \`rustique\` theme.
-    - Other pages still use the theme from \`marque.toml\`.
-  @end card theme-override-result
-@end row theme-override-example
-
-## Rows and Cards
-
-@row rows-cards-example
-  @card .ghost rows-cards-code
-    Code:
-    \`\`\`
-    @row section-name
-      @card .accent card-name
-        ## Title
-        Content here
-      @end card card-name
-
-      @card other-card
-        ## Other
-        Content here
-      @end card other-card
-    @end row section-name
-    \`\`\`
-  @end card rows-cards-code
-
-  @card .ghost rows-cards-result
-    Result:
-
-    @row section-name
-      @card .accent card-name
-        ## Title
-        Content here
-      @end card card-name
-
-      @card other-card
-        ## Other
-        Content here
-      @end card other-card
-    @end row section-name
-  @end card rows-cards-result
-@end row rows-cards-example
-
-## Card modifiers
-
-- \`@card\` — plain white
-- \`@card .accent\` — orange top border
-- \`@card .accent2\` — blue top border
-- \`@card .ghost\` — transparent
-- \`@card .dark\` — dark background
-
-Multiple modifiers stack: \`@card .accent .dark card-name\`
-
-## Callouts
-
-@row callout-example
-  @card .ghost callout-code
-    Code:
-    \`\`\`
-    @callout .warn
-      Something to watch out for.
-    @end callout
-    \`\`\`
-  @end card callout-code
-
-  @card .ghost callout-result
-    Result:
-
-    @callout .warn
-      Something to watch out for.
-    @end callout
-  @end card callout-result
-@end row callout-example
-
-Variants: \`.info\` \`.warn\` \`.danger\` \`.ok\`
-
-## Stats
-
-@row stat-example
-  @card .ghost stat-code
-    Code:
-    \`\`\`
-    @row stats
-      @stat users
-        ## 12,400
-        monthly users
-      @end stat users
-
-      @stat uptime
-        ## 99.9%
-        90-day uptime
-      @end stat uptime
-    @end row stats
-    \`\`\`
-  @end card stat-code
-
-  @card .ghost stat-result
-    Result:
-
-    @row stats
-      @stat users
-        ## 12,400
-        monthly users
-      @end stat users
-
-      @stat uptime
-        ## 99.9%
-        90-day uptime
-      @end stat uptime
-    @end row stats
-  @end card stat-result
-@end row stat-example
-
-## Steps
-
-@row steps-example
-  @card .ghost steps-code
-    Code:
-    \`\`\`
-    @steps install-guide
-      @step
-        ## Install
-        Run the install command.
-      @end step
-
-      @step
-        ## Configure
-        Edit the config file.
-      @end step
-
-      @step
-        ## Run
-        Start with marque serve .
-      @end step
-    @end steps install-guide
-    \`\`\`
-  @end card steps-code
-
-  @card .ghost steps-result
-    Result:
-
-    @steps install-guide
-      @step
-        ## Install
-        Run the install command.
-      @end step
-
-      @step
-        ## Configure
-        Edit the config file.
-      @end step
-
-      @step
-        ## Run
-        Start with marque serve .
-      @end step
-    @end steps install-guide
-  @end card steps-result
-@end row steps-example
-
-## Tabs
-
-@row tabs-example
-  @card .ghost tabs-code
-    Code:
-    \`\`\`
-    @tabs code-samples
-      @tab .js
-        \`\`\`js
-        console.log("Hello from JS");
-        \`\`\`
-      @end tab
-
-      @tab .python
-        \`\`\`python
-        print("Hello from Python")
-        \`\`\`
-      @end tab
-    @end tabs code-samples
-    \`\`\`
-  @end card tabs-code
-
-  @card .ghost tabs-result
-    Result:
-
-    @tabs code-samples
-      @tab .js
-        \`\`\`js
-        console.log("Hello from JS");
-        \`\`\`
-      @end tab
-
-      @tab .python
-        \`\`\`python
-        print("Hello from Python")
-        \`\`\`
-      @end tab
-    @end tabs code-samples
-  @end card tabs-result
-@end row tabs-example
-
-## Hero and Section
-
-@row hero-section-example
-  @card .ghost hero-section-code
-    Code:
-    \`\`\`
-    @hero .accent landing-hero
-      # Build docs fast
-      Structured markdown with reusable layout blocks.
-    @end hero landing-hero
-
-    @section .ghost details
-      ## Why use this
-      Keep authoring simple and output consistent.
-    @end section details
-    \`\`\`
-  @end card hero-section-code
-
-  @card .ghost hero-section-result
-    Result:
-
-    @hero .accent landing-hero
-      # Build docs fast
-      Structured markdown with reusable layout blocks.
-    @end hero landing-hero
-
-    @section .ghost details
-      ## Why use this
-      Keep authoring simple and output consistent.
-    @end section details
-  @end card hero-section-result
-@end row hero-section-example
-
-## Self-closing
-
-@row divider-example
-  @card .ghost divider-code
-    Code:
-    \`\`\`
-    @divider
-    \`\`\`
-  @end card divider-code
-
-  @card .ghost divider-result
-    Result:
-
-    @divider
-  @end card divider-result
-@end row divider-example
-
-## Buttons and badges in markdown
-
-@row markdown-enhancements
-  @card .ghost markdown-enhancements-code
-    Code:
-    \`\`\`
-    [Read the docs →](/docs.html)
-    [Download](/download.zip){.primary}
-
-    :badge[Stable]{.ok}
-    :badge[Beta]{.warn}
-    \`\`\`
-  @end card markdown-enhancements-code
-
-  @card .ghost markdown-enhancements-result
-    Result:
-
-    [Read the docs →](/docs.html)
-    [Download](/download.zip){.primary}
-
-    :badge[Stable]{.ok}
-    :badge[Beta]{.warn}
-  @end card markdown-enhancements-result
-@end row markdown-enhancements
-
-## Tips
-
-- Use names on blocks (\`@row pricing\`) to keep large pages readable.
-- Start simple with markdown, then add layout directives where needed.
-- Prefer reusable content patterns: row + card, then callout/steps for emphasis.
+\`title\` controls page title text.
+\`nav\` controls URL slug/output name.
+\`order\` controls nav ordering.
 `);
-
-  console.log(`\nmarque: scaffolded → ${siteDir}/`);
-  console.log(`\n  cd ${siteDir}`);
-  console.log(`  marque serve .\n`);
+  }
 }

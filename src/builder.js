@@ -8,7 +8,8 @@ function build(siteDir, outDir) {
   const configPath = path.join(siteDir, 'marque.toml');
   const config = loadConfig(configPath);
   const defaultThemeName = config.theme || 'default';
-  const defaultLayoutName = normalizeLayoutName(config.layout || 'default');
+  const configuredLayoutName = config.layout || 'topnav';
+  const defaultLayoutName = normalizeLayoutName(configuredLayoutName);
   const defaultPageWidth = normalizeWidth(config.width);
 
   // clean + create dist
@@ -23,7 +24,22 @@ function build(siteDir, outDir) {
   const defaultAssets = getThemeAssets(defaultThemeName, siteDir, outDir, themeCache);
   fs.writeFileSync(path.join(outDir, 'theme.css'), defaultAssets.css);
 
-  const defaultLayout = getLayoutAssets(defaultLayoutName, siteDir, outDir, layoutCache);
+  let defaultLayout;
+  try {
+    defaultLayout = getLayoutAssets(defaultLayoutName, siteDir, outDir, layoutCache);
+  } catch (err) {
+    if (/^Layout ".+" not found$/.test(err.message)) {
+      const line = findConfigKeyLine(configPath, 'layout');
+      throw new Error(buildMissingLayoutDiagnostic({
+        layoutName: defaultLayoutName,
+        sourceFile: configPath,
+        line: line || 1,
+        value: configuredLayoutName,
+        siteDir,
+      }));
+    }
+    throw err;
+  }
   fs.writeFileSync(path.join(outDir, 'layout.css'), defaultLayout.css);
 
   // find all .mq files
@@ -35,11 +51,26 @@ function build(siteDir, outDir) {
 
   let built = 0;
   for (const page of pageEntries) {
-    const { file, fm, body, href: outName } = page;
+    const { file, fm, body, href: outName, layoutLine } = page;
     const pageThemeName = fm.theme || defaultThemeName;
-    const pageLayoutName = normalizeLayoutName(fm.layout || defaultLayoutName);
+    const rawPageLayoutName = fm.layout || defaultLayoutName;
+    const pageLayoutName = normalizeLayoutName(rawPageLayoutName);
     const pageTheme = getThemeAssets(pageThemeName, siteDir, outDir, themeCache);
-    const pageLayout = getLayoutAssets(pageLayoutName, siteDir, outDir, layoutCache);
+    let pageLayout;
+    try {
+      pageLayout = getLayoutAssets(pageLayoutName, siteDir, outDir, layoutCache);
+    } catch (err) {
+      if (/^Layout ".+" not found$/.test(err.message)) {
+        throw new Error(buildMissingLayoutDiagnostic({
+          layoutName: pageLayoutName,
+          sourceFile: file,
+          line: layoutLine || 1,
+          value: rawPageLayoutName,
+          siteDir,
+        }));
+      }
+      throw err;
+    }
 
     const ast = parse(body);
     const content = render(ast);
@@ -131,7 +162,7 @@ function getThemeAssets(themeName, siteDir, outDir, cache) {
   if (cache.has(key)) return cache.get(key);
 
   const themeDir = resolveTheme(key, siteDir);
-  const baseTemplate = loadPageTemplate(themeDir);
+  const baseTemplate = loadPageTemplate(themeDir, siteDir);
   const css = fs.readFileSync(path.join(themeDir, 'theme.css'), 'utf8');
 
   const cssFile = `theme-${safeName(key)}.css`;
@@ -147,7 +178,7 @@ function getThemeAssets(themeName, siteDir, outDir, cache) {
 }
 
 function getLayoutAssets(layoutName, siteDir, outDir, cache) {
-  const key = normalizeLayoutName(layoutName || 'default');
+  const key = normalizeLayoutName(layoutName || 'topnav');
   if (cache.has(key)) return cache.get(key);
 
   const css = fs.readFileSync(resolveLayoutCSSPath(key, siteDir), 'utf8');
@@ -163,7 +194,7 @@ function getLayoutAssets(layoutName, siteDir, outDir, cache) {
 }
 
 function resolveLayoutCSSPath(layout, siteDir) {
-  const name = normalizeLayoutName(layout || 'default');
+  const name = normalizeLayoutName(layout || 'topnav');
 
   const custom = path.join(siteDir, 'layouts', `${name}.css`);
   if (fs.existsSync(custom)) return custom;
@@ -175,12 +206,12 @@ function resolveLayoutCSSPath(layout, siteDir) {
 }
 
 function normalizeLayoutName(layout) {
-  const name = String(layout || 'default').trim().toLowerCase();
-  if (name === 'crossmediabar' || name === 'xmb') return 'default';
-  return name || 'default';
+  const name = String(layout || 'topnav').trim().toLowerCase();
+  if (name === 'default' || name === 'crossmediabar' || name === 'xmb') return 'topnav';
+  return name || 'topnav';
 }
 
-function loadPageTemplate(themeDir) {
+function loadPageTemplate(themeDir, siteDir) {
   const themeIndexTemplate = path.join(themeDir, 'index.html');
   if (fs.existsSync(themeIndexTemplate)) {
     return fs.readFileSync(themeIndexTemplate, 'utf8');
@@ -190,6 +221,12 @@ function loadPageTemplate(themeDir) {
   const legacyBaseTemplate = path.join(themeDir, 'base.html');
   if (fs.existsSync(legacyBaseTemplate)) {
     return fs.readFileSync(legacyBaseTemplate, 'utf8');
+  }
+
+  // Project-level shared template override.
+  const projectSharedTemplate = path.join(siteDir, 'themes', 'index.html');
+  if (fs.existsSync(projectSharedTemplate)) {
+    return fs.readFileSync(projectSharedTemplate, 'utf8');
   }
 
   // Shared default template used when themes only provide CSS.
@@ -224,6 +261,7 @@ function buildPageEntries(pages, pagesDir, config) {
     const rel = path.relative(pagesDir, file);
     const src = fs.readFileSync(file, 'utf8');
     const { fm, body } = extractFrontmatter(src);
+    const layoutLine = findFrontmatterKeyLine(src, 'layout');
 
     const dir = path.dirname(rel);
     const webDir = (dir && dir !== '.') ? dir.split(path.sep).join('/') : '';
@@ -246,8 +284,152 @@ function buildPageEntries(pages, pagesDir, config) {
 
     const label = fm.title || fm.nav || sourceBase;
     const order = parseInt(fm.order || '99', 10);
-    return { file, rel, fm, body, href, redirectFrom, label, order };
+    return { file, rel, fm, body, href, redirectFrom, label, order, layoutLine };
   }).sort((a, b) => a.order - b.order);
+}
+
+function findConfigKeyLine(configPath, key) {
+  if (!fs.existsSync(configPath)) return null;
+  const lines = fs.readFileSync(configPath, 'utf8').split(/\r?\n/);
+  const re = new RegExp(`^\\s*${key}\\s*=`,'i');
+  for (let i = 0; i < lines.length; i++) {
+    if (re.test(lines[i])) return i + 1;
+  }
+  return null;
+}
+
+function findFrontmatterKeyLine(src, key) {
+  if (!src.startsWith('---')) return null;
+  const lines = src.split(/\r?\n/);
+  if (lines[0].trim() !== '---') return null;
+
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line === '---') break;
+    if (new RegExp(`^${key}\\s*:`,'i').test(line)) return i + 1;
+  }
+  return null;
+}
+
+function buildMissingLayoutDiagnostic({ layoutName, sourceFile, line, value, siteDir }) {
+  const lineText = readLine(sourceFile, line) || '';
+  const col = findValueColumn(lineText, value);
+  const safeValue = String(value || '').trim() || String(layoutName || '').trim();
+  const caretLen = Math.max(1, safeValue.length);
+  const lineNo = Math.max(1, parseInt(line || 1, 10));
+  const gutter = String(lineNo).length;
+
+  const availableLayouts = listAvailableLayouts(siteDir);
+  const suggestion = findClosestName(safeValue, availableLayouts);
+
+  const lines = [
+    `error[MQ001]: layout "${layoutName}" not found`,
+    ` --> ${sourceFile}:${lineNo}:${col}`,
+    '  |',
+    `${String(lineNo).padStart(gutter, ' ')} | ${lineText}`,
+    `${' '.repeat(gutter)} | ${' '.repeat(Math.max(0, col - 1))}${'^'.repeat(caretLen)} unknown layout`,
+    '  |',
+    `  = help: available layouts: ${availableLayouts.join(', ') || '(none found)'}`,
+  ];
+
+  if (suggestion) {
+    lines.push(`  = help: did you mean "${suggestion}"?`);
+  }
+
+  return lines.join('\n');
+}
+
+function readLine(filePath, lineNumber) {
+  if (!fs.existsSync(filePath)) return '';
+  const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/);
+  const idx = Math.max(0, (parseInt(lineNumber || 1, 10) || 1) - 1);
+  return lines[idx] || '';
+}
+
+function findValueColumn(lineText, value) {
+  const text = String(lineText || '');
+  const needle = String(value || '').trim();
+  if (!text) return 1;
+
+  if (needle) {
+    const direct = text.indexOf(needle);
+    if (direct >= 0) return direct + 1;
+
+    const unquoted = needle.replace(/^['\"]|['\"]$/g, '');
+    const alt = text.indexOf(unquoted);
+    if (alt >= 0) return alt + 1;
+  }
+
+  const eq = text.indexOf('=');
+  const colon = text.indexOf(':');
+  const sep = [eq, colon].filter(i => i >= 0).sort((a, b) => a - b)[0];
+  if (sep >= 0) {
+    let i = sep + 1;
+    while (i < text.length && /\s/.test(text[i])) i++;
+    if (text[i] === '"' || text[i] === "'") i++;
+    return i + 1;
+  }
+
+  return 1;
+}
+
+function listAvailableLayouts(siteDir) {
+  const names = new Set();
+  const dirs = [
+    path.join(__dirname, '..', 'layouts'),
+    path.join(siteDir, 'layouts'),
+  ];
+
+  for (const dir of dirs) {
+    if (!fs.existsSync(dir)) continue;
+    for (const file of fs.readdirSync(dir)) {
+      if (!file.endsWith('.css')) continue;
+      names.add(path.basename(file, '.css').toLowerCase());
+    }
+  }
+
+  return Array.from(names).sort();
+}
+
+function findClosestName(input, candidates) {
+  const target = String(input || '').trim().toLowerCase();
+  if (!target || !candidates.length) return null;
+
+  let best = null;
+  let bestDistance = Number.POSITIVE_INFINITY;
+
+  for (const candidate of candidates) {
+    const distance = levenshteinDistance(target, candidate.toLowerCase());
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      best = candidate;
+    }
+  }
+
+  const threshold = Math.max(2, Math.floor(target.length / 3));
+  return bestDistance <= threshold ? best : null;
+}
+
+function levenshteinDistance(a, b) {
+  const rows = a.length + 1;
+  const cols = b.length + 1;
+  const dp = Array.from({ length: rows }, () => new Array(cols).fill(0));
+
+  for (let i = 0; i < rows; i++) dp[i][0] = i;
+  for (let j = 0; j < cols; j++) dp[0][j] = j;
+
+  for (let i = 1; i < rows; i++) {
+    for (let j = 1; j < cols; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost
+      );
+    }
+  }
+
+  return dp[rows - 1][cols - 1];
 }
 
 function buildRedirectPage(targetHref) {
@@ -302,7 +484,7 @@ function renderNav(nav, current) {
 
     const hasActiveItem = triggerItem.href === current || submenuItems.some(item => item.href === current);
     const groupClass = hasActiveItem ? 'mq-nav-group active' : 'mq-nav-group';
-    const triggerActive = triggerItem.href === current ? ' active' : '';
+    const triggerActive = hasActiveItem ? ' active' : '';
 
     return `<div class="${groupClass}"><a class="mq-nav-group-trigger${triggerActive}" href="/${triggerItem.href}">${escapeHtml(triggerItem.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`;
   }).join('\n');

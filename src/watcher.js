@@ -32,6 +32,8 @@ function serve(siteDir, outDir, port = 3000) {
   const forcePolling = process.env.MARQUE_WATCH_POLLING === '1';
   const usePolling = forcePolling || isMntPath;
   const pagesDir = path.resolve(siteDir, 'pages');
+  const themesDir = path.resolve(siteDir, 'themes');
+  const layoutsDir = path.resolve(siteDir, 'layouts');
   const configFile = path.resolve(siteDir, 'marque.toml');
   const outDirAbs = path.resolve(outDir);
 
@@ -56,7 +58,7 @@ function serve(siteDir, outDir, port = 3000) {
   try {
     build(siteDir, outDir);
   } catch (e) {
-    console.error('Build error:', e.message);
+    printBuildError(e);
   }
 
   // websocket server for live reload
@@ -109,6 +111,10 @@ function serve(siteDir, outDir, port = 3000) {
       const absFile = path.resolve(file || '');
       const relToPages = path.relative(pagesDir, absFile);
       const inPages = !!relToPages && !relToPages.startsWith('..') && !path.isAbsolute(relToPages);
+      const relToThemes = path.relative(themesDir, absFile);
+      const inThemes = !!relToThemes && !relToThemes.startsWith('..') && !path.isAbsolute(relToThemes);
+      const relToLayouts = path.relative(layoutsDir, absFile);
+      const inLayouts = !!relToLayouts && !relToLayouts.startsWith('..') && !path.isAbsolute(relToLayouts);
 
       // Ignore output tree changes to prevent rebuild loops.
       if (absFile === outDirAbs || absFile.startsWith(`${outDirAbs}${path.sep}`)) return;
@@ -116,8 +122,10 @@ function serve(siteDir, outDir, port = 3000) {
       const ext = path.extname(absFile).toLowerCase();
       const isMqFileEvent = ['add', 'change', 'unlink'].includes(event) && ext === '.mq';
       const isPagesDirEvent = ['addDir', 'unlinkDir'].includes(event);
+      const isThemeEvent = inThemes && ['add', 'change', 'unlink', 'addDir', 'unlinkDir'].includes(event);
+      const isLayoutEvent = inLayouts && ['add', 'change', 'unlink', 'addDir', 'unlinkDir'].includes(event);
       const isTomlChangeEvent = event === 'change' && absFile === configFile;
-      if (!((inPages && (isMqFileEvent || isPagesDirEvent)) || isTomlChangeEvent)) return;
+      if (!((inPages && (isMqFileEvent || isPagesDirEvent)) || isThemeEvent || isLayoutEvent || isTomlChangeEvent)) return;
 
       const rel = path.relative(siteDir, file);
       console.log(`  ${event} → ${rel}`);
@@ -125,9 +133,18 @@ function serve(siteDir, outDir, port = 3000) {
         build(siteDir, outDir);
         broadcast();
       } catch (e) {
-        console.error('Build error:', e.message);
+        printBuildError(e);
       }
     });
+}
+
+function printBuildError(err) {
+  const message = String((err && err.message) || err || 'Unknown build error');
+  if (/^error\[MQ\d+\]:/m.test(message)) {
+    console.error(`\nBuild error\n${message}\n`);
+    return;
+  }
+  console.error(`\nBuild error: ${message}\n`);
 }
 
 module.exports = { serve };
