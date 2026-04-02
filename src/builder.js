@@ -8,6 +8,7 @@ function build(siteDir, outDir) {
   const configPath = path.join(siteDir, 'marque.toml');
   const config = loadConfig(configPath);
   const defaultThemeName = config.theme || 'default';
+  const defaultLayoutName = normalizeLayoutName(config.layout || 'default');
   const defaultPageWidth = normalizeWidth(config.width);
 
   // clean + create dist
@@ -16,29 +17,33 @@ function build(siteDir, outDir) {
 
   // cache theme assets so each theme is loaded and written once per build
   const themeCache = new Map();
+  const layoutCache = new Map();
 
   // keep a legacy alias for templates that still link /theme.css directly
   const defaultAssets = getThemeAssets(defaultThemeName, siteDir, outDir, themeCache);
   fs.writeFileSync(path.join(outDir, 'theme.css'), defaultAssets.css);
 
+  const defaultLayout = getLayoutAssets(defaultLayoutName, siteDir, outDir, layoutCache);
+  fs.writeFileSync(path.join(outDir, 'layout.css'), defaultLayout.css);
+
   // find all .mq files
   const pagesDir = path.join(siteDir, 'pages');
   const pages = findMQ(pagesDir);
 
-  const nav = buildNav(pages, pagesDir, config);
+  const pageEntries = buildPageEntries(pages, pagesDir, config);
+  const nav = buildNav(pageEntries);
 
   let built = 0;
-  for (const file of pages) {
-    const src = fs.readFileSync(file, 'utf8');
-    const { fm, body } = extractFrontmatter(src);
+  for (const page of pageEntries) {
+    const { file, fm, body, href: outName } = page;
     const pageThemeName = fm.theme || defaultThemeName;
+    const pageLayoutName = normalizeLayoutName(fm.layout || defaultLayoutName);
     const pageTheme = getThemeAssets(pageThemeName, siteDir, outDir, themeCache);
+    const pageLayout = getLayoutAssets(pageLayoutName, siteDir, outDir, layoutCache);
 
     const ast = parse(body);
     const content = render(ast);
 
-    const rel = path.relative(pagesDir, file);
-    const outName = rel.replace(/\.mq$/, '.html');
     const outFile = path.join(outDir, outName);
 
     fs.mkdirSync(path.dirname(outFile), { recursive: true });
@@ -51,9 +56,15 @@ function build(siteDir, outDir) {
       nav: renderNav(nav, outName),
       site_title: config.title || 'Marque',
       description: fm.description || config.description || '',
+      layout_css: pageLayout.href,
       theme_css: pageTheme.href,
       page_main_style: pageMainStyle,
     });
+
+    // Backward compatibility for templates that don't have layout_css token.
+    if (!/\{\{\s*layout_css\s*\}\}/.test(pageTheme.baseTemplate)) {
+      html = html.replace(/<link rel="stylesheet" href="([^"]*theme[^"]*)">/, `<link rel="stylesheet" href="${pageLayout.href}">\n<link rel="stylesheet" href="$1">`);
+    }
 
     // Backward compatibility for templates that hardcode /theme.css.
     if (!/\{\{\s*theme_css\s*\}\}/.test(pageTheme.baseTemplate)) {
@@ -122,6 +133,40 @@ function getThemeAssets(themeName, siteDir, outDir, cache) {
   return assets;
 }
 
+function getLayoutAssets(layoutName, siteDir, outDir, cache) {
+  const key = normalizeLayoutName(layoutName || 'default');
+  if (cache.has(key)) return cache.get(key);
+
+  const css = fs.readFileSync(resolveLayoutCSSPath(key, siteDir), 'utf8');
+  const cssFile = `layout-${safeName(key)}.css`;
+  fs.writeFileSync(path.join(outDir, cssFile), css);
+
+  const assets = {
+    css,
+    href: `/${cssFile}`,
+  };
+  cache.set(key, assets);
+  return assets;
+}
+
+function resolveLayoutCSSPath(layout, siteDir) {
+  const name = normalizeLayoutName(layout || 'default');
+
+  const custom = path.join(siteDir, 'layouts', `${name}.css`);
+  if (fs.existsSync(custom)) return custom;
+
+  const builtin = path.join(__dirname, '..', 'layouts', `${name}.css`);
+  if (fs.existsSync(builtin)) return builtin;
+
+  throw new Error(`Layout "${name}" not found`);
+}
+
+function normalizeLayoutName(layout) {
+  const name = String(layout || 'default').trim().toLowerCase();
+  if (name === 'crossmediabar') return 'xmb';
+  return name || 'default';
+}
+
 function loadPageTemplate(themeDir) {
   const themeIndexTemplate = path.join(themeDir, 'index.html');
   if (fs.existsSync(themeIndexTemplate)) {
@@ -161,24 +206,111 @@ function findMQ(dir) {
   return results;
 }
 
-function buildNav(pages, pagesDir, config) {
+function buildPageEntries(pages, pagesDir, config) {
   return pages.map(file => {
     const rel = path.relative(pagesDir, file);
-    const href = rel.replace(/\.mq$/, '.html');
-    // read first frontmatter title for nav label
     const src = fs.readFileSync(file, 'utf8');
-    const { fm } = extractFrontmatter(src);
-    const label = fm.nav || fm.title || path.basename(href, '.html');
+    const { fm, body } = extractFrontmatter(src);
+
+    const dir = path.dirname(rel);
+    const sourceBase = path.basename(rel, '.mq');
+    const isIndexSource = sourceBase.toLowerCase() === 'index';
+    const slugSource = fm.nav || fm.title || sourceBase;
+    const fileBase = isIndexSource ? 'index' : (safeName(slugSource) || safeName(sourceBase));
+    const href = (dir && dir !== '.') ? path.join(dir, `${fileBase}.html`) : `${fileBase}.html`;
+
+    const label = fm.nav || fm.title || sourceBase;
     const order = parseInt(fm.order || '99', 10);
-    return { href, label, order };
+    return { file, rel, fm, body, href, label, order };
   }).sort((a, b) => a.order - b.order);
 }
 
+function buildNav(pageEntries) {
+  return pageEntries.map(page => ({
+    href: page.href,
+    label: page.label,
+    order: page.order,
+  }));
+}
+
 function renderNav(nav, current) {
-  return nav.map(({ href, label }) => {
-    const active = href === current ? ' class="active"' : '';
-    return `<a href="/${href}"${active}>${label}</a>`;
+  const groups = buildNavGroups(nav);
+
+  return groups.map(group => {
+    if (!group.children.length) {
+      const active = group.root && group.root.href === current ? ' class="active"' : '';
+      return `<a href="/${group.root.href}"${active}>${escapeHtml(group.root.label)}</a>`;
+    }
+
+    const triggerItem = group.root || group.children[0];
+    const submenuItems = group.root ? group.children : group.children.slice(1);
+
+    if (!submenuItems.length) {
+      const active = triggerItem && triggerItem.href === current ? ' class="active"' : '';
+      return `<a href="/${triggerItem.href}"${active}>${escapeHtml(triggerItem.label)}</a>`;
+    }
+
+    const submenu = submenuItems
+      .sort((a, b) => a.order - b.order)
+      .map(item => {
+        const active = item.href === current ? ' class="active"' : '';
+        return `<a href="/${item.href}"${active}>${escapeHtml(item.label)}</a>`;
+      })
+      .join('');
+
+    const hasActiveItem = triggerItem.href === current || submenuItems.some(item => item.href === current);
+    const groupClass = hasActiveItem ? 'mq-nav-group active' : 'mq-nav-group';
+    const triggerActive = triggerItem.href === current ? ' active' : '';
+
+    return `<div class="${groupClass}"><a class="mq-nav-group-trigger${triggerActive}" href="/${triggerItem.href}">${escapeHtml(triggerItem.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`;
   }).join('\n');
+}
+
+function buildNavGroups(nav) {
+  const map = new Map();
+
+  for (const item of nav) {
+    const noExt = item.href.replace(/\.html$/, '');
+    const parts = noExt.split('/').filter(Boolean);
+    const key = parts[0] || noExt;
+
+    if (!map.has(key)) {
+      map.set(key, {
+        key,
+        label: toTitleCase(key),
+        order: item.order,
+        root: null,
+        children: [],
+      });
+    }
+
+    const group = map.get(key);
+    group.order = Math.min(group.order, item.order);
+
+    if (parts.length <= 1) {
+      group.root = item;
+      group.label = item.label || group.label;
+    } else {
+      group.children.push(item);
+    }
+  }
+
+  return Array.from(map.values()).sort((a, b) => a.order - b.order);
+}
+
+function toTitleCase(value) {
+  return String(value || '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function applyTemplate(template, vars) {

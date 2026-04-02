@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ title }} — {{ site_title }}</title>
 <meta name="description" content="{{ description }}">
+<link rel="stylesheet" href="{{ layout_css }}">
 <link rel="stylesheet" href="{{ theme_css }}">
 </head>
 <body>
   <nav class="mq-nav">
     <a class="mq-nav-brand" href="/">{{ site_title }}</a>
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
     <div class="mq-nav-links">
       {{ nav }}
     </div>
@@ -28,6 +30,13 @@
     const el = document.getElementById(id);
     el.querySelectorAll('.mq-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
     el.querySelectorAll('.mq-tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+  }
+
+  function mqToggleNav(btn) {
+    const nav = btn.closest('.mq-nav');
+    if (!nav) return;
+    const open = nav.classList.toggle('mq-nav-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
   </script>
 </body>

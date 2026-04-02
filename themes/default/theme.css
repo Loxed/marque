@@ -31,23 +31,12 @@ body {
   color: var(--text);
   font-size: 16px;
   line-height: 1.65;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 /* ── Nav ── */
 .mq-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2rem;
-  height: 56px;
 }
 
 .mq-nav-brand {
@@ -59,16 +48,7 @@ body {
   letter-spacing: -0.02em;
 }
 
-.mq-nav-links {
-  display: flex;
-  gap: 0;
-}
-
 .mq-nav-links a {
-  padding: 0 1rem;
-  height: 56px;
-  display: flex;
-  align-items: center;
   font-size: 0.875rem;
   color: var(--muted);
   text-decoration: none;
@@ -79,18 +59,8 @@ body {
 .mq-nav-links a.active { color: var(--text); border-bottom-color: var(--accent); }
 
 /* ── Main ── */
-.mq-main {
-  flex: 1;
-  width: min(var(--page-width, 100%), 100%);
-  max-width: var(--page-max-w, var(--max-w));
-  margin: 0 auto;
-  padding: 3rem 2rem;
-}
-
 /* ── Footer ── */
 .mq-footer {
-  text-align: center;
-  padding: 2rem;
   font-size: 0.8rem;
   color: var(--muted);
   border-top: 1px solid var(--border);
@@ -302,9 +272,4 @@ a.mq-btn.blue:hover { background: #1e46a0; }
 /* ── Responsive ── */
 @media (max-width: 640px) {
   .mq-row { grid-template-columns: 1fr !important; }
-  .mq-nav { padding: 0 1rem; }
-  .mq-main {
-    width: 100% !important;
-    padding: 2rem 1rem;
-  }
 }

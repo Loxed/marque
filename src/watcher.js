@@ -2,7 +2,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { WebSocketServer } = require('ws');
+const { WebSocketServer, WebSocket } = require('ws');
 const chokidar = require('chokidar');
 const { build } = require('./builder');
 
@@ -28,6 +28,29 @@ const RELOAD_SNIPPET = `
 
 function serve(siteDir, outDir, port = 3000) {
   const wsPort = port + 1;
+  const isMntPath = /^\/mnt\/[a-z]\//i.test(siteDir);
+  const forcePolling = process.env.MARQUE_WATCH_POLLING === '1';
+  const usePolling = forcePolling || isMntPath;
+  const pagesDir = path.resolve(siteDir, 'pages');
+  const configFile = path.resolve(siteDir, 'marque.toml');
+  const outDirAbs = path.resolve(outDir);
+
+  const watchTargets = [
+    siteDir,
+    path.join(siteDir, '**', '*'),
+    configFile,
+  ];
+
+  const watchOptions = {
+    ignoreInitial: true,
+    usePolling,
+    interval: usePolling ? 250 : 100,
+    binaryInterval: usePolling ? 400 : 300,
+    awaitWriteFinish: {
+      stabilityThreshold: 140,
+      pollInterval: 60,
+    },
+  };
 
   // initial build
   try {
@@ -38,7 +61,11 @@ function serve(siteDir, outDir, port = 3000) {
 
   // websocket server for live reload
   const wss = new WebSocketServer({ port: wsPort });
-  const broadcast = () => wss.clients.forEach(c => c.send('reload'));
+  const broadcast = () => {
+    wss.clients.forEach(c => {
+      if (c.readyState === WebSocket.OPEN) c.send('reload');
+    });
+  };
 
   // http server
   const server = http.createServer((req, res) => {
@@ -70,18 +97,28 @@ function serve(siteDir, outDir, port = 3000) {
   server.listen(port, () => {
     console.log(`\nmarque dev server → http://localhost:${port}`);
     console.log(`watching ${siteDir}/\n`);
+    if (usePolling) {
+      console.log('watch mode: polling enabled (recommended on WSL /mnt paths)\n');
+    }
   });
 
   // file watcher
   chokidar
-    .watch([
-      path.join(siteDir, 'pages'),
-      path.join(siteDir, 'themes'),
-      path.join(siteDir, 'static'),
-      path.join(siteDir, 'marque.toml'),
-      path.join(__dirname, '..', 'themes'), // built-in themes
-    ], { ignoreInitial: true })
+    .watch(watchTargets, watchOptions)
     .on('all', (event, file) => {
+      const absFile = path.resolve(file || '');
+      const relToPages = path.relative(pagesDir, absFile);
+      const inPages = !!relToPages && !relToPages.startsWith('..') && !path.isAbsolute(relToPages);
+
+      // Ignore output tree changes to prevent rebuild loops.
+      if (absFile === outDirAbs || absFile.startsWith(`${outDirAbs}${path.sep}`)) return;
+
+      const ext = path.extname(absFile).toLowerCase();
+      const isMqFileEvent = ['add', 'change', 'unlink'].includes(event) && ext === '.mq';
+      const isPagesDirEvent = ['addDir', 'unlinkDir'].includes(event);
+      const isTomlChangeEvent = event === 'change' && absFile === configFile;
+      if (!((inPages && (isMqFileEvent || isPagesDirEvent)) || isTomlChangeEvent)) return;
+
       const rel = path.relative(siteDir, file);
       console.log(`  ${event} → ${rel}`);
       try {

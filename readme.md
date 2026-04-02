@@ -68,12 +68,15 @@ my-site/
 ```toml
 title = "My Site"
 description = "Built with Marque"
+layout = "default"
 theme = "default"
 width = "82"
 ```
 
 - `title`: site title used in templates.
 - `description`: fallback page meta description.
+- `layout`: global layout name (`default`, `sidebar`, or `xmb`).
+  legacy alias: `crossmediabar`.
 - `theme`: global theme name.
 - `width`: global page width occupancy (percentage-based, see below).
 
@@ -87,6 +90,7 @@ title: Syntax Reference
 nav: Docs
 order: 2
 theme: rustique
+layout: sidebar
 width: 90
 ---
 ```
@@ -95,6 +99,7 @@ width: 90
 - `nav`: nav label.
 - `order`: nav sort order.
 - `theme`: optional per-page theme override.
+- `layout`: optional per-page layout override.
 - `width`: optional per-page width override.
 
 Width supports:
@@ -158,10 +163,17 @@ Themes live in `themes/<name>/` and require:
 - `theme.css` (required)
 - `index.html` (optional)
 
+Layouts live in `layouts/<name>.css` and define structure only (nav placement, page framing, responsive layout).
+
 Template resolution order:
 
 1. `themes/<theme>/index.html`
 2. `themes/index.html` (shared default template)
+
+Layout resolution order:
+
+1. `site/layouts/<layout>.css`
+2. `marque-pkg/layouts/<layout>.css`
 
 Built-in themes in this repo include:
 

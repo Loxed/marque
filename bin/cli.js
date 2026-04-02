@@ -7,7 +7,7 @@ const fs = require('fs');
 const [,, cmd, ...args] = process.argv;
 
 const help = `
-marque — a .mq site compiler
+marque, a .mq site compiler
 
   marque build [site-dir]    build site to dist/
   marque serve [site-dir]    dev server with live reload
@@ -53,10 +53,29 @@ function scaffold(siteDir) {
   fs.mkdirSync(path.join(siteDir, 'pages'), { recursive: true });
   fs.mkdirSync(path.join(siteDir, 'static'), { recursive: true });
 
-  fs.writeFileSync(path.join(siteDir, 'marque.toml'), `title = Marque
+  fs.writeFileSync(path.join(siteDir, 'marque.toml'), `
+title = Marque
 description = Built with Marque
+layout = default
 theme = default
 width = 50
+
+
+# Marque config
+#
+# layout options:
+#   default   -> top navigation layout
+#   sidebar   -> mdbook-like left sidebar layout
+#   xmb       -> sticky top bar + horizontal nav rail
+#               (legacy alias: crossmediabar)
+#
+# theme options (built-in):
+#   default, rustique, pycorino, gouda, javarti
+#
+# width is percentage-based page occupancy on desktop:
+#   named: narrow | normal | wide | full
+#   numeric: 50 -> 50%
+#   explicit: 72%
 `);
 
   fs.writeFileSync(path.join(siteDir, 'pages', 'index.mq'),
@@ -94,6 +113,7 @@ This is your Marque site. Edit \`pages/index.mq\` to get started.
 title: Syntax Reference
 nav: Docs
 order: 2
+layout: sidebar
 ---
 
 # Syntax Reference
@@ -121,6 +141,7 @@ Each section uses the same pattern:
     title: Syntax Reference
     nav: Docs
     order: 2
+    layout: sidebar
     theme: rustique
     description: Full directive reference
     ---
@@ -133,6 +154,7 @@ Each section uses the same pattern:
     - \`title\` is used for page title.
     - \`nav\` is used in navigation.
     - \`order\` controls nav sorting.
+    - \`layout\` overrides the site layout for this page only.
     - \`theme\` overrides the site theme for this page only.
     - \`description\` can be consumed by the theme template.
   @end card frontmatter-result
@@ -148,6 +170,7 @@ Each section uses the same pattern:
     title: Press Kit
     nav: Press
     order: 5
+    layout: sidebar
     theme: rustique
     ---
     \`\`\`
@@ -156,7 +179,7 @@ Each section uses the same pattern:
   @card .ghost theme-override-result
     Result:
 
-    - This page uses the \`editorial\` theme.
+    - This page uses the \`rustique\` theme.
     - Other pages still use the theme from \`marque.toml\`.
   @end card theme-override-result
 @end row theme-override-example

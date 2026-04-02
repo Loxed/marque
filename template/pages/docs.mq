@@ -2,7 +2,7 @@
 title: Syntax Reference
 nav: Docs
 order: 2
-theme: rustique
+layout: sidebar
 ---
 
 # Syntax Reference
@@ -30,6 +30,7 @@ Each section uses the same pattern:
     title: Syntax Reference
     nav: Docs
     order: 2
+    layout: sidebar
     theme: rustique
     description: Full directive reference
     ---
@@ -42,6 +43,7 @@ Each section uses the same pattern:
     - `title` is used for page title.
     - `nav` is used in navigation.
     - `order` controls nav sorting.
+    - `layout` overrides the site layout for this page only.
     - `theme` overrides the site theme for this page only.
     - `description` can be consumed by the theme template.
   @end card frontmatter-result
@@ -57,6 +59,7 @@ Each section uses the same pattern:
     title: Press Kit
     nav: Press
     order: 5
+    layout: sidebar
     theme: rustique
     ---
     ```
@@ -65,7 +68,7 @@ Each section uses the same pattern:
   @card .ghost theme-override-result
     Result:
 
-    - This page uses the `editorial` theme.
+    - This page uses the `rustique` theme.
     - Other pages still use the theme from `marque.toml`.
   @end card theme-override-result
 @end row theme-override-example

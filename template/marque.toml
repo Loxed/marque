@@ -1,4 +1,23 @@
+
 title = Marque
 description = Built with Marque
+layout = sidebar
 theme = default
 width = 50
+
+
+# Marque config
+#
+# layout options:
+#   default   -> top navigation layout
+#   sidebar   -> mdbook-like left sidebar layout
+#   xmb       -> sticky top bar + horizontal nav rail
+#               (legacy alias: crossmediabar)
+#
+# theme options (built-in):
+#   default, rustique, pycorino, gouda, javarti
+#
+# width is percentage-based page occupancy on desktop:
+#   named: narrow | normal | wide | full
+#   numeric: 50 -> 50%
+#   explicit: 72%

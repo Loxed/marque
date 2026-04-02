@@ -37,48 +37,28 @@ body {
   color: var(--ink);
   font-size: 17px;
   line-height: 1.72;
-  min-height: 100vh;
-}
-
-.mq-shell {
-  display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
-  min-height: 100vh;
 }
 
 .mq-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
   background: #1b1917;
   color: #f8f4ef;
-  border-right: 2px solid #141210;
-  padding: 1.25rem 1rem;
-  height: 100vh;
-  overflow-y: auto;
+  border-color: #141210;
 }
 
 .mq-nav-brand {
-  display: block;
   font-family: var(--font-serif);
   font-size: 1.2rem;
   font-weight: 700;
   color: #fff9f2;
   text-decoration: none;
   letter-spacing: 0.01em;
-  margin-bottom: 1rem;
-  padding: 0.25rem 0.55rem;
 }
 
 .mq-nav-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.2rem;
 }
 
 .mq-nav-links a {
-  display: block;
-  padding: 0.42rem 0.7rem;
   border: 1px solid transparent;
   border-radius: 6px;
   font-size: 0.88rem;
@@ -94,24 +74,7 @@ body {
   background: rgba(211, 69, 22, 0.24);
   border-color: rgba(211, 69, 22, 0.6);
 }
-
-.mq-content {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.mq-main {
-  flex: 1;
-  width: min(var(--page-width, 100%), 100%);
-  max-width: var(--page-max-w, var(--max-w));
-  margin: 0 auto;
-  padding: 3.4rem 2rem;
-}
-
 .mq-footer {
-  text-align: left;
-  padding: 2rem;
   font-size: 0.82rem;
   color: var(--muted);
   border-top: 1px solid var(--line);
@@ -380,35 +343,4 @@ a.mq-btn.blue:hover { background: #272421; }
 
 @media (max-width: 700px) {
   .mq-row { grid-template-columns: 1fr !important; }
-  .mq-shell {
-    display: block;
-  }
-  .mq-nav {
-    position: sticky;
-    top: 0;
-    height: auto;
-    max-height: 55vh;
-    border-right: none;
-    border-bottom: 2px solid #141210;
-    padding: 0.75rem 0.75rem;
-  }
-  .mq-nav-brand {
-    margin-bottom: 0.5rem;
-  }
-  .mq-nav-links {
-    flex-direction: row;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding-bottom: 0.2rem;
-  }
-  .mq-nav-links a {
-    display: inline-block;
-  }
-  .mq-main {
-    width: 100% !important;
-    padding: 2rem 1rem;
-  }
-  .mq-footer {
-    text-align: center;
-  }
 }

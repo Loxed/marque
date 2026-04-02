@@ -6,7 +6,7 @@
    inspired by: go.dev
 */
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,300&family=IBM+Plex+Serif:ital,wght@0,300;0,500;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
   --bg:             #ffffff;
@@ -22,9 +22,9 @@
   --radius:         6px;
   --max-w:          980px;
 
-  --font-sans:  'IBM Plex Sans', system-ui, sans-serif;
-  --font-serif: 'IBM Plex Serif', Georgia, serif;
-  --font-mono:  'IBM Plex Mono', monospace;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: Georgia, serif; /* optional, or remove entirely */
+  --font-mono: 'IBM Plex Mono', monospace;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,24 +36,13 @@ body {
   color: var(--ink);
   font-size: 16px;
   line-height: 1.65;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 /* ── Nav ── */
 .mq-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
   background: #1d1d1d;
   color: #e8f4f8;
   border-bottom: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2rem;
-  height: 64px;
 }
 
 .mq-nav-brand {
@@ -65,16 +54,7 @@ body {
   letter-spacing: -0.01em;
 }
 
-.mq-nav-links {
-  display: flex;
-  gap: 0;
-}
-
 .mq-nav-links a {
-  padding: 0 1rem;
-  height: 64px;
-  display: flex;
-  align-items: center;
   font-size: 0.875rem;
   font-weight: 400;
   color: #a8c4cc;
@@ -87,18 +67,8 @@ body {
 .mq-nav-links a.active { color: #00acd7; border-bottom-color: #00acd7; }
 
 /* ── Main ── */
-.mq-main {
-  flex: 1;
-  width: min(var(--page-width, 100%), 100%);
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 3.5rem 2rem;
-}
-
 /* ── Footer ── */
 .mq-footer {
-  text-align: center;
-  padding: 2rem;
   font-size: 0.82rem;
   color: var(--muted);
   border-top: 1px solid var(--line);
