@@ -1,0 +1,27 @@
+---
+title: Home
+nav: Home
+order: 1
+---
+
+# Welcome
+
+This is your Marque site. Edit `pages/index.mq` to get started.
+
+@row intro
+  @card .accent write-card
+    ## Write
+    Use the .mq format — markdown with layout directives.
+    [Syntax reference →](/docs.html)
+  @end card write-card
+
+  @card .accent2 build-card
+    ## Build
+    Run `marque build` to compile your site to `dist/`.
+  @end card build-card
+
+  @card .accent deploy-card
+    ## Deploy
+    Upload `dist/` to any static host — Netlify, GitHub Pages, a VPS.
+  @end card deploy-card
+@end row intro
