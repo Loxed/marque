@@ -25,3 +25,6 @@ Thumbs.db
 .turbo/
 .eslintcache
 marquise-pkg_dump.md
+
+
+.lock
