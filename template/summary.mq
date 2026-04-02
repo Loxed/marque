@@ -9,11 +9,10 @@ User Guide
 
 Reference
 
-[Command-Line Commands](cli.mq)
-
-Format
 [Docs](docs.mq)
+[CLI Commands](docs/cli.mq)
 [Configuration](docs/configuration.mq)
 [Frontmatter](docs/configuration/frontmatter.mq)
-[Themes](docs/themes.mq)
+[Themes](docs/configuration/themes.mq)
+[Layouts](docs/configuration/layouts.mq)
 [Directives](docs/directives.mq)

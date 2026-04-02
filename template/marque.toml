@@ -1,6 +1,6 @@
 title = Marque
 description = Built with Marque
-layout = topnav
+layout = sidebar
 theme = default
 width = 82
 
