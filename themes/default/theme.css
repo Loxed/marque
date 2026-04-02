@@ -81,8 +81,8 @@ body {
 /* ── Main ── */
 .mq-main {
   flex: 1;
-  max-width: var(--max-w);
-  width: 100%;
+  width: min(var(--page-width, 100%), 100%);
+  max-width: var(--page-max-w, var(--max-w));
   margin: 0 auto;
   padding: 3rem 2rem;
 }
@@ -303,5 +303,8 @@ a.mq-btn.blue:hover { background: #1e46a0; }
 @media (max-width: 640px) {
   .mq-row { grid-template-columns: 1fr !important; }
   .mq-nav { padding: 0 1rem; }
-  .mq-main { padding: 2rem 1rem; }
+  .mq-main {
+    width: 100% !important;
+    padding: 2rem 1rem;
+  }
 }

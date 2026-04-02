@@ -8,6 +8,7 @@ function build(siteDir, outDir) {
   const configPath = path.join(siteDir, 'marque.toml');
   const config = loadConfig(configPath);
   const defaultThemeName = config.theme || 'default';
+  const defaultPageWidth = normalizeWidth(config.width);
 
   // clean + create dist
   fs.rmSync(outDir, { recursive: true, force: true });
@@ -43,6 +44,7 @@ function build(siteDir, outDir) {
     fs.mkdirSync(path.dirname(outFile), { recursive: true });
 
     const title = fm.title || config.title || 'Marque Site';
+    const pageMainStyle = resolveMainStyle(fm, defaultPageWidth);
     let html = applyTemplate(pageTheme.baseTemplate, {
       title,
       content,
@@ -50,6 +52,7 @@ function build(siteDir, outDir) {
       site_title: config.title || 'Marque',
       description: fm.description || config.description || '',
       theme_css: pageTheme.href,
+      page_main_style: pageMainStyle,
     });
 
     // Backward compatibility for templates that hardcode /theme.css.
@@ -104,7 +107,7 @@ function getThemeAssets(themeName, siteDir, outDir, cache) {
   if (cache.has(key)) return cache.get(key);
 
   const themeDir = resolveTheme(key, siteDir);
-  const baseTemplate = fs.readFileSync(path.join(themeDir, 'base.html'), 'utf8');
+  const baseTemplate = loadPageTemplate(themeDir);
   const css = fs.readFileSync(path.join(themeDir, 'theme.css'), 'utf8');
 
   const cssFile = `theme-${safeName(key)}.css`;
@@ -117,6 +120,27 @@ function getThemeAssets(themeName, siteDir, outDir, cache) {
   };
   cache.set(key, assets);
   return assets;
+}
+
+function loadPageTemplate(themeDir) {
+  const themeIndexTemplate = path.join(themeDir, 'index.html');
+  if (fs.existsSync(themeIndexTemplate)) {
+    return fs.readFileSync(themeIndexTemplate, 'utf8');
+  }
+
+  // Backward compatibility for older themes.
+  const legacyBaseTemplate = path.join(themeDir, 'base.html');
+  if (fs.existsSync(legacyBaseTemplate)) {
+    return fs.readFileSync(legacyBaseTemplate, 'utf8');
+  }
+
+  // Shared default template used when themes only provide CSS.
+  const sharedTemplate = path.join(__dirname, '..', 'themes', 'index.html');
+  if (fs.existsSync(sharedTemplate)) {
+    return fs.readFileSync(sharedTemplate, 'utf8');
+  }
+
+  throw new Error('No template found. Add themes/index.html or a theme-level index.html/base.html.');
 }
 
 function safeName(name) {
@@ -172,6 +196,37 @@ function copyDir(src, dest) {
       fs.copyFileSync(s, d);
     }
   }
+}
+
+function resolveMainStyle(fm, defaultPageWidth) {
+  const pageWidth = normalizeWidth(fm.width);
+  const width = pageWidth || defaultPageWidth;
+  if (!width) return '';
+  return ` style="--page-width: ${width}; --page-max-w: none;"`;
+}
+
+function normalizeWidth(value) {
+  if (value === undefined || value === null) return null;
+  const raw = String(value).trim().toLowerCase();
+  if (!raw) return null;
+
+  const named = {
+    narrow: '70%',
+    normal: '82%',
+    wide: '92%',
+    full: '100%',
+  };
+  if (named[raw]) return named[raw];
+
+  // Bare numbers are interpreted as percentages (e.g. 86 -> 86%).
+  if (/^\d+(?:\.\d+)?$/.test(raw)) return `${raw}%`;
+
+  if (/^\d+(?:\.\d+)?%$/.test(raw)) {
+    const n = parseFloat(raw);
+    if (Number.isFinite(n) && n > 0 && n <= 100) return raw;
+  }
+
+  return null;
 }
 
 module.exports = { build };

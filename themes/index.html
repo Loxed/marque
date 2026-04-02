@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ title }} · {{ site_title }}</title>
+<title>{{ title }} — {{ site_title }}</title>
 <meta name="description" content="{{ description }}">
 <link rel="stylesheet" href="{{ theme_css }}">
 </head>
@@ -15,12 +15,12 @@
     </div>
   </nav>
 
-  <main class="mq-main">
+  <main class="mq-main"{{ page_main_style }}>
     {{ content }}
   </main>
 
   <footer class="mq-footer">
-    Published with <a href="https://github.com/marque">Marque</a>
+    Built with <a href="https://github.com/marque">Marque</a>
   </footer>
 
   <script>

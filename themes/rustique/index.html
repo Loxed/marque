@@ -3,25 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ title }} — {{ site_title }}</title>
+<title>{{ title }} · {{ site_title }}</title>
 <meta name="description" content="{{ description }}">
 <link rel="stylesheet" href="{{ theme_css }}">
 </head>
 <body>
-  <nav class="mq-nav">
-    <a class="mq-nav-brand" href="/">{{ site_title }}</a>
-    <div class="mq-nav-links">
-      {{ nav }}
+  <div class="mq-shell">
+    <aside class="mq-nav">
+      <a class="mq-nav-brand" href="/">{{ site_title }}</a>
+      <nav class="mq-nav-links">
+        {{ nav }}
+      </nav>
+    </aside>
+
+    <div class="mq-content">
+      <main class="mq-main"{{ page_main_style }}>
+        {{ content }}
+      </main>
+
+      <footer class="mq-footer">
+        Published with <a href="https://github.com/marque">Marque</a>
+      </footer>
     </div>
-  </nav>
-
-  <main class="mq-main">
-    {{ content }}
-  </main>
-
-  <footer class="mq-footer">
-    Built with <a href="https://github.com/marque">Marque</a>
-  </footer>
+  </div>
 
   <script>
   function mqTab(id, idx) {

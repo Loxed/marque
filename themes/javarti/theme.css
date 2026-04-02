@@ -1,0 +1,378 @@
+/* javarti — java theme
+   🧀 cheese: javarti (java + havarti)
+   havarti: the reliable danish classic, found in every office fridge,
+   mild but substantial, never flashy, always there when you need it.
+   like java — everywhere, dependable, a little verbose, but it works.
+   inspired by: java.com / oracle
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;1,300&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:             #f4f4f4;
+  --bg-alt:         #ebebeb;
+  --surface:        #ffffff;
+  --surface-strong: #f0f0f0;
+  --ink:            #1a1a1a;
+  --muted:          #5a5a5a;
+  --accent:         #e76f26;   /* java orange */
+  --accent-2:       #c0392b;   /* java red */
+  --accent-dark:    #9b3010;   /* deep burn */
+  --line:           rgba(0, 0, 0, 0.11);
+  --radius:         4px;
+  --max-w:          1000px;
+
+  --font-sans:  'Roboto', system-ui, sans-serif;
+  --font-serif: 'Roboto Slab', Georgia, serif;
+  --font-mono:  'Roboto Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+img { max-width: 100%; display: block; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Nav ── */
+.mq-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #1a1a1a;
+  color: #e8e8e8;
+  border-bottom: 3px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 60px;
+}
+
+.mq-nav-brand {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: none;
+  letter-spacing: 0;
+}
+
+.mq-nav-links {
+  display: flex;
+  gap: 0;
+}
+
+.mq-nav-links a {
+  padding: 0 1rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #a8a8a8;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.78rem;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.mq-nav-links a:hover { color: #ffffff; }
+.mq-nav-links a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── Main ── */
+.mq-main {
+  flex: 1;
+  width: min(var(--page-width, 100%), 100%);
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+/* ── Footer ── */
+.mq-footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.82rem;
+  color: #888;
+  background: #1a1a1a;
+  color: #666;
+  border-top: 2px solid #2a2a2a;
+}
+.mq-footer a { color: var(--accent); }
+
+/* ── Typography ── */
+.mq-main h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  margin-bottom: 1rem;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.mq-main h2 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.mq-main h3 {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+.mq-main p  { margin-bottom: 1rem; color: var(--muted); font-size: 0.96rem; }
+.mq-main a  { color: var(--accent); text-decoration: none; }
+.mq-main a:hover { text-decoration: underline; }
+.mq-main hr { border: none; border-top: 2px solid var(--line); margin: 2.5rem 0; }
+.mq-main ul, .mq-main ol { padding-left: 1.5rem; margin-bottom: 1rem; color: var(--muted); font-size: 0.96rem; }
+.mq-main li { margin-bottom: 0.3rem; }
+.mq-main code {
+  font-family: var(--font-mono);
+  font-size: 0.84em;
+  background: #e8e0d8;
+  color: #1a1a1a;
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid #d0c8c0;
+}
+.mq-main pre {
+  background: #1a1a1a;
+  color: #f0e8e0;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 1.25rem 1.4rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.mq-main pre code { background: none; padding: 0; color: inherit; font-size: inherit; border: none; }
+.mq-main blockquote {
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--muted);
+  font-style: italic;
+  background: rgba(231, 111, 38, 0.05);
+  padding: 0.75rem 1rem;
+}
+.mq-main strong { color: var(--ink); font-weight: 500; }
+
+/* ── Row / Grid ── */
+.mq-row {
+  display: grid;
+  gap: 1rem;
+  margin: 1.75rem 0;
+  align-items: stretch;
+}
+
+/* ── Card ── */
+.mq-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.mq-card.accent  { border-top: 4px solid var(--accent); }
+.mq-card.accent2 { border-top: 4px solid var(--accent-2); }
+.mq-card.ghost   { background: transparent; border-style: dashed; }
+.mq-card.dark    { background: #1a1a1a; border-color: #2a2a2a; box-shadow: none; }
+.mq-card.dark h2,
+.mq-card.dark h3 { color: #f0e8e0; }
+.mq-card.dark p  { color: #888; }
+.mq-card.dark .mq-btn { border-color: #3a3a3a; color: #c8c0b8; }
+
+/* ── Button ── */
+a.mq-btn {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1.2rem;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.78rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+a.mq-btn:hover { background: var(--bg-alt); border-color: #aaa; }
+a.mq-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+a.mq-btn.primary:hover { background: #d05e1a; border-color: #d05e1a; }
+a.mq-btn.blue { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+a.mq-btn.blue:hover { background: #a0302a; border-color: #a0302a; }
+
+/* ── Callout ── */
+.mq-callout {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius);
+  margin: 1.25rem 0;
+  border-left: 4px solid;
+}
+.mq-callout p { margin-bottom: 0; font-size: 0.94rem; }
+.mq-callout.info   { background: #fff3eb; border-color: var(--accent); }
+.mq-callout.info p { color: #6a3010; }
+.mq-callout.warn   { background: #fff8e0; border-color: #c8a000; }
+.mq-callout.warn p { color: #5a4200; }
+.mq-callout.danger { background: #fde8e8; border-color: var(--accent-2); }
+.mq-callout.danger p { color: #5a0a0a; }
+.mq-callout.ok     { background: #e8f5ec; border-color: #27ae60; }
+.mq-callout.ok p   { color: #0e4020; }
+
+/* ── Divider ── */
+.mq-divider {
+  width: 48px;
+  height: 3px;
+  background: var(--accent);
+  margin: 0.75rem 0 1.1rem;
+  border-radius: 0;
+}
+
+/* ── Stat ── */
+.mq-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  border-top: 4px solid var(--accent);
+}
+.mq-stat-value {
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--accent-dark);
+}
+.mq-stat-label {
+  font-size: 0.74rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+/* ── Tabs ── */
+.mq-tabs { margin: 1.5rem 0; }
+.mq-tab-bar {
+  display: flex;
+  border-bottom: 2px solid var(--line);
+}
+.mq-tab-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  transition: color 0.15s, border-color 0.15s;
+}
+.mq-tab-btn:hover { color: var(--ink); }
+.mq-tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.mq-tab-content { display: none; padding: 1.25rem 0; }
+.mq-tab-content.active { display: block; }
+
+/* ── Steps ── */
+.mq-steps { margin: 1.5rem 0; counter-reset: mq-steps; }
+.mq-step {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: start;
+}
+.mq-step-num {
+  counter-increment: mq-steps;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.mq-step-num::before { content: counter(mq-steps); }
+
+/* ── Hero ── */
+.mq-hero {
+  padding: 3.5rem 2.5rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d1a10 50%, #1a1a1a 100%);
+  border-radius: 0;
+  color: #fff;
+  border-left: 6px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+.mq-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 200px;
+  background: linear-gradient(90deg, transparent, rgba(231,111,38,0.08));
+}
+.mq-hero h1, .mq-hero h2 { color: #fff; }
+.mq-hero h3 { color: var(--accent); }
+.mq-hero p  { color: #a0a0a0; }
+.mq-hero.center { text-align: center; border-left: none; border-top: 6px solid var(--accent); }
+
+/* ── Badge ── */
+.mq-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: #e8e0d8;
+  color: #4a4040;
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+  border: 1px solid #d0c8c0;
+}
+.mq-badge.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+.mq-badge.blue   { background: var(--accent-2); color: #fff; border-color: var(--accent-2); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .mq-row { grid-template-columns: 1fr !important; }
+  .mq-nav { padding: 0 1rem; height: 56px; }
+  .mq-main { width: 100% !important; padding: 2rem 1rem; }
+}

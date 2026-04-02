@@ -56,6 +56,7 @@ function scaffold(siteDir) {
   fs.writeFileSync(path.join(siteDir, 'marque.toml'), `title = "My Marque Site"
 description = "Built with Marque"
 theme = "default"
+width = "50"
 `);
 
   fs.writeFileSync(path.join(siteDir, 'pages', 'index.mq'),
@@ -93,7 +94,7 @@ This is your Marque site. Edit \`pages/index.mq\` to get started.
 title: Syntax Reference
 nav: Docs
 order: 2
-theme: editorial
+theme: rustique
 ---
 
 # Syntax Reference
@@ -121,7 +122,7 @@ Each section uses the same pattern:
     title: Syntax Reference
     nav: Docs
     order: 2
-    theme: editorial
+    theme: rustique
     description: Full directive reference
     ---
     \`\`\`
@@ -148,7 +149,7 @@ Each section uses the same pattern:
     title: Press Kit
     nav: Press
     order: 5
-    theme: editorial
+    theme: rustique
     ---
     \`\`\`
   @end card theme-override-code
