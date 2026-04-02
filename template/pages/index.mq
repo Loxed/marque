@@ -15,12 +15,12 @@ This is your Marque site. Edit `pages/index.mq` to get started.
     [Syntax reference →](/docs.html)
   @end card write-card
 
-  @card .accent2 build-card
+  @card build-card
     ## Build
     Run `marque build` to compile your site to `dist/`.
   @end card build-card
 
-  @card .accent deploy-card
+  @card deploy-card
     ## Deploy
     Upload `dist/` to any static host — Netlify, GitHub Pages, a VPS.
   @end card deploy-card

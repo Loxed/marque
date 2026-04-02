@@ -2,11 +2,11 @@
 title: Syntax Reference
 nav: Docs
 order: 2
+theme: rustique
 ---
 
 # Syntax Reference
 
-[Read the docs →](/docs.html)
 A complete guide to the .mq layout directives.
 
 @callout .info
