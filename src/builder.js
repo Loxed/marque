@@ -96,7 +96,7 @@ function build(siteDir, outDir, options = {}) {
       document_title: documentTitle,
       title,
       content,
-      nav: renderNav(nav, outName),
+      nav: renderNav(nav, outName, pageLayoutName),
       page_nav: renderPageNav(pageSequence, outName),
       site_title: siteTitle,
       description: fm.description || config.description || '',
@@ -783,7 +783,11 @@ function buildNavFromSummary(pageEntries, summary) {
   return nav;
 }
 
-function renderNav(nav, current) {
+function renderNav(nav, current, layoutName = 'topnav') {
+  if (normalizeLayoutName(layoutName) === 'sidebar') {
+    return renderSidebarNav(nav, current);
+  }
+
   const hasStructuredSummary = nav.some(item => (
     item.type === 'divider'
     || item.type === 'heading'
@@ -791,7 +795,7 @@ function renderNav(nav, current) {
   ));
 
   if (hasStructuredSummary) {
-    return renderStructuredSummaryNav(nav, current);
+    return renderStructuredSummaryNav(nav, current, { showHeadings: false });
   }
 
   const groups = buildNavGroups(nav);
@@ -836,7 +840,105 @@ function renderNav(nav, current) {
   }).join('\n');
 }
 
-function renderStructuredSummaryNav(nav, current) {
+function renderSidebarNav(nav, current) {
+  const out = [];
+  let linkBuffer = [];
+  const topCounter = { value: 0 };
+
+  const flushLinks = () => {
+    if (!linkBuffer.length) return;
+    const trees = buildSummaryLinkTrees(linkBuffer);
+    out.push(renderSidebarLinkTrees(trees, current, topCounter));
+    linkBuffer = [];
+  };
+
+  for (const item of nav) {
+    if (item.type === 'link') {
+      linkBuffer.push(item);
+      continue;
+    }
+
+    flushLinks();
+
+    if (item.type === 'divider') {
+      out.push('<div class="mq-nav-divider" role="separator" aria-hidden="true"></div>');
+      continue;
+    }
+
+    if (item.type === 'heading') {
+      out.push(`<div class="mq-nav-heading">${escapeHtml(item.label)}</div>`);
+    }
+  }
+
+  flushLinks();
+  return out.join('\n');
+}
+
+function buildSummaryLinkTrees(links) {
+  const roots = [];
+  const stack = [];
+
+  for (const link of links) {
+    const prefix = hrefPrefix(link.href);
+    const node = { item: link, prefix, children: [] };
+
+    while (stack.length) {
+      const parent = stack[stack.length - 1];
+      const isChild = !!prefix && !!parent.prefix && prefix.startsWith(`${parent.prefix}/`);
+      if (isChild) break;
+      stack.pop();
+    }
+
+    if (stack.length) {
+      stack[stack.length - 1].children.push(node);
+    } else {
+      roots.push(node);
+    }
+
+    stack.push(node);
+  }
+
+  return roots;
+}
+
+function renderSidebarLinkTrees(nodes, current, topCounter, depth = 0, parentNumber = '') {
+  const parts = [];
+  const maxDepth = 2;
+
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    const item = node.item;
+    const isTop = depth === 0;
+    const number = isTop ? `${++topCounter.value}` : `${parentNumber}.${i + 1}`;
+    const isActive = item.href === current;
+    const activeClass = isActive ? ' active' : '';
+    const numberText = isTop ? `${number}.` : number;
+    const numSpan = `<span class="mq-nav-num">${escapeHtml(numberText)}</span>`;
+
+    const hasChildren = Array.isArray(node.children) && node.children.length > 0 && depth < maxDepth;
+    if (!hasChildren) {
+      parts.push(`<a class="mq-nav-link mq-nav-level-${depth} mq-nav-numbered-link${activeClass}" style="--mq-nav-level:${depth};" href="/${item.href}">${numSpan}${escapeHtml(item.label)}</a>`);
+      continue;
+    }
+
+    const childHtml = renderSidebarLinkTrees(node.children, current, topCounter, depth + 1, number);
+    const childActive = node.children.some(child => isSidebarNodeActive(child, current));
+    const groupActive = (isActive || childActive) ? ' active' : '';
+    parts.push(`<div class="mq-nav-group mq-nav-summary-group${groupActive}"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link${activeClass}" href="/${item.href}">${numSpan}${escapeHtml(item.label)}</a><div class="mq-nav-submenu">${childHtml}</div></div>`);
+  }
+
+  return parts.join('');
+}
+
+function isSidebarNodeActive(node, current) {
+  if (!node || !node.item) return false;
+  if (node.item.href === current) return true;
+  if (!Array.isArray(node.children) || !node.children.length) return false;
+  return node.children.some(child => isSidebarNodeActive(child, current));
+}
+
+function renderStructuredSummaryNav(nav, current, options = {}) {
+  const showHeadings = options.showHeadings !== false;
   const out = [];
   let linkBuffer = [];
 
@@ -860,7 +962,9 @@ function renderStructuredSummaryNav(nav, current) {
     }
 
     if (item.type === 'heading') {
-      out.push(`<div class="mq-nav-heading">${escapeHtml(item.label)}</div>`);
+      if (showHeadings) {
+        out.push(`<div class="mq-nav-heading">${escapeHtml(item.label)}</div>`);
+      }
     }
   }
 
@@ -894,13 +998,43 @@ function renderSummaryLinkSegment(links, current) {
     const hasActive = root.href === current || children.some(link => link.href === current);
     const groupClass = hasActive ? 'mq-nav-group mq-nav-summary-group active' : 'mq-nav-group mq-nav-summary-group';
     const triggerClass = hasActive ? 'mq-nav-group-trigger mq-nav-group-trigger-link active' : 'mq-nav-group-trigger mq-nav-group-trigger-link';
-    const submenu = children.map(link => renderNavLink(link, current)).join('');
+    const submenu = renderTopnavDropdownLinks(children, current, rootPrefix);
     result.push(`<div class="${groupClass}"><a class="${triggerClass}" href="/${root.href}">${escapeHtml(root.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`);
 
     i = j - 1;
   }
 
   return result.join('\n');
+}
+
+function renderTopnavDropdownLinks(links, current, rootPrefix) {
+  const counters = [0, 0, 0];
+  const maxDepth = 2;
+  const rootSegCount = String(rootPrefix || '').split('/').filter(Boolean).length;
+
+  return links.map(link => {
+    const prefix = hrefPrefix(link.href);
+    const segCount = String(prefix || '').split('/').filter(Boolean).length;
+    let depth = segCount - rootSegCount - 1;
+    if (!Number.isFinite(depth)) depth = 0;
+    depth = Math.max(0, Math.min(maxDepth, depth));
+
+    if (depth > 0 && counters[0] === 0) counters[0] = 1;
+    counters[depth] += 1;
+    for (let i = depth + 1; i <= maxDepth; i++) counters[i] = 0;
+
+    const parts = [];
+    for (let i = 0; i <= depth; i++) {
+      if (counters[i] <= 0) break;
+      parts.push(String(counters[i]));
+    }
+    const number = parts.join('.');
+    const numberText = depth === 0 ? `${number}.` : number;
+
+    const classes = [`mq-nav-link`, `mq-nav-level-${depth}`, `mq-nav-numbered-link`];
+    if (link.href === current) classes.push('active');
+    return `<a class="${classes.join(' ')}" style="--mq-nav-level:${depth};" href="/${link.href}"><span class="mq-nav-num">${escapeHtml(numberText)}</span>${escapeHtml(link.label)}</a>`;
+  }).join('');
 }
 
 function hrefPrefix(href) {

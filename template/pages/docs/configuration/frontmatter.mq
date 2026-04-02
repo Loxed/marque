@@ -3,6 +3,9 @@ title: Frontmatter
 nav: frontmatter
 ---
 
+# Frontmatter
+@divider
+
 Frontmatter controls page-level metadata and overrides.
 
 @callout .info

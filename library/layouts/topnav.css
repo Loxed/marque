@@ -123,6 +123,14 @@ body {
   padding-left: calc(0.65rem + (var(--mq-nav-level, 0) * 0.75rem));
 }
 
+.mq-nav-submenu .mq-nav-numbered-link .mq-nav-num {
+  display: inline-block;
+  min-width: 2.1rem;
+  margin-right: 0.32rem;
+  opacity: 0.82;
+  font-variant-numeric: tabular-nums;
+}
+
 .mq-main {
   flex: 1;
   width: min(var(--page-width, 100%), 100%);

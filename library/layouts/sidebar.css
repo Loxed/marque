@@ -103,6 +103,24 @@ body {
   opacity: 0.85;
 }
 
+.mq-nav-numbered-link .mq-nav-num {
+  display: inline-block;
+  min-width: 1.7rem;
+  margin-right: 0.18rem;
+  opacity: 0.88;
+  font-variant-numeric: tabular-nums;
+}
+
+.mq-nav-submenu a.mq-nav-numbered-link::before,
+.mq-nav-submenu .mq-nav-group-trigger.mq-nav-numbered-link::before {
+  content: none;
+}
+
+.mq-nav-submenu a.mq-nav-numbered-link,
+.mq-nav-submenu .mq-nav-group-trigger.mq-nav-numbered-link {
+  padding-left: calc(0.7rem + (var(--mq-nav-level, 0) * 0.9rem));
+}
+
 .mq-main,
 .mq-footer {
   margin-left: 280px;
