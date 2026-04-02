@@ -1,0 +1,60 @@
+/* rustique theme (native MQS) */
+
+@import url("https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700;800&family=Barlow:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@mqs-palette {
+	primary: #d34516;
+	secondary: #7d2711;
+	ternary: #50784d;
+
+	background: #f2eee8;
+	surface: #fffdfa;
+	surface-alt: #f6f0e8;
+	text: #1f1b18;
+	muted: #5f5449;
+	border: rgba(31, 27, 24, 0.18);
+
+	radius: 4px;
+	max-width: 1000px;
+
+	font-sans: 'Barlow', system-ui, sans-serif;
+	font-serif: 'Alegreya', Georgia, serif;
+	font-mono: 'JetBrains Mono', monospace;
+}
+
+@mqs-essentials;
+
+body {
+	font-size: 17px;
+	line-height: 1.72;
+	background:
+		linear-gradient(180deg, rgba(255,255,255,0.22), transparent 260px),
+		repeating-linear-gradient(-45deg, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 8px, transparent 8px, transparent 16px),
+		var(--mq-background);
+}
+
+.mq-nav { background: #1b1917; color: #f8f4ef; border-color: #141210; }
+.mq-nav-brand { font-size: 1.2rem; font-weight: 700; color: #fff9f2; }
+.mq-nav-links a, .mq-nav-group > .mq-nav-group-trigger { border-radius: 6px; font-size: 0.88rem; font-weight: 600; color: #d9cfc2; }
+.mq-nav-links a:hover, .mq-nav-group > .mq-nav-group-trigger:hover { color: #fff8ef; border-color: rgba(255, 248, 239, 0.25); }
+.mq-nav-links a.active, .mq-nav-group > .mq-nav-group-trigger.active { color: #fff8ef; background: rgba(211, 69, 22, 0.24); border-color: rgba(211, 69, 22, 0.6); }
+.mq-nav-submenu { background: #1b1917; border: 1px solid rgba(255, 248, 239, 0.18); }
+
+.mq-main h1 { font-size: clamp(2.2rem, 6vw, 3.9rem); line-height: 1.04; letter-spacing: -0.01em; }
+.mq-main h2 { font-size: 1.66rem; line-height: 1.2; letter-spacing: -0.012em; }
+.mq-main h3 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.mq-card { background: linear-gradient(180deg, var(--mq-surface), var(--mq-surface-alt)); border-radius: 10px; box-shadow: 0 10px 20px rgba(45, 34, 25, 0.05); }
+.mq-card.primary, .mq-card.accent { border-top: 1px solid var(--mq-border); border-left: 4px solid var(--mq-primary); background: linear-gradient(180deg, #fff5ef, #fdf0e7); }
+.mq-card.secondary, .mq-card.accent2 { border-top: 1px solid var(--mq-border); border-left: 4px solid #45413d; }
+
+a.mq-btn { border: 1px solid #8d7c6a; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+a.mq-btn.secondary, a.mq-btn.blue { background: #34302c; border-color: #34302c; color: #f7eee4; }
+
+.mq-divider { width: 56px; background: linear-gradient(90deg, #2c2825, var(--mq-primary)); }
+
+.mq-hero { background: radial-gradient(120% 100% at 0 0, #fff7ef 0, #f8ebde 40%, #efddcb 100%); border: 1px solid #dcc8b4; border-radius: 14px; }
+
+.mq-badge { background: #e7ddd0; color: #4a3f34; }
+.mq-badge.primary, .mq-badge.accent { background: #ffd9c9; color: #8d2e15; }
+

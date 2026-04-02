@@ -1,0 +1,38 @@
+/* javarti theme (native MQS) */
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;1,300&family=Roboto+Mono:wght@400;500&display=swap");
+
+@mqs-palette {
+	primary: #e76f26;
+	secondary: #c0392b;
+	ternary: #2f7b42;
+
+	background: #f4f4f4;
+	surface: #ffffff;
+	surface-alt: #f0f0f0;
+	text: #1a1a1a;
+	muted: #5a5a5a;
+	border: rgba(0, 0, 0, 0.11);
+
+	radius: 4px;
+	max-width: 1000px;
+
+	font-sans: 'Roboto', system-ui, sans-serif;
+	font-serif: 'Roboto Slab', Georgia, serif;
+	font-mono: 'Roboto Mono', monospace;
+}
+
+@mqs-essentials;
+
+.mq-nav { background: #1a1a1a; color: #e8e8e8; border-bottom: 3px solid var(--mq-primary); }
+.mq-nav-links a, .mq-nav-group > .mq-nav-group-trigger { text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.78rem; font-weight: 500; color: #a8a8a8; }
+.mq-nav-links a.active, .mq-nav-group > .mq-nav-group-trigger.active { color: var(--mq-primary); border-color: color-mix(in srgb, var(--mq-primary) 70%, transparent); background: color-mix(in srgb, var(--mq-primary) 15%, transparent); }
+
+.mq-main h3 { text-transform: uppercase; letter-spacing: 0.1em; color: var(--mq-primary); font-size: 0.85rem; }
+.mq-main pre { border-left: 4px solid var(--mq-primary); border-radius: 0 var(--mq-radius) var(--mq-radius) 0; }
+
+.mq-card.primary, .mq-card.accent { border-top: 4px solid var(--mq-primary); }
+.mq-card.secondary, .mq-card.accent2 { border-top: 4px solid var(--mq-secondary); }
+
+a.mq-btn { border: 2px solid var(--mq-border); border-radius: var(--mq-radius); text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.78rem; }
+

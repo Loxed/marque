@@ -11,7 +11,7 @@ marque, a .mq site compiler
 
   marque build [site-dir]    build site to dist/
   marque serve [site-dir]    dev server with live reload
-  marque new   [site-dir]    scaffold a new site
+  marque new   [site-dir] [layout:<name>] [theme:<name>]    scaffold a new site
   marque help                show this message
 `;
 
@@ -38,8 +38,9 @@ switch (cmd) {
   }
 
   case 'new': {
-    const siteDir = path.resolve(args[0] || 'my-site');
-    scaffold(siteDir);
+    const parsed = parseNewArgs(args);
+    const siteDir = path.resolve(parsed.siteDir || 'my-site');
+    scaffold(siteDir, { layout: parsed.layout, theme: parsed.theme });
     break;
   }
 
@@ -58,7 +59,7 @@ function printBuildError(err) {
 
 // ── Scaffolder ─────────────────────────────────────────────────────────────
 
-function scaffold(siteDir) {
+function scaffold(siteDir, options = {}) {
   if (fs.existsSync(siteDir)) {
     console.error(`Directory already exists: ${siteDir}`);
     process.exit(1);
@@ -66,20 +67,22 @@ function scaffold(siteDir) {
 
   const packageRoot = path.resolve(__dirname, '..');
   const starterTemplateDir = path.join(packageRoot, 'template');
-  const builtinLayoutsDir = path.join(packageRoot, 'layouts');
-  const builtinThemesDir = path.join(packageRoot, 'themes');
+  const libraryLayoutsDir = path.join(packageRoot, 'library', 'layouts');
+  const libraryThemesDir = path.join(packageRoot, 'library', 'themes');
+
+  const selectedLayout = resolveScaffoldLayout(options.layout, libraryLayoutsDir);
+  const selectedTheme = resolveScaffoldTheme(options.theme, libraryThemesDir);
 
   fs.mkdirSync(siteDir, { recursive: true });
 
-  // Copy canonical starter content (excluding generated dist output).
-  copyDir(starterTemplateDir, siteDir, new Set(['dist']));
+  // Copy starter content, then source built-ins from common library.
+  copyDir(starterTemplateDir, siteDir, new Set(['dist', 'themes', 'layouts']));
+  copyDir(libraryLayoutsDir, path.join(siteDir, 'layouts'));
+  copyDir(libraryThemesDir, path.join(siteDir, 'themes'));
 
   // Guarantee essential starter files even if template/ is incomplete.
-  ensureStarterScaffold(siteDir);
-
-  // Copy layouts and themes into project for direct customization.
-  copyDir(builtinLayoutsDir, path.join(siteDir, 'layouts'));
-  copyDir(builtinThemesDir, path.join(siteDir, 'themes'));
+  ensureStarterScaffold(siteDir, { layout: selectedLayout, theme: selectedTheme });
+  applyScaffoldDefaults(siteDir, { layout: selectedLayout, theme: selectedTheme });
 
   console.log(`\nmarque: scaffolded → ${siteDir}/`);
   console.log(`\n  cd ${siteDir}`);
@@ -104,12 +107,14 @@ function copyDir(src, dest, excludeNames = new Set()) {
   }
 }
 
-function ensureStarterScaffold(siteDir) {
+function ensureStarterScaffold(siteDir, defaults = {}) {
   const pagesDir = path.join(siteDir, 'pages');
   const staticDir = path.join(siteDir, 'static');
   const configFile = path.join(siteDir, 'marque.toml');
   const indexFile = path.join(pagesDir, 'index.mq');
   const docsFile = path.join(pagesDir, 'docs.mq');
+  const defaultLayout = defaults.layout || 'topnav';
+  const defaultTheme = defaults.theme || 'default';
 
   fs.mkdirSync(pagesDir, { recursive: true });
   fs.mkdirSync(staticDir, { recursive: true });
@@ -117,8 +122,8 @@ function ensureStarterScaffold(siteDir) {
   if (!fs.existsSync(configFile)) {
     fs.writeFileSync(configFile, `title = Marque
 description = Built with Marque
-layout = topnav
-theme = default
+layout = ${defaultLayout}
+theme = ${defaultTheme}
 width = 82
 
 # Marque config
@@ -129,7 +134,7 @@ width = 82
 #   aliases default/xmb/crossmediabar -> topnav
 #
 # theme options (built-in):
-#   default, rustique, pycorino, gouda, javarti
+#   default, rustique, pycorino, gouda, javarti, test
 `);
   }
 
@@ -197,4 +202,102 @@ Quick reference for writing pages.
 \`order\` controls nav ordering.
 `);
   }
+}
+
+function parseNewArgs(rawArgs) {
+  const parsed = { siteDir: null, layout: null, theme: null };
+  for (const raw of rawArgs || []) {
+    const token = String(raw || '').trim();
+    if (!token) continue;
+
+    const layoutMatch = token.match(/^layout:(.+)$/i);
+    if (layoutMatch) {
+      parsed.layout = layoutMatch[1].trim().toLowerCase();
+      continue;
+    }
+
+    const themeMatch = token.match(/^theme:(.+)$/i);
+    if (themeMatch) {
+      parsed.theme = themeMatch[1].trim();
+      continue;
+    }
+
+    if (!parsed.siteDir) {
+      parsed.siteDir = token;
+      continue;
+    }
+
+    console.error(`Unknown new argument: ${token}`);
+    process.exit(1);
+  }
+
+  if (!parsed.siteDir) parsed.siteDir = 'my-site';
+  return parsed;
+}
+
+function resolveScaffoldLayout(layoutName, libraryLayoutsDir) {
+  const requested = normalizeLayoutName(layoutName || 'topnav');
+  const cssPath = path.join(libraryLayoutsDir, `${requested}.css`);
+  const mqsPath = path.join(libraryLayoutsDir, `${requested}.mqs`);
+  if (fs.existsSync(cssPath) || fs.existsSync(mqsPath)) return requested;
+
+  const available = listNames(libraryLayoutsDir, ['.css', '.mqs']);
+  console.error(`Unknown layout: ${requested}`);
+  console.error(`Available layouts: ${available.join(', ') || '(none found)'}`);
+  process.exit(1);
+}
+
+function resolveScaffoldTheme(themeName, libraryThemesDir) {
+  const requested = String(themeName || 'default').trim();
+  const dirPath = path.join(libraryThemesDir, requested);
+  if (!fs.existsSync(dirPath) || !fs.statSync(dirPath).isDirectory()) {
+    const available = fs.existsSync(libraryThemesDir)
+      ? fs.readdirSync(libraryThemesDir, { withFileTypes: true })
+          .filter(d => d.isDirectory())
+          .map(d => d.name)
+          .sort((a, b) => a.localeCompare(b))
+      : [];
+    console.error(`Unknown theme: ${requested}`);
+    console.error(`Available themes: ${available.join(', ') || '(none found)'}`);
+    process.exit(1);
+  }
+  return requested;
+}
+
+function applyScaffoldDefaults(siteDir, defaults = {}) {
+  const configFile = path.join(siteDir, 'marque.toml');
+  if (!fs.existsSync(configFile)) return;
+
+  const layout = normalizeLayoutName(defaults.layout || 'topnav');
+  const theme = String(defaults.theme || 'default').trim();
+
+  let content = fs.readFileSync(configFile, 'utf8');
+  content = replaceOrAppendTomlKey(content, 'layout', layout);
+  content = replaceOrAppendTomlKey(content, 'theme', theme);
+  fs.writeFileSync(configFile, content);
+}
+
+function replaceOrAppendTomlKey(content, key, value) {
+  const line = `${key} = ${value}`;
+  const re = new RegExp(`^\\s*${key}\\s*=.*$`, 'mi');
+  if (re.test(content)) return content.replace(re, line);
+  return `${content.trimEnd()}\n${line}\n`;
+}
+
+function normalizeLayoutName(layout) {
+  const name = String(layout || 'topnav').trim().toLowerCase();
+  if (name === 'default' || name === 'crossmediabar' || name === 'xmb') return 'topnav';
+  return name || 'topnav';
+}
+
+function listNames(dir, extensions) {
+  if (!fs.existsSync(dir)) return [];
+  const names = new Set();
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (!entry.isFile()) continue;
+    const ext = path.extname(entry.name).toLowerCase();
+    if (!extensions.includes(ext)) continue;
+    names.add(path.basename(entry.name, ext));
+  }
+  return Array.from(names).sort((a, b) => a.localeCompare(b));
 }

@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { parse, extractFrontmatter } = require('./parser');
 const { render } = require('./renderer');
+const { compileMqsFile } = require('./mqs');
 
 function build(siteDir, outDir, options = {}) {
   const cleanDist = options.cleanDist !== false;
@@ -152,16 +153,32 @@ function loadConfig(configPath) {
 }
 
 function resolveTheme(theme, siteDir) {
+  const libraryThemesDir = path.join(__dirname, '..', 'library', 'themes');
+  const builtinTemplateThemesDir = path.join(__dirname, '..', 'template', 'themes');
+  const legacyBuiltinThemesDir = path.join(__dirname, '..', 'themes');
+
   if (!theme) {
-    // default theme bundled with marque
-    return path.join(__dirname, '..', 'themes', 'default');
+    // default theme bundled with marque (canonical source: library/themes)
+    const libraryDefault = path.join(libraryThemesDir, 'default');
+    if (fs.existsSync(libraryDefault)) return libraryDefault;
+
+    const builtinDefault = path.join(builtinTemplateThemesDir, 'default');
+    if (fs.existsSync(builtinDefault)) return builtinDefault;
+
+    return path.join(legacyBuiltinThemesDir, 'default');
   }
   // custom theme path relative to site
   const custom = path.join(siteDir, 'themes', theme);
   if (fs.existsSync(custom)) return custom;
-  // fallback to built-in
-  const builtin = path.join(__dirname, '..', 'themes', theme);
+  // fallback to built-in (library first, then template, then legacy)
+  const builtinLibrary = path.join(libraryThemesDir, theme);
+  if (fs.existsSync(builtinLibrary)) return builtinLibrary;
+
+  const builtin = path.join(builtinTemplateThemesDir, theme);
   if (fs.existsSync(builtin)) return builtin;
+
+  const legacyBuiltin = path.join(legacyBuiltinThemesDir, theme);
+  if (fs.existsSync(legacyBuiltin)) return legacyBuiltin;
   throw new Error(`Theme "${theme}" not found`);
 }
 
@@ -171,7 +188,7 @@ function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false)
 
   const themeDir = resolveTheme(key, siteDir);
   const baseTemplate = loadPageTemplate(themeDir, siteDir);
-  const css = fs.readFileSync(path.join(themeDir, 'theme.css'), 'utf8');
+  const css = loadThemeStyle(themeDir);
 
   const cssFile = `theme-${safeName(key)}.css`;
   writeFileWithRetry(path.join(outDir, cssFile), css, softFsErrors);
@@ -185,11 +202,25 @@ function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false)
   return assets;
 }
 
+function loadThemeStyle(themeDir) {
+  const mqsPath = path.join(themeDir, 'theme.mqs');
+  if (fs.existsSync(mqsPath)) {
+    return compileMqsFile(mqsPath);
+  }
+
+  const cssPath = path.join(themeDir, 'theme.css');
+  if (fs.existsSync(cssPath)) {
+    return fs.readFileSync(cssPath, 'utf8');
+  }
+
+  throw new Error(`Theme style not found in ${themeDir}. Expected theme.mqs or theme.css.`);
+}
+
 function getLayoutAssets(layoutName, siteDir, outDir, cache, softFsErrors = false) {
   const key = normalizeLayoutName(layoutName || 'topnav');
   if (cache.has(key)) return cache.get(key);
 
-  const css = fs.readFileSync(resolveLayoutCSSPath(key, siteDir), 'utf8');
+  const css = loadLayoutStyle(key, siteDir);
   const cssFile = `layout-${safeName(key)}.css`;
   writeFileWithRetry(path.join(outDir, cssFile), css, softFsErrors);
 
@@ -203,14 +234,43 @@ function getLayoutAssets(layoutName, siteDir, outDir, cache, softFsErrors = fals
 
 function resolveLayoutCSSPath(layout, siteDir) {
   const name = normalizeLayoutName(layout || 'topnav');
+  const libraryLayoutsDir = path.join(__dirname, '..', 'library', 'layouts');
+  const builtinTemplateLayoutsDir = path.join(__dirname, '..', 'template', 'layouts');
+  const legacyBuiltinLayoutsDir = path.join(__dirname, '..', 'layouts');
+
+  const customMqs = path.join(siteDir, 'layouts', `${name}.mqs`);
+  if (fs.existsSync(customMqs)) return customMqs;
 
   const custom = path.join(siteDir, 'layouts', `${name}.css`);
   if (fs.existsSync(custom)) return custom;
 
-  const builtin = path.join(__dirname, '..', 'layouts', `${name}.css`);
+  const builtinLibraryMqs = path.join(libraryLayoutsDir, `${name}.mqs`);
+  if (fs.existsSync(builtinLibraryMqs)) return builtinLibraryMqs;
+
+  const builtinLibrary = path.join(libraryLayoutsDir, `${name}.css`);
+  if (fs.existsSync(builtinLibrary)) return builtinLibrary;
+
+  const builtinMqs = path.join(builtinTemplateLayoutsDir, `${name}.mqs`);
+  if (fs.existsSync(builtinMqs)) return builtinMqs;
+
+  const builtin = path.join(builtinTemplateLayoutsDir, `${name}.css`);
   if (fs.existsSync(builtin)) return builtin;
 
+  const legacyBuiltinMqs = path.join(legacyBuiltinLayoutsDir, `${name}.mqs`);
+  if (fs.existsSync(legacyBuiltinMqs)) return legacyBuiltinMqs;
+
+  const legacyBuiltin = path.join(legacyBuiltinLayoutsDir, `${name}.css`);
+  if (fs.existsSync(legacyBuiltin)) return legacyBuiltin;
+
   throw new Error(`Layout "${name}" not found`);
+}
+
+function loadLayoutStyle(layout, siteDir) {
+  const stylePath = resolveLayoutCSSPath(layout, siteDir);
+  if (stylePath.toLowerCase().endsWith('.mqs')) {
+    return compileMqsFile(stylePath);
+  }
+  return fs.readFileSync(stylePath, 'utf8');
 }
 
 function normalizeLayoutName(layout) {
@@ -238,9 +298,20 @@ function loadPageTemplate(themeDir, siteDir) {
   }
 
   // Shared default template used when themes only provide CSS.
-  const sharedTemplate = path.join(__dirname, '..', 'themes', 'index.html');
+  const librarySharedTemplate = path.join(__dirname, '..', 'library', 'themes', 'index.html');
+  if (fs.existsSync(librarySharedTemplate)) {
+    return fs.readFileSync(librarySharedTemplate, 'utf8');
+  }
+
+  const sharedTemplate = path.join(__dirname, '..', 'template', 'themes', 'index.html');
   if (fs.existsSync(sharedTemplate)) {
     return fs.readFileSync(sharedTemplate, 'utf8');
+  }
+
+  // Backward compatibility for older package structure.
+  const legacySharedTemplate = path.join(__dirname, '..', 'themes', 'index.html');
+  if (fs.existsSync(legacySharedTemplate)) {
+    return fs.readFileSync(legacySharedTemplate, 'utf8');
   }
 
   throw new Error('No template found. Add themes/index.html or a theme-level index.html/base.html.');
@@ -433,6 +504,8 @@ function findValueColumn(lineText, value) {
 function listAvailableLayouts(siteDir) {
   const names = new Set();
   const dirs = [
+    path.join(__dirname, '..', 'library', 'layouts'),
+    path.join(__dirname, '..', 'template', 'layouts'),
     path.join(__dirname, '..', 'layouts'),
     path.join(siteDir, 'layouts'),
   ];
@@ -440,8 +513,8 @@ function listAvailableLayouts(siteDir) {
   for (const dir of dirs) {
     if (!fs.existsSync(dir)) continue;
     for (const file of fs.readdirSync(dir)) {
-      if (!file.endsWith('.css')) continue;
-      names.add(path.basename(file, '.css').toLowerCase());
+      if (!file.endsWith('.css') && !file.endsWith('.mqs')) continue;
+      names.add(path.basename(file, path.extname(file)).toLowerCase());
     }
   }
 

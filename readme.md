@@ -31,6 +31,12 @@ cd D:\Sites\my-site
 marque serve .
 ```
 
+Choose a starter layout/theme at scaffold time:
+
+```sh
+marque new D:\Sites\docs-site layout:sidebar theme:gouda
+```
+
 Open `http://localhost:3000`.
 
 When ready to publish:
@@ -44,7 +50,7 @@ Output goes to `dist/`.
 ## CLI
 
 ```text
-marque new   <dir>    scaffold a new site
+marque new   <dir> [layout:<name>] [theme:<name>]    scaffold a new site
 marque serve <dir>    dev server with live reload (default port 3000)
 marque build <dir>    compile site to dist/
 ```
@@ -56,10 +62,14 @@ marque build <dir>    compile site to dist/
 ```text
 my-site/
 ├── pages/         # .mq source pages
+├── layouts/       # local editable layouts copied at scaffold
+├── themes/        # local editable themes copied at scaffold
 ├── static/        # copied as-is to dist/
 ├── marque.toml    # site config
 └── dist/          # generated output
 ```
+
+Built-in starter layouts/themes are sourced from `library/` in the package, then copied into each new project.
 
 ## Configuration
 
@@ -160,10 +170,38 @@ Example:
 
 Themes live in `themes/<name>/` and require:
 
-- `theme.css` (required)
+- `theme.css` or `theme.mqs` (required)
 - `index.html` (optional)
 
-Layouts live in `layouts/<name>.css` and define structure only (nav placement, page framing, responsive layout).
+Layouts live in `layouts/<name>.css` or `layouts/<name>.mqs` and define structure only (nav placement, page framing, responsive layout).
+
+MQS is a CSS-compatible stylesheet format. Supported features:
+
+- `@mqs-import "./relative-file.css";` to inline local stylesheet files at build time.
+- `@mqs-palette { ... }` to define normalized design tokens.
+- `@mqs-essentials;` to auto-generate the core Marque theme CSS.
+
+Recommended MQS pattern (normalized colors):
+
+```css
+@mqs-palette {
+  primary: #c85a2a;
+  secondary: #2a5ac8;
+  ternary: #2ac852;
+  background: #f7f5f0;
+  surface: #ffffff;
+  surface-alt: #eeece7;
+  text: #1a1916;
+  muted: #6b6860;
+  border: rgba(0,0,0,0.09);
+  radius: 8px;
+  max-width: 860px;
+}
+
+@mqs-essentials;
+```
+
+The generated essentials include normalized style hooks (`.primary`, `.secondary`, `.ternary`) and compatibility aliases for existing classes (`.accent`, `.accent2`, `.blue`).
 
 Template resolution order:
 
@@ -172,8 +210,10 @@ Template resolution order:
 
 Layout resolution order:
 
-1. `site/layouts/<layout>.css`
-2. `marque-pkg/layouts/<layout>.css`
+1. `site/layouts/<layout>.mqs`
+2. `site/layouts/<layout>.css`
+3. `marque-pkg/layouts/<layout>.mqs`
+4. `marque-pkg/layouts/<layout>.css`
 
 Built-in themes in this repo include:
 
@@ -185,7 +225,7 @@ Built-in themes in this repo include:
 
 ```sh
 mkdir -p themes/my-theme
-cp /path/to/marque-pkg/themes/default/theme.css themes/my-theme/
+cp /path/to/marque-pkg/themes/default/theme.mqs themes/my-theme/
 ```
 
 Optional custom shell:

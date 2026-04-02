@@ -16,6 +16,12 @@ Welcome to the Marque documentation set. Start with quickstart, then move to con
   @end card
 
   @card
+    ## MQS Themes
+    Build themes with `@mqs-palette` + `@mqs-essentials`, then add manual overrides.
+    @[Open theme docs →](/docs/themes.html)
+  @end card
+
+  @card
     ## Configuration
     Learn `marque.toml`, frontmatter precedence, and page-level overrides.
     [Open configuration →](/config.html)

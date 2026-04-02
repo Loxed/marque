@@ -1,0 +1,31 @@
+/* marque test theme (MQS) */
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+@mqs-palette {
+  primary: #0f7b6c;
+  secondary: #1d4ed8;
+  ternary: #c2410c;
+
+  background: #f5f7fb;
+  surface: #ffffff;
+  surface-alt: #eaf0f7;
+  text: #111827;
+  muted: #4b5563;
+  border: rgba(17,24,39,0.12);
+
+  radius: 10px;
+  max-width: 920px;
+
+  font-sans: 'Space Grotesk', system-ui, sans-serif;
+  font-serif: Georgia, serif;
+  font-mono: 'IBM Plex Mono', monospace;
+}
+
+@mqs-essentials;
+
+/* Optional local tweaks */
+.mq-nav-brand {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

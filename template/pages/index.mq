@@ -71,8 +71,8 @@ Marque supports every feature from Markdown, including extra directives to make 
 	@end card
 
 	@card
-  @divider
 		## Explore examples
+  		@divider
 		Browse nested docs, layout overrides, and advanced features in action.
 		@[Open docs showcase →](/docs/layout-override.html){.secondary}
 	@end card

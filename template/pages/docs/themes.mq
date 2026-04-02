@@ -1,0 +1,134 @@
+---
+title: MQS Themes
+nav: themes
+order: 3
+---
+
+# MQS Themes
+@divider
+Build your theme with tokens, not giant CSS files.
+
+@callout .info
+Define your palette once, call `@mqs-essentials;`, then only override what you really want.
+@end callout
+
+## The core idea
+
+@row core
+  @card .accent
+    ## 1) URL / fonts
+    Keep your `@import url(...)` at the top if needed.
+  @end card
+
+  @card
+    ## 2) Define palette
+    Use `@mqs-palette` with normalized tokens: `primary`, `secondary`, `ternary`, `background`, etc.
+  @end card
+
+  @card
+    ## 3) Generate essentials
+    `@mqs-essentials;` expands to the base Marque theme automatically.
+  @end card
+
+  @card
+    ## 4) Override manually
+    Put custom CSS below essentials for fine tuning.
+  @end card
+@end row core
+
+## Minimal MQS theme
+
+```css
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap");
+
+@mqs-palette {
+  primary: #c85a2a;
+  secondary: #2a5ac8;
+  ternary: #2ac852;
+
+  background: #f7f5f0;
+  surface: #ffffff;
+  surface-alt: #eeece7;
+  text: #1a1916;
+  muted: #6b6860;
+  border: rgba(0,0,0,0.09);
+
+  radius: 8px;
+  max-width: 860px;
+
+  font-sans: 'DM Sans', system-ui, sans-serif;
+  font-serif: Georgia, serif;
+  font-mono: 'IBM Plex Mono', monospace;
+}
+
+@mqs-essentials;
+```
+
+## What essentials generates
+
+- Theme variables in `:root`
+- Typography and links
+- Nav and footer skin
+- Row, card, button, callout, stat
+- Tabs, steps, hero, badge
+- Responsive defaults
+
+@row classes
+  @card .secondary
+    ## Normalized style classes
+    - `.primary`
+    - `.secondary`
+    - `.ternary`
+  @end card
+
+  @card
+    ## Compatibility classes
+    Existing styles still work:
+    - `.accent` (primary)
+    - `.accent2` / `.blue` (secondary)
+  @end card
+@end row classes
+
+## Overrides layer
+
+Anything after `@mqs-essentials;` is your custom layer.
+
+```css
+@mqs-essentials;
+
+.mq-card.primary {
+  border-top-width: 4px;
+}
+
+.mq-main h1 {
+  letter-spacing: -0.04em;
+}
+```
+
+## Quick flow
+
+@steps flow
+  @step
+  ## Create theme file
+  Add `themes/my-theme/theme.mqs`.
+  @end step
+
+  @step
+  ## Paste minimal config
+  Start with palette + essentials.
+  @end step
+
+  @step
+  ## Activate theme
+  In `marque.toml`: `theme = "my-theme"`
+  @end step
+
+  @step
+  ## Run
+  Use `marque serve .` or `marque build .`
+  @end step
+@end steps
+
+@callout .ok
+If `theme.mqs` exists, Marque uses it first. Otherwise it falls back to `theme.css`.
+@end callout

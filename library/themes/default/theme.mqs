@@ -1,0 +1,26 @@
+/* marque — default mqs theme */
+/* configure palette tokens, let marque generate essentials */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,500;0,700;1,300&family=DM+Sans:wght@300;400;500&display=swap');
+
+@mqs-palette {
+  primary: #c85a2a;
+  secondary: #2a5ac8;
+  ternary: #2ac852;
+
+  background: #f7f5f0;
+  surface: #ffffff;
+  surface-alt: #eeece7;
+  text: #1a1916;
+  muted: #6b6860;
+  border: rgba(0,0,0,0.09);
+
+  radius: 8px;
+  max-width: 860px;
+
+  font-sans: 'DM Sans', system-ui, sans-serif;
+  font-serif: 'Fraunces', Georgia, serif;
+  font-mono: 'IBM Plex Mono', monospace;
+}
+
+@mqs-essentials;

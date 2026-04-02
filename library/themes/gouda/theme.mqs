@@ -1,0 +1,43 @@
+/* gouda theme (native MQS) */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+@mqs-palette {
+	primary: #00acd7;
+	secondary: #00758f;
+	ternary: #2f7b42;
+
+	background: #ffffff;
+	surface: #f8fafb;
+	surface-alt: #edf5f7;
+	text: #0d1117;
+	muted: #4a6375;
+	border: rgba(13, 17, 23, 0.10);
+
+	radius: 6px;
+	max-width: 980px;
+
+	font-sans: 'Inter', system-ui, sans-serif;
+	font-serif: Georgia, serif;
+	font-mono: 'IBM Plex Mono', monospace;
+}
+
+@mqs-essentials;
+
+.mq-nav { background: #1d1d1d; color: #e8f4f8; border-bottom: none; }
+.mq-nav-brand { font-family: var(--mq-font-sans); font-weight: 600; color: #00d8f5; }
+.mq-nav-links a, .mq-nav-group > .mq-nav-group-trigger { color: #a8c4cc; font-weight: 400; }
+.mq-nav-links a.active, .mq-nav-group > .mq-nav-group-trigger.active { color: #00d8f5; border-color: rgba(0, 216, 245, 0.45); background: rgba(0, 216, 245, 0.12); }
+
+.mq-main h1 { font-weight: 300; }
+.mq-main h3 { text-transform: uppercase; letter-spacing: 0.09em; color: var(--mq-secondary); }
+.mq-main a { color: var(--mq-secondary); border-bottom: 1px solid rgba(0,117,143,0.3); }
+
+.mq-card.ghost { border-style: dashed; border-color: #b0cdd4; }
+
+a.mq-btn { border-radius: 4px; letter-spacing: 0.01em; }
+a.mq-btn.secondary, a.mq-btn.blue { background: #0d1117; border-color: #0d1117; color: #5dc9e2; }
+a.mq-btn.secondary:hover, a.mq-btn.blue:hover { background: #1a2535; border-color: #1a2535; }
+
+.mq-divider { height: 2px; border-radius: 999px; }
+

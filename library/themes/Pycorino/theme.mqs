@@ -1,0 +1,43 @@
+/* pycorino theme (native MQS) */
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,500;0,700;1,300&family=Nunito+Sans:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap");
+
+@mqs-palette {
+	primary: #3776ab;
+	secondary: #c9a000;
+	ternary: #27ae60;
+
+	background: #f5f8fc;
+	surface: #ffffff;
+	surface-alt: #edf2f9;
+	text: #1a2535;
+	muted: #4e6383;
+	border: rgba(26, 37, 53, 0.13);
+
+	radius: 6px;
+	max-width: 1000px;
+
+	font-sans: 'Nunito Sans', system-ui, sans-serif;
+	font-serif: 'Nunito', Georgia, serif;
+	font-mono: 'Fira Code', monospace;
+}
+
+@mqs-essentials;
+
+.mq-nav { background: #2b5b8a; color: #e8f0fb; border-bottom: 3px solid #ffd43b; }
+.mq-nav-brand { font-size: 1.2rem; font-weight: 700; color: #ffffff; }
+.mq-nav-links a, .mq-nav-group > .mq-nav-group-trigger { font-weight: 600; color: #c5d8f0; }
+.mq-nav-links a.active, .mq-nav-group > .mq-nav-group-trigger.active { color: #ffd43b; border-color: rgba(255, 212, 59, 0.65); background: rgba(255, 212, 59, 0.14); }
+
+.mq-main a { color: var(--mq-primary); text-decoration: underline; text-decoration-thickness: 1px; }
+.mq-main pre { background: #1a2535; color: #d4e8ff; border: 1px solid #2d4060; }
+
+.mq-card { box-shadow: 0 2px 8px rgba(55, 118, 171, 0.06); border-radius: 9px; }
+.mq-card.primary, .mq-card.accent { border-top: 4px solid var(--mq-primary); }
+.mq-card.secondary, .mq-card.accent2 { border-top: 4px solid #ffd43b; }
+
+a.mq-btn.secondary, a.mq-btn.blue { background: #ffd43b; border-color: #e8c035; color: #1a2535; }
+a.mq-btn.secondary:hover, a.mq-btn.blue:hover { background: #f5c820; border-color: #f5c820; }
+
+.mq-divider { width: 44px; height: 4px; background: linear-gradient(90deg, var(--mq-primary), #ffd43b); border-radius: 999px; }
+
