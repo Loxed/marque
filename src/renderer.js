@@ -126,20 +126,18 @@ function renderMarkdown(src) {
     (_, label, __, cls) => `<span class="mq-badge${cls ? ' ' + cls : ''}">${label}</span>`
   );
 
-  // Button class shorthand: [text](url){.cls}
-  src = src.replace(/\[([^\]]+)\]\(([^)]+)\)\{\.([a-z0-9-]+)\}/g,
-    (_, text, url, cls) => `<a href="${url}" class="mq-btn ${cls}">${text}</a>`
+  // Explicit button syntax: @[text](url){.cls .other}
+  // Examples:
+  //   @[Read docs](/docs.html){}
+  //   @[Download](/archive.zip){.primary}
+  src = src.replace(/@\[([^\]]+)\]\(([^)]+)\)(?:\{([^}]*)\})?/g,
+    (_, text, url, clsRaw) => {
+      const extraClasses = normalizeButtonClasses(clsRaw);
+      return `<a href="${url}" class="mq-btn${extraClasses}">${text}</a>`;
+    }
   );
 
-  let html = marked.parse(src);
-
-  // Auto-detect links that look like buttons (contain → or start with action verbs)
-  html = html.replace(/<a href="([^"]+)">([^<]+)<\/a>/g, (match, url, text) => {
-    const isBtn = text.includes('→') || /^(read|view|start|browse|get|try|install|learn|download|open|go|see)\b/i.test(text.trim());
-    return isBtn ? `<a href="${url}" class="mq-btn">${text}</a>` : match;
-  });
-
-  return html;
+  return marked.parse(src);
 }
 
 function dedentMarkdown(src) {
@@ -220,6 +218,19 @@ function escapeAttr(value) {
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function normalizeButtonClasses(raw) {
+  const text = String(raw || '').trim();
+  if (!text) return '';
+
+  const classes = text
+    .split(/\s+/)
+    .map(token => token.replace(/^\./, '').trim())
+    .filter(token => /^[a-z0-9_-]+$/i.test(token));
+
+  if (!classes.length) return '';
+  return ` ${classes.join(' ')}`;
 }
 
 module.exports = { render };

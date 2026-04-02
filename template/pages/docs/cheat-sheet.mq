@@ -348,8 +348,8 @@ Unknown directives are rendered as generic containers: `@tag` -> `.mq-tag`.
 		```md
 		:badge[Stable]{.ok}
 
-		[Primary CTA](/start.html){.primary}
-		[Download](/download.zip){.download}
+		@[Primary CTA](/start.html){.primary}
+		@[Download](/download.zip){.download}
 
 		[Read docs →](/docs.html)
 		```
@@ -360,8 +360,8 @@ Unknown directives are rendered as generic containers: `@tag` -> `.mq-tag`.
 
 		:badge[Stable]{.ok}
 
-		[Primary CTA](/start.html){.primary}
-		[Download](/download.zip){.download}
+		@[Primary CTA](/start.html){.primary}
+		@[Download](/download.zip){.download}
 
 		[Read docs →](/docs.html)
 	@end card

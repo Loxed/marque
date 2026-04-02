@@ -12,7 +12,7 @@ Welcome to the Marque documentation set. Start with quickstart, then move to con
   @card .accent
     ## Quickstart
     Install flow, local serve workflow, and publishing sequence.
-    [Go to quickstart →](/start.html){.primary}
+    @[Go to quickstart →](/start.html){.primary}
   @end card
 
   @card
