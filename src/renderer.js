@@ -1,5 +1,6 @@
 // renderer.js — AST → HTML
 const { marked } = require('marked');
+const hljs = require('highlight.js');
 
 // configure marked
 const mdRenderer = new marked.Renderer();
@@ -9,8 +10,8 @@ mdRenderer.code = (code, infostring) => {
   const rawLang = isToken ? readTokenText(code.lang) : infostring;
   const lang = String(rawLang || '').trim().split(/\s+/)[0] || 'text';
   const safeLang = escapeAttr(lang.toLowerCase());
-  const safeCode = escapeHtml(String(rawCode || ''));
-  return `<div class="mq-code-block" data-lang="${safeLang}"><div class="mq-code-head"><span class="mq-code-lang">${safeLang}</span><button class="mq-code-copy" type="button" aria-label="Copy ${safeLang} code">Copy</button></div><pre><code class="language-${safeLang}">${safeCode}</code></pre></div>`;
+  const highlighted = highlightCode(String(rawCode || ''), safeLang);
+  return `<div class="mq-code-block" data-lang="${safeLang}"><div class="mq-code-head"><span class="mq-code-lang">${safeLang}</span><button class="mq-code-copy" type="button" aria-label="Copy ${safeLang} code">Copy</button></div><pre><code class="hljs language-${safeLang}">${highlighted}</code></pre></div>`;
 };
 marked.setOptions({ breaks: true, gfm: true, renderer: mdRenderer });
 
@@ -255,6 +256,20 @@ function readTokenText(value) {
   }
 
   return String(value);
+}
+
+function highlightCode(source, lang) {
+  const code = String(source || '');
+  const language = String(lang || '').toLowerCase();
+  if (!language || language === 'text') return escapeHtml(code);
+
+  if (!hljs.getLanguage(language)) return escapeHtml(code);
+
+  try {
+    return hljs.highlight(code, { language, ignoreIllegals: true }).value;
+  } catch (_) {
+    return escapeHtml(code);
+  }
 }
 
 function normalizeButtonClasses(raw) {

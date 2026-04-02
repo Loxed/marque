@@ -141,6 +141,54 @@ body {
   border-top-right-radius: 0;
 }
 
+.hljs {
+  color: #e8e4dc;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #8f8a80;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-section,
+.hljs-name,
+.hljs-built_in {
+  color: #f29f67;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+  color: #98c379;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr,
+.hljs-attribute {
+  color: #d19a66;
+}
+
+.hljs-meta,
+.hljs-doctag,
+.hljs-type {
+  color: #61afef;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
+
 .mq-footer {
   padding: 2rem;
 }

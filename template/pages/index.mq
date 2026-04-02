@@ -6,7 +6,7 @@ order: 0
 
 # Marque
 @divider
-**Marque** is an enhanced **_Markdown to static_** site compiler. 
+_**Marque**_ is an enhanced **_Markdown to static_** site compiler. 
 It’s designed for creators who want to build documentation, blogs, guides, and knowledge bases effortlessly.
 
 @[Quickstart ➽](/quickstart.mq){.primary} @[Read the docs](/docs.html)

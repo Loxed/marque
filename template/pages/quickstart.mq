@@ -24,7 +24,7 @@ Get from zero to a running site in a few minutes.
 
     Check your versions:
 
-    ```bash
+    ```sh
     node -v # >= v18.0.0
     npm -v
     ```
@@ -40,7 +40,7 @@ Get from zero to a running site in a few minutes.
 
     Clone the repository and install dependencies:
 
-    ```bash
+    ```sh
     git clone https://github.com/Loxed/marque.git
     cd marque
     npm install
@@ -51,7 +51,7 @@ Get from zero to a running site in a few minutes.
 
     ### Verify installation
 
-    ```bash
+    ```sh
     marque --help
     ```
 
@@ -71,7 +71,7 @@ Get from zero to a running site in a few minutes.
   Scaffold a new site:
 
   
-  ```bash
+  ```sh
   marque new my-site
   cd my-site
   ```
@@ -82,7 +82,7 @@ Get from zero to a running site in a few minutes.
   ## Start the dev server
   Run the local server with live reload:
 
-  ```bash
+  ```sh
   marque serve .
   ```
 
@@ -101,7 +101,7 @@ Get from zero to a running site in a few minutes.
   ## Build for production
   Generate static files:
 
-  ```bash
+  ```sh
   marque build .
   ```
 

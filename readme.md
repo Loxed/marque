@@ -16,7 +16,7 @@ You write content quickly, keep structure explicit, and ship plain static HTML/C
 
 Requirements: Node.js 18+
 
-```bash
+```sh
 npm install
 npm link
 ```
@@ -25,7 +25,7 @@ After linking, the `marque` command is available globally.
 
 ## Quickstart
 
-```bash
+```sh
 marque new D:\Sites\my-site
 cd D:\Sites\my-site
 marque serve .
@@ -35,7 +35,7 @@ Open `http://localhost:3000`.
 
 When ready to publish:
 
-```bash
+```sh
 marque build .
 ```
 
@@ -183,14 +183,14 @@ Built-in themes in this repo include:
 
 ## Create a Custom Theme
 
-```bash
+```sh
 mkdir -p themes/my-theme
 cp /path/to/marque-pkg/themes/default/theme.css themes/my-theme/
 ```
 
 Optional custom shell:
 
-```bash
+```sh
 cp /path/to/marque-pkg/themes/index.html themes/my-theme/index.html
 ```
 

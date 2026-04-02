@@ -17,7 +17,7 @@ Before installing Marque, make sure you have:
 
 Check your versions:
 
-```bash
+```sh
 node -v
 npm -v
 ````
@@ -28,7 +28,7 @@ npm -v
 
 Clone the repository and install dependencies:
 
-```bash
+```sh
 git clone <your-repo-url>
 cd marque
 npm install
@@ -39,7 +39,7 @@ This makes the `marque` command available globally.
 
 ### Verify installation
 
-```bash
+```sh
 marque --help
 ```
 
@@ -53,7 +53,7 @@ If the command runs, you're ready to go.
 Scaffold a new site:
 
 ````
-```bash
+```sh
 marque new my-site
 cd my-site
 ```
@@ -66,7 +66,7 @@ cd my-site
 Run the local server with live reload:
 
 ````
-```bash
+```sh
 marque serve .
 ```
 
@@ -86,7 +86,7 @@ Changes are reflected instantly in your browser.
 Generate static files:
 
 ````
-```bash
+```sh
 marque build .
 ```
 
@@ -101,7 +101,7 @@ Output is written to `dist/`.
 ## Core commands
 
 ````
-```bash
+```sh
 marque new my-site
 marque serve .
 marque build .

@@ -1,6 +1,6 @@
 title = Marque
 description = Built with Marque
-layout = sidebar
+layout = topnav
 theme = default
 width = 82
 
@@ -9,7 +9,6 @@ width = 82
 # layout options:
 #   topnav    -> top navigation layout
 #   sidebar   -> mdbook-like left sidebar layout
-#   aliases default/xmb/crossmediabar -> topnav
 #
 # theme options (built-in):
 #   default, rustique, pycorino, gouda, javarti
