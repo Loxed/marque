@@ -1,7 +1,7 @@
 title = Marque
 description = Built with Marque
-layout = topnav
-theme = default
+layout = sidebar
+theme = rustique
 width = 82
 
 # Marque config

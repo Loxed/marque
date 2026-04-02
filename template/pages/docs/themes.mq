@@ -73,6 +73,22 @@ Define your palette once, call `@mqs-essentials;`, then only override what you r
 - Tabs, steps, hero, badge
 - Responsive defaults
 
+## Complete `@mqs-palette` keys
+
+You can edit all these keys today:
+
+- Core: `primary`, `secondary`, `ternary`, `background`, `surface`, `surface-alt`, `text`, `muted`, `border`, `radius`, `max-width`, `font-sans`, `font-serif`, `font-mono`
+- Nav pack: `nav-bg`, `nav-text`, `nav-border`, `nav-active-bg`, `nav-active-text`
+- Code pack: `code-bg`, `code-text`, `code-border`, `code-head-bg`, `code-head-text`
+- Card pack: `card-bg`, `card-border`, `card-radius`, `card-shadow`
+- Callout pack: `callout-info-bg`, `callout-info-border`, `callout-info-text`, `callout-warn-bg`, `callout-warn-border`, `callout-warn-text`, `callout-danger-bg`, `callout-danger-border`, `callout-danger-text`, `callout-ok-bg`, `callout-ok-border`, `callout-ok-text`
+
+Aliases accepted in palette:
+
+- `bg` → `background`
+- `accent` → `primary`
+- `accent2` → `secondary`
+
 @row classes
   @card .secondary
     ## Normalized style classes
