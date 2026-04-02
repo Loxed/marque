@@ -94,7 +94,6 @@ This is your Marque site. Edit \`pages/index.mq\` to get started.
 title: Syntax Reference
 nav: Docs
 order: 2
-theme: rustique
 ---
 
 # Syntax Reference
