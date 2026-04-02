@@ -173,8 +173,9 @@ function extractFrontmatter(src) {
   if (end === -1) return { fm, body: src };
 
   const block = src.slice(4, end).trim();
-  for (const line of block.split('\n')) {
-    const m = line.match(/^([\w-]+):\s*(.+)$/);
+  for (const rawLine of block.split('\n')) {
+    const line = rawLine.trim();
+    const m = line.match(/^([\w-]+):\s*(.*)$/);
     if (m) fm[m[1].trim()] = m[2].trim();
   }
 

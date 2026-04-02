@@ -48,13 +48,16 @@ function build(siteDir, outDir) {
 
     fs.mkdirSync(path.dirname(outFile), { recursive: true });
 
+    const siteTitle = config.title || 'Marque';
     const title = fm.title || config.title || 'Marque Site';
+    const documentTitle = title ? `${siteTitle} — ${title}` : siteTitle;
     const pageMainStyle = resolveMainStyle(fm, defaultPageWidth);
     let html = applyTemplate(pageTheme.baseTemplate, {
+      document_title: documentTitle,
       title,
       content,
       nav: renderNav(nav, outName),
-      site_title: config.title || 'Marque',
+      site_title: siteTitle,
       description: fm.description || config.description || '',
       layout_css: pageLayout.href,
       theme_css: pageTheme.href,
