@@ -3,6 +3,7 @@
 const path = require('path');
 const chokidar = require('chokidar');
 const { removeGeneratedHtmlForDeletedMq } = require('./page-creator');
+const { printBuildError } = require('../utils/errors');
 
 function startFileWatcher({
 	siteDir,
@@ -15,6 +16,8 @@ function startFileWatcher({
 	outDir,
 	build,
 	broadcast,
+	buildOptions,
+	errorPrintOptions,
 }) {
 	const isMntPath = /^\/mnt\/[a-z]\//i.test(siteDir);
 	const forcePolling = process.env.MARQUE_WATCH_POLLING === '1';
@@ -80,15 +83,10 @@ function startFileWatcher({
 			const rel = path.relative(siteDir, file);
 			console.log(`  ${event} → ${rel}`);
 			try {
-				build(siteDir, outDir, { cleanDist: false, softFsErrors: true });
+				build(siteDir, outDir, { cleanDist: false, softFsErrors: true, ...(buildOptions || {}) });
 				broadcast();
 			} catch (e) {
-				const message = String((e && e.message) || e || 'Unknown build error');
-				if (/^error\[MQ\d+\]:/m.test(message)) {
-					console.error(`\nBuild error\n${message}\n`);
-				} else {
-					console.error(`\nBuild error: ${message}\n`);
-				}
+				printBuildError(e, errorPrintOptions || {});
 			}
 		});
 

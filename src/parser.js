@@ -20,30 +20,34 @@ function tokenize(lines) {
   const tokens = [];
   let inFence = false;
 
-  for (const raw of lines) {
+  for (let idx = 0; idx < lines.length; idx++) {
+    const raw = lines[idx];
+    const line = idx + 1;
     const trimmed = raw.trim();
+    const col = Math.max(1, raw.indexOf('@') + 1 || 1);
+    const endCol = Math.max(col, raw.length || col);
 
     // fenced code blocks — never parse @ inside them
     if (/^```/.test(trimmed)) {
       inFence = !inFence;
-      tokens.push({ type: 'text', line: raw });
+      tokens.push({ type: 'text', line: raw, lineNo: line });
       continue;
     }
     if (inFence) {
-      tokens.push({ type: 'text', line: raw });
+      tokens.push({ type: 'text', line: raw, lineNo: line });
       continue;
     }
 
     // @end tag [name]
     const endM = trimmed.match(/^@end\s+(\w+)(?:\s+(\S+))?$/);
     if (endM) {
-      tokens.push({ type: 'close', tag: endM[1], name: endM[2] || null });
+      tokens.push({ type: 'close', tag: endM[1], name: endM[2] || null, lineNo: line, col, endCol });
       continue;
     }
 
     // @divider  (self-closing)
     if (trimmed === '@divider') {
-      tokens.push({ type: 'divider' });
+      tokens.push({ type: 'divider', lineNo: line, col, endCol });
       continue;
     }
 
@@ -54,17 +58,17 @@ function tokenize(lines) {
       const tag  = openM[1];
       const mods = (openM[2] || '').trim().split(/\s+/).filter(Boolean).map(m => m.slice(1));
       const name = openM[3] || null;
-      tokens.push({ type: 'open', tag, mods, name });
+      tokens.push({ type: 'open', tag, mods, name, lineNo: line, col, endCol });
       continue;
     }
 
     // frontmatter / hr
     if (trimmed === '---') {
-      tokens.push({ type: 'hr_or_fm' });
+      tokens.push({ type: 'hr_or_fm', lineNo: line, col: 1, endCol: 3 });
       continue;
     }
 
-    tokens.push({ type: 'text', line: raw });
+    tokens.push({ type: 'text', line: raw, lineNo: line });
   }
 
   return tokens;
@@ -84,7 +88,15 @@ function consumeBlock(tokens, start, end, openTag, options = {}) {
 
   const flushText = () => {
     if (textBuf.length) {
-      nodes.push({ type: 'markdown', content: dedentLines(textBuf).join('\n') });
+      const start = textBuf[0] && textBuf[0].lineNo ? textBuf[0].lineNo : 1;
+      const end = textBuf[textBuf.length - 1] && textBuf[textBuf.length - 1].lineNo
+        ? textBuf[textBuf.length - 1].lineNo
+        : start;
+      nodes.push({
+        type: 'markdown',
+        content: dedentLines(textBuf.map(t => t.line)).join('\n'),
+        loc: { start_line: start, start_col: 1, end_line: end, end_col: 1 },
+      });
       textBuf = [];
     }
   };
@@ -118,7 +130,7 @@ function consumeBlock(tokens, start, end, openTag, options = {}) {
 
     if (tok.type === 'divider') {
       flushText();
-      nodes.push({ type: 'divider' });
+      nodes.push({ type: 'divider', loc: locFromToken(tok) });
       i++;
       continue;
     }
@@ -136,18 +148,18 @@ function consumeBlock(tokens, start, end, openTag, options = {}) {
       };
       const inner = consumeBlock(tokens, i + 1, end, tok.tag, innerOptions);
       i = inner.next;
-      nodes.push(buildNode(tok.tag, tok.mods, tok.name, inner.nodes));
+      nodes.push(buildNode(tok.tag, tok.mods, tok.name, inner.nodes, tok));
       continue;
     }
 
     if (tok.type === 'hr_or_fm') {
       flushText();
-      nodes.push({ type: 'hr' });
+      nodes.push({ type: 'hr', loc: locFromToken(tok) });
       i++;
       continue;
     }
 
-    textBuf.push(tok.line);
+    textBuf.push(tok);
     i++;
   }
 
@@ -174,32 +186,42 @@ function dedentLines(lines) {
   });
 }
 
-function buildNode(tag, mods, name, children) {
+function buildNode(tag, mods, name, children, tok) {
   const mod = mods.join(' ');
+  const loc = locFromToken(tok);
   switch (tag) {
-    case 'row':     return { type: 'row',     name, children };
-    case 'column':  return { type: 'column',  mod, name, children };
-    case 'card':    return { type: 'card',    mod, name, children };
-    case 'callout': return { type: 'callout', variant: mods[0] || 'info', name, children };
-    case 'stat':    return { type: 'stat',    name, children };
-    case 'tabs':    return { type: 'tabs',    name, children };
-    case 'tab':     return { type: 'tab',     label: name || mods[0] || 'Tab', children };
-    case 'steps':   return { type: 'steps',   name, children };
-    case 'step':    return { type: 'step',    name, children };
-    case 'hero':    return { type: 'hero',    mod, name, children };
-    case 'section': return { type: 'section', mod, name, children };
-    default:        return { type: 'generic', tag, mod, name, children };
+    case 'row':     return { type: 'row',     name, children, loc };
+    case 'column':  return { type: 'column',  mod, name, children, loc };
+    case 'card':    return { type: 'card',    mod, name, children, loc };
+    case 'callout': return { type: 'callout', variant: mods[0] || 'info', name, children, loc };
+    case 'stat':    return { type: 'stat',    name, children, loc };
+    case 'tabs':    return { type: 'tabs',    name, children, loc };
+    case 'tab':     return { type: 'tab',     label: name || mods[0] || 'Tab', children, loc };
+    case 'steps':   return { type: 'steps',   name, children, loc };
+    case 'step':    return { type: 'step',    name, children, loc };
+    case 'hero':    return { type: 'hero',    mod, name, children, loc };
+    case 'section': return { type: 'section', mod, name, children, loc };
+    default:        return { type: 'generic', tag, mod, name, children, loc };
   }
+}
+
+function locFromToken(tok) {
+  return {
+    start_line: (tok && tok.lineNo) || 1,
+    start_col: (tok && tok.col) || 1,
+    end_line: (tok && tok.lineNo) || 1,
+    end_col: (tok && tok.endCol) || ((tok && tok.col) || 1),
+  };
 }
 
 // ── Frontmatter ────────────────────────────────────────────────────────────
 
 function extractFrontmatter(src) {
   const fm = {};
-  if (!src.startsWith('---')) return { fm, body: src };
+  if (!src.startsWith('---')) return { fm, body: src, bodyStartLine: 1 };
 
   const end = src.indexOf('\n---', 3);
-  if (end === -1) return { fm, body: src };
+  if (end === -1) return { fm, body: src, bodyStartLine: 1 };
 
   const block = src.slice(4, end).trim();
   for (const rawLine of block.split('\n')) {
@@ -208,7 +230,13 @@ function extractFrontmatter(src) {
     if (m) fm[m[1].trim()] = m[2].trim();
   }
 
-  return { fm, body: src.slice(end + 4).trim() };
+  const bodyRaw = src.slice(end + 4);
+  const body = bodyRaw.trim();
+  const baseStart = src.slice(0, end + 4).split(/\r?\n/).length;
+  const leadingWhitespace = (bodyRaw.match(/^\s*/) || [''])[0];
+  const leadingBreaks = (leadingWhitespace.match(/\r?\n/g) || []).length;
+  const bodyStartLine = baseStart + leadingBreaks;
+  return { fm, body, bodyStartLine };
 }
 
 module.exports = { parse, extractFrontmatter };

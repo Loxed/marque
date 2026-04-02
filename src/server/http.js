@@ -69,10 +69,10 @@ const CREATE_FROM_404_SNIPPET = `
 })();
 </script>`;
 
-function createHttpServer({ siteDir, outDir, pagesDir, wsPort, broadcast, build }) {
+function createHttpServer({ siteDir, outDir, pagesDir, wsPort, broadcast, build, buildOptions }) {
 	return http.createServer((req, res) => {
 		if (req.method === 'POST' && req.url && req.url.split('?')[0] === '/__marque/create-page') {
-			return handleCreatePage({ req, res, siteDir, outDir, pagesDir, broadcast, build });
+			return handleCreatePage({ req, res, siteDir, outDir, pagesDir, broadcast, build, buildOptions });
 		}
 
 		let urlPath = req.url.split('?')[0];
@@ -112,7 +112,7 @@ function createHttpServer({ siteDir, outDir, pagesDir, wsPort, broadcast, build 
 	});
 }
 
-function handleCreatePage({ req, res, siteDir, outDir, pagesDir, broadcast, build }) {
+function handleCreatePage({ req, res, siteDir, outDir, pagesDir, broadcast, build, buildOptions }) {
 	let body = '';
 	req.on('data', chunk => {
 		body += chunk;
@@ -135,7 +135,7 @@ function handleCreatePage({ req, res, siteDir, outDir, pagesDir, broadcast, buil
 				fs.writeFileSync(target.absPath, buildStarterPage(target.relPath));
 			}
 
-			build(siteDir, outDir, { cleanDist: false, softFsErrors: true });
+			build(siteDir, outDir, { cleanDist: false, softFsErrors: true, ...(buildOptions || {}) });
 			broadcast();
 
 			res.writeHead(200, { 'Content-Type': 'application/json' });

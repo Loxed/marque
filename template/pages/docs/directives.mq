@@ -1,0 +1,146 @@
+---
+title: Directives
+nav: directives
+---
+
+# Directives
+@divider
+## In Marque, anything that starts with `@` is treated as a **directive**.
+
+## There are two directive types:
+
+@row directive-families
+  @card
+    ## Block directives
+    @divider
+    Block directives define page structure and layout.
+    Examples: `@row`, `@card`, `@callout`, `@tabs`, etc.
+
+    They're defined by a start tag (`@<name>`) and end tag (`@end <name>`), with content in between.
+
+    ```mq
+    @row features # begin block directive calling @<name>
+      @card .accent
+        ## Left card
+        This is a card inside a row.
+      @end card
+
+      @card
+        ## Right card
+        This is another card inside the same row.
+      @end card
+    @end row # end block directive with @end <name>
+    ```
+  @end card
+
+  @card
+    ## Inline directives
+    @divider
+    Inline directives don't require a separate end tag.
+
+    Examples: `@[Label](url){.primary}` button syntax, `:badge[Text]{.ok}` badges, and more.
+
+    ```mq
+    This is a @[link](directives.mq){.primary} with button styling.
+    Here is a badge: :badge[New]{.accent}.
+    This is a divider: @divider
+    ```
+
+    This is a @[link](directives.mq){.primary} with button styling.
+    Here is a badge: :badge[New]{.accent}.
+    This is a divider: @divider
+    
+  @end card
+@end row directive-families 
+
+  
+- Block directives: `@row ... @end row`, `@tabs ... @end tabs`, etc.
+- Inline directives: `@[Label](url){...}` button syntax inside markdown.
+
+@callout .info
+  Rule of thumb:
+  If you type `@`, you are entering Marque directive syntax.
+@end callout
+
+## 1) Block directives (layout and structure)
+
+These are parsed by the MQ parser and become AST nodes.
+
+```mq
+@row feature-grid
+  @card .accent
+    ## Fast authoring
+    Write markdown and compose blocks.
+  @end card
+
+  @card
+    ## Static output
+    Build to plain HTML/CSS.
+  @end card
+@end row
+```
+
+Common block directives:
+
+- `@row` / `@column` / `@card`
+- `@callout`
+- `@stat`
+- `@steps` / `@step`
+- `@tabs` / `@tab`
+- `@hero` / `@section`
+- `@divider`
+
+## 2) Inline directives (`@[...]()` buttons)
+
+`@[label](url){attrs}` is an inline Marque directive interpreted during markdown rendering.
+
+```md
+@[Open docs](/docs.html){.primary}
+@[Create this page](){!mq-create-missing-page .secondary}
+```
+
+Parts:
+
+- `label`: visible button text
+- `url`: href target
+- `attrs` (optional):
+  - classes: `.primary .secondary ...`
+  - id: `!some-id`
+
+Rendered output is an `<a>` with class `mq-btn` plus your optional classes.
+
+## 3) MQS directives (theme/layout styles)
+
+In `.mqs` files, `@` also introduces directives:
+
+- `@mqs-import "...";`
+- `@mqs-palette { ... }`
+- `@mqs-essentials;`
+
+These are style-compiler directives (not page-content directives), but same principle applies: `@` means directive syntax.
+
+## 4) Diagnostics and validation
+
+Directives are validated with structured diagnostics:
+
+- unknown directive names
+- invalid nesting (example: `@tab` outside `@tabs`)
+- missing required children (example: empty `@tabs`)
+
+So when a directive is wrong, you get rust-like diagnostics with code, span, and suggestion.
+
+@row component-links
+  @card
+    ## Component pages
+    Browse concrete examples for each component family.
+    @[Cards](/docs/components/cards.html)
+    @[Callouts](/docs/components/callouts.html)
+    @[Tabs](/docs/components/tabs.html)
+  @end card
+
+  @card .accent
+    ## Next
+    After components, read full directive rules and best practices.
+    @[Directives reference](/docs/directives.html){.primary}
+  @end card
+@end row

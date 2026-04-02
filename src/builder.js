@@ -4,10 +4,17 @@ const path = require('path');
 const { parse, extractFrontmatter } = require('./parser');
 const { render } = require('./renderer');
 const { compileMqsFile } = require('./mqs');
+const { DiagnosticLevel, createDiagnostic, createDiagnosticError } = require('./diagnostics');
+const { collectDirectiveDiagnostics } = require('./directive-diagnostics');
+const { printDiagnostic } = require('./utils/errors');
 
 function build(siteDir, outDir, options = {}) {
   const cleanDist = options.cleanDist !== false;
   const softFsErrors = options.softFsErrors === true;
+  const logBuiltFiles = options.logBuiltFiles !== false;
+  const logStaticCopy = options.logStaticCopy !== false;
+  const logSummary = options.logSummary !== false;
+  const diagnosticPrintOptions = options.diagnosticPrintOptions || undefined;
   const configPath = path.join(siteDir, 'marque.toml');
   const config = loadConfig(configPath);
   const defaultThemeName = config.theme || 'default';
@@ -36,7 +43,7 @@ function build(siteDir, outDir, options = {}) {
   } catch (err) {
     if (/^Layout ".+" not found$/.test(err.message)) {
       const line = findConfigKeyLine(configPath, 'layout');
-      throw new Error(buildMissingLayoutDiagnostic({
+      throw createDiagnosticError(buildMissingLayoutDiagnostic({
         layoutName: defaultLayoutName,
         sourceFile: configPath,
         line: line || 1,
@@ -59,7 +66,7 @@ function build(siteDir, outDir, options = {}) {
 
   let built = 0;
   for (const page of pageEntries) {
-    const { file, fm, body, href: outName, layoutLine } = page;
+    const { file, fm, body, bodyStartLine, href: outName, layoutLine } = page;
     const pageThemeName = fm.theme || defaultThemeName;
     const rawPageLayoutName = fm.layout || defaultLayoutName;
     const pageLayoutName = normalizeLayoutName(rawPageLayoutName);
@@ -69,7 +76,7 @@ function build(siteDir, outDir, options = {}) {
       pageLayout = getLayoutAssets(pageLayoutName, siteDir, outDir, layoutCache, softFsErrors);
     } catch (err) {
       if (/^Layout ".+" not found$/.test(err.message)) {
-        throw new Error(buildMissingLayoutDiagnostic({
+        throw createDiagnosticError(buildMissingLayoutDiagnostic({
           layoutName: pageLayoutName,
           sourceFile: file,
           line: layoutLine || 1,
@@ -81,6 +88,18 @@ function build(siteDir, outDir, options = {}) {
     }
 
     const ast = parse(body);
+    const directiveDiagnostics = collectDirectiveDiagnostics(ast, {
+      file,
+      lineOffset: Math.max(0, (parseInt(bodyStartLine || 1, 10) || 1) - 1),
+    });
+    const firstDirectiveError = directiveDiagnostics.find(d => d.level === DiagnosticLevel.ERROR);
+    if (firstDirectiveError) {
+      throw createDiagnosticError(firstDirectiveError);
+    }
+    for (const warning of directiveDiagnostics.filter(d => d.level === DiagnosticLevel.WARNING || d.level === DiagnosticLevel.NOTE)) {
+      printDiagnostic(warning, diagnosticPrintOptions);
+    }
+
     const resolveHref = createPageHrefResolver(pageEntries, page.rel);
     const content = render(ast, { resolveHref });
 
@@ -117,7 +136,9 @@ function build(siteDir, outDir, options = {}) {
 
     writeFileWithRetry(outFile, html, softFsErrors);
     built++;
-    console.log(`  built → ${outName}`);
+    if (logBuiltFiles) {
+      console.log(`  built → ${outName}`);
+    }
   }
 
   // Keep /index.html (and nested /index.html) as redirect shims when an index.mq
@@ -127,17 +148,23 @@ function build(siteDir, outDir, options = {}) {
     const redirectFile = path.join(outDir, page.redirectFrom);
     mkdirWithRetry(path.dirname(redirectFile), { recursive: true });
     writeFileWithRetry(redirectFile, buildRedirectPage(`/${page.href}`), softFsErrors);
-    console.log(`  redirect → ${page.redirectFrom} -> ${page.href}`);
+    if (logBuiltFiles) {
+      console.log(`  redirect → ${page.redirectFrom} -> ${page.href}`);
+    }
   }
 
   // copy static assets if they exist
   const staticDir = path.join(siteDir, 'static');
   if (fs.existsSync(staticDir)) {
     copyDir(staticDir, outDir);
-    console.log(`  copied static/`);
+    if (logStaticCopy) {
+      console.log(`  copied static/`);
+    }
   }
 
-  console.log(`\nmarque: ${built} page${built !== 1 ? 's' : ''} built → ${path.relative(process.cwd(), outDir)}/`);
+  if (logSummary) {
+    console.log(`\nmarque: ${built} page${built !== 1 ? 's' : ''} built → ${path.relative(process.cwd(), outDir)}/`);
+  }
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -343,7 +370,7 @@ function buildPageEntries(pages, pagesDir, config, summary) {
     const rel = path.relative(pagesDir, file);
     const normalizedRel = normalizeRelPath(rel).toLowerCase();
     const src = fs.readFileSync(file, 'utf8');
-    const { fm, body } = extractFrontmatter(src);
+    const { fm, body, bodyStartLine } = extractFrontmatter(src);
     const layoutLine = findFrontmatterKeyLine(src, 'layout');
 
     const dir = path.dirname(rel);
@@ -368,7 +395,7 @@ function buildPageEntries(pages, pagesDir, config, summary) {
     const summaryMeta = summaryMap.get(normalizedRel);
     const label = (summaryMeta && summaryMeta.label) || fm.title || fm.nav || sourceBase;
     const order = summaryMeta ? summaryMeta.order : Number.POSITIVE_INFINITY;
-    return { file, rel, fm, body, href, redirectFrom, label, order, layoutLine };
+    return { file, rel, fm, body, bodyStartLine, href, redirectFrom, label, order, layoutLine };
   }).sort((a, b) => {
     const aFinite = Number.isFinite(a.order);
     const bFinite = Number.isFinite(b.order);
@@ -588,28 +615,35 @@ function buildMissingLayoutDiagnostic({ layoutName, sourceFile, line, value, sit
   const lineText = readLine(sourceFile, line) || '';
   const col = findValueColumn(lineText, value);
   const safeValue = String(value || '').trim() || String(layoutName || '').trim();
-  const caretLen = Math.max(1, safeValue.length);
   const lineNo = Math.max(1, parseInt(line || 1, 10));
-  const gutter = String(lineNo).length;
+  const endCol = col + Math.max(1, safeValue.length) - 1;
 
   const availableLayouts = listAvailableLayouts(siteDir);
   const suggestion = findClosestName(safeValue, availableLayouts);
 
-  const lines = [
-    `error[MQ001]: layout "${layoutName}" not found`,
-    ` --> ${sourceFile}:${lineNo}:${col}`,
-    '  |',
-    `${String(lineNo).padStart(gutter, ' ')} | ${lineText}`,
-    `${' '.repeat(gutter)} | ${' '.repeat(Math.max(0, col - 1))}${'^'.repeat(caretLen)} unknown layout`,
-    '  |',
-    `  = help: available layouts: ${availableLayouts.join(', ') || '(none found)'}`,
+  const suggestions = [
+    { message: `available layouts: ${availableLayouts.join(', ') || '(none found)'}` },
   ];
-
   if (suggestion) {
-    lines.push(`  = help: did you mean "${suggestion}"?`);
+    suggestions.push({
+      message: `did you mean "${suggestion}"?`,
+      replacement: `layout = "${suggestion}"`,
+    });
   }
 
-  return lines.join('\n');
+  return createDiagnostic({
+    level: DiagnosticLevel.ERROR,
+    code: 'MQ001',
+    message: `layout "${layoutName}" not found`,
+    spans: [{
+      file: sourceFile,
+      start_line: lineNo,
+      start_col: col,
+      end_line: lineNo,
+      end_col: endCol,
+    }],
+    suggestions,
+  });
 }
 
 function readLine(filePath, lineNumber) {

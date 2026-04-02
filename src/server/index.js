@@ -11,6 +11,16 @@ const { startFileWatcher } = require('./watcher');
 function serve(siteDir, outDir, port = 3000) {
 	const releaseServeLock = acquireServeLock(siteDir, port);
 	const wsPort = port + 1;
+	const diagnosticCache = new Set();
+	const serveDiagnosticOptions = { suppressUnchanged: true, cache: diagnosticCache };
+	const serveBuildOptions = {
+		cleanDist: false,
+		softFsErrors: true,
+		logBuiltFiles: false,
+		logStaticCopy: false,
+		logSummary: true,
+		diagnosticPrintOptions: serveDiagnosticOptions,
+	};
 
 	const pagesDir = path.resolve(siteDir, 'pages');
 	const themesDir = path.resolve(siteDir, 'themes');
@@ -20,13 +30,21 @@ function serve(siteDir, outDir, port = 3000) {
 	const pagesSummaryFile = path.resolve(pagesDir, 'summary.mq');
 
 	try {
-		build(siteDir, outDir, { cleanDist: true, softFsErrors: true });
+		build(siteDir, outDir, { ...serveBuildOptions, cleanDist: true });
 	} catch (e) {
-		printBuildError(e);
+		printBuildError(e, serveDiagnosticOptions);
 	}
 
 	const { wss, broadcast } = createWsServer(wsPort);
-	const server = createHttpServer({ siteDir, outDir, pagesDir, wsPort, broadcast, build });
+	const server = createHttpServer({
+		siteDir,
+		outDir,
+		pagesDir,
+		wsPort,
+		broadcast,
+		build,
+		buildOptions: serveBuildOptions,
+	});
 	const { watcher, usePolling } = startFileWatcher({
 		siteDir,
 		pagesDir,
@@ -38,6 +56,8 @@ function serve(siteDir, outDir, port = 3000) {
 		outDir,
 		build,
 		broadcast,
+		buildOptions: serveBuildOptions,
+		errorPrintOptions: serveDiagnosticOptions,
 	});
 
 	server.listen(port, () => {

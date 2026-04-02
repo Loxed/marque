@@ -70,6 +70,21 @@ For `marque new <site-dir> ...`:
   - Expands `@mqs-palette` and `@mqs-essentials` directives.
   - Produces final theme/layout CSS consumed by builder.
 
+### Structured diagnostics
+
+- `src/diagnostics.js`
+  - Defines the structured diagnostic model used by runtime errors:
+    - `level` (`Error`, `Warning`, `Note`)
+    - `message`
+    - `code` (optional)
+    - `spans` (file/line/column ranges)
+    - `suggestions` (optional help/fixes)
+  - Exposes formatter + error wrapper (`createDiagnosticError`, `formatDiagnostic`).
+
+- `src/utils/errors.js`
+  - Centralized print path for diagnostics in CLI/dev server.
+  - If an error carries `err.diagnostic`, it is rendered in rust-like style with caret span.
+
 ## 3) Server Architecture (`src/server`)
 
 - `src/server/index.js`
@@ -162,3 +177,4 @@ Removed legacy:
 Potential future cleanup/migration target:
 
 - switch builder imports from monolithic parser/renderer/mqs files to split module folders once fully validated.
+- extend structured diagnostics beyond `MQ001` to parser/MQS/frontmatter warnings.

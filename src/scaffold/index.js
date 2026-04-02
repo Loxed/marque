@@ -9,11 +9,12 @@ function scaffold({ packageRoot, targetDir, layoutArg, themeArg }) {
   const templateDir = path.join(packageRoot, 'template');
   const templateLayoutsDir = path.join(templateDir, 'layouts');
   const templateThemesDir = path.join(templateDir, 'themes');
+  const scaffoldExcludes = new Set(['dist', '.marque-serve.lock']);
 
   const layout = resolveScaffoldLayout(layoutArg, templateLayoutsDir);
   const theme = resolveScaffoldTheme(themeArg, templateThemesDir);
 
-  copyDir(templateDir, targetDir);
+  copyDir(templateDir, targetDir, scaffoldExcludes);
   applyScaffoldDefaults({ targetDir, layout, theme });
   ensureStarterScaffold(targetDir);
 
