@@ -4,6 +4,8 @@ Marque is a static site generator powered by `.mq`: markdown plus layout directi
 
 You write content quickly, keep structure explicit, and ship plain static HTML/CSS.
 
+Architecture and module roles are documented in `ARCHITECTURE.md`.
+
 ## Why Marque
 
 - Markdown-first authoring with composable layout blocks.
