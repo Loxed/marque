@@ -5,6 +5,7 @@ order: 0
 ---
 
 # Marque
+@divider
 **Marque** is an enhanced **_Markdown to static_** site compiler. 
 It’s designed for creators who want to build documentation, blogs, guides, and knowledge bases effortlessly.
 
@@ -14,7 +15,8 @@ Marque supports every feature from Markdown, including extra directives to make 
 @end callout
 
 
-# Features
+## Features
+@divider 
 
 @row features
 	@card 
@@ -63,11 +65,13 @@ Marque supports every feature from Markdown, including extra directives to make 
 @row links
 	@card .accent
 		## Start building
+    @divider
 		Install Marque and use the starter template to make your first website.
 		@[Quickstart ➽](/quickstart.mq){.primary}
 	@end card
 
 	@card
+  @divider
 		## Explore examples
 		Browse nested docs, layout overrides, and advanced features in action.
 		@[Open docs showcase →](/docs/layout-override.html){.secondary}
