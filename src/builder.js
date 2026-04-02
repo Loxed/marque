@@ -79,7 +79,8 @@ function build(siteDir, outDir, options = {}) {
     }
 
     const ast = parse(body);
-    const content = render(ast);
+    const resolveHref = createPageHrefResolver(pageEntries, page.rel);
+    const content = render(ast, { resolveHref });
 
     const outFile = path.join(outDir, outName);
 
@@ -293,6 +294,55 @@ function buildPageEntries(pages, pagesDir, config) {
     const order = parseInt(fm.order || '99', 10);
     return { file, rel, fm, body, href, redirectFrom, label, order, layoutLine };
   }).sort((a, b) => a.order - b.order);
+}
+
+function createPageHrefResolver(pageEntries, currentRel) {
+  const routeMap = new Map();
+  for (const page of pageEntries) {
+    const rel = normalizeRelPath(page.rel);
+    routeMap.set(rel.toLowerCase(), `/${page.href}`);
+  }
+
+  const current = normalizeRelPath(currentRel || '');
+  const currentDir = path.posix.dirname(current);
+
+  return (rawHref) => {
+    const href = String(rawHref || '').trim();
+    if (!href) return href;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(href) || href.startsWith('//') || href.startsWith('#')) {
+      return href;
+    }
+
+    const hashIndex = href.indexOf('#');
+    const queryIndex = href.indexOf('?');
+    let splitIndex = -1;
+    if (hashIndex >= 0 && queryIndex >= 0) splitIndex = Math.min(hashIndex, queryIndex);
+    else splitIndex = Math.max(hashIndex, queryIndex);
+
+    const pathPart = splitIndex >= 0 ? href.slice(0, splitIndex) : href;
+    const suffix = splitIndex >= 0 ? href.slice(splitIndex) : '';
+
+    if (!/\.mq$/i.test(pathPart)) return href;
+
+    const absolute = pathPart.startsWith('/');
+    const normalizedInput = normalizeRelPath(pathPart.replace(/^\/+/, ''));
+    const relCandidate = absolute
+      ? normalizedInput
+      : normalizeRelPath(path.posix.join(currentDir === '.' ? '' : currentDir, pathPart));
+
+    const mapped = routeMap.get(relCandidate.toLowerCase());
+    if (mapped) return `${mapped}${suffix}`;
+
+    // Fallback: keep original shape, replace extension only.
+    return `${pathPart.slice(0, -3)}.html${suffix}`;
+  };
+}
+
+function normalizeRelPath(value) {
+  return String(value || '')
+    .split(path.sep).join('/')
+    .replace(/^\.\//, '')
+    .replace(/\/+/g, '/');
 }
 
 function findConfigKeyLine(configPath, key) {

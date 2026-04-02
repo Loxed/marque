@@ -19,7 +19,7 @@ function renderNode(node, opts) {
   switch (node.type) {
 
     case 'markdown':
-      return renderMarkdown(node.content);
+      return renderMarkdown(node.content, opts);
 
     case 'hr':
       return '<hr>';
@@ -118,7 +118,7 @@ function renderNode(node, opts) {
   }
 }
 
-function renderMarkdown(src) {
+function renderMarkdown(src, opts = {}) {
   src = dedentMarkdown(src);
 
   // Handle inline badge syntax: :badge[text]{.cls}
@@ -133,11 +133,13 @@ function renderMarkdown(src) {
   src = src.replace(/@\[([^\]]+)\]\(([^)]+)\)(?:\{([^}]*)\})?/g,
     (_, text, url, clsRaw) => {
       const extraClasses = normalizeButtonClasses(clsRaw);
-      return `<a href="${url}" class="mq-btn${extraClasses}">${text}</a>`;
+      const safeHref = resolveHref(url, opts);
+      return `<a href="${safeHref}" class="mq-btn${extraClasses}">${text}</a>`;
     }
   );
 
-  return marked.parse(src);
+  const html = marked.parse(src);
+  return normalizeAnchorHrefs(html, opts);
 }
 
 function dedentMarkdown(src) {
@@ -231,6 +233,45 @@ function normalizeButtonClasses(raw) {
 
   if (!classes.length) return '';
   return ` ${classes.join(' ')}`;
+}
+
+function normalizeAnchorHrefs(html, opts = {}) {
+  return String(html || '').replace(/(<a\b[^>]*\shref=")([^"]+)(")/gi, (_, head, href, tail) => {
+    return `${head}${resolveHref(href, opts)}${tail}`;
+  });
+}
+
+function resolveHref(href, opts = {}) {
+  if (opts && typeof opts.resolveHref === 'function') {
+    try {
+      return opts.resolveHref(href);
+    } catch (_) {
+      // fall back to default normalization
+    }
+  }
+  return convertMqHref(href);
+}
+
+function convertMqHref(href) {
+  const raw = String(href || '').trim();
+  if (!raw) return raw;
+
+  // Keep external/special protocols untouched.
+  if (/^[a-z][a-z0-9+.-]*:/i.test(raw) || raw.startsWith('//') || raw.startsWith('#')) {
+    return raw;
+  }
+
+  const hashIndex = raw.indexOf('#');
+  const queryIndex = raw.indexOf('?');
+  let splitIndex = -1;
+  if (hashIndex >= 0 && queryIndex >= 0) splitIndex = Math.min(hashIndex, queryIndex);
+  else splitIndex = Math.max(hashIndex, queryIndex);
+
+  const pathPart = splitIndex >= 0 ? raw.slice(0, splitIndex) : raw;
+  const suffix = splitIndex >= 0 ? raw.slice(splitIndex) : '';
+
+  if (!/\.mq$/i.test(pathPart)) return raw;
+  return `${pathPart.slice(0, -3)}.html${suffix}`;
 }
 
 module.exports = { render };
