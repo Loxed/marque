@@ -66,6 +66,28 @@
   document.addEventListener('focusin', (e) => {
     if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
   });
+
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.mq-code-copy');
+    if (!btn) return;
+    const block = btn.closest('.mq-code-block');
+    const codeEl = block && block.querySelector('pre code');
+    if (!codeEl) return;
+
+    const source = codeEl.textContent || '';
+    const original = btn.textContent;
+
+    try {
+      await navigator.clipboard.writeText(source);
+      btn.textContent = 'Copied';
+    } catch (_) {
+      btn.textContent = 'Failed';
+    }
+
+    setTimeout(() => {
+      btn.textContent = original;
+    }, 1200);
+  });
   </script>
 </body>
 </html>

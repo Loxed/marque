@@ -108,6 +108,55 @@ body {
   align-content: start;
 }
 
+.mq-code-block {
+  margin: 1rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mq-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px 8px 0 0;
+  background: #1e1c18;
+  color: #e8e4dc;
+}
+
+.mq-code-lang {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.88;
+}
+
+.mq-code-copy {
+  font: inherit;
+  font-size: 0.74rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #e8e4dc;
+  cursor: pointer;
+}
+
+.mq-code-copy:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.mq-code-block pre {
+  margin: 0;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 .mq-footer {
   text-align: center;
   padding: 2rem;

@@ -2,7 +2,17 @@
 const { marked } = require('marked');
 
 // configure marked
-marked.setOptions({ breaks: true, gfm: true });
+const mdRenderer = new marked.Renderer();
+mdRenderer.code = (code, infostring) => {
+  const isToken = code && typeof code === 'object' && !Array.isArray(code);
+  const rawCode = isToken ? readTokenText(code.text ?? code.raw) : code;
+  const rawLang = isToken ? readTokenText(code.lang) : infostring;
+  const lang = String(rawLang || '').trim().split(/\s+/)[0] || 'text';
+  const safeLang = escapeAttr(lang.toLowerCase());
+  const safeCode = escapeHtml(String(rawCode || ''));
+  return `<div class="mq-code-block" data-lang="${safeLang}"><div class="mq-code-head"><span class="mq-code-lang">${safeLang}</span><button class="mq-code-copy" type="button" aria-label="Copy ${safeLang} code">Copy</button></div><pre><code class="language-${safeLang}">${safeCode}</code></pre></div>`;
+};
+marked.setOptions({ breaks: true, gfm: true, renderer: mdRenderer });
 
 let _tabCounter = 0;
 
@@ -220,6 +230,31 @@ function escapeAttr(value) {
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function readTokenText(value) {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  if (Array.isArray(value)) return value.map(readTokenText).join('');
+
+  if (typeof value === 'object') {
+    if (typeof value.text === 'string') return value.text;
+    if (value.text !== undefined) return readTokenText(value.text);
+    if (typeof value.raw === 'string') return value.raw;
+    if (typeof value.lang === 'string') return value.lang;
+  }
+
+  return String(value);
 }
 
 function normalizeButtonClasses(raw) {
