@@ -5,26 +5,15 @@
 User Guide
 
 [Quick Start](quickstart.mq)
-[CLI Commands](cli.mq)
+[Create Website](create.mq)
 
-Doc
+Reference
 
+[Command-Line Commands](cli.mq)
+
+Format
 [Docs](docs.mq)
-[Theme](docs/theme.mq)
-
-[Cheat Sheet](cheat-sheet.mq)
-
-[Components](components.mq) 
-[Callouts](components/callouts.mq)
-[Cards](components/cards.mq)
-[Tabs](components/tabs.mq)
-
-[Getting Started](getting-started.mq)
-[Install](getting-started/install.mq)
-[First Page](getting-started/first-page.mq)
-
-[Guide](guide.mq)
-[Layout](guide/layout.mq)
-[Syntax](guide/syntax.mq)
-
-[Config](config.mq)
+[Configuration](docs/configuration.mq)
+[Frontmatter](docs/frontmatter.mq)
+[Themes](docs/themes.mq)
+[Directives](docs/directives.mq)

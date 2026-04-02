@@ -1,10 +1,11 @@
 ---
-title: MQS Themes
+title: Themes
 nav: themes
 ---
 
-# MQS Themes
+# Themes
 @divider
+
 Build your theme with tokens, not giant CSS files.
 
 @callout .info

@@ -1,0 +1,90 @@
+---
+title: Frontmatter
+nav: frontmatter
+---
+
+Frontmatter controls page-level metadata and overrides.
+
+@callout .info
+  Frontmatter applies to a single `.mq` file.
+  Site-wide defaults are defined in `marque.toml`.
+@end callout
+
+## Basic shape
+
+```yaml
+---
+title: Frontmatter
+nav: frontmatter
+layout: sidebar
+theme: default
+width: wide
+---
+```
+
+## Supported keys
+
+### `title`
+
+- Used for page display label fallback.
+- Used in the document title in `<head>`.
+
+```yaml
+title: Quick Start
+```
+
+### `nav`
+
+- Controls output filename/route slug.
+- `nav: quickstart` -> `quickstart.html`.
+
+```yaml
+nav: quickstart
+```
+
+### `layout`
+
+- Per-page layout override.
+- Typical values: `topnav`, `sidebar`.
+
+```yaml
+layout: sidebar
+```
+
+### `theme`
+
+- Per-page theme override.
+- Can be any built-in or custom theme name.
+
+```yaml
+theme: pycorino
+```
+
+### `width`
+
+- Page content width override.
+- Accepts: `narrow`, `normal`, `wide`, `full`, or percent values.
+
+```yaml
+width: wide
+# or
+width: 86
+# or
+width: 86%
+```
+
+## Precedence
+
+1. Frontmatter values override `marque.toml` for that page.
+2. Missing keys fall back to `marque.toml`.
+
+## Common mistakes
+
+- Missing opening/closing `---` fence.
+- Reusing the same `nav` slug across multiple pages.
+- Renaming `nav` without updating links and summary entries.
+
+@callout .warn
+  `summary.mq` controls navigation order and labels.
+  Frontmatter does not define nav ordering.
+@end callout

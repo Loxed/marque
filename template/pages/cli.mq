@@ -1,0 +1,136 @@
+---
+title: CLI
+nav: cli
+---
+
+# CLI
+
+Everything you need to run Marque from terminal.
+
+@callout .info
+	Tip:
+	Run commands from your site's folder unless the example says otherwise.
+@end callout
+
+
+## Command reference
+
+@card
+## `marque build`
+@divider
+```sh
+marque build . # builds static output into dist/
+```
+
+- Description: Build static files into `dist/`.
+- Arguments:
+	- `site-dir:[dir]`
+@end card
+
+----
+
+@card
+## `marque help`
+@divider
+```sh
+marque help # shows all available commands and usage
+```
+
+- Description: Show command help.
+- Arguments: none
+@end card
+
+----
+
+@card 
+## `marque new`
+@divider
+```sh
+marque new my-site # creates a new site copying the template
+```
+
+- Description: Create a new project scaffold.
+- Arguments:
+	- `layout:[name]`
+	- `theme:[name]`
+	- `site-dir:[dir]`
+@end card
+
+----
+
+@card
+## `marque serve`
+@divider
+```sh
+marque serve . # serves the website on default :3030 port
+```
+
+- Description: Start local dev server with live reload.
+- Arguments:
+	- `site-dir:[dir]`
+	- `port:[number]` (optional)
+@end card
+
+----
+
+## Examples
+
+@steps cli-examples
+
+    @step
+    ## Create project, serve it and build it
+    ```sh
+    marque new my-site layout:sidebar theme:default
+    cd my-site
+    marque serve my-site 4000
+    marque build my-site
+    ```
+    @end step
+
+	@step
+	## New project
+	```sh
+	marque new docs-site layout:sidebar theme:default
+	cd docs-site
+	```
+	@end step
+
+	@step
+	## Develop locally
+	```sh
+	marque serve .
+	```
+	Open http://localhost:3000
+	@end step
+
+	@step
+	## Production build
+	```sh
+	marque build .
+	```
+	Deploy the dist folder to your host.
+	@end step
+@end steps cli-examples
+
+## Troubleshooting
+
+@row cli-troubleshooting
+	@card
+		### Command not found
+		- Check Node.js version.
+		- Re-run npm link from the marque repository.
+	@end card
+
+	@card
+		### Slow watch or file locks on Windows
+		- Keep workflow in one environment (PowerShell/CMD or WSL).
+		- Avoid mixing WSL on Windows-mounted folders.
+	@end card
+
+	@card
+		### Route 404 while working
+		- Confirm page is listed in summary.mq.
+		- Use the 404 create-page button for missing pages.
+	@end card
+@end row cli-troubleshooting
+

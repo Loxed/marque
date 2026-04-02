@@ -46,13 +46,10 @@ Running the project on the Windows filesystem with WSL (`mnt/c/...`) can cause s
 
     ### Install from source (recommended)
 
-    Clone the repository and install dependencies:
+    Install the `marque` package directly from github
 
     ```sh
-    git clone https://github.com/Loxed/marque.git
-    cd marque
-    npm install
-    npm link
+      npm install -g github:Loxed/marque
     ```
 
     This makes the `marque` command available globally.

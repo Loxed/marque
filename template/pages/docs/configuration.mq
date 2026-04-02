@@ -1,0 +1,63 @@
+---
+title: Configuration
+nav: configuration
+layout: sidebar
+---
+
+# Configuration
+@divider
+
+Marque configuration is split into two layers:
+
+- Site-level defaults in `marque.toml`
+- Page-level overrides in frontmatter
+
+## `marque.toml` essentials
+
+```toml
+title = Marque
+description = Built with Marque
+layout = topnav
+theme = default
+width = 82
+```
+
+What these keys control:
+
+- `title`: site title used in page titles and branding
+- `description`: default meta description
+- `layout`: default layout for pages
+- `theme`: default theme for pages
+- `width`: default page content width
+
+## How this maps to mdBook-style config thinking
+
+If you come from mdBook's `book.toml`:
+
+- `book.title` -> `title`
+- `book.description` -> `description`
+- `src` is effectively `pages/` in Marque
+- output directory is `dist/` after `marque build`
+
+Marque keeps the config intentionally small and focused.
+
+## Build and watch behavior
+
+```sh
+marque serve .
+marque build .
+```
+
+- `serve` watches source/config/summary and rebuilds automatically
+- `build` emits static output into `dist/`
+
+## Navigation source
+
+`summary.mq` is the source of nav labels and ordering.
+A page can exist in `pages/` without appearing in nav if not listed in summary.
+
+## Related docs
+
+- [Frontmatter](/docs/frontmatter.html)
+- [Theme](/docs/theme.html)
+- [CLI Commands](/cli.html)
