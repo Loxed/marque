@@ -73,11 +73,11 @@ function tokenize(lines) {
 // ── AST builder ────────────────────────────────────────────────────────────
 
 function buildAST(tokens) {
-  const { nodes } = consumeBlock(tokens, 0, tokens.length, null);
+  const { nodes } = consumeBlock(tokens, 0, tokens.length, null, {});
   return { type: 'root', children: nodes };
 }
 
-function consumeBlock(tokens, start, end, openTag) {
+function consumeBlock(tokens, start, end, openTag, options = {}) {
   const nodes = [];
   let i = start;
   let textBuf = [];
@@ -93,8 +93,27 @@ function consumeBlock(tokens, start, end, openTag) {
     const tok = tokens[i];
 
     if (tok.type === 'close') {
+      // Normal close: matching @end <openTag>
+      if (openTag && tok.tag === openTag) {
+        flushText();
+        return { nodes, next: i + 1 };
+      }
+
+      // Optional close for standalone @step blocks.
+      if (openTag === 'step' && options.implicitStepClose) {
+        flushText();
+        return { nodes, next: i };
+      }
+
+      // Ignore stray closes at root level.
+      if (!openTag) {
+        i++;
+        continue;
+      }
+
+      // Unmatched close belongs to an outer block.
       flushText();
-      return { nodes, next: i + 1 };
+      return { nodes, next: i };
     }
 
     if (tok.type === 'divider') {
@@ -105,8 +124,17 @@ function consumeBlock(tokens, start, end, openTag) {
     }
 
     if (tok.type === 'open') {
+      if (openTag === 'step' && options.implicitStepClose && tok.tag === 'step') {
+        // Allow sibling standalone steps without requiring @end step.
+        flushText();
+        return { nodes, next: i };
+      }
+
       flushText();
-      const inner = consumeBlock(tokens, i + 1, end, tok.tag);
+      const innerOptions = {
+        implicitStepClose: tok.tag === 'step' && openTag !== 'steps',
+      };
+      const inner = consumeBlock(tokens, i + 1, end, tok.tag, innerOptions);
       i = inner.next;
       nodes.push(buildNode(tok.tag, tok.mods, tok.name, inner.nodes));
       continue;

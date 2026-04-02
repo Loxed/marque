@@ -27,8 +27,8 @@ Get from zero to a running site in a few minutes.
     ```bash
     node -v # >= v18.0.0
     npm -v #
-    ````
-    @end step
+    ```
+    
   @end card reqs
 
   @card install
@@ -56,8 +56,6 @@ Get from zero to a running site in a few minutes.
     ```
 
     If the command runs, you're ready to go.
-
-  @end step
   @end card install
 
 @end column
@@ -66,35 +64,32 @@ Get from zero to a running site in a few minutes.
 @step 3
   ## Create and run your site
   @divider
-@end step
-
+  
   @steps quickstart
   @step
   ## Create a project
   Scaffold a new site:
 
-  ````
+  
   ```bash
   marque new my-site
   cd my-site
   ```
-  ````
-
+  
   @end step
 
   @step
   ## Start the dev server
   Run the local server with live reload:
 
-  ````
   ```bash
   marque serve .
   ```
 
   Then open http://localhost:3000
-  ````
 
   @end step
+  
 
   @step
   ## Edit content
@@ -111,5 +106,6 @@ Get from zero to a running site in a few minutes.
   ```
 
   Output is written to `dist/`.
+  @end step
   @end card
 @end row
