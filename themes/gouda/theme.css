@@ -27,9 +27,6 @@
   --font-mono: 'IBM Plex Mono', monospace;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-img { max-width: 100%; display: block; }
-
 body {
   font-family: var(--font-sans);
   background: var(--bg);
@@ -54,17 +51,28 @@ body {
   letter-spacing: -0.01em;
 }
 
-.mq-nav-links a {
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
   font-size: 0.875rem;
   font-weight: 400;
   color: #a8c4cc;
   text-decoration: none;
   transition: color 0.15s;
-  border-bottom: 2px solid transparent;
-  margin-bottom: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
 }
-.mq-nav-links a:hover { color: #ffffff; }
-.mq-nav-links a.active { color: #00acd7; border-bottom-color: #00acd7; }
+.mq-nav-links a:hover,
+.mq-nav-group > .mq-nav-group-trigger:hover { color: #ffffff; border-color: rgba(168, 196, 204, 0.35); }
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
+  color: #00d8f5;
+  border-color: rgba(0, 216, 245, 0.45);
+  background: rgba(0, 216, 245, 0.12);
+}
+.mq-nav-submenu {
+  background: #1d1d1d;
+  border: 1px solid rgba(168, 196, 204, 0.25);
+}
 
 /* ── Main ── */
 /* ── Footer ── */

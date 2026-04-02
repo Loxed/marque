@@ -75,8 +75,8 @@ width = "82"
 
 - `title`: site title used in templates.
 - `description`: fallback page meta description.
-- `layout`: global layout name (`default`, `sidebar`, or `xmb`).
-  legacy alias: `crossmediabar`.
+- `layout`: global layout name (`default` or `sidebar`).
+  legacy values `xmb` and `crossmediabar` resolve to `default`.
 - `theme`: global theme name.
 - `width`: global page width occupancy (percentage-based, see below).
 

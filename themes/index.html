@@ -38,6 +38,33 @@
     const open = nav.classList.toggle('mq-nav-open');
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
+
+  function mqPositionSubmenus() {
+    const groups = document.querySelectorAll('.mq-nav-group');
+    groups.forEach(group => {
+      const submenu = group.querySelector(':scope > .mq-nav-submenu');
+      if (!submenu) return;
+
+      group.classList.remove('mq-nav-group-open-left');
+
+      const style = window.getComputedStyle(submenu);
+      if (style.position !== 'absolute') return;
+
+      const rect = submenu.getBoundingClientRect();
+      if (rect.right > window.innerWidth - 8) {
+        group.classList.add('mq-nav-group-open-left');
+      }
+    });
+  }
+
+  window.addEventListener('resize', mqPositionSubmenus);
+  document.addEventListener('DOMContentLoaded', mqPositionSubmenus);
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
+  });
+  document.addEventListener('focusin', (e) => {
+    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
+  });
   </script>
 </body>
 </html>

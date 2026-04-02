@@ -20,10 +20,6 @@
   --font-mono:  'IBM Plex Mono', monospace;
 }
 
-/* ── Reset ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-img { max-width: 100%; display: block; }
-
 /* ── Base ── */
 body {
   font-family: var(--font-sans);
@@ -48,15 +44,27 @@ body {
   letter-spacing: -0.02em;
 }
 
-.mq-nav-links a {
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
   font-size: 0.875rem;
   color: var(--muted);
   text-decoration: none;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
-.mq-nav-links a:hover { color: var(--text); }
-.mq-nav-links a.active { color: var(--text); border-bottom-color: var(--accent); }
+.mq-nav-links a:hover,
+.mq-nav-group > .mq-nav-group-trigger:hover { color: var(--text); border-color: var(--border); }
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.mq-nav-submenu {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
 
 /* ── Main ── */
 /* ── Footer ── */

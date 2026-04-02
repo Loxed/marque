@@ -1,0 +1,69 @@
+---
+title: Configuration
+nav: config
+order: 5
+layout: sidebar
+theme: default
+---
+
+# Configuration
+
+Use `marque.toml` for site-level defaults, then override per page with frontmatter.
+
+@row config-overview
+  @card .ghost
+    ## Site-level (`marque.toml`)
+
+    ```toml
+    title = Marque
+    description = Built with Marque
+    layout = sidebar
+    theme = rustique
+    width = 85
+    ```
+  @end card
+
+  @card .ghost
+    ## Page-level (frontmatter)
+
+    ```yaml
+    ---
+    title: Landing
+    nav: landing
+    order: 1
+    layout: default
+    theme: pycorino
+    width: full
+    ---
+    ```
+  @end card
+@end row config-overview
+
+## Keys
+
+- `title`: page title segment used in browser title.
+- `nav`: navigation label and canonical output slug.
+- `order`: nav ordering weight (ascending).
+- `layout`: page layout override.
+- `theme`: page theme override.
+- `width`: page width override (`narrow`, `normal`, `wide`, `full`, numeric).
+- `description`: meta description.
+
+@callout .warn
+  If you change `nav` for an existing page, its output filename changes too.
+@end callout
+
+## Built-in layouts
+
+- `default`
+- `sidebar`
+
+## Built-in themes
+
+- `default`
+- `rustique`
+- `pycorino`
+- `gouda`
+- `javarti`
+
+[See advanced examples →](/showcase.html)

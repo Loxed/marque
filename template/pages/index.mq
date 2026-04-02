@@ -1,27 +1,79 @@
 ---
 title: Home
-nav: Home
+nav: home
 order: 1
 ---
 
-# Welcome
+# Build Your Site With Marque
 
-This is your Marque site. Edit `pages/index.mq` to get started.
+Marque is a markdown-first static site compiler with layout directives, themed components, and a live-reload workflow.
 
-@row intro
-  @card .accent write-card
-    ## Write
-    Use the .mq format — markdown with layout directives.
-    [Syntax reference →](/docs.html)
-  @end card write-card
+@callout .info
+  This template is intentionally built with Marque itself. Treat it as both a starter and a complete reference project.
+@end callout
 
-  @card build-card
-    ## Build
-    Run `marque build` to compile your site to `dist/`.
-  @end card build-card
+@row hero-actions
+  @card .accent
+    ## Start in 30 seconds
+    Create pages in `pages/`, run `marque serve .`, then ship the generated `dist/` folder.
+    [Open quickstart →](/start.html){.primary}
+  @end card
 
-  @card deploy-card
-    ## Deploy
-    Upload `dist/` to any static host — Netlify, GitHub Pages, a VPS.
-  @end card deploy-card
-@end row intro
+  @card
+    ## Learn every directive
+    Explore rows, cards, callouts, stats, tabs, steps, hero sections, divider blocks, and markdown enhancements.
+    [See directives →](/directives.html)
+  @end card
+
+  @card
+    ## Explore advanced examples
+    Browse page-level theme/layout overrides, custom button colors, and composition recipes.
+    [Open showcase →](/showcase.html)
+  @end card
+@end row hero-actions
+
+@row project-snapshot
+  @stat pages
+    ## 6
+    curated template pages
+  @end stat pages
+
+  @stat workflows
+    ## 3
+    write, serve, publish
+  @end stat workflows
+
+  @stat output
+    ## static
+    zero-runtime deployment
+  @end stat output
+@end row project-snapshot
+
+## What this template demonstrates
+
+- Frontmatter-driven filenames and nav labels.
+- Automatic `index.html` redirect behavior when `index.mq` uses a non-index nav slug.
+- Live rebuild on page/toml changes while serving.
+- Layout-specific navigation behavior (including grouped hover menus).
+- Theme-only styling, with layout structure handled separately.
+
+@divider
+
+## Suggested flow
+
+@steps onboarding
+  @step
+    ## Read
+    Start with [quickstart](/start.html) to understand folder conventions and commands.
+  @end step
+
+  @step
+    ## Reference
+    Use [directives](/directives.html) while authoring pages.
+  @end step
+
+  @step
+    ## Compose
+    Pull patterns from [showcase](/showcase.html) and adapt to your project.
+  @end step
+@end steps onboarding

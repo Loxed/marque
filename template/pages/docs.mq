@@ -1,350 +1,316 @@
 ---
-title: Syntax Reference
-nav: Docs
-order: 2
+title: Docs
+nav: docs
+order: 3
 layout: sidebar
 ---
 
-# Syntax Reference
+# Directive Reference
 
-A complete guide to the .mq layout directives.
+This page documents every directive and markdown enhancement currently supported by Marque.
 
 @callout .info
-  All standard markdown works as expected. The directives below are Marque extensions.
+  Standard markdown always works. Marque directives are additive: use them where structure and reusable patterns help.
 @end callout
-
-## Reading this page
-
-Each section uses the same pattern:
-
-- Left card: source code you can copy.
-- Right card: what that source renders.
 
 ## Frontmatter
 
 @row frontmatter-example
-  @card .ghost frontmatter-code
+  @card .ghost
     Code:
     ```
     ---
-    title: Syntax Reference
-    nav: Docs
+    title: Team Handbook
+    nav: handbook
     order: 2
     layout: sidebar
     theme: rustique
-    description: Full directive reference
+    width: 92
+    description: Internal docs for contributors
     ---
     ```
-  @end card frontmatter-code
+  @end card
 
-  @card .ghost frontmatter-result
+  @card .ghost
     Notes:
 
-    - `title` is used for page title.
-    - `nav` is used in navigation.
-    - `order` controls nav sorting.
-    - `layout` overrides the site layout for this page only.
-    - `theme` overrides the site theme for this page only.
-    - `description` can be consumed by the theme template.
-  @end card frontmatter-result
+    - `title` sets the browser page title segment.
+    - `nav` sets nav label and filename slug.
+    - `order` controls nav ordering.
+    - `layout` and `theme` override defaults for this page.
+    - `width` overrides content width for this page.
+  @end card
 @end row frontmatter-example
 
-## Theme override per page
+## Row and card
 
-@row theme-override-example
-  @card .ghost theme-override-code
+@row row-card-example
+  @card .ghost
     Code:
     ```
-    ---
-    title: Press Kit
-    nav: Press
-    order: 5
-    layout: sidebar
-    theme: rustique
-    ---
-    ```
-  @end card theme-override-code
+    @row pricing
+      @card .accent starter
+        ## Starter
+        Great for tiny docs.
+      @end card starter
 
-  @card .ghost theme-override-result
+      @card .dark pro
+        ## Pro
+        Advanced docs + demos.
+      @end card pro
+    @end row pricing
+    ```
+  @end card
+
+  @card .ghost
     Result:
 
-    - This page uses the `rustique` theme.
-    - Other pages still use the theme from `marque.toml`.
-  @end card theme-override-result
-@end row theme-override-example
+    @row pricing
+      @card .accent starter
+        ## Starter
+        Great for tiny docs.
+      @end card starter
 
-## Rows and Cards
+      @card .dark pro
+        ## Pro
+        Advanced docs + demos.
+      @end card pro
+    @end row pricing
+  @end card
+@end row row-card-example
 
-@row rows-cards-example
-  @card .ghost rows-cards-code
-    Code:
-    ```
-    @row section-name
-      @card .accent card-name
-        ## Title
-        Content here
-      @end card card-name
-
-      @card other-card
-        ## Other
-        Content here
-      @end card other-card
-    @end row section-name
-    ```
-  @end card rows-cards-code
-
-  @card .ghost rows-cards-result
-    Result:
-
-    @row section-name
-      @card .accent card-name
-        ## Title
-        Content here
-      @end card card-name
-
-      @card other-card
-        ## Other
-        Content here
-      @end card other-card
-    @end row section-name
-  @end card rows-cards-result
-@end row rows-cards-example
-
-## Card modifiers
-
-- `@card` — plain white
-- `@card .accent` — orange top border
-- `@card .accent2` — blue top border
-- `@card .ghost` — transparent
-- `@card .dark` — dark background
-
-Multiple modifiers stack: `@card .accent .dark card-name`
-
-## Callouts
+## Callout
 
 @row callout-example
-  @card .ghost callout-code
+  @card .ghost
     Code:
     ```
     @callout .warn
-      Something to watch out for.
+      Watch for breaking changes when renaming nav slugs.
     @end callout
     ```
-  @end card callout-code
+  @end card
 
-  @card .ghost callout-result
+  @card .ghost
     Result:
 
     @callout .warn
-      Something to watch out for.
+      Watch for breaking changes when renaming nav slugs.
     @end callout
-  @end card callout-result
+  @end card
 @end row callout-example
 
-Variants: `.info` `.warn` `.danger` `.ok`
+Variants: `.info`, `.warn`, `.danger`, `.ok`.
 
-## Stats
+## Stat
 
 @row stat-example
-  @card .ghost stat-code
+  @card .ghost
     Code:
     ```
     @row stats
-      @stat users
-        ## 12,400
-        monthly users
-      @end stat users
-
-      @stat uptime
-        ## 99.9%
-        90-day uptime
-      @end stat uptime
+      @stat pages
+        ## 124
+        generated pages
+      @end stat pages
     @end row stats
     ```
-  @end card stat-code
+  @end card
 
-  @card .ghost stat-result
+  @card .ghost
     Result:
 
     @row stats
-      @stat users
-        ## 12,400
-        monthly users
-      @end stat users
-
-      @stat uptime
-        ## 99.9%
-        90-day uptime
-      @end stat uptime
+      @stat pages
+        ## 124
+        generated pages
+      @end stat pages
     @end row stats
-  @end card stat-result
+  @end card
 @end row stat-example
 
 ## Steps
 
 @row steps-example
-  @card .ghost steps-code
+  @card .ghost
     Code:
     ```
-    @steps install-guide
+    @steps workflow
       @step
-        ## Install
-        Run the install command.
+        ## Draft
+        Write markdown and directives.
       @end step
 
       @step
-        ## Configure
-        Edit the config file.
+        ## Preview
+        Run `marque serve .`.
       @end step
 
       @step
-        ## Run
-        Start with marque serve .
+        ## Publish
+        Upload `dist/`.
       @end step
-    @end steps install-guide
+    @end steps workflow
     ```
-  @end card steps-code
+  @end card
 
-  @card .ghost steps-result
+  @card .ghost
     Result:
 
-    @steps install-guide
+    @steps workflow
       @step
-        ## Install
-        Run the install command.
+        ## Draft
+        Write markdown and directives.
       @end step
 
       @step
-        ## Configure
-        Edit the config file.
+        ## Preview
+        Run `marque serve .`.
       @end step
 
       @step
-        ## Run
-        Start with marque serve .
+        ## Publish
+        Upload `dist/`.
       @end step
-    @end steps install-guide
-  @end card steps-result
+    @end steps workflow
+  @end card
 @end row steps-example
 
 ## Tabs
 
 @row tabs-example
-  @card .ghost tabs-code
+  @card .ghost
     Code:
     ```
-    @tabs code-samples
+    @tabs snippets
       @tab .js
         ```js
-        console.log("Hello from JS");
+        console.log("hello marque")
         ```
       @end tab
 
-      @tab .python
-        ```python
-        print("Hello from Python")
+      @tab .bash
+        ```bash
+        marque serve .
         ```
       @end tab
-    @end tabs code-samples
+    @end tabs snippets
     ```
-  @end card tabs-code
+  @end card
 
-  @card .ghost tabs-result
+  @card .ghost
     Result:
 
-    @tabs code-samples
+    @tabs snippets
       @tab .js
         ```js
-        console.log("Hello from JS");
+        console.log("hello marque")
         ```
       @end tab
 
-      @tab .python
-        ```python
-        print("Hello from Python")
+      @tab .bash
+        ```bash
+        marque serve .
         ```
       @end tab
-    @end tabs code-samples
-  @end card tabs-result
+    @end tabs snippets
+  @end card
 @end row tabs-example
 
-## Hero and Section
+## Hero and section
 
 @row hero-section-example
-  @card .ghost hero-section-code
+  @card .ghost
     Code:
     ```
-    @hero .accent landing-hero
-      # Build docs fast
-      Structured markdown with reusable layout blocks.
-    @end hero landing-hero
+    @hero .accent launch
+      # Ship docs faster
+      Keep writing in markdown, add structure only when useful.
+    @end hero launch
 
-    @section .ghost details
-      ## Why use this
-      Keep authoring simple and output consistent.
-    @end section details
+    @section .ghost why
+      ## Why this works
+      Less boilerplate, more content velocity.
+    @end section why
     ```
-  @end card hero-section-code
+  @end card
 
-  @card .ghost hero-section-result
+  @card .ghost
     Result:
 
-    @hero .accent landing-hero
-      # Build docs fast
-      Structured markdown with reusable layout blocks.
-    @end hero landing-hero
+    @hero .accent launch
+      # Ship docs faster
+      Keep writing in markdown, add structure only when useful.
+    @end hero launch
 
-    @section .ghost details
-      ## Why use this
-      Keep authoring simple and output consistent.
-    @end section details
-  @end card hero-section-result
+    @section .ghost why
+      ## Why this works
+      Less boilerplate, more content velocity.
+    @end section why
+  @end card
 @end row hero-section-example
 
-## Self-closing
+## Divider
 
 @row divider-example
-  @card .ghost divider-code
+  @card .ghost
     Code:
     ```
     @divider
     ```
-  @end card divider-code
+  @end card
 
-  @card .ghost divider-result
+  @card .ghost
     Result:
 
     @divider
-  @end card divider-result
+  @end card
 @end row divider-example
 
-## Buttons and badges in markdown
+## Markdown enhancements
 
 @row markdown-enhancements
-  @card .ghost markdown-enhancements-code
+  @card .ghost
     Code:
     ```
-    [Read the docs →](/docs.html)
-    [Download](/download.zip){.primary}
+    [Read docs ?](/directives.html)
+    [Download release](/downloads/marque.zip){.download}
 
     :badge[Stable]{.ok}
-    :badge[Beta]{.warn}
+    :badge[Preview]{.warn}
     ```
-  @end card markdown-enhancements-code
+  @end card
 
-  @card .ghost markdown-enhancements-result
+  @card .ghost
     Result:
 
-    [Read the docs →](/docs.html)
-    [Download](/download.zip){.primary}
+    [Read docs ?](/directives.html)
+    [Download release](#){.download}
 
     :badge[Stable]{.ok}
-    :badge[Beta]{.warn}
-  @end card markdown-enhancements-result
+    :badge[Preview]{.warn}
+  @end card
 @end row markdown-enhancements
 
-## Tips
+The download-link color trick:
 
-- Use names on blocks (`@row pricing`) to keep large pages readable.
-- Start simple with markdown, then add layout directives where needed.
-- Prefer reusable content patterns: row + card, then callout/steps for emphasis.
+1. Use a custom class in markdown link shorthand: `{.download}`.
+2. Style that class in your theme: `.mq-btn.download { ... }`.
+
+## Generic directives
+
+Unknown directives become generic wrappers, so this:
+
+```
+@feature-grid
+  ...
+@end feature-grid
+```
+
+renders as `.mq-feature-grid`, which you can target in theme CSS.
+
+## Practical tips
+
+- Use directive names (`@row pricing`) for readability.
+- Keep pages markdown-first, then add directive structure.
+- Prefer reusable patterns over one-off custom HTML.

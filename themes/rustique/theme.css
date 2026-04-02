@@ -19,9 +19,6 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-img { max-width: 100%; display: block; }
-
 body {
   font-family: var(--font-sans);
   background:
@@ -54,11 +51,8 @@ body {
   letter-spacing: 0.01em;
 }
 
-.mq-nav-links {
-  gap: 0.2rem;
-}
-
-.mq-nav-links a {
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
   border: 1px solid transparent;
   border-radius: 6px;
   font-size: 0.88rem;
@@ -69,10 +63,16 @@ body {
   transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
 .mq-nav-links a:hover { color: #fff8ef; border-color: rgba(255, 248, 239, 0.25); }
-.mq-nav-links a.active {
+.mq-nav-group > .mq-nav-group-trigger:hover { color: #fff8ef; border-color: rgba(255, 248, 239, 0.25); }
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
   color: #fff8ef;
   background: rgba(211, 69, 22, 0.24);
   border-color: rgba(211, 69, 22, 0.6);
+}
+.mq-nav-submenu {
+  background: #1b1917;
+  border: 1px solid rgba(255, 248, 239, 0.18);
 }
 .mq-footer {
   font-size: 0.82rem;
@@ -209,6 +209,15 @@ a.mq-btn.blue {
   color: #f7eee4;
 }
 a.mq-btn.blue:hover { background: #272421; }
+a.mq-btn.download {
+  background: #2e4b7a;
+  border-color: #2e4b7a;
+  color: #f4f8ff;
+}
+a.mq-btn.download:hover {
+  background: #243c63;
+  border-color: #243c63;
+}
 
 .mq-callout {
   padding: 1rem 1.15rem;

@@ -24,9 +24,6 @@
   --font-mono:  'Fira Code', monospace;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-img { max-width: 100%; display: block; }
-
 body {
   font-family: var(--font-sans);
   background: var(--bg);
@@ -51,17 +48,28 @@ body {
   letter-spacing: -0.01em;
 }
 
-.mq-nav-links a {
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
   font-size: 0.875rem;
   font-weight: 600;
   color: #c5d8f0;
   text-decoration: none;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -3px;
-  transition: color 0.15s, border-color 0.15s;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
-.mq-nav-links a:hover { color: #ffffff; }
-.mq-nav-links a.active { color: #ffd43b; border-bottom-color: #ffd43b; }
+.mq-nav-links a:hover,
+.mq-nav-group > .mq-nav-group-trigger:hover { color: #ffffff; border-color: rgba(197, 216, 240, 0.35); }
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
+  color: #ffd43b;
+  border-color: rgba(255, 212, 59, 0.65);
+  background: rgba(255, 212, 59, 0.14);
+}
+.mq-nav-submenu {
+  background: #2b5b8a;
+  border: 1px solid rgba(197, 216, 240, 0.35);
+}
 
 /* ── Main ── */
 /* ── Footer ── */

@@ -66,8 +66,7 @@ width = 50
 # layout options:
 #   default   -> top navigation layout
 #   sidebar   -> mdbook-like left sidebar layout
-#   xmb       -> sticky top bar + horizontal nav rail
-#               (legacy alias: crossmediabar)
+#   legacy values xmb/crossmediabar now resolve to default
 #
 # theme options (built-in):
 #   default, rustique, pycorino, gouda, javarti

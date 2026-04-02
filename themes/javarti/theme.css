@@ -27,9 +27,6 @@
   --font-mono:  'Roboto Mono', monospace;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-img { max-width: 100%; display: block; }
-
 body {
   font-family: var(--font-sans);
   background: var(--bg);
@@ -54,7 +51,8 @@ body {
   letter-spacing: 0;
 }
 
-.mq-nav-links a {
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
   font-size: 0.875rem;
   font-weight: 500;
   color: #a8a8a8;
@@ -62,12 +60,22 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.78rem;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -3px;
-  transition: color 0.15s, border-color 0.15s;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
-.mq-nav-links a:hover { color: #ffffff; }
-.mq-nav-links a.active { color: var(--accent); border-bottom-color: var(--accent); }
+.mq-nav-links a:hover,
+.mq-nav-group > .mq-nav-group-trigger:hover { color: #ffffff; border-color: #3a3a3a; }
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+}
+.mq-nav-submenu {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+}
 
 /* ── Main ── */
 /* ── Footer ── */

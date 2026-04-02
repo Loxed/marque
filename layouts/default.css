@@ -3,6 +3,7 @@
 img { max-width: 100%; display: block; }
 
 body {
+  margin: 0;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -58,18 +59,28 @@ body {
   top: 100%;
   left: 0;
   min-width: 220px;
-  display: none;
+  display: flex;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
   flex-direction: column;
   gap: 0.1rem;
   padding: 0.4rem;
   border-radius: 10px;
   z-index: 120;
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+
+.mq-nav-group.mq-nav-group-open-left > .mq-nav-submenu {
+  left: auto;
+  right: 0;
 }
 
 .mq-nav-group:hover > .mq-nav-submenu,
-.mq-nav-group:focus-within > .mq-nav-submenu,
-.mq-nav-group.active > .mq-nav-submenu {
-  display: flex;
+.mq-nav-group:focus-within > .mq-nav-submenu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .mq-nav-submenu a {
@@ -123,8 +134,12 @@ body {
     position: static;
     min-width: 0;
     display: flex;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
     padding: 0.2rem 0 0.35rem 0.9rem;
     border-radius: 0;
+    transition: none;
   }
   .mq-main {
     width: 100% !important;

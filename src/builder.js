@@ -79,6 +79,16 @@ function build(siteDir, outDir) {
     console.log(`  built → ${outName}`);
   }
 
+  // Keep /index.html (and nested /index.html) as redirect shims when an index.mq
+  // page is renamed via frontmatter nav/title slug.
+  for (const page of pageEntries) {
+    if (!page.redirectFrom || page.redirectFrom === page.href) continue;
+    const redirectFile = path.join(outDir, page.redirectFrom);
+    fs.mkdirSync(path.dirname(redirectFile), { recursive: true });
+    fs.writeFileSync(redirectFile, buildRedirectPage(`/${page.href}`));
+    console.log(`  redirect → ${page.redirectFrom} -> ${page.href}`);
+  }
+
   // copy static assets if they exist
   const staticDir = path.join(siteDir, 'static');
   if (fs.existsSync(staticDir)) {
@@ -166,7 +176,7 @@ function resolveLayoutCSSPath(layout, siteDir) {
 
 function normalizeLayoutName(layout) {
   const name = String(layout || 'default').trim().toLowerCase();
-  if (name === 'crossmediabar') return 'xmb';
+  if (name === 'crossmediabar' || name === 'xmb') return 'default';
   return name || 'default';
 }
 
@@ -216,16 +226,45 @@ function buildPageEntries(pages, pagesDir, config) {
     const { fm, body } = extractFrontmatter(src);
 
     const dir = path.dirname(rel);
+    const webDir = (dir && dir !== '.') ? dir.split(path.sep).join('/') : '';
     const sourceBase = path.basename(rel, '.mq');
     const isIndexSource = sourceBase.toLowerCase() === 'index';
     const slugSource = fm.nav || fm.title || sourceBase;
-    const fileBase = isIndexSource ? 'index' : (safeName(slugSource) || safeName(sourceBase));
-    const href = (dir && dir !== '.') ? path.join(dir, `${fileBase}.html`) : `${fileBase}.html`;
+    const fileBase = safeName(slugSource) || safeName(sourceBase);
 
-    const label = fm.nav || fm.title || sourceBase;
+    let href = webDir ? `${webDir}/${fileBase}.html` : `${fileBase}.html`;
+    let redirectFrom = null;
+
+    if (isIndexSource) {
+      const indexHref = webDir ? `${webDir}/index.html` : 'index.html';
+      if (fileBase !== 'index') {
+        redirectFrom = indexHref;
+      } else {
+        href = indexHref;
+      }
+    }
+
+    const label = fm.title || fm.nav || sourceBase;
     const order = parseInt(fm.order || '99', 10);
-    return { file, rel, fm, body, href, label, order };
+    return { file, rel, fm, body, href, redirectFrom, label, order };
   }).sort((a, b) => a.order - b.order);
+}
+
+function buildRedirectPage(targetHref) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="0;url=${targetHref}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redirecting...</title>
+<link rel="canonical" href="${targetHref}">
+</head>
+<body>
+<p>Redirecting to <a href="${targetHref}">${targetHref}</a>...</p>
+<script>location.replace(${JSON.stringify(targetHref)});</script>
+</body>
+</html>`;
 }
 
 function buildNav(pageEntries) {
@@ -281,21 +320,32 @@ function buildNavGroups(nav) {
       map.set(key, {
         key,
         label: toTitleCase(key),
-        order: item.order,
+        order: Number.POSITIVE_INFINITY,
+        fallbackOrder: Number.POSITIVE_INFINITY,
         root: null,
         children: [],
       });
     }
 
     const group = map.get(key);
-    group.order = Math.min(group.order, item.order);
+    group.fallbackOrder = Math.min(group.fallbackOrder, item.order);
 
     if (parts.length <= 1) {
       group.root = item;
       group.label = item.label || group.label;
+      group.order = item.order;
     } else {
       group.children.push(item);
     }
+  }
+
+  // A group's position in top-level nav is driven by its root page order.
+  // Only groups without a root page fall back to child order.
+  for (const group of map.values()) {
+    if (!Number.isFinite(group.order)) {
+      group.order = group.fallbackOrder;
+    }
+    delete group.fallbackOrder;
   }
 
   return Array.from(map.values()).sort((a, b) => a.order - b.order);
