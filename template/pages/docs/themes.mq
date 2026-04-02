@@ -1,7 +1,6 @@
 ---
 title: MQS Themes
 nav: themes
-order: 3
 ---
 
 # MQS Themes
@@ -148,3 +147,4 @@ Anything after `@mqs-essentials;` is your custom layer.
 @callout .ok
 If `theme.mqs` exists, Marque uses it first. Otherwise it falls back to `theme.css`.
 @end callout
+

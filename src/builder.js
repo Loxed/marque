@@ -51,10 +51,11 @@ function build(siteDir, outDir, options = {}) {
   // find all .mq files
   const pagesDir = path.join(siteDir, 'pages');
   const pages = findMQ(pagesDir);
+  const summary = loadSummary(siteDir, pagesDir);
 
-  const pageEntries = buildPageEntries(pages, pagesDir, config);
-  const nav = buildNav(pageEntries);
-  const pageSequence = buildPageSequence(pageEntries);
+  const pageEntries = buildPageEntries(pages, pagesDir, config, summary);
+  const nav = buildNav(pageEntries, summary);
+  const pageSequence = buildPageSequence(pageEntries, summary);
 
   let built = 0;
   for (const page of pageEntries) {
@@ -335,9 +336,12 @@ function findMQ(dir) {
   return results;
 }
 
-function buildPageEntries(pages, pagesDir, config) {
+function buildPageEntries(pages, pagesDir, config, summary) {
+  const summaryMap = (summary && summary.map) || new Map();
+
   return pages.map(file => {
     const rel = path.relative(pagesDir, file);
+    const normalizedRel = normalizeRelPath(rel).toLowerCase();
     const src = fs.readFileSync(file, 'utf8');
     const { fm, body } = extractFrontmatter(src);
     const layoutLine = findFrontmatterKeyLine(src, 'layout');
@@ -361,10 +365,151 @@ function buildPageEntries(pages, pagesDir, config) {
       }
     }
 
-    const label = fm.title || fm.nav || sourceBase;
-    const order = parseInt(fm.order || '99', 10);
+    const summaryMeta = summaryMap.get(normalizedRel);
+    const label = (summaryMeta && summaryMeta.label) || fm.title || fm.nav || sourceBase;
+    const order = summaryMeta ? summaryMeta.order : Number.POSITIVE_INFINITY;
     return { file, rel, fm, body, href, redirectFrom, label, order, layoutLine };
-  }).sort((a, b) => a.order - b.order);
+  }).sort((a, b) => {
+    const aFinite = Number.isFinite(a.order);
+    const bFinite = Number.isFinite(b.order);
+
+    if (aFinite && bFinite) return a.order - b.order;
+    if (aFinite) return -1;
+    if (bFinite) return 1;
+
+    return a.href.localeCompare(b.href);
+  });
+}
+
+function loadSummary(siteDir, pagesDir) {
+  const summaryCandidates = [
+    path.join(siteDir, 'summary.mq'),
+    path.join(pagesDir, 'summary.mq'),
+  ];
+
+  const summaryPath = summaryCandidates.find(p => fs.existsSync(p));
+  if (!summaryPath) {
+    return { path: null, map: new Map() };
+  }
+
+  const raw = fs.readFileSync(summaryPath, 'utf8');
+  const lines = raw.split(/\r?\n/);
+  const map = new Map();
+  const items = [];
+  const isMqSummary = /\.mq$/i.test(summaryPath);
+  const dirByLevel = [];
+  let order = 0;
+
+  for (const line of lines) {
+    const rawLine = String(line || '');
+    const trimmed = rawLine.trim();
+    if (!trimmed) continue;
+
+    const level = getSummaryIndentLevel(rawLine);
+
+    if (/^@divider\b/i.test(trimmed)) {
+      items.push({ type: 'divider' });
+      continue;
+    }
+
+    // Allow title lines in summary docs, especially in summary.mq.
+    if (/^#{1,6}\s+/.test(trimmed)) continue;
+
+    const fullLink = trimmed.match(/^(?:[-*+]\s+)?\[([^\]]+)\]\(([^)]+)\)\s*$/);
+    if (fullLink) {
+      const label = String(fullLink[1] || '').trim();
+      const href = String(fullLink[2] || '').trim();
+      const parentDir = level > 0 ? (dirByLevel[level - 1] || '') : '';
+      const rel = normalizeSummaryTarget(href, parentDir);
+      if (!rel) continue;
+
+      dirByLevel[level] = getSummaryChildBase(rel);
+      dirByLevel.length = level + 1;
+
+      const key = rel.toLowerCase();
+      if (!map.has(key)) {
+        map.set(key, {
+          order: order++,
+          label: label || path.basename(rel, '.mq'),
+        });
+      }
+
+      items.push({
+        type: 'page',
+        key,
+        label: label || path.basename(rel, '.mq'),
+        level,
+        order: map.get(key).order,
+      });
+      continue;
+    }
+
+    if (isMqSummary) {
+      items.push({ type: 'heading', label: trimmed, level });
+    }
+  }
+
+  return { path: summaryPath, map, items };
+}
+
+function getSummaryIndentLevel(line) {
+  const lead = String(line || '').match(/^[\t ]*/);
+  const leading = lead ? lead[0] : '';
+  let spaces = 0;
+
+  for (const ch of leading) {
+    spaces += ch === '\t' ? 2 : 1;
+  }
+
+  return Math.floor(spaces / 2);
+}
+
+function getSummaryChildBase(relPath) {
+  const rel = normalizeRelPath(relPath || '');
+  const dir = normalizeRelPath(path.posix.dirname(rel));
+  if (dir && dir !== '.') return dir;
+
+  const base = path.posix.basename(rel, '.mq').toLowerCase();
+  if (!base || base === 'index') return '';
+  return base;
+}
+
+function normalizeSummaryTarget(href, baseDir = '') {
+  const raw = String(href || '').trim();
+  if (!raw) return null;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(raw) || raw.startsWith('//') || raw.startsWith('#')) {
+    return null;
+  }
+
+  const hashIndex = raw.indexOf('#');
+  const queryIndex = raw.indexOf('?');
+  let splitIndex = -1;
+  if (hashIndex >= 0 && queryIndex >= 0) splitIndex = Math.min(hashIndex, queryIndex);
+  else splitIndex = Math.max(hashIndex, queryIndex);
+
+  let pathPart = splitIndex >= 0 ? raw.slice(0, splitIndex) : raw;
+  const absolute = pathPart.startsWith('/');
+  pathPart = pathPart.replace(/^\/+/, '');
+  pathPart = pathPart.replace(/^pages\//i, '');
+
+  if (/\.html$/i.test(pathPart)) {
+    pathPart = pathPart.replace(/\.html$/i, '.mq');
+  }
+
+  if (!/\.mq$/i.test(pathPart)) return null;
+
+  let resolved = normalizeRelPath(pathPart);
+  const normalizedBase = normalizeRelPath(baseDir || '').replace(/^\.$/, '');
+
+  if (!absolute && normalizedBase) {
+    const hasSlash = resolved.includes('/');
+    const hasDotPrefix = resolved.startsWith('./') || resolved.startsWith('../');
+    if (!hasSlash || hasDotPrefix) {
+      resolved = normalizeRelPath(path.posix.join(normalizedBase, resolved));
+    }
+  }
+
+  return normalizeRelPath(resolved);
 }
 
 function createPageHrefResolver(pageEntries, currentRel) {
@@ -579,27 +724,94 @@ function buildRedirectPage(targetHref) {
 </html>`;
 }
 
-function buildNav(pageEntries) {
+function buildNav(pageEntries, summary) {
+  if (summary && Array.isArray(summary.items) && summary.items.length) {
+    return buildNavFromSummary(pageEntries, summary);
+  }
+
   return pageEntries.map(page => ({
+    type: 'link',
     href: page.href,
     label: page.label,
     order: page.order,
   }));
 }
 
+function buildNavFromSummary(pageEntries, summary) {
+  const nav = [];
+  const pageByRel = new Map();
+
+  for (const page of pageEntries) {
+    const rel = normalizeRelPath(page.rel).toLowerCase();
+    pageByRel.set(rel, page);
+  }
+
+  for (const item of summary.items) {
+    if (item.type === 'divider') {
+      nav.push({ type: 'divider' });
+      continue;
+    }
+
+    if (item.type === 'heading') {
+      nav.push({ type: 'heading', label: item.label, level: item.level || 0 });
+      continue;
+    }
+
+    if (item.type === 'page') {
+      const page = pageByRel.get(item.key);
+      if (page) {
+        nav.push({
+          type: 'link',
+          href: page.href,
+          label: item.label || page.label,
+          order: Number.isFinite(item.order) ? item.order : page.order,
+          level: item.level || 0,
+        });
+      } else {
+        nav.push({
+          type: 'link',
+          href: item.key.replace(/\.mq$/i, '.html'),
+          label: item.label || path.basename(item.key, '.mq'),
+          order: Number.isFinite(item.order) ? item.order : Number.POSITIVE_INFINITY,
+          level: item.level || 0,
+          virtual: true,
+        });
+      }
+    }
+  }
+
+  return nav;
+}
+
 function renderNav(nav, current) {
+  const hasStructuredSummary = nav.some(item => (
+    item.type === 'divider'
+    || item.type === 'heading'
+    || (item.type === 'link' && Number(item.level || 0) > 0)
+  ));
+
+  if (hasStructuredSummary) {
+    return renderStructuredSummaryNav(nav, current);
+  }
+
   const groups = buildNavGroups(nav);
 
   return groups.map(group => {
-    if (!group.children.length) {
-      const active = group.root && group.root.href === current ? ' class="active"' : '';
+    if (group.root && !group.children.length) {
+      const active = group.root.href === current ? ' class="active"' : '';
       return `<a href="/${group.root.href}"${active}>${escapeHtml(group.root.label)}</a>`;
     }
 
-    const triggerItem = group.root || group.children[0];
-    const submenuItems = group.root ? group.children : group.children.slice(1);
+    if (!group.root && group.children.length === 1) {
+      const loneChild = group.children[0];
+      const active = loneChild && loneChild.href === current ? ' class="active"' : '';
+      return `<a href="/${loneChild.href}"${active}>${escapeHtml(loneChild.label)}</a>`;
+    }
 
-    if (!submenuItems.length) {
+    const triggerItem = group.root;
+    const submenuItems = group.root ? group.children : group.children;
+
+    if (triggerItem && !submenuItems.length) {
       const active = triggerItem && triggerItem.href === current ? ' class="active"' : '';
       return `<a href="/${triggerItem.href}"${active}>${escapeHtml(triggerItem.label)}</a>`;
     }
@@ -612,15 +824,123 @@ function renderNav(nav, current) {
       })
       .join('');
 
-    const hasActiveItem = triggerItem.href === current || submenuItems.some(item => item.href === current);
+    const hasActiveItem = (triggerItem && triggerItem.href === current) || submenuItems.some(item => item.href === current);
     const groupClass = hasActiveItem ? 'mq-nav-group active' : 'mq-nav-group';
     const triggerActive = hasActiveItem ? ' active' : '';
 
-    return `<div class="${groupClass}"><a class="mq-nav-group-trigger${triggerActive}" href="/${triggerItem.href}">${escapeHtml(triggerItem.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`;
+    if (!triggerItem) {
+      return `<div class="${groupClass}"><span class="mq-nav-group-trigger mq-nav-group-trigger-label${triggerActive}">${escapeHtml(group.label)}</span><div class="mq-nav-submenu">${submenu}</div></div>`;
+    }
+
+    return `<div class="${groupClass}"><a class="mq-nav-group-trigger mq-nav-group-trigger-link${triggerActive}" href="/${triggerItem.href}">${escapeHtml(triggerItem.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`;
   }).join('\n');
 }
 
-function buildPageSequence(pageEntries) {
+function renderStructuredSummaryNav(nav, current) {
+  const blocks = [];
+
+  for (let i = 0; i < nav.length; i++) {
+    const item = nav[i];
+
+    if (item.type === 'divider') {
+      blocks.push({ type: 'divider' });
+      continue;
+    }
+
+    if (item.type === 'heading') {
+      const headingLevel = Number(item.level || 0);
+      const children = [];
+      let j = i + 1;
+      while (j < nav.length) {
+        const next = nav[j];
+        if (!next) break;
+        if (next.type === 'divider' || next.type === 'heading') break;
+        if (next.type !== 'link') break;
+
+        const nextLevel = Number(next.level || 0);
+        if (nextLevel <= headingLevel) break;
+
+        children.push(next);
+        j++;
+      }
+
+      if (children.length) {
+        blocks.push({ type: 'heading-group', label: item.label, links: children });
+        i = j - 1;
+        continue;
+      }
+
+      blocks.push({ type: 'heading', label: item.label });
+      continue;
+    }
+
+    const level = Number(item.level || 0);
+    if (item.type === 'link' && level === 0) {
+      const children = [];
+      let j = i + 1;
+      while (j < nav.length) {
+        const next = nav[j];
+        if (!next || next.type !== 'link') break;
+
+        const nextLevel = Number(next.level || 0);
+        if (nextLevel <= level) break;
+
+        children.push(next);
+        j++;
+      }
+
+      if (children.length) {
+        blocks.push({ type: 'link-group', root: item, links: children });
+        i = j - 1;
+        continue;
+      }
+    }
+
+    blocks.push({ type: 'link', item });
+  }
+
+  return blocks.map(block => {
+    if (block.type === 'divider') {
+      return '<div class="mq-nav-divider" role="separator" aria-hidden="true"></div>';
+    }
+
+    if (block.type === 'heading') {
+      return `<div class="mq-nav-heading">${escapeHtml(block.label)}</div>`;
+    }
+
+    if (block.type === 'heading-group') {
+      const links = block.links || [];
+      const hasActive = links.some(link => link.href === current);
+      const groupClass = hasActive ? 'mq-nav-group mq-nav-summary-group active' : 'mq-nav-group mq-nav-summary-group';
+      const triggerClass = 'mq-nav-group-trigger mq-nav-group-trigger-label';
+      const submenu = links.map(link => renderNavLink(link, current)).join('');
+      return `<div class="${groupClass}"><span class="${triggerClass}">${escapeHtml(block.label)}</span><div class="mq-nav-submenu">${submenu}</div></div>`;
+    }
+
+    if (block.type === 'link') {
+      return renderNavLink(block.item, current);
+    }
+
+    const rootLink = block.root;
+    const links = block.links || [];
+
+    const hasActive = (rootLink && rootLink.href === current) || links.some(link => link.href === current);
+    const groupClass = hasActive ? 'mq-nav-group mq-nav-summary-group active' : 'mq-nav-group mq-nav-summary-group';
+    const triggerClass = hasActive ? 'mq-nav-group-trigger active' : 'mq-nav-group-trigger';
+    const submenu = links.map(link => renderNavLink(link, current)).join('');
+
+    return `<div class="${groupClass}"><a class="${triggerClass} mq-nav-group-trigger-link" href="/${rootLink.href}">${escapeHtml(rootLink.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`;
+  }).join('\n');
+}
+
+function renderNavLink(item, current) {
+  const level = Math.max(0, Math.min(6, Number(item.level || 0)));
+  const classes = [`mq-nav-link`, `mq-nav-level-${level}`];
+  if (item.href === current) classes.push('active');
+  return `<a class="${classes.join(' ')}" style="--mq-nav-level:${level};" href="/${item.href}">${escapeHtml(item.label)}</a>`;
+}
+
+function buildPageSequence(pageEntries, summary) {
   const sequence = [];
   const seen = new Set();
 
@@ -629,6 +949,19 @@ function buildPageSequence(pageEntries) {
     seen.add(item.href);
     sequence.push({ href: item.href, label: item.label || item.href });
   };
+
+  if (summary && Array.isArray(summary.items) && summary.items.length) {
+    const pageByRel = new Map();
+    for (const page of pageEntries) {
+      pageByRel.set(normalizeRelPath(page.rel).toLowerCase(), page);
+    }
+
+    for (const item of summary.items) {
+      if (item.type !== 'page') continue;
+      pushItem(pageByRel.get(item.key));
+    }
+    return sequence;
+  }
 
   for (const page of pageEntries) {
     pushItem(page);

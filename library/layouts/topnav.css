@@ -39,6 +39,7 @@ body {
 }
 
 .mq-nav-links > a,
+.mq-nav-links > .mq-nav-link,
 .mq-nav-links > .mq-nav-group > .mq-nav-group-trigger {
   display: flex;
   align-items: center;
@@ -55,6 +56,30 @@ body {
 
 .mq-nav-group > .mq-nav-group-trigger {
   cursor: pointer;
+}
+
+.mq-nav-group > .mq-nav-group-trigger-link {
+  cursor: pointer;
+}
+
+.mq-nav-group > .mq-nav-group-trigger-label {
+  cursor: default;
+}
+
+.mq-nav-group > .mq-nav-group-trigger-label:hover {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+}
+
+.mq-nav-group > .mq-nav-group-trigger-label.active {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+}
+
+.mq-nav-summary-group > .mq-nav-group-trigger {
+  user-select: none;
 }
 
 .mq-nav-submenu {
@@ -92,6 +117,10 @@ body {
   border-radius: 7px;
   height: auto;
   white-space: normal;
+}
+
+.mq-nav-submenu .mq-nav-link {
+  padding-left: calc(0.65rem + (var(--mq-nav-level, 0) * 0.75rem));
 }
 
 .mq-main {

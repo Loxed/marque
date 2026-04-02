@@ -98,7 +98,6 @@ Each page can override defaults:
 ---
 title: Syntax Reference
 nav: Docs
-order: 2
 theme: rustique
 layout: sidebar
 width: 90
@@ -107,10 +106,30 @@ width: 90
 
 - `title`: page title.
 - `nav`: nav label.
-- `order`: nav sort order.
 - `theme`: optional per-page theme override.
 - `layout`: optional per-page layout override.
 - `width`: optional per-page width override.
+
+## Summary Navigation
+
+Marque uses `summary.mq` (mdBook-style) to define navigation labels and ordering.
+
+Example:
+
+```md
+# Summary
+
+[Home](index.mq)
+[Quickstart](quickstart.mq)
+[Docs](docs.mq)
+  [Cheat Sheet](cheat-sheet.mq)
+```
+
+Notes:
+
+- Frontmatter `order` is no longer used.
+- Link text in `summary.mq` becomes nav label.
+- Link target controls nav order and page sequence.
 
 Width supports:
 

@@ -42,10 +42,38 @@ body {
   padding: 0.42rem 0.7rem;
 }
 
+.mq-nav-links .mq-nav-link {
+  padding-left: calc(0.7rem + (var(--mq-nav-level, 0) * 0.9rem));
+}
+
 .mq-nav-group > .mq-nav-group-trigger {
   cursor: pointer;
   display: block;
   padding: 0.42rem 0.7rem;
+}
+
+.mq-nav-group > .mq-nav-group-trigger-link {
+  cursor: pointer;
+}
+
+.mq-nav-group > .mq-nav-group-trigger-label {
+  cursor: default;
+}
+
+.mq-nav-group > .mq-nav-group-trigger-label:hover {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+}
+
+.mq-nav-group > .mq-nav-group-trigger-label.active {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+}
+
+.mq-nav-summary-group > .mq-nav-group-trigger {
+  cursor: default;
 }
 
 .mq-nav-submenu {
@@ -63,7 +91,7 @@ body {
 .mq-nav-submenu a {
   display: block;
   position: relative;
-  padding: 0.36rem 0.62rem 0.36rem 1.2rem;
+  padding: 0.36rem 0.62rem 0.36rem calc(1.2rem + (var(--mq-nav-level, 0) * 0.7rem));
 }
 
 .mq-nav-submenu a::before {

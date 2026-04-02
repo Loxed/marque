@@ -1,7 +1,6 @@
 ---
 title: Docs
 nav: docs
-order: 2
 ---
 
 # Documentation
@@ -48,9 +47,14 @@ Welcome to the Marque documentation set. Start with quickstart, then move to con
 
 - `title`: browser title segment and nav display label.
 - `nav`: output slug / target HTML filename.
-- `order`: sorting inside its nav scope.
 - `layout`, `theme`, `width`: page-level overrides.
+
+## Navigation order
+
+- Use `summary.mq` to define navbar labels and page ordering.
+- Frontmatter `order` is deprecated.
 
 @callout .ok
   Use `title` for human-readable labels and `nav` for stable machine-friendly URLs.
 @end callout
+

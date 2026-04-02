@@ -1,7 +1,6 @@
 ---
 title: Configuration
 nav: config
-order: 4
 layout: sidebar
 ---
 
@@ -29,7 +28,6 @@ Marque configuration is split between site defaults (`marque.toml`) and per-page
     ---
     title: Showcase
     nav: showcase
-    order: 1
     layout: topnav
     theme: pycorino
     width: wide
@@ -47,11 +45,13 @@ Marque configuration is split between site defaults (`marque.toml`) and per-page
 
 - `title`: page title text.
 - `nav`: output slug (`*.html`) and routing identity.
-- `order`: sorting within its nav scope.
 - `layout`: page layout override.
 - `theme`: page theme override.
 - `width`: page width override.
 
+Ordering/navigation labels come from `summary.mq`.
+
 @callout .warn
   Renaming `nav` changes the output filename. Keep slugs stable for external links.
 @end callout
+

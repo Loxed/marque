@@ -1,7 +1,6 @@
 ---
 title: Layout Override
 nav: layout override
-order: 3
 layout: topnav
 theme: pycorino
 width:50
@@ -19,3 +18,4 @@ The different layouts are:
 - `sidebar`: the default one
 
 the `topnav` layout puts folders into a dropdown menu that opens on hover. the `sidebar` menu automatically shows them on the side.
+

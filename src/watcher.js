@@ -37,7 +37,17 @@ function serve(siteDir, outDir, port = 3000) {
   const themesDir = path.resolve(siteDir, 'themes');
   const layoutsDir = path.resolve(siteDir, 'layouts');
   const configFile = path.resolve(siteDir, 'marque.toml');
+  const summaryFile = path.resolve(siteDir, 'summary.mq');
+  const pagesSummaryFile = path.resolve(pagesDir, 'summary.mq');
   const outDirAbs = path.resolve(outDir);
+  const normalizePathForCompare = (p) => {
+    const resolved = path.resolve(String(p || ''));
+    return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
+  };
+  const summaryFileNorm = normalizePathForCompare(summaryFile);
+  const pagesSummaryFileNorm = normalizePathForCompare(pagesSummaryFile);
+  const configFileNorm = normalizePathForCompare(configFile);
+  const outDirAbsNorm = normalizePathForCompare(outDirAbs);
 
   const watchTargets = [
     siteDir,
@@ -124,6 +134,7 @@ function serve(siteDir, outDir, port = 3000) {
     .watch(watchTargets, watchOptions)
     .on('all', (event, file) => {
       const absFile = path.resolve(file || '');
+      const absFileNorm = normalizePathForCompare(absFile);
       const relToPages = path.relative(pagesDir, absFile);
       const inPages = !!relToPages && !relToPages.startsWith('..') && !path.isAbsolute(relToPages);
       const relToThemes = path.relative(themesDir, absFile);
@@ -132,15 +143,17 @@ function serve(siteDir, outDir, port = 3000) {
       const inLayouts = !!relToLayouts && !relToLayouts.startsWith('..') && !path.isAbsolute(relToLayouts);
 
       // Ignore output tree changes to prevent rebuild loops.
-      if (absFile === outDirAbs || absFile.startsWith(`${outDirAbs}${path.sep}`)) return;
+      if (absFileNorm === outDirAbsNorm || absFileNorm.startsWith(`${outDirAbsNorm}${path.sep}`)) return;
 
       const ext = path.extname(absFile).toLowerCase();
       const isMqFileEvent = ['add', 'change', 'unlink'].includes(event) && ext === '.mq';
       const isPagesDirEvent = ['addDir', 'unlinkDir'].includes(event);
       const isThemeEvent = inThemes && ['add', 'change', 'unlink', 'addDir', 'unlinkDir'].includes(event);
       const isLayoutEvent = inLayouts && ['add', 'change', 'unlink', 'addDir', 'unlinkDir'].includes(event);
-      const isTomlChangeEvent = event === 'change' && absFile === configFile;
-      if (!((inPages && (isMqFileEvent || isPagesDirEvent)) || isThemeEvent || isLayoutEvent || isTomlChangeEvent)) return;
+      const isTomlChangeEvent = event === 'change' && absFileNorm === configFileNorm;
+      const isSummaryFileEvent = ['add', 'change', 'unlink'].includes(event)
+        && (absFileNorm === summaryFileNorm || absFileNorm === pagesSummaryFileNorm);
+      if (!((inPages && (isMqFileEvent || isPagesDirEvent)) || isThemeEvent || isLayoutEvent || isTomlChangeEvent || isSummaryFileEvent)) return;
 
       const rel = path.relative(siteDir, file);
       console.log(`  ${event} → ${rel}`);

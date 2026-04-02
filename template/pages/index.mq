@@ -1,7 +1,6 @@
 ---
 title: Home
 nav: index
-order: 0
 ---
 
 # Marque
@@ -78,3 +77,4 @@ Marque supports every feature from Markdown, including extra directives to make 
 	@end card
 @end row links
 @end section
+

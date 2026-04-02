@@ -111,6 +111,7 @@ function ensureStarterScaffold(siteDir, defaults = {}) {
   const pagesDir = path.join(siteDir, 'pages');
   const staticDir = path.join(siteDir, 'static');
   const configFile = path.join(siteDir, 'marque.toml');
+  const summaryFile = path.join(siteDir, 'summary.mq');
   const indexFile = path.join(pagesDir, 'index.mq');
   const docsFile = path.join(pagesDir, 'docs.mq');
   const defaultLayout = defaults.layout || 'topnav';
@@ -118,6 +119,15 @@ function ensureStarterScaffold(siteDir, defaults = {}) {
 
   fs.mkdirSync(pagesDir, { recursive: true });
   fs.mkdirSync(staticDir, { recursive: true });
+
+  // Normalize legacy SUMMARY.mq casing to summary.mq.
+  const dirEntries = fs.existsSync(siteDir) ? fs.readdirSync(siteDir) : [];
+  if (dirEntries.includes('SUMMARY.mq') && !dirEntries.includes('summary.mq')) {
+    const legacySummary = path.join(siteDir, 'SUMMARY.mq');
+    const tempSummary = path.join(siteDir, '.summary.mq.rename.tmp');
+    fs.renameSync(legacySummary, tempSummary);
+    fs.renameSync(tempSummary, summaryFile);
+  }
 
   if (!fs.existsSync(configFile)) {
     fs.writeFileSync(configFile, `title = Marque
@@ -142,7 +152,6 @@ width = 82
     fs.writeFileSync(indexFile, `---
 title: Home
 nav: home
-order: 1
 ---
 
 # Welcome
@@ -173,7 +182,6 @@ Your Marque project is ready.
     fs.writeFileSync(docsFile, `---
 title: Docs
 nav: docs
-order: 2
 layout: sidebar
 ---
 
@@ -199,7 +207,15 @@ Quick reference for writing pages.
 
 \`title\` controls page title text.
 \`nav\` controls URL slug/output name.
-\`order\` controls nav ordering.
+Page ordering/navigation is defined in \`summary.mq\`.
+`);
+  }
+
+  if (!fs.existsSync(summaryFile)) {
+    fs.writeFileSync(summaryFile, `# Summary
+
+[Home](index.mq)
+[Docs](docs.mq)
 `);
   }
 }

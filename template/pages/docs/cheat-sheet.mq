@@ -1,7 +1,6 @@
 ---
 title: Cheat Sheet
 nav: cheat sheet
-order: 1
 ---
 
 # Marque Cheat Sheet
@@ -377,7 +376,6 @@ Unknown directives are rendered as generic containers: `@tag` -> `.mq-tag`.
 		---
 		title: Cheat Sheet
 		nav: cheat sheet
-		order: 1
 		theme: default
 		layout: topnav
 		width: wide
@@ -390,9 +388,9 @@ Unknown directives are rendered as generic containers: `@tag` -> `.mq-tag`.
 
 		- `title`: display title and document title segment.
 		- `nav`: output slug used for generated filename.
-		- `order`: nav ordering.
 		- `theme`: page-level theme override.
 		- `layout`: page-level layout override.
 		- `width`: `narrow|normal|wide|full`, numeric `%`, or explicit `%`.
+		- Order/labels come from `summary.mq`.
 	@end card
 @end row frontmatter-demo
