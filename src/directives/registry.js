@@ -49,10 +49,23 @@ function ensureBootstrapped() {
   if (_bootstrapped) return;
   _bootstrapped = true;
 
-  // Load directive definitions on demand so any consumer of the registry
-  // (parser, diagnostics, renderer, etc.) sees built-ins and customs.
-  require('./builtins');
-  require('./customs');
+  // Load built-in directive definitions on demand.
+  loadBuiltinsFresh();
+}
+
+function loadBuiltinsFresh() {
+  const builtinsPath = require.resolve('./builtins');
+  delete require.cache[builtinsPath];
+  require(builtinsPath);
+}
+
+function resetDirectives() {
+  _registry.clear();
+  _bootstrapped = false;
+}
+
+function bootstrapBuiltins() {
+  ensureBootstrapped();
 }
 
 /**
@@ -128,4 +141,13 @@ function collectDirectiveStyles() {
   return styles;
 }
 
-module.exports = { defineDirective, getDirective, isInline, isBlock, listDirectives, collectDirectiveStyles };
+module.exports = {
+  defineDirective,
+  getDirective,
+  isInline,
+  isBlock,
+  listDirectives,
+  collectDirectiveStyles,
+  resetDirectives,
+  bootstrapBuiltins,
+};

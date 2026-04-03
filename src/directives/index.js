@@ -24,7 +24,6 @@
 
 // Load built-ins (has side effects — registers all built-in directives)
 require('./builtins');
-require('./customs');
 
 // Re-export public API for convenience
 const { defineDirective, getDirective, isInline, isBlock, listDirectives } = require('./registry');

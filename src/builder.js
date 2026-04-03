@@ -7,6 +7,7 @@ const { compileMqs, compileMqsFile } = require('./mqs');
 const { DiagnosticLevel, createDiagnostic, createDiagnosticError } = require('./diagnostics');
 const { collectDirectiveDiagnostics } = require('./directive-diagnostics');
 const { collectDirectiveStyles } = require('./directives/registry');
+const { loadProjectDirectives } = require('./directives/project-loader');
 const { printDiagnostic } = require('./utils/errors');
 
 function build(siteDir, outDir, options = {}) {
@@ -22,6 +23,9 @@ function build(siteDir, outDir, options = {}) {
   const configuredLayoutName = config.layout || 'topnav';
   const defaultLayoutName = normalizeLayoutName(configuredLayoutName);
   const defaultPageWidth = normalizeWidth(config.width);
+
+  // Refresh custom directives from <site>/custom on every build.
+  loadProjectDirectives(siteDir);
 
   // clean + create dist
   if (cleanDist) {
