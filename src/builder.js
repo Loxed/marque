@@ -3,9 +3,10 @@ const fs = require('fs');
 const path = require('path');
 const { parse, extractFrontmatter } = require('./parser');
 const { render } = require('./renderer');
-const { compileMqsFile } = require('./mqs');
+const { compileMqs, compileMqsFile } = require('./mqs');
 const { DiagnosticLevel, createDiagnostic, createDiagnosticError } = require('./diagnostics');
 const { collectDirectiveDiagnostics } = require('./directive-diagnostics');
+const { collectDirectiveStyles } = require('./directives/registry');
 const { printDiagnostic } = require('./utils/errors');
 
 function build(siteDir, outDir, options = {}) {
@@ -216,7 +217,7 @@ function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false)
 
   const themeDir = resolveTheme(key, siteDir);
   const baseTemplate = loadPageTemplate(themeDir, siteDir);
-  const css = loadThemeStyle(themeDir);
+  const css = loadThemeStyle(themeDir, siteDir);
 
   const cssFile = `theme-${safeName(key)}.css`;
   writeFileWithRetry(path.join(outDir, cssFile), css, softFsErrors);
@@ -230,18 +231,54 @@ function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false)
   return assets;
 }
 
-function loadThemeStyle(themeDir) {
+function loadThemeStyle(themeDir, siteDir) {
+  let themeCss;
   const mqsPath = path.join(themeDir, 'theme.mqs');
   if (fs.existsSync(mqsPath)) {
-    return compileMqsFile(mqsPath);
+    themeCss = compileMqsFile(mqsPath);
+  } else {
+    const cssPath = path.join(themeDir, 'theme.css');
+    if (fs.existsSync(cssPath)) {
+      themeCss = fs.readFileSync(cssPath, 'utf8');
+    }
   }
 
-  const cssPath = path.join(themeDir, 'theme.css');
-  if (fs.existsSync(cssPath)) {
-    return fs.readFileSync(cssPath, 'utf8');
+  if (typeof themeCss !== 'string') {
+    throw new Error(`Theme style not found in ${themeDir}. Expected theme.mqs or theme.css.`);
   }
 
-  throw new Error(`Theme style not found in ${themeDir}. Expected theme.mqs or theme.css.`);
+  const directiveCss = buildDirectiveStylesCSS(siteDir);
+  if (!directiveCss) return themeCss;
+
+  return `${themeCss}\n\n${directiveCss}\n`;
+}
+
+function buildDirectiveStylesCSS(siteDir) {
+  const styleDefs = collectDirectiveStyles();
+  if (!styleDefs.length) return '';
+
+  const out = [];
+  for (const def of styleDefs) {
+    let compiled;
+    try {
+      compiled = compileMqs(def.css, {
+        sourceFile: `<directive:${def.name}:style>`,
+        rootDir: siteDir,
+        seen: new Set(),
+      });
+    } catch (err) {
+      const reason = String((err && err.message) || err || 'unknown error');
+      throw new Error(`Failed to compile style for directive '@${def.name}': ${reason}`);
+    }
+
+    const css = String(compiled || '').trim();
+    if (!css) continue;
+    out.push(`/* directive-style: @${def.name} */`);
+    out.push(css);
+    out.push(`/* end directive-style: @${def.name} */`);
+  }
+
+  return out.join('\n');
 }
 
 function getLayoutAssets(layoutName, siteDir, outDir, cache, softFsErrors = false) {

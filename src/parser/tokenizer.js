@@ -28,10 +28,11 @@ function tokenize(lines) {
       continue;
     }
 
-    // @end tag [name]
-    const endM = trimmed.match(/^@end\s+(\w+)(?:\s+(\S+))?$/);
+    // @end tag [name|"name with spaces"]
+    const endM = trimmed.match(/^@end\s+([\w-]+)(?:\s+(?:"([^"]*)"|'([^']*)'|([^\s]+)))?$/);
     if (endM) {
-      tokens.push({ type: 'close', tag: endM[1], name: endM[2] || null });
+      const closeName = endM[2] ?? endM[3] ?? endM[4] ?? null;
+      tokens.push({ type: 'close', tag: endM[1], name: closeName });
       continue;
     }
 
@@ -41,12 +42,12 @@ function tokenize(lines) {
       continue;
     }
 
-    // @tag [.mod .mod ...] [name]
-    const openM = trimmed.match(/^@(\w+)((?:\s+\.\w+)*)(?:\s+([^.]\S*))?$/);
+    // @tag [.mod .mod ...] [name|"name with spaces"]
+    const openM = trimmed.match(/^@([\w-]+)((?:\s+\.\w+)*)(?:\s+(?:"([^"]*)"|'([^']*)'|([^.\s]\S*)))?$/);
     if (openM) {
       const tag  = openM[1];
       const mods = (openM[2] || '').trim().split(/\s+/).filter(Boolean).map(m => m.slice(1));
-      const name = openM[3] || null;
+      const name = openM[3] ?? openM[4] ?? openM[5] ?? null;
       tokens.push({ type: 'open', tag, mods, name });
       continue;
     }

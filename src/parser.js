@@ -1,7 +1,7 @@
 'use strict';
 
 // parser.js — .mq source → AST
-// Marque DSL — @tag .modifier name / @end tag name syntax
+// Marque DSL — @tag .modifier name / @tag "name with spaces" / @end tag syntax
 
 const { isInline } = require('./directives/registry');
 
@@ -14,8 +14,9 @@ function parse(src) {
 // ── Tokeniser ──────────────────────────────────────────────────────────────
 //
 // Line forms:
-//   @tag [.mod ...] [name]   — open (block or inline, decided by registry)
-//   @end tag [name]          — close block
+//   @tag [.mod ...] [name]              — open (block or inline, decided by registry)
+//   @tag [.mod ...] ["name with spaces"]
+//   @end tag [name|"name with spaces"] — close block
 //   ---                      — hr / frontmatter fence
 //   anything else            — raw markdown text
 //
@@ -46,19 +47,22 @@ function tokenize(lines) {
     }
 
     // @end tag [name]  (tag can include hyphens, e.g. @end product-card)
-    const endM = trimmed.match(/^@end\s+([\w-]+)(?:\s+(\S+))?$/);
+    // name may be bare-token or quoted (quoted can include spaces)
+    const endM = trimmed.match(/^@end\s+([\w-]+)(?:\s+(?:"([^"]*)"|'([^']*)'|([^\s]+)))?$/);
     if (endM) {
-      tokens.push({ type: 'close', tag: endM[1], name: endM[2] || null, lineNo, col, endCol });
+      const closeName = endM[2] ?? endM[3] ?? endM[4] ?? null;
+      tokens.push({ type: 'close', tag: endM[1], name: closeName, lineNo, col, endCol });
       continue;
     }
 
     // @tag [.mod .mod ...] [name]
-    // mods = .word tokens, name = trailing bare word (no dot)
-    const openM = trimmed.match(/^@([\w-]+)((?:\s+\.\w+)*)(?:\s+([^.]\S*))?$/);
+    // mods = .word tokens
+    // name = trailing bare token OR quoted text (quoted can include spaces)
+    const openM = trimmed.match(/^@([\w-]+)((?:\s+\.\w+)*)(?:\s+(?:"([^"]*)"|'([^']*)'|([^.\s]\S*)))?$/);
     if (openM) {
       const tag  = openM[1];
       const mods = (openM[2] || '').trim().split(/\s+/).filter(Boolean).map(m => m.slice(1));
-      const name = openM[3] || null;
+      const name = openM[3] ?? openM[4] ?? openM[5] ?? null;
       tokens.push({ type: 'open', tag, mods, name, lineNo, col, endCol });
       continue;
     }

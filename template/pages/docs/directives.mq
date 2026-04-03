@@ -222,3 +222,11 @@ Example:
         Upload dist/
       @end step
     @end container publish
+
+
+@dropdown "For Developers"
+This allows you to have multiple independent step sequences on the same page, which is useful for things like "Setup steps" and "Publishing steps" that are conceptually separate.  
+
+
+
+@end dropdown
