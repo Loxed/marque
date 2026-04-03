@@ -5,6 +5,7 @@ Marque is a static site generator powered by `.mq`: markdown plus layout directi
 You write content quickly, keep structure explicit, and ship plain static HTML/CSS.
 
 Architecture and module roles are documented in `ARCHITECTURE.md`.
+Directive extension workflow is documented in `DIRECTIVES_DEV.md`.
 
 ## Why Marque
 
@@ -157,11 +158,10 @@ Marque parses custom directives in addition to markdown.
 
 Core directives:
 
+- `@container`
 - `@row` / `@card`
 - `@callout`
 - `@stat`
-- `@steps` / `@step`
-- `@tabs` / `@tab`
 - `@hero` / `@section`
 - `@divider` (self-closing)
 
@@ -181,11 +181,14 @@ Example:
 @end row intro
 ```
 
+Custom directive registration lives in `src/directives/customs.js`.
+Add directives there with `defineDirective(name, def)`.
+
 ## Markdown Enhancements
 
 - Button classes: `[Download](/file.zip){.primary}`
 - Auto button detection for links like `Read ... →`
-- Badges: `:badge[Stable]{.ok}`
+- Badges: `@badge "Stable" {.ok}`
 
 ## Themes
 

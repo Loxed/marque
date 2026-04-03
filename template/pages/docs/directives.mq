@@ -3,18 +3,35 @@ title: Directives
 nav: directives
 ---
 
-# Directives
-@divider
-## In Marque, anything that starts with `@` is treated as a **directive**.
+## Directives
 
-## There are two directive types:
+@divider
+
+In Marque, anything that starts with `@` is treated as a directive.
+
+## What is actually useful
+
+- `@row`: horizontal layout container
+- `@column`: vertical stack container (cards on top of each other)
+- `@card` + `@callout`: core content primitives
+- `@container <name>`: neutral scope/grouping block
+- `@step ... @end step`: block step item
+- @[Label](url){.primary}: inline button/link directive
+- `@badge "Text" {.class}`: inline badge directive
+- `@divider`: block or inline divider
+
+## Two directive families
+
+### 1) Block directives
+
+Block directives define page structure and layout.
+They use a start tag and an end tag.
 
 @row directive-families
   @card
     ## Block directives
     @divider
-    Block directives define page structure and layout.
-    Examples: `@row`, `@card`, `@callout`, `@tabs`, etc.
+    Examples: `@container`, `@row`, `@card`, `@callout`.
 
     They're defined by a start tag (`@<name>`) and end tag (`@end <name>`), with content in between.
 
@@ -38,109 +55,170 @@ nav: directives
     @divider
     Inline directives don't require a separate end tag.
 
-    Examples: `@[Label](url){.primary}` button syntax, `:badge[Text]{.ok}` badges, and more.
+    Examples: `@[Label](url){.primary}` button syntax, `@badge "Text" {.ok}` badges, and `@divider` inline.
 
     ```mq
     This is a @[link](directives.mq){.primary} with button styling.
-    Here is a badge: :badge[New]{.accent}.
-    This is a divider: @divider
+    Here is a badge: @badge "New" {.accent}.
+    This works inline too: before @divider after
     ```
 
     This is a @[link](directives.mq){.primary} with button styling.
-    Here is a badge: :badge[New]{.accent}.
-    This is a divider: @divider
+    Here is a badge: @badge "New" {.accent}.
+    This works inline too: before @divider after
     
   @end card
-@end row directive-families 
+@end row directive-families
 
-  
-- Block directives: `@row ... @end row`, `@tabs ... @end tabs`, etc.
-- Inline directives: `@[Label](url){...}` button syntax inside markdown.
+## Container scope (recommended)
 
-@callout .info
-  Rule of thumb:
-  If you type `@`, you are entering Marque directive syntax.
-@end callout
+`@container` is a neutral block scope. It does not add layout or styles by itself.
 
-## 1) Block directives (layout and structure)
+Use it to group content semantically, then compose with `@row`, `@card`, or markdown inside.
 
-These are parsed by the MQ parser and become AST nodes.
+Minimal example:
 
+    @container hero-intro
+      ## Welcome
+      Use this scope to group related blocks.
+
+      @row intro-cards
+        @card
+          Fast setup.
+        @end card
+
+        @card
+          Plain static output.
+        @end card
+      @end row
+    @end container hero-intro
+
+@container hero-intro
+  **Welcome**
+  Use this scope to group related blocks.
+
+  @row intro-cards
+    @card
+      Fast setup.
+    @end card
+
+    @card
+      Plain static output.
+    @end card
+  @end row
+@end container hero-intro
+
+## Notes
+
+- `@stat` exists but is optional. Use it only for KPI-like blocks.
+- `@hero` and `@section` are wrappers useful when your theme styles them.
+- `@tabs`, `@steps`, and `@line` are removed.
+- `@step` is a block directive and is closed with `@end step`.
+
+## Custom directives (dev)
+
+You can add your own directives by registering them with `defineDirective(...)`.
+
+No parser core edit is needed, no renderer switch-case is needed.
+
+Example registration:
+
+```js
+const { defineDirective } = require('./src/directives');
+
+defineDirective('product-card', {
+  type: 'block',
+  render: ({ mods, name, children, ctx }) => {
+    const variant = ctx.escapeAttr(mods[0] || 'default');
+    const title = ctx.escapeAttr(name || '');
+    return `<product-card variant="${variant}" title="${title}">${children}</product-card>`;
+  },
+});
+
+defineDirective('sparkle', {
+  type: 'inline',
+  render: () => '<span class="mq-sparkle" aria-hidden="true">*</span>',
+});
+```
+
+@card
+
+Example usage in `.mq`:
+
+@row
+
+@card
 ```mq
-@row feature-grid
-  @card .accent
-    ## Fast authoring
-    Write markdown and compose blocks.
-  @end card
+@product-card .featured Starter
+## Starter Plan
+Best for small teams.
+@end product-card
 
-  @card
-    ## Static output
-    Build to plain HTML/CSS.
-  @end card
-@end row
+Add some shine @sparkle
 ```
+@end card
 
-Common block directives:
+@card
+@product-card .featured Starter
+## Starter Plan
+Best for small teams.
+@end product-card
 
-- `@row` / `@column` / `@card`
-- `@callout`
-- `@stat`
-- `@steps` / `@step`
-- `@tabs` / `@tab`
-- `@hero` / `@section`
-- `@divider`
+Add some shine @sparkle
 
-## 2) Inline directives (`@[...]()` buttons)
+@sparkle
+@end card
 
-`@[label](url){attrs}` is an inline Marque directive interpreted during markdown rendering.
-
-```md
-@[Open docs](/docs.html){.primary}
-@[Create this page](){!mq-create-missing-page .secondary}
-```
-
-Parts:
-
-- `label`: visible button text
-- `url`: href target
-- `attrs` (optional):
-  - classes: `.primary .secondary ...`
-  - id: `!some-id`
-
-Rendered output is an `<a>` with class `mq-btn` plus your optional classes.
-
-## 3) MQS directives (theme/layout styles)
-
-In `.mqs` files, `@` also introduces directives:
-
-- `@mqs-import "...";`
-- `@mqs-palette { ... }`
-- `@mqs-essentials;`
-
-These are style-compiler directives (not page-content directives), but same principle applies: `@` means directive syntax.
-
-## 4) Diagnostics and validation
-
-Directives are validated with structured diagnostics:
-
-- unknown directive names
-- invalid nesting (example: `@tab` outside `@tabs`)
-- missing required children (example: empty `@tabs`)
-
-So when a directive is wrong, you get rust-like diagnostics with code, span, and suggestion.
-
-@row component-links
-  @card
-    ## Component pages
-    Browse concrete examples for each component family.
-    @[Cards](/docs/components/cards.html)
-    @[Callouts](/docs/components/callouts.html)
-    @[Tabs](/docs/components/tabs.html)
-  @end card
-
-  @card .accent
-    ## Next
-    After components, read full directive rules and best practices.
-    @[Directives reference](/docs/directives.html){.primary}
-  @end card
 @end row
+@end card
+
+Tip: directive names with hyphens are supported (`product-card`, `my-alert`, etc.).
+
+## Axis quick reference
+
+- `@row` lays children horizontally.
+- `@column` lays children vertically.
+
+Example:
+
+    @row two-panels
+      @column
+        @card
+          Top in left column
+        @end card
+        @card
+          Bottom in left column
+        @end card
+      @end column
+
+      @column
+        @card
+          Top in right column
+        @end card
+      @end column
+    @end row two-panels
+
+## Step counter scope
+
+Inside a `@container`, each `@step ... @end step` is numbered from 1 to n.
+When you leave that container, numbering resets for the next container.
+
+Example:
+
+    @container setup
+      @step
+        Install dependencies
+      @end step
+      @step
+        Start dev server
+      @end step
+      @step
+        Build for production
+      @end step
+    @end container setup
+
+    @container publish
+      @step
+        Upload dist/
+      @end step
+    @end container publish

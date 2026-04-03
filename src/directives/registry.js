@@ -1,0 +1,100 @@
+'use strict';
+
+/**
+ * Directive Registry
+ * ==================
+ * The single source of truth for all directives — built-in and custom.
+ *
+ * Usage:
+ *
+ *   const { defineDirective } = require('./directives/registry');
+ *
+ *   // Inline directive — self-closing, no @end needed
+ *   defineDirective('divider', {
+ *     type: 'inline',
+ *     render: () => '<div class="mq-divider"></div>',
+ *   });
+ *
+ *   // Block directive — has children, requires @end name
+ *   defineDirective('callout', {
+ *     type: 'block',
+ *     render: ({ mods, children }) =>
+ *       `<div class="mq-callout ${mods[0] || 'info'}">${children}</div>`,
+ *   });
+ *
+ *   // Web component wrapper — drop in any custom element
+ *   defineDirective('my-card', {
+ *     type: 'block',
+ *     render: ({ mods, name, children }) =>
+ *       `<my-card variant="${mods[0] || ''}" label="${name || ''}">${children}</my-card>`,
+ *   });
+ *
+ * render() receives:
+ *   {
+ *     tag      : string          - directive name as written in source
+ *     mods     : string[]        - modifier tokens (.foo .bar => ['foo','bar'])
+ *     name     : string|null     - trailing bare-word argument
+ *     children : string          - already-rendered HTML of child nodes (block only)
+ *     nodes    : ASTNode[]       - raw child AST nodes (if you need to re-render with custom opts)
+ *     node     : ASTNode         - the full AST node
+ *     opts     : object          - renderer options
+ *     ctx      : object          - { renderNodes, renderMarkdown, escapeAttr }
+ *   }
+ */
+
+const _registry = new Map();
+let _bootstrapped = false;
+
+function ensureBootstrapped() {
+  if (_bootstrapped) return;
+  _bootstrapped = true;
+
+  // Load directive definitions on demand so any consumer of the registry
+  // (parser, diagnostics, renderer, etc.) sees built-ins and customs.
+  require('./builtins');
+  require('./customs');
+}
+
+/**
+ * Register a directive.
+ * @param {string} name
+ * @param {{ type: 'block'|'inline', render: Function, validate?: Function }} def
+ */
+function defineDirective(name, def) {
+  if (!name || typeof name !== 'string') {
+    throw new Error('defineDirective: name must be a non-empty string');
+  }
+  if (def.type !== 'block' && def.type !== 'inline') {
+    throw new Error(`defineDirective: type must be 'block' or 'inline', got '${def.type}'`);
+  }
+  if (typeof def.render !== 'function') {
+    throw new Error('defineDirective: render must be a function');
+  }
+  _registry.set(name.toLowerCase(), { validate: null, ...def });
+}
+
+/** Look up a directive definition by name. Returns null if not found. */
+function getDirective(name) {
+  ensureBootstrapped();
+  return _registry.get(String(name || '').toLowerCase()) || null;
+}
+
+/** Returns true if the named directive is registered as inline (self-closing, no @end). */
+function isInline(name) {
+  const d = getDirective(name);
+  return !!(d && d.type === 'inline');
+}
+
+/** Returns true if the named directive is registered as block (has children, needs @end). */
+function isBlock(name) {
+  const d = getDirective(name);
+  return !!(d && d.type === 'block');
+}
+
+/** Returns all registered directive names and types — useful for tooling/diagnostics. */
+function listDirectives() {
+  ensureBootstrapped();
+  return [..._registry.entries()].map(([name, def]) => ({ name, type: def.type }));
+}
+
+module.exports = { defineDirective, getDirective, isInline, isBlock, listDirectives };

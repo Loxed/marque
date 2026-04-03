@@ -1,6 +1,12 @@
 // renderer.js — AST → HTML
+
+// Bootstrap built-in directives (idempotent — safe to require multiple times)
+require('./directives/index');
+
 const { marked } = require('marked');
 const hljs = require('highlight.js');
+const { renderNodeWithRegistry } = require('./renderer/node-renderers');
+const { getDirective } = require('./directives/registry');
 
 // configure marked
 const mdRenderer = new marked.Renderer();
@@ -15,10 +21,7 @@ mdRenderer.code = (code, infostring) => {
 };
 marked.setOptions({ breaks: true, gfm: true, renderer: mdRenderer });
 
-let _tabCounter = 0;
-
 function render(ast, opts = {}) {
-  _tabCounter = 0;
   return renderNodes(ast.children, opts);
 }
 
@@ -27,121 +30,28 @@ function renderNodes(nodes, opts) {
 }
 
 function renderNode(node, opts) {
-  switch (node.type) {
-
-    case 'markdown':
-      return renderMarkdown(node.content, opts);
-
-    case 'hr':
-      return '<hr>';
-
-    case 'divider':
-      return '<div class="mq-divider"></div>';
-
-    case 'row': {
-      const columnCount = node.children.filter(c =>
-        ['card', 'stat', 'step', 'column'].includes(c.type)
-      ).length;
-      const cols = Math.max(1, columnCount || node.children.length);
-      const inner = renderNodes(node.children, opts);
-      return `<div class="mq-row" style="grid-template-columns: repeat(${cols}, 1fr);">${inner}</div>`;
-    }
-
-    case 'column': {
-      const inner = renderNodes(node.children, opts);
-      const cls = node.mod ? ` ${node.mod}` : '';
-      return `<div class="mq-column${cls}">${inner}</div>`;
-    }
-
-    case 'card': {
-      const inner = renderNodes(node.children, opts);
-      const cls = node.mod ? ` ${node.mod}` : '';
-      return `<div class="mq-card${cls}">${inner}</div>`;
-    }
-
-    case 'callout': {
-      const inner = renderNodes(node.children, opts);
-      return `<div class="mq-callout ${node.variant}">${inner}</div>`;
-    }
-
-    case 'stat': {
-      const inner = renderNodes(node.children, opts);
-      // extract h2 as value, first p as label
-      const valM = inner.match(/<h2[^>]*>(.*?)<\/h2>/);
-      const lblM = inner.match(/<p[^>]*>(.*?)<\/p>/);
-      const val = valM ? valM[1] : '';
-      const lbl = lblM ? lblM[1] : '';
-      return `<div class="mq-stat"><div class="mq-stat-value">${val}</div><div class="mq-stat-label">${lbl}</div></div>`;
-    }
-
-    case 'hero': {
-      const inner = renderNodes(node.children, opts);
-      const cls = node.mod ? ` ${node.mod}` : '';
-      return `<section class="mq-hero${cls}">${inner}</section>`;
-    }
-
-    case 'section': {
-      const inner = renderNodes(node.children, opts);
-      const cls = node.mod ? ` ${node.mod}` : '';
-      return `<section class="mq-section${cls}">${inner}</section>`;
-    }
-
-    case 'tabs': {
-      const id = `mq-tabs-${_tabCounter++}`;
-      const tabs = node.children.filter(c => c.type === 'tab');
-      const btnBar = tabs.map((t, i) =>
-        `<button class="mq-tab-btn${i === 0 ? ' active' : ''}" onclick="mqTab('${id}',${i})">${t.label || `Tab ${i+1}`}</button>`
-      ).join('');
-      const contents = tabs.map((t, i) =>
-        `<div class="mq-tab-content${i === 0 ? ' active' : ''}">${renderNodes(t.children, opts)}</div>`
-      ).join('');
-      return `<div class="mq-tabs" id="${id}"><div class="mq-tab-bar">${btnBar}</div>${contents}</div>`;
-    }
-
-    case 'steps': {
-      const inner = renderSteps(node.children, opts);
-      return `<div class="mq-steps">${inner}</div>`;
-    }
-
-    case 'step': {
-      const inner = renderNodes(node.children, opts);
-      const cfg = parseStepConfig(node.name);
-      let label = '1';
-      let cls = 'mq-step';
-
-      if (cfg.mode === 'skip') {
-        label = '*';
-        cls += ' mq-step-skip';
-      } else if (cfg.mode === 'set') {
-        label = String(cfg.value);
-      }
-
-      return `<div class="${cls}"><div class="mq-step-num" data-step="${escapeAttr(label)}"></div><div class="mq-step-body">${inner}</div></div>`;
-    }
-
-    case 'generic': {
-      const inner = renderNodes(node.children, opts);
-      return `<div class="mq-${node.tag}${node.mod ? ' ' + node.mod : ''}">${inner}</div>`;
-    }
-
-    default:
-      return '';
-  }
+  return renderNodeWithRegistry(node, opts, { renderNodes, renderMarkdown, escapeAttr });
 }
 
 function renderMarkdown(src, opts = {}) {
   src = dedentMarkdown(src);
+  src = expandInlineDivider(src);
 
-  // Handle inline badge syntax: :badge[text]{.cls}
-  src = src.replace(/:badge\[([^\]]+)\](\{\.([a-z]+)\})?/g,
+  // Preferred inline badge syntax: @badge "Text" {.class .other}
+  src = src.replace(/@badge\s+(?:"([^"]+)"|'([^']+)')\s*(\{[^}]*\})?/g,
+    (_, dblLabel, sglLabel, attrsRaw) => {
+      const label = dblLabel || sglLabel || '';
+      const className = parseBadgeAttrs(attrsRaw);
+      return `<span class="mq-badge${className}">${label}</span>`;
+    }
+  );
+
+  // Legacy inline badge syntax (@badge[...] and :badge[...])
+  src = src.replace(/(?:@badge|:badge)\[([^\]]+)\](\{\.([a-z]+)\})?/g,
     (_, label, __, cls) => `<span class="mq-badge${cls ? ' ' + cls : ''}">${label}</span>`
   );
 
   // Explicit button syntax: @[text](url){!id .cls .other}
-  // Examples:
-  //   @[Read docs](/docs.html){}
-  //   @[Download](/archive.zip){.primary}
-  //   @[Create this page](){!mq-create-missing-page .secondary}
   src = src.replace(/@\[([^\]]+)\]\(([^)]*)\)(?:\{([^}]*)\})?/g,
     (_, text, url, attrsRaw) => {
       const attrs = parseButtonAttrs(attrsRaw);
@@ -152,8 +62,68 @@ function renderMarkdown(src, opts = {}) {
     }
   );
 
+  src = expandInlineCustomDirectives(src, opts);
+
   const html = marked.parse(src);
   return normalizeAnchorHrefs(html, opts);
+}
+
+function expandInlineCustomDirectives(src, opts = {}) {
+  const lines = String(src || '').split('\n');
+  let inFence = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (/^```/.test(trimmed)) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+
+    lines[i] = line.replace(/(^|[^\w-])@([a-z][\w-]*)\b/gi, (match, prefix, rawTag) => {
+      const tag = String(rawTag || '').toLowerCase();
+      const def = getDirective(tag);
+      if (!def || def.type !== 'inline') return match;
+
+      const html = def.render({
+        tag,
+        mods: [],
+        name: null,
+        children: '',
+        nodes: [],
+        node: { type: 'directive', tag, inline: true, mods: [], name: null, children: [] },
+        opts,
+        ctx: { renderNodes, renderMarkdown, escapeAttr },
+      });
+
+      return `${prefix}${html}`;
+    });
+  }
+
+  return lines.join('\n');
+}
+
+function expandInlineDivider(src) {
+  const lines = String(src || '').split('\n');
+  let inFence = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    if (/^```/.test(trimmed)) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+
+    lines[i] = line.replace(/(^|[^\w])@divider(?=$|[^\w])/g, (_, prefix) => {
+      return `${prefix}<span class="mq-divider-inline" aria-hidden="true" style="display:inline-block;vertical-align:middle;width:1.8rem;height:2px;margin:0 .35rem;background:var(--mq-primary,currentColor);opacity:.75;border-radius:2px;"></span>`;
+    });
+  }
+
+  return lines.join('\n');
 }
 
 function dedentMarkdown(src) {
@@ -174,58 +144,6 @@ function dedentMarkdown(src) {
     const indent = match ? match[0].length : 0;
     return indent >= minIndent ? line.slice(minIndent) : line;
   }).join('\n');
-}
-
-function renderSteps(children, opts) {
-  let nextNumber = 1;
-  const parts = [];
-
-  for (const child of children) {
-    if (child.type !== 'step') {
-      parts.push(renderNode(child, opts));
-      continue;
-    }
-
-    const cfg = parseStepConfig(child.name);
-    let stepLabel = '';
-    let stepClass = 'mq-step';
-
-    if (cfg.mode === 'skip') {
-      stepLabel = '*';
-      stepClass += ' mq-step-skip';
-    } else if (cfg.mode === 'set') {
-      stepLabel = String(cfg.value);
-      nextNumber = cfg.value + 1;
-    } else {
-      stepLabel = String(nextNumber);
-      nextNumber += 1;
-    }
-
-    const body = renderNodes(child.children || [], opts);
-    parts.push(`<div class="${stepClass}"><div class="mq-step-num" data-step="${escapeAttr(stepLabel)}"></div><div class="mq-step-body">${body}</div></div>`);
-  }
-
-  return parts.join('\n');
-}
-
-function parseStepConfig(name) {
-  const raw = String(name || '').trim();
-  if (!raw) return { mode: 'auto' };
-
-  if (raw === '*') return { mode: 'skip' };
-
-  if (/^\d+$/.test(raw)) {
-    const value = parseInt(raw, 10);
-    return Number.isFinite(value) && value > 0 ? { mode: 'set', value } : { mode: 'auto' };
-  }
-
-  const resetMatch = raw.match(/^reset(?:\s*[:=]\s*(\d+))?$/i);
-  if (resetMatch) {
-    const start = resetMatch[1] ? parseInt(resetMatch[1], 10) : 1;
-    return Number.isFinite(start) && start > 0 ? { mode: 'set', value: start } : { mode: 'set', value: 1 };
-  }
-
-  return { mode: 'auto' };
 }
 
 function escapeAttr(value) {
@@ -297,6 +215,22 @@ function parseButtonAttrs(raw) {
 
   const className = classes.length ? ` ${classes.join(' ')}` : '';
   return { className, id };
+}
+
+function parseBadgeAttrs(raw) {
+  const text = String(raw || '').trim();
+  if (!text) return '';
+
+  const tokens = text.replace(/^\{/, '').replace(/\}$/, '').trim().split(/\s+/).filter(Boolean);
+  const classes = [];
+  for (const token of tokens) {
+    const classToken = token.replace(/^\./, '').trim();
+    if (/^[a-z0-9_-]+$/i.test(classToken)) {
+      classes.push(classToken);
+    }
+  }
+
+  return classes.length ? ` ${classes.join(' ')}` : '';
 }
 
 function normalizeAnchorHrefs(html, opts = {}) {

@@ -82,7 +82,7 @@ Once you installed the `marque` package, you can create a static website with it
             ```
 
             @callout .info
-                these settings apply to every `.mq` in your project. they can be manually overwritten individually in any page's [frontmatter](/docs/frontmatter.mq).
+                these settings apply to every `.mq` in your project. they can be manually overwritten individually in any page's [frontmatter](/docs/configuration/frontmatter.mq).
             @end callout
         @end card
 
@@ -155,12 +155,6 @@ Once you installed the `marque` package, you can create a static website with it
 
     # My Page
     ```
-
-    Notes:
-
-    - folder structure maps to output URLs
-    - frontmatter controls page-level title/nav/layout/theme/width
-    - while `marque serve` runs, saving a `.mq` file rebuilds and refreshes
     @end card
 
     @card .secondary
@@ -168,6 +162,10 @@ Once you installed the `marque` package, you can create a static website with it
 
     Put images, downloads, and other static assets here.
     Marque copies this folder into output as-is.
+
+    
+    ![Create Page](create_screenshot.png)
+    `![Create Page](create_screenshot.png)`
 
     @end card
 

@@ -75,42 +75,33 @@ marque serve . # serves the website on default :3030 port
 
 ## Examples
 
-@steps cli-examples
+@container cli-examples
+1. Create project, serve it and build it
+	```sh
+	marque new my-site layout:sidebar theme:default
+	cd my-site
+	marque serve my-site 4000
+	marque build my-site
+	```
 
-    @step
-    ## Create project, serve it and build it
-    ```sh
-    marque new my-site layout:sidebar theme:default
-    cd my-site
-    marque serve my-site 4000
-    marque build my-site
-    ```
-    @end step
-
-	@step
-	## New project
+2. New project
 	```sh
 	marque new docs-site layout:sidebar theme:default
 	cd docs-site
 	```
-	@end step
 
-	@step
-	## Develop locally
+3. Develop locally
 	```sh
 	marque serve .
 	```
 	Open http://localhost:3000
-	@end step
 
-	@step
-	## Production build
+4. Production build
 	```sh
 	marque build .
 	```
 	Deploy the dist folder to your host.
-	@end step
-@end steps cli-examples
+@end container cli-examples
 
 ## Troubleshooting
 

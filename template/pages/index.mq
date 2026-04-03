@@ -23,8 +23,8 @@ Marque supports every feature from Markdown, including extra directives to make 
 	@end card
 
 	@card 
-		## Layout directives
-		Enhance pages using custom Marque directives such as `@row`, `@card`, `@callout`, `@tabs`, `@steps`, `@hero`, and more.
+		## @ directives
+		Enhance pages using custom [directives](docs/directives.mq) such as `@container`, `@row`, `@card`, `@callout`, `@hero`, and more.
 	@end card
 
 	@card 

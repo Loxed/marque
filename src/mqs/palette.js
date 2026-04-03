@@ -182,6 +182,7 @@ body {
 .mq-main strong { font-weight: 500; color: var(--mq-text); }
 
 .mq-row { display: grid; gap: 1.25rem; margin: 1.75rem 0; align-items: stretch; }
+.mq-column { display: grid; gap: 1.25rem; align-content: start; }
 .mq-card { background: var(--mq-card-bg); border: 1px solid var(--mq-card-border); border-radius: var(--mq-card-radius); box-shadow: var(--mq-card-shadow); padding: 1.5rem; height: 100%; }
 .mq-card.primary, .mq-card.accent   { border-top: 3px solid var(--mq-primary); }
 .mq-card.secondary, .mq-card.accent2{ border-top: 3px solid var(--mq-secondary); }
@@ -218,20 +219,11 @@ a.mq-btn.primary:hover, a.mq-btn.secondary:hover, a.mq-btn.blue:hover, a.mq-btn.
 .mq-stat-value { font-family: var(--mq-font-serif); font-size: 2.6rem; font-weight: 300; letter-spacing: -0.04em; line-height: 1; }
 .mq-stat-label { font-size: 0.78rem; color: var(--mq-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
-.mq-tabs { margin: 1.5rem 0; }
-.mq-tab-bar { display: flex; border-bottom: 1px solid var(--mq-border); margin-bottom: 0; }
-.mq-tab-btn { padding: 0.5rem 1.1rem; border: none; background: none; cursor: pointer; font-family: var(--mq-font-sans); font-size: 0.875rem; color: var(--mq-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s; }
-.mq-tab-btn:hover { color: var(--mq-text); }
-.mq-tab-btn.active { color: var(--mq-text); border-bottom-color: var(--mq-primary); font-weight: 500; }
-.mq-tab-content { display: none; padding: 1.25rem 0; }
-.mq-tab-content.active { display: block; }
-
-.mq-steps { margin: 1.5rem 0; counter-reset: mq-steps; }
 .mq-step { display: grid; grid-template-columns: 2rem 1fr; gap: 0.7rem; margin-bottom: 0.95rem; align-items: start; }
 .mq-step-body > :first-child { margin-top: 0; }
 .mq-step-body > :last-child  { margin-bottom: 0; }
-.mq-step-num { counter-increment: mq-steps; width: 2rem; height: 2rem; border-radius: 50%; background: var(--mq-surface-alt); display: flex; align-items: center; justify-content: center; font-family: var(--mq-font-mono); font-size: 12px; font-weight: 500; flex-shrink: 0; color: var(--mq-muted); }
-.mq-step-num::before { content: counter(mq-steps); }
+.mq-step-num { width: 2rem; height: 2rem; border-radius: 50%; background: var(--mq-surface-alt); display: flex; align-items: center; justify-content: center; font-family: var(--mq-font-mono); font-size: 12px; font-weight: 500; flex-shrink: 0; color: var(--mq-muted); }
+.mq-step-num::before { content: attr(data-step); }
 
 .mq-hero { padding: 4rem 0 3rem; margin-bottom: 2rem; }
 .mq-hero.center { text-align: center; }

@@ -2,8 +2,18 @@
 
 const path = require('path');
 const chokidar = require('chokidar');
+const { execSync } = require('child_process');
 const { removeGeneratedHtmlForDeletedMq } = require('./page-creator');
 const { printBuildError } = require('../utils/errors');
+
+function clearTerminal() {
+	const cmd = process.platform === 'win32' ? 'cls' : 'clear';
+	try {
+		execSync(cmd, { stdio: 'inherit' });
+	} catch (_) {
+		if (typeof console.clear === 'function') console.clear();
+	}
+}
 
 function startFileWatcher({
 	siteDir,
@@ -80,6 +90,7 @@ function startFileWatcher({
 				removeGeneratedHtmlForDeletedMq(absFile, pagesDir, outDir);
 			}
 
+			clearTerminal();
 			const rel = path.relative(siteDir, file);
 			console.log(`  ${event} → ${rel}`);
 			try {

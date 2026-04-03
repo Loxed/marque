@@ -1,6 +1,6 @@
 'use strict';
 
-const { renderNodes, _resetTabCounter } = require('./nodes');
+const { renderNodes } = require('./nodes');
 
 /**
  * Render a parsed .mq AST to an HTML string.
@@ -9,7 +9,6 @@ const { renderNodes, _resetTabCounter } = require('./nodes');
  * @param {function} [opts.resolveHref] - optional href transform hook
  */
 function render(ast, opts = {}) {
-  _resetTabCounter();
   return renderNodes(ast.children, opts);
 }
 

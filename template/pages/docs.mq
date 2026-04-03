@@ -35,11 +35,10 @@ Welcome to the Marque documentation set. Start with quickstart, then move to con
 
 ## Core directives
 
+- `@container`
 - `@row` + `@card`
 - `@callout`
 - `@stat`
-- `@steps` / `@step`
-- `@tabs` / `@tab`
 - `@hero` / `@section`
 - `@divider`
 

@@ -1,11 +1,13 @@
 'use strict';
 
+const { createDirectiveNode } = require('../directives/registry');
+
 function buildAST(tokens) {
-  const { nodes } = consumeBlock(tokens, 0, tokens.length, null, {});
+  const { nodes } = consumeBlock(tokens, 0, tokens.length, null);
   return { type: 'root', children: nodes };
 }
 
-function consumeBlock(tokens, start, end, openTag, options = {}) {
+function consumeBlock(tokens, start, end, openTag) {
   const nodes   = [];
   let i         = start;
   let textBuf   = [];
@@ -22,7 +24,6 @@ function consumeBlock(tokens, start, end, openTag, options = {}) {
 
     if (tok.type === 'close') {
       if (openTag && tok.tag === openTag)          { flushText(); return { nodes, next: i + 1 }; }
-      if (openTag === 'step' && options.implicitStepClose) { flushText(); return { nodes, next: i }; }
       if (!openTag)                                { i++; continue; } // stray close at root
       flushText(); return { nodes, next: i };                          // belongs to outer block
     }
@@ -34,15 +35,10 @@ function consumeBlock(tokens, start, end, openTag, options = {}) {
     }
 
     if (tok.type === 'open') {
-      // Sibling step without @end step — hand back to parent
-      if (openTag === 'step' && options.implicitStepClose && tok.tag === 'step') {
-        flushText(); return { nodes, next: i };
-      }
       flushText();
-      const innerOptions = { implicitStepClose: tok.tag === 'step' && openTag !== 'steps' };
-      const inner = consumeBlock(tokens, i + 1, end, tok.tag, innerOptions);
+      const inner = consumeBlock(tokens, i + 1, end, tok.tag);
       i = inner.next;
-      nodes.push(buildNode(tok.tag, tok.mods, tok.name, inner.nodes));
+      nodes.push(createDirectiveNode(tok.tag, tok.mods, tok.name, inner.nodes));
       continue;
     }
 
@@ -72,24 +68,6 @@ function dedentLines(lines) {
     const indent = (line.match(/^[ \t]*/) || [''])[0].length;
     return indent >= minIndent ? line.slice(minIndent) : line;
   });
-}
-
-function buildNode(tag, mods, name, children) {
-  const mod = mods.join(' ');
-  switch (tag) {
-    case 'row':     return { type: 'row',     name, children };
-    case 'column':  return { type: 'column',  mod, name, children };
-    case 'card':    return { type: 'card',    mod, name, children };
-    case 'callout': return { type: 'callout', variant: mods[0] || 'info', name, children };
-    case 'stat':    return { type: 'stat',    name, children };
-    case 'tabs':    return { type: 'tabs',    name, children };
-    case 'tab':     return { type: 'tab',     label: name || mods[0] || 'Tab', children };
-    case 'steps':   return { type: 'steps',   name, children };
-    case 'step':    return { type: 'step',    name, children };
-    case 'hero':    return { type: 'hero',    mod, name, children };
-    case 'section': return { type: 'section', mod, name, children };
-    default:        return { type: 'generic', tag, mod, name, children };
-  }
 }
 
 module.exports = { buildAST, dedentLines };

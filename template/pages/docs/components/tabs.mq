@@ -1,38 +1,28 @@
 ---
-title: Tabs
-nav: tabs
+title: Container
+nav: container
 ---
 
-# Tabs
+# Container
 
 @row
 	@card .accent
 		### Code
 
 		```mq
-		@tabs demo
-			@tab Install
-				npm install
-			@end tab
-
-			@tab Build
-				marque build
-			@end tab
-		@end tabs
+		@container quick-actions
+			@[Install](#){.primary}
+			@[Build](#){.secondary}
+		@end container quick-actions
 		```
 	@end card
 
 	@card
 		### Preview
 
-		@tabs demo
-			@tab Install
-				npm install
-			@end tab
-
-			@tab Build
-				marque build
-			@end tab
-		@end tabs
+		@container quick-actions
+			@[Install](#){.primary}
+			@[Build](#){.secondary}
+		@end container quick-actions
 	@end card
 @end row

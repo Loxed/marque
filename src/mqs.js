@@ -320,6 +320,12 @@ body {
   align-items: stretch;
 }
 
+.mq-column {
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+}
+
 .mq-card {
   background: var(--mq-card-bg);
   border: 1px solid var(--mq-card-border);
@@ -424,27 +430,6 @@ a.mq-btn.ternary:hover { filter: brightness(0.92); }
   letter-spacing: 0.08em;
 }
 
-.mq-tabs { margin: 1.5rem 0; }
-.mq-tab-bar { display: flex; border-bottom: 1px solid var(--mq-border); margin-bottom: 0; }
-.mq-tab-btn {
-  padding: 0.5rem 1.1rem;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-family: var(--mq-font-sans);
-  font-size: 0.875rem;
-  color: var(--mq-muted);
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: color 0.15s;
-}
-
-.mq-tab-btn:hover { color: var(--mq-text); }
-.mq-tab-btn.active { color: var(--mq-text); border-bottom-color: var(--mq-primary); font-weight: 500; }
-.mq-tab-content { display: none; padding: 1.25rem 0; }
-.mq-tab-content.active { display: block; }
-
-.mq-steps { margin: 1.5rem 0; counter-reset: mq-steps; }
 .mq-step {
   display: grid;
   grid-template-columns: 2rem 1fr;
@@ -457,8 +442,6 @@ a.mq-btn.ternary:hover { filter: brightness(0.92); }
 .mq-step-body > :last-child { margin-bottom: 0; }
 
 .mq-step-num {
-  counter-increment: mq-steps;
-  content: counter(mq-steps);
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
@@ -473,7 +456,7 @@ a.mq-btn.ternary:hover { filter: brightness(0.92); }
   color: var(--mq-muted);
 }
 
-.mq-step-num::before { content: counter(mq-steps); }
+.mq-step-num::before { content: attr(data-step); }
 
 .mq-hero {
   padding: 4rem 0 3rem;

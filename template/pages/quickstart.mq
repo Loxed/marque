@@ -8,109 +8,103 @@ nav: quickstart
 Get from zero to a running site in a few minutes.
 
 @callout .warn
-Windows Users!
-  Make sure you use the correct workspace for your CLI tool! 
-  - If you’re using WSL, clone the project inside the WSL filesystem (`/home/username/...`)
-  - If you’re using CMD or PowerShell, keep it on the Windows filesystem. 
+  ### Windows Users!
+    Make sure you use the correct workspace for your CLI tool! 
+    - If you’re using WSL, clone the project inside the WSL filesystem (`/home/username/...`)
+    - If you’re using CMD or PowerShell, keep it on the Windows filesystem. 
 
-Running the project on the Windows filesystem with WSL (`mnt/c/...`) can cause significant performance issues!
+  Running the project on the Windows filesystem with WSL (`mnt/c/...`) can cause significant performance issues!
 @end callout
 
+
 @row
+  @column
+    @card reqs
+      @step
+      ## Requirements
+      @divider
 
-@column
+      Before installing Marque, make sure you have:
 
-  @card reqs
-    @step
-    ## Requirements
-    @divider
+      - [Node.js 18](https://nodejs.org/en/download) or newer
+      - npm (comes with Node.js)
 
-    Before installing Marque, make sure you have:
+      Check your versions:
 
-    - [Node.js 18](https://nodejs.org/en/download) or newer
-    - npm (comes with Node.js)
+      ```sh
+        node -v # >= v18.0.0
+        npm -v
+      ```
+    @end card reqs
 
-    Check your versions:
+    @card install
+      @step 2
+      ## Installation
+      @divider
 
-    ```sh
-    node -v # >= v18.0.0
-    npm -v
-    ```
-    
-  @end card reqs
+      ### Install from source (recommended)
 
-  @card install
-  @step 2
-    ## Installation
-    @divider
+      Install the `marque` package directly from github
 
-    ### Install from source (recommended)
+      ```sh
+        npm install -g github:Loxed/marque
+      ```
 
-    Install the `marque` package directly from github
+      This makes the `marque` command available globally.
 
-    ```sh
-      npm install -g github:Loxed/marque
-    ```
+      ### Verify installation
 
-    This makes the `marque` command available globally.
+      ```sh
+      marque --help
+      ```
+      If the command runs, you're ready to go.
+    @end card install
+  @end column
 
-    ### Verify installation
+  @card create
+      @step 3
+      ## Create and run your site
+      @divider
+    @end step
 
-    ```sh
-    marque --help
-    ```
+    @container
+      @step 
+      ## Create a project
+      Scaffold a new site:
 
-    If the command runs, you're ready to go.
-  @end card install
+      ```sh
+      marque new my-site
+      cd my-site
+      ```
+      @end step
 
-@end column
+      @step
+      ## Start the dev server
+      Run the local server with live reload:
 
-@card create
-@step 3
-  ## Create and run your site
-  @divider
-  
-  @steps quickstart
-  @step
-  ## Create a project
-  Scaffold a new site:
+      ```sh
+      marque serve .
+      ```
 
-  
-  ```sh
-  marque new my-site
-  cd my-site
-  ```
-  
-  @end step
+      Then open http://localhost:3000
+      @end step
 
-  @step
-  ## Start the dev server
-  Run the local server with live reload:
+      @step
+      ## Edit content
+      Modify files inside `pages/`.
+      Changes are reflected instantly in your browser.
+      @end step
 
-  ```sh
-  marque serve .
-  ```
+      @step
+      ## Build for production
+      Generate static files:
 
-  Then open http://localhost:3000
+      ```sh
+      marque build .
+      ```
 
-  @end step
-  
-
-  @step
-  ## Edit content
-  Modify files inside `pages/`.
-  Changes are reflected instantly in your browser.
-  @end step
-
-  @step
-  ## Build for production
-  Generate static files:
-
-  ```sh
-  marque build .
-  ```
-
-  Output is written to `dist/`.
-  @end step
-  @end card
+      Output is written to `dist/`.
+      @end step
+    @end container
+  @end card create
 @end row

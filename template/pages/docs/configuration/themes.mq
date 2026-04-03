@@ -124,27 +124,12 @@ Anything after `@mqs-essentials;` is your custom layer.
 
 ## Quick flow
 
-@steps flow
-  @step
-  ## Create theme file
-  Add `themes/my-theme/theme.mqs`.
-  @end step
-
-  @step
-  ## Paste minimal config
-  Start with palette + essentials.
-  @end step
-
-  @step
-  ## Activate theme
-  In `marque.toml`: `theme = "my-theme"`
-  @end step
-
-  @step
-  ## Run
-  Use `marque serve .` or `marque build .`
-  @end step
-@end steps
+@container flow
+1. Create theme file: add `themes/my-theme/theme.mqs`.
+2. Paste minimal config: start with palette + essentials.
+3. Activate theme in `marque.toml`: `theme = "my-theme"`.
+4. Run `marque serve .` or `marque build .`.
+@end container flow
 
 @callout .ok
 If `theme.mqs` exists, Marque uses it first. Otherwise it falls back to `theme.css`.

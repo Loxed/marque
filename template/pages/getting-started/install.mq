@@ -5,19 +5,21 @@ nav: install
 
 # Installation
 
-@steps install
-	@step one
-		## Install CLI
-		npm install -g marque
-	@end step
+@container install
+@row install-flow
+  @card
+    ## Install CLI
+    `npm install -g marque`
+  @end card
 
-	@step two
-		## Init project
-		marque init docs
-	@end step
+  @card
+    ## Init project
+    `marque new docs`
+  @end card
 
-	@step three
-		## Run dev server
-		marque serve docs
-	@end step
-@end steps
+  @card
+    ## Run dev server
+    `marque serve docs`
+  @end card
+@end row install-flow
+@end container install

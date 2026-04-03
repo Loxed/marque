@@ -1,180 +1,125 @@
 # Marque Architecture
 
-This document explains what each major part of the codebase is responsible for.
+This document explains how Marque turns `.mq` files into a static site.
 
-## 1) End-to-End Flow
+## 1) End-to-End Build Flow
 
 For `marque build <site-dir>`:
 
-1. `bin/cli.js` parses the command and arguments.
-2. `src/builder.js` loads config, pages, summary, themes, and layouts.
-3. `src/parser.js` converts `.mq` content into an AST.
-4. `src/renderer.js` converts AST + markdown into HTML fragments.
-5. `src/builder.js` injects content into the theme template and writes `dist/*.html`.
+1. `bin/cli.js` parses command-line arguments.
+2. `src/builder.js` loads site config, pages, summary, theme, and layout.
+3. `src/parser.js` converts each page body into a unified AST (Abstract Syntax Tree).
+4. `src/renderer.js` renders AST nodes to HTML.
+5. `src/builder.js` injects content into the page template and writes `dist/*.html`.
 6. Static assets are copied to `dist/`.
 
 For `marque serve <site-dir> [port]`:
 
 1. `bin/cli.js` calls `src/server/index.js`.
-2. `src/server/index.js` performs an initial build and starts:
-   - HTTP server (`src/server/http.js`)
-   - WebSocket reload server (`src/server/ws.js`)
-   - file watcher (`src/server/watcher.js`)
-3. On relevant file changes, the watcher triggers an incremental rebuild and broadcasts reload.
+2. The server does an initial build, then starts HTTP + WebSocket + file watcher.
+3. On file changes, watcher triggers rebuild and reload.
 
-For `marque new <site-dir> ...`:
+For `marque new <site-dir>`:
 
-1. `bin/cli.js` parses scaffold options.
-2. `src/scaffold/index.js` copies the starter template.
-3. `src/scaffold/starter.js` applies defaults and ensures starter files exist.
+1. `bin/cli.js` forwards scaffold options.
+2. `src/scaffold/index.js` creates starter files.
+3. `src/scaffold/starter.js` applies defaults.
 
-## 2) Top-Level Responsibilities
+## 2) Directive System (Current Model)
 
-### CLI entrypoint
+Marque now uses one unified directive pipeline.
 
-- `bin/cli.js`
-  - Thin command dispatcher only.
-  - Routes to build/serve/scaffold modules.
-  - Handles user-facing errors and exit codes.
+### Registry API
 
-### Build pipeline
+- `src/directives/registry.js` exposes:
+  - `defineDirective(name, { type, render, validate? })`
+  - `getDirective(name)`
+  - `isInline(name)` and `isBlock(name)`
+  - `listDirectives()`
 
-- `src/builder.js`
-  - Orchestrates full site generation.
-  - Reads `marque.toml`, `summary.mq`, and all `.mq` pages.
-  - Resolves per-page metadata/frontmatter.
-  - Loads theme/layout assets and writes compiled CSS files to `dist/`.
-  - Builds nav structures and page sequence.
-  - Applies template placeholders and writes final HTML.
-  - Copies `static/` assets.
+### Built-in directives
 
-### Parsing (`.mq` -> AST)
+- `src/directives/builtins.js` defines all built-ins in one place.
+- `src/directives/index.js` bootstraps built-ins and re-exports the registry API.
+- `src/renderer.js` requires this entry point once at startup.
 
-- `src/parser.js`
-  - Tokenizes Marque directives (`@row`, `@card`, `@tabs`, etc.).
-  - Builds AST from token stream.
-  - Extracts YAML-like frontmatter.
+### Parsing behavior
 
-### Rendering (AST -> HTML)
+- `src/parser.js` tokenizes all `@tag` lines as directive opens.
+- It does not hardcode specific tags.
+- During AST build, parser calls `isInline(tag)`:
+  - inline directive -> self-closing node
+  - block directive -> consumes children until matching `@end tag`
 
-- `src/renderer.js`
-  - Renders AST nodes to HTML components.
-  - Runs markdown rendering with syntax highlighting.
-  - Handles Marque markdown enhancements (buttons/badges/step behavior).
+### AST shape
 
-### MQS compilation (`.mqs` -> CSS)
+All directives use the same node type:
 
-- `src/mqs.js`
-  - Compiles MQS sources to CSS.
-  - Expands `@mqs-import` recursively.
-  - Expands `@mqs-palette` and `@mqs-essentials` directives.
-  - Produces final theme/layout CSS consumed by builder.
+```js
+{
+  type: 'directive',
+  tag: 'callout',
+  inline: false,
+  mods: ['warn'],
+  name: null,
+  children: [...],
+  loc: {...}
+}
+```
 
-### Structured diagnostics
+### Rendering behavior
 
-- `src/diagnostics.js`
-  - Defines the structured diagnostic model used by runtime errors:
-    - `level` (`Error`, `Warning`, `Note`)
-    - `message`
-    - `code` (optional)
-    - `spans` (file/line/column ranges)
-    - `suggestions` (optional help/fixes)
-  - Exposes formatter + error wrapper (`createDiagnosticError`, `formatDiagnostic`).
+- `src/renderer/node-renderers.js` delegates to the directive definition:
+  - find definition with `getDirective(node.tag)`
+  - call `def.render({ tag, mods, name, children, nodes, node, opts, ctx })`
+- Unknown directives fall back safely.
 
-- `src/utils/errors.js`
-  - Centralized print path for diagnostics in CLI/dev server.
-  - If an error carries `err.diagnostic`, it is rendered in rust-like style with caret span.
+### Directive diagnostics
 
-## 3) Server Architecture (`src/server`)
+- `src/directive-diagnostics.js` walks the AST.
+- For each directive node, it calls `def.validate(node, state, helpers)` if provided.
+- This keeps validation with the directive definition instead of a hardcoded switch.
 
-- `src/server/index.js`
-  - Composition root for dev server.
-  - Owns lifecycle (startup, cleanup, signals).
+## 3) Main Runtime Modules
 
-- `src/server/http.js`
-  - Serves built files from `dist/`.
-  - Injects live-reload snippet into HTML.
-  - Handles 404 helper endpoint to create missing pages in dev mode.
+- `src/builder.js`: orchestrates complete site generation.
+- `src/parser.js`: `.mq` source to AST.
+- `src/renderer.js`: AST to HTML + markdown transforms + syntax highlighting.
+- `src/mqs.js`: `.mqs` to CSS.
+- `src/diagnostics.js`: structured diagnostics model.
+- `src/utils/errors.js`: pretty diagnostic printing.
 
-- `src/server/watcher.js`
-  - Watches relevant files and directories (`pages`, `themes`, `layouts`, config/summary).
-  - Triggers rebuild + websocket reload broadcast.
-  - Removes generated HTML when an `.mq` source page is deleted.
+## 4) Server Modules (`src/server`)
 
-- `src/server/ws.js`
-  - WebSocket server used only for reload notifications.
+- `src/server/index.js`: lifecycle + wiring.
+- `src/server/http.js`: static file serving + reload snippet injection.
+- `src/server/ws.js`: reload signal transport.
+- `src/server/watcher.js`: rebuild on file changes.
+- `src/server/lock.js`: single-serve process guard.
+- `src/server/page-creator.js`: 404-assisted page creation helpers.
 
-- `src/server/lock.js`
-  - Lock file guard to prevent multiple `serve` processes on the same site.
+## 5) Scaffold Modules (`src/scaffold`)
 
-- `src/server/page-creator.js`
-  - Resolves safe target path for 404 page creation.
-  - Generates starter content for created page.
-  - Contains cleanup helper for deleted generated pages.
+- `src/scaffold/index.js`: scaffold orchestration.
+- `src/scaffold/args.js`: scaffold arg parsing/validation.
+- `src/scaffold/starter.js`: starter defaults and file guards.
 
-## 4) Scaffold Architecture (`src/scaffold`)
+## 6) Inputs Used To Build A Site
 
-- `src/scaffold/index.js`
-  - Main scaffold orchestration.
-  - Resolves selected layout/theme and copies template.
-
-- `src/scaffold/args.js`
-  - Parses scaffold arguments.
-  - Supports both styles:
-    - `--layout sidebar --theme gouda`
-    - `layout:sidebar theme:gouda`
-  - Validates selected layout/theme against available files.
-
-- `src/scaffold/starter.js`
-  - Applies selected defaults to `marque.toml`.
-  - Ensures required starter page(s) exist.
-
-## 5) Shared Utilities (`src/utils`)
-
-- `src/utils/errors.js`
-  - Build error formatting/printing.
-
-- `src/utils/fs.js`
-  - Generic filesystem helpers (copy directories, list names, normalize relative paths).
-
-- `src/utils/strings.js`
-  - String helpers (`slugify`, `toTitle`, JS escaping, layout alias normalization).
-
-## 6) Source vs Split Modules
-
-The currently active build path uses:
-
-- `src/parser.js`
-- `src/renderer.js`
-- `src/mqs.js`
-
-There are also split directories (`src/parser/`, `src/renderer/`, `src/mqs/`) that mirror this logic in modular form. They are currently not wired as the primary runtime path. This is useful to know when editing internals: if behavior changes are expected at runtime today, update the active files above.
-
-## 7) Content and Template Inputs
-
-A generated site is assembled from these user/project inputs:
-
-- `pages/**/*.mq` (page content)
-- `summary.mq` (navigation/order)
-- `marque.toml` (global defaults)
+- `pages/**/*.mq`
+- `summary.mq`
+- `marque.toml`
 - `themes/<name>/theme.css` or `theme.mqs`
-- `themes/<name>/index.html` (optional page shell)
+- `themes/<name>/index.html` (optional)
 - `layouts/<name>.css` or `<name>.mqs`
-- `static/**` (copied as-is)
+- `static/**`
 
-## 8) What Is Legacy vs Current
+## 7) Active vs Split Modules
 
-Current architecture:
+Active runtime path currently uses:
 
-- `bin/cli.js` thin orchestration
-- `src/server/*` modular dev server
-- `src/scaffold/*` modular scaffolding
+- `src/parser.js`
+- `src/renderer.js`
+- `src/mqs.js`
 
-Removed legacy:
-
-- old monolithic `src/watcher.js`
-
-Potential future cleanup/migration target:
-
-- switch builder imports from monolithic parser/renderer/mqs files to split module folders once fully validated.
-- extend structured diagnostics beyond `MQ001` to parser/MQS/frontmatter warnings.
+Split directories (`src/parser/`, `src/renderer/`, `src/mqs/`) exist as modular mirrors and are not the primary path yet.
