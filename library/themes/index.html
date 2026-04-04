@@ -3,13 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>{{ document_title }}</title>
+
 <meta name="description" content="{{ description }}">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
 <link rel="stylesheet" href="{{ layout_css }}">
 <link rel="stylesheet" href="{{ theme_css }}">
 </head>
 <body>
+
+  <!-- Navigation Bar (Works with topnav and sidebar) -->
+
   <nav class="mq-nav">
     <a class="mq-nav-brand" href="/">{{ site_title }}</a>
     <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
@@ -18,77 +24,17 @@
     </div>
   </nav>
 
+  <!-- main content in which .mq files are injected -->
   <main class="mq-main"{{ page_main_style }}>
     {{ content }}
     {{ page_nav }}
   </main>
 
+  <!-- footer at the bottom of every page -->
   <footer class="mq-footer">
-    Built with <a href="https://github.com/marque">Marque</a>
+    Built with <a href="https://github.com/Loxed/marque">Marque</a>
   </footer>
 
-  <script>
-  function mqTab(id, idx) {
-    const el = document.getElementById(id);
-    el.querySelectorAll('.mq-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-    el.querySelectorAll('.mq-tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
-  }
-
-  function mqToggleNav(btn) {
-    const nav = btn.closest('.mq-nav');
-    if (!nav) return;
-    const open = nav.classList.toggle('mq-nav-open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-
-  function mqPositionSubmenus() {
-    const groups = document.querySelectorAll('.mq-nav-group');
-    groups.forEach(group => {
-      const submenu = group.querySelector(':scope > .mq-nav-submenu');
-      if (!submenu) return;
-
-      group.classList.remove('mq-nav-group-open-left');
-
-      const style = window.getComputedStyle(submenu);
-      if (style.position !== 'absolute') return;
-
-      const rect = submenu.getBoundingClientRect();
-      if (rect.right > window.innerWidth - 8) {
-        group.classList.add('mq-nav-group-open-left');
-      }
-    });
-  }
-
-  window.addEventListener('resize', mqPositionSubmenus);
-  document.addEventListener('DOMContentLoaded', mqPositionSubmenus);
-  document.addEventListener('mouseover', (e) => {
-    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
-  });
-  document.addEventListener('focusin', (e) => {
-    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
-  });
-
-  document.addEventListener('click', async (e) => {
-    const btn = e.target.closest('.mq-code-copy');
-    if (!btn) return;
-    const block = btn.closest('.mq-code-block');
-    const codeEl = block && block.querySelector('pre code');
-    if (!codeEl) return;
-
-    const source = codeEl.textContent || '';
-    const original = btn.textContent;
-
-    try {
-      await navigator.clipboard.writeText(source);
-      btn.textContent = 'Copied';
-    } catch (_) {
-      btn.textContent = 'Failed';
-    }
-
-    setTimeout(() => {
-      btn.textContent = original;
-    }, 1200);
-  });
-  </script>
+  <script src="/index.js"></script>
 </body>
 </html>

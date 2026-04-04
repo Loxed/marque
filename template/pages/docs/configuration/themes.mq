@@ -1,7 +1,7 @@
 ---
 title: Themes
 nav: themes
-theme: rustique
+theme: gruyere
 ---
 
 # Themes
@@ -98,7 +98,7 @@ Aliases accepted in palette:
     - `.ternary`
   @end card
 
-  @card
+  @card .primary
     ## Compatibility classes
     Existing styles still work:
     - `.accent` (primary)

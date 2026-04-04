@@ -60,6 +60,11 @@ function build(siteDir, outDir, options = {}) {
   }
   writeFileWithRetry(path.join(outDir, 'layout.css'), defaultLayout.css, softFsErrors);
 
+  const sharedRuntimeScript = loadSharedRuntimeScript(siteDir);
+  if (typeof sharedRuntimeScript === 'string' && sharedRuntimeScript.trim()) {
+    writeFileWithRetry(path.join(outDir, 'index.js'), sharedRuntimeScript, softFsErrors);
+  }
+
   // find all .mq files
   const pagesDir = path.join(siteDir, 'pages');
   const pages = findMQ(pagesDir);
@@ -384,6 +389,19 @@ function loadPageTemplate(themeDir, siteDir) {
   }
 
   throw new Error('No template found. Add themes/index.html or a theme-level index.html/base.html.');
+}
+
+function loadSharedRuntimeScript(siteDir) {
+  const candidates = [
+    path.join(siteDir, 'themes', 'index.js'),
+    path.join(__dirname, '..', 'library', 'themes', 'index.js'),
+    path.join(__dirname, '..', 'template', 'themes', 'index.js'),
+    path.join(__dirname, '..', 'themes', 'index.js'),
+  ];
+
+  const scriptPath = candidates.find(p => fs.existsSync(p));
+  if (!scriptPath) return '';
+  return fs.readFileSync(scriptPath, 'utf8');
 }
 
 function safeName(name) {

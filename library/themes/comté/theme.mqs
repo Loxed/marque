@@ -24,3 +24,10 @@
 }
 
 @mqs-essentials;
+
+/* classic .css description */
+img {
+  border-radius: 20px;
+  border: 1px solid #eeece7;
+  border
+}

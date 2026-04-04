@@ -1,0 +1,295 @@
+/* elmish — MQS theme faithfully matching elm-lang.org */
+/* Source Sans Pro is Elm's actual body font; Source Code Pro for mono */
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Source+Code+Pro:wght@400;500&display=swap");
+
+@mqs-palette {
+  /* ── core ── */
+  primary: #60b5cc;          /* Elm teal — links, accents */
+  secondary: #f0ad00;        /* Elm amber — logo colour */
+  ternary: #7fd13b;          /* Elm green — third accent */
+  background: #ffffff;       /* pure white body */
+  surface: #ffffff;
+  surface-alt: #f0f0f0;      /* Elm's light grey sections */
+  text: #293c4b;             /* Elm's exact body text colour */
+  muted: #555555;
+  border: rgba(41, 60, 75, 0.15);
+  radius: 0px;               /* Elm uses basically zero border-radius */
+  max-width: 980px;
+  font-sans: 'Source Sans 3', 'Source Sans Pro', sans-serif;
+  font-serif: 'Source Sans 3', 'Source Sans Pro', sans-serif;
+  font-mono: 'Source Code Pro', monospace;
+
+  /* ── nav pack — Elm's dark charcoal header ── */
+  nav-bg: #293c4b;
+  nav-text: #ffffff;
+  nav-border: #1d2d38;
+  nav-active-bg: rgba(96, 181, 204, 0.15);
+  nav-active-text: #60b5cc;
+
+  /* ── code pack — Elm docs light style ── */
+  code-bg: #f0f0f0;
+  code-text: #293c4b;
+  code-border: #d8d8d8;
+  code-head-bg: #e0e0e0;
+  code-head-text: #293c4b;
+
+  /* ── card pack ── */
+  card-bg: #ffffff;
+  card-border: #e0e0e0;
+  card-radius: 0px;
+  card-shadow: none;
+
+  /* ── callout pack ── */
+  callout-info-bg: #eef7fb;
+  callout-info-border: #60b5cc;
+  callout-info-text: #293c4b;
+  callout-warn-bg: #fff9e6;
+  callout-warn-border: #f0ad00;
+  callout-warn-text: #5a3e00;
+  callout-danger-bg: #fdecea;
+  callout-danger-border: #cc0000;
+  callout-danger-text: #7a0000;
+  callout-ok-bg: #f0f9e8;
+  callout-ok-border: #7fd13b;
+  callout-ok-text: #2a4a10;
+}
+
+@mqs-essentials;
+
+/* ── Body ── */
+body {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ── Navigation — matches Elm's exact header ── */
+.mq-nav {
+  background: var(--mq-nav-bg);
+  color: var(--mq-nav-text);
+  border-bottom: none;
+}
+.mq-nav-brand {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 0;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.mq-nav-links a:hover,
+.mq-nav-group > .mq-nav-group-trigger:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: transparent;
+}
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
+  color: var(--mq-nav-active-text);
+  background: var(--mq-nav-active-bg);
+  border-color: transparent;
+}
+.mq-nav-submenu {
+  background: #1d2d38;
+  border: none;
+  border-radius: 0;
+}
+
+/* ── Headings — Elm uses Source Sans for everything, lightweight ── */
+.mq-main h1 {
+  font-family: var(--mq-font-sans);
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #293c4b;
+}
+.mq-main h2 {
+  font-family: var(--mq-font-sans);
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 1.25;
+  color: #293c4b;
+}
+.mq-main h3 {
+  font-family: var(--mq-font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #293c4b;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Links — Elm's teal, no underline by default ── */
+.mq-main a {
+  color: #60b5cc;
+  text-decoration: none;
+}
+.mq-main a:hover {
+  text-decoration: underline;
+}
+
+/* ── Code — matches Elm docs: light grey bg, no radius ── */
+.mq-main pre {
+  background: var(--mq-code-bg);
+  color: var(--mq-code-text);
+  border: 1px solid var(--mq-code-border);
+  border-radius: 0;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.mq-main code {
+  background: #f0f0f0;
+  color: #293c4b;
+  padding: 0.1em 0.3em;
+  border-radius: 0;
+  font-size: 0.875em;
+  border: 1px solid #d8d8d8;
+}
+
+/* ── Cards — flat, borderless like Elm's content panels ── */
+.mq-card {
+  background: var(--mq-card-bg);
+  border: 1px solid var(--mq-card-border);
+  border-radius: 0;
+  box-shadow: none;
+}
+.mq-card.primary,
+.mq-card.accent {
+  border-top: 3px solid var(--mq-primary);
+}
+.mq-card.secondary,
+.mq-card.accent2 {
+  border-top: 3px solid var(--mq-secondary);
+}
+.mq-card.ternary {
+  border-top: 3px solid var(--mq-ternary);
+}
+
+/* ── Buttons — Elm's clean flat style ── */
+a.mq-btn {
+  font-family: var(--mq-font-sans);
+  font-size: 0.9rem;
+  font-weight: 400;
+  border-radius: 0;
+  border: 1px solid #d8d8d8;
+  background: #f0f0f0;
+  color: #293c4b;
+  text-decoration: none;
+  letter-spacing: 0;
+  text-transform: none;
+}
+a.mq-btn:hover {
+  background: #e0e0e0;
+  border-color: #c0c0c0;
+  color: #293c4b;
+  text-decoration: none;
+}
+a.mq-btn.primary {
+  background: #60b5cc;
+  border-color: #4a9ab0;
+  color: #ffffff;
+}
+a.mq-btn.primary:hover {
+  background: #4a9ab0;
+}
+a.mq-btn.secondary {
+  background: #f0ad00;
+  border-color: #d09800;
+  color: #293c4b;
+}
+a.mq-btn.secondary:hover {
+  background: #d09800;
+  border-color: #b08000;
+}
+
+/* ── Divider — thin 1px grey like Elm ── */
+.mq-divider {
+  width: 100%;
+  height: 1px;
+  background: #d8d8d8;
+  border-radius: 0;
+}
+
+/* ── Hero — Elm uses solid teal/coloured full-width bands ── */
+.mq-hero {
+  background: #60b5cc;
+  color: #ffffff;
+  border: none;
+  border-radius: 0;
+}
+.mq-hero h1,
+.mq-hero h2,
+.mq-hero h3,
+.mq-hero p {
+  color: #ffffff;
+}
+
+/* ── Alternate sections (Elm's grey bands) ── */
+.mq-section.alt {
+  background: #f0f0f0;
+}
+
+/* ── Badges ── */
+.mq-badge {
+  background: #f0f0f0;
+  color: #555555;
+  border-radius: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #d8d8d8;
+}
+.mq-badge.primary,
+.mq-badge.accent {
+  background: #d6eef5;
+  color: #2a6a80;
+  border-color: #60b5cc;
+}
+.mq-badge.secondary {
+  background: #fff3c0;
+  color: #7a5500;
+  border-color: #f0ad00;
+}
+
+/* ── Tables ── */
+.mq-main table thead {
+  background: #f0f0f0;
+  color: #293c4b;
+  border-bottom: 2px solid #d8d8d8;
+}
+.mq-main table thead th {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.mq-main table tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+.mq-main table {
+  border: 1px solid #e0e0e0;
+}
+
+/* ── Footer — Elm's dark charcoal footer matching nav ── */
+.mq-footer {
+  background: #293c4b;
+  color: rgba(255, 255, 255, 0.7);
+  border-top: none;
+}
+.mq-footer a {
+  color: #60b5cc;
+  text-decoration: none;
+}
+.mq-footer a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}

@@ -1,0 +1,242 @@
+/* guardian theme — destiny 2 (native MQS) */
+/*
+  Visual language: Bungie's flat metro-style UI. Deep space navy
+  backgrounds, pale ghost-white text, Exotic gold as the hero accent,
+  Legendary amethyst as the secondary. Clean, hierarchical, minimal —
+  everything in service of the content. Never loud. Always precise.
+*/
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@mqs-palette {
+  /* core */
+  primary: #c9a227;           /* Exotic gold */
+  secondary: #7b5ea7;         /* Legendary amethyst */
+  ternary: #4a9e8a;           /* Void teal */
+  background: #0b0d12;        /* deep space */
+  surface: #111520;           /* card/content surface */
+  surface-alt: #191e2e;       /* alternate section bg */
+  text: #dde1ec;              /* ghost white */
+  muted: #6b7394;             /* subdued UI text */
+  border: rgba(221, 225, 236, 0.10);
+  radius: 3px;                /* sharp, geometric — Bungie doesn't do curves */
+  max-width: 980px;
+  font-sans: 'Inter', system-ui, sans-serif;
+  font-serif: 'Rajdhani', system-ui, sans-serif;  /* display / headings */
+  font-mono: 'JetBrains Mono', monospace;
+
+  /* nav pack */
+  nav-bg: #080a0f;
+  nav-text: #a8b0c8;
+  nav-border: #0d1018;
+  nav-active-bg: rgba(201, 162, 39, 0.14);
+  nav-active-text: #f0d980;
+
+  /* code pack */
+  code-bg: #0f1219;
+  code-text: #dde1ec;
+  code-border: #1e2438;
+  code-head-bg: #13172a;
+  code-head-text: #c9a227;
+
+  /* card pack */
+  card-bg: #111520;
+  card-border: rgba(221, 225, 236, 0.09);
+  card-radius: 3px;
+  card-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+
+  /* callout pack */
+  callout-info-bg: #12161f;
+  callout-info-border: #c9a227;
+  callout-info-text: #dde1ec;
+  callout-warn-bg: #1a1510;
+  callout-warn-border: #b8732a;
+  callout-warn-text: #c9b08a;
+  callout-danger-bg: #1a1018;
+  callout-danger-border: #9c3358;
+  callout-danger-text: #c98aaa;
+  callout-ok-bg: #101a1a;
+  callout-ok-border: #4a9e8a;
+  callout-ok-text: #8ac4bb;
+}
+
+@mqs-essentials;
+
+/* Body */
+body {
+  font-size: 16px;
+  line-height: 1.68;
+  font-family: var(--mq-font-sans);
+  letter-spacing: 0.01em;
+}
+
+/* Navigation */
+.mq-nav {
+  background: var(--mq-nav-bg);
+  color: var(--mq-nav-text);
+  border-color: var(--mq-nav-border);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.18);
+}
+.mq-nav-brand {
+  font-family: var(--mq-font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e8d080;
+}
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a93b0;
+  border-radius: 2px;
+}
+.mq-nav-links a:hover,
+.mq-nav-group > .mq-nav-group-trigger:hover {
+  color: #dde1ec;
+  border-color: rgba(221, 225, 236, 0.2);
+}
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
+  color: var(--mq-nav-active-text);
+  background: var(--mq-nav-active-bg);
+  border-color: rgba(201, 162, 39, 0.4);
+}
+.mq-nav-submenu {
+  background: #0c0e16;
+  border: 1px solid rgba(221, 225, 236, 0.12);
+}
+
+/* Headings — Rajdhani carries the Bungie feel */
+.mq-main h1 {
+  font-family: var(--mq-font-serif);
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #eee8d5;
+}
+.mq-main h2 {
+  font-family: var(--mq-font-serif);
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #cdd3e8;
+}
+.mq-main h3 {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mq-primary);
+}
+
+/* Cards */
+.mq-card {
+  background: var(--mq-card-bg);
+  border-radius: var(--mq-card-radius);
+  box-shadow: var(--mq-card-shadow);
+  border-top: 1px solid rgba(221, 225, 236, 0.06);
+}
+.mq-card.primary,
+.mq-card.accent {
+  border-left: 3px solid var(--mq-primary);
+  background: #141828;
+}
+.mq-card.secondary,
+.mq-card.accent2 {
+  border-left: 3px solid var(--mq-secondary);
+  background: #13112a;
+}
+
+/* Buttons */
+a.mq-btn {
+  font-family: var(--mq-font-serif);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+a.mq-btn.primary {
+  background: var(--mq-primary);
+  border-color: var(--mq-primary);
+  color: #0b0d12;
+}
+a.mq-btn.secondary,
+a.mq-btn.blue {
+  background: transparent;
+  border: 1px solid rgba(221, 225, 236, 0.25);
+  color: #a8b0c8;
+}
+a.mq-btn.secondary:hover,
+a.mq-btn.blue:hover {
+  border-color: rgba(221, 225, 236, 0.5);
+  color: #dde1ec;
+}
+
+/* Divider — thin ruled line, gold */
+.mq-divider {
+  width: 40px;
+  height: 2px;
+  background: var(--mq-primary);
+  opacity: 0.7;
+}
+
+/* Hero / Sections */
+.mq-hero {
+  background: linear-gradient(135deg, #0f1322 0%, #0d1118 60%, #0a0c14 100%);
+  border: 1px solid rgba(201, 162, 39, 0.15);
+  border-radius: 4px;
+}
+
+/* Badges — rarity system */
+.mq-badge {
+  font-family: var(--mq-font-serif);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: #1e2438;
+  color: #8a93b0;
+  border-radius: 2px;
+}
+.mq-badge.primary,
+.mq-badge.accent {
+  background: rgba(201, 162, 39, 0.18);
+  color: #e0c055;
+}
+.mq-badge.secondary {
+  background: rgba(123, 94, 167, 0.2);
+  color: #b09ad8;
+}
+
+/* Code blocks */
+pre, .mq-code-block {
+  background: var(--mq-code-bg);
+  border: 1px solid var(--mq-code-border);
+  border-radius: 2px;
+  font-family: var(--mq-font-mono);
+  font-size: 0.88rem;
+}
+
+/* Subtle horizontal rule */
+hr {
+  border-color: rgba(221, 225, 236, 0.08);
+}
+
+/* Links */
+.mq-main a {
+  color: #c9a227;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+  transition: border-color 0.15s;
+}
+.mq-main a:hover {
+  border-color: var(--mq-primary);
+}

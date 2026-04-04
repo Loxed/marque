@@ -1,0 +1,209 @@
+/* gruvyere-retro theme (native MQS) */
+
+@import url("https://fonts.googleapis.com/css2?family=Faculty+Glyptic:wght@400;600;700&family=Crimson+Pro:wght@400;600&family=Fira+Code:wght@400;500&display=swap");
+
+@mqs-palette {
+  /* core */
+  primary: #d79921;         /* muted gold */
+  secondary: #cc241d;       /* deep red */
+  ternary: #98971a;         /* olive green */
+
+  background: #1b1b1b;      /* flatter, terminal-like */
+  surface: #232323;
+  surface-alt: #2b2b2b;
+
+  text: #ebdbb2;
+  muted: #928374;
+
+  border: #3c3836;
+  radius: 2px;
+  max-width: 960px;
+
+  font-sans: 'Faculty Glyptic', system-ui, sans-serif;
+  font-serif: 'Crimson Pro', serif;
+  font-mono: 'Fira Code', monospace;
+
+  /* nav */
+  nav-bg: #141414;
+  nav-text: #d5c4a1;
+  nav-border: #0f0f0f;
+  nav-active-bg: #2f2a1f;
+  nav-active-text: #fabd2f;
+
+  /* code */
+  code-bg: #1b1b1b;
+  code-text: #ebdbb2;
+  code-border: #3c3836;
+  code-head-bg: #232323;
+  code-head-text: #d79921;
+
+  /* cards */
+  card-bg: #232323;
+  card-border: #3c3836;
+  card-radius: 2px;
+  card-shadow: none;
+
+  /* callouts */
+  callout-info-bg: #1f2a2e;
+  callout-info-border: #458588;
+  callout-info-text: #83a598;
+
+  callout-warn-bg: #2a241d;
+  callout-warn-border: #d79921;
+  callout-warn-text: #fabd2f;
+
+  callout-danger-bg: #2a1d1d;
+  callout-danger-border: #cc241d;
+  callout-danger-text: #fb4934;
+
+  callout-ok-bg: #1f2a1f;
+  callout-ok-border: #98971a;
+  callout-ok-text: #b8bb26;
+}
+
+@mqs-essentials;
+
+/* Base */
+body {
+  font-size: 15.5px;
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+  background: var(--mq-background);
+}
+
+/* subtle scanline texture */
+body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.015),
+    rgba(255,255,255,0.015) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.15;
+}
+
+/* Navigation */
+.mq-nav {
+  background: var(--mq-nav-bg);
+  border-bottom: 1px solid var(--mq-nav-border);
+  font-family: var(--mq-font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.mq-nav-brand {
+  font-weight: 600;
+  color: #fbf1c7;
+}
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
+  color: #a89984;
+  border: 1px solid transparent;
+}
+.mq-nav-links a:hover {
+  color: #ebdbb2;
+  border-color: #3c3836;
+}
+.mq-nav-links a.active {
+  background: var(--mq-nav-active-bg);
+  color: var(--mq-nav-active-text);
+  border-color: #50422a;
+}
+.mq-nav-submenu {
+  background: #1b1b1b;
+  border: 1px solid #3c3836;
+}
+
+/* Headings */
+.mq-main h1 {
+  font-family: var(--mq-font-serif);
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.mq-main h2 {
+  font-family: var(--mq-font-serif);
+  font-size: 1.4rem;
+  border-bottom: 1px solid #3c3836;
+  padding-bottom: 4px;
+}
+.mq-main h3 {
+  font-family: var(--mq-font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #a89984;
+}
+
+/* Cards */
+.mq-card {
+  background: var(--mq-card-bg);
+  border: 1px solid var(--mq-card-border);
+}
+.mq-card.primary {
+  border-left: 3px solid var(--mq-primary);
+}
+.mq-card.secondary {
+  border-left: 3px solid #458588;
+}
+
+/* Buttons */
+a.mq-btn {
+  font-family: var(--mq-font-mono);
+  font-size: 0.8rem;
+  border: 1px solid #504945;
+  background: #232323;
+  color: #ebdbb2;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+a.mq-btn:hover {
+  background: #2b2b2b;
+  border-color: #7c6f64;
+}
+a.mq-btn.secondary {
+  background: #3c3836;
+  color: #fbf1c7;
+}
+
+/* Divider */
+.mq-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    #504945,
+    transparent
+  );
+}
+
+/* Hero */
+.mq-hero {
+  background: #232323;
+  border: 1px solid #3c3836;
+}
+
+/* Code blocks */
+pre, code {
+  font-family: var(--mq-font-mono);
+  font-size: 0.85rem;
+}
+
+/* Badges */
+.mq-badge {
+  font-family: var(--mq-font-mono);
+  font-size: 0.7rem;
+  border: 1px solid #504945;
+  background: #232323;
+  color: #a89984;
+}
+.mq-badge.primary {
+  color: #fabd2f;
+  border-color: #50422a;
+}

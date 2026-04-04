@@ -1,0 +1,76 @@
+---
+title: Layouts
+layout: topnav
+---
+
+# Layout
+@divider
+
+Layouts behave the same way as themes but have a different purpose. Themes define the global theming of elements in your website, whereas layouts are responsible for laying out what shows up automatically and where it should go. This page forcibly uses the `topnav` layout, whereas the rest of this website uses the `sidebar` layout.
+
+@row
+
+	@card topnav
+		## `topnav`
+		@divider
+
+		The topnav layout (used on this page) places the navigation bar at the top of the page. The navigation bar contains the website's title on the left and the navigation links on the right. The content of the page goes below it. Sub-pages are available when hovering the main buttons.
+
+		![Topnav](../../topnav.png)
+	@end card topnav
+
+	@card sidebar
+		## `sidebar`
+		@divider
+
+		The sidebar layout (used on the rest of the site) places the navigation to the left side of the page. The navigation bar displays The title on the top, and the rest of the navigations links below it, with numbered sections, subsections and subsubsections. Some divider text also renders to help organize furthermore sections. The content goes to the right of the sidebar. 
+
+		![Sidebar](../../sidebar.png)
+
+	@end card
+@end row 
+
+@card 
+	## `summary.mq` used for these examples
+	@divider
+
+	```summary.mq		
+	[Home](index.mq)
+
+	User Guide # doesnt link to anything, only serves as a header for sidebar
+
+	[Quick Start ➽](quickstart.mq)
+	[Create Website](create.mq)
+
+	Reference
+
+	[Docs](docs.mq)
+	```
+@end card
+
+@dropdown "For developpers"
+
+	@row
+		@card
+			In the [Marque](https://github.com/Loxed/marque) repository, the layouts are defined as `.css` files inside of `library/layouts/` and copied into each new project at `marque new <name>`. They directly apply onto the `index.html` inside of `library/themes/` when building the project. When creating new layouts, make sure you match the classes used in the `index.html` file.
+
+			<!-- When creating a new project with `marque new <name>`, the `index.html` file is copied from `library/themes/index.html` and the layout `.css` files are copied from `library/layouts/`. This means that if you want to create a new layout, you need to create a new `.css` file in `library/layouts/` and then copy it into the new project when creating it. You also need to make sure that the new layout is applied in the `index.html` file of the new project.
+
+			@TODO: make sure the library's content is copied into new projects on `marque new <name>`. -->
+		@end card
+
+		@card
+			```layout
+			library/
+			├── layouts/
+			│   ├── sidebar.css
+			│   └── topnav.css
+			│
+			└── themes/
+				├── index.html
+				├── index.js
+				└── theme/
+			```
+		@end card
+	@end row
+@end dropdown
