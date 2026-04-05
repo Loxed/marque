@@ -11,5 +11,5 @@ width = 82
 #   sidebar   -> mdbook-like left sidebar layout
 #
 # theme options (built-in):
-#   default, rustique, pycorino, gouda, javarti, test
+#   comté, rustique, pycorino, gouda, javarti, elmental, mida
 

@@ -28,25 +28,25 @@ Layouts behave the same way as themes but have a different purpose. Themes defin
 		![Sidebar](../../sidebar.png)
 
 	@end card
+
+	@card 
+		## `summary.mq` used for these examples
+		@divider
+
+		```summary.mq		
+		[Home](index.mq)
+
+		User Guide # only in sidebar
+
+		[Quick Start ➽](quickstart.mq)
+		[Create Website](create.mq)
+
+		Reference # only in sidebar
+
+		[Docs](docs.mq)
+		```
+	@end card
 @end row 
-
-@card 
-	## `summary.mq` used for these examples
-	@divider
-
-	```summary.mq		
-	[Home](index.mq)
-
-	User Guide # doesnt link to anything, only serves as a header for sidebar
-
-	[Quick Start ➽](quickstart.mq)
-	[Create Website](create.mq)
-
-	Reference
-
-	[Docs](docs.mq)
-	```
-@end card
 
 @dropdown "For developpers"
 

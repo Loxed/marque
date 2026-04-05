@@ -13,6 +13,6 @@ Reference
 [CLI Commands](docs/cli.mq)
 [Configuration](docs/configuration.mq)
 [Frontmatter](docs/configuration/frontmatter.mq)
-[Themes](docs/configuration/themes.mq)
 [Layouts](docs/configuration/layouts.mq)
+[Themes](docs/configuration/themes.mq)
 [Directives](docs/directives.mq)

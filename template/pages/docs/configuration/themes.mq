@@ -1,7 +1,7 @@
 ---
 title: Themes
 nav: themes
-theme: marathon
+theme: mida
 ---
 
 # Themes 
@@ -10,120 +10,118 @@ theme: marathon
 
 ## _[Marathon](https://marathonthegame.com/)-style, baby!_
 
-----
-
 @row
 @card .primary
 
 ## Customise your site's look
-As you can see on this page, Marque supports multiple themes and [layouts](../configuration/layouts.mq).
+@divider
+Marque supports multiple themes and [layouts](../configuration/layouts.mq).
 
-Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) files in the `themes/` directory of your Marque project, and you can have as many as you like. This page uses the [`marathon.css`](../../../themes/marathon.css) theme to showcase what's possible.
+Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) files in the `themes/` directory of your Marque project, and you can have as many as you like. This page uses the `mida.css` theme to showcase what's possible.
 
 @end card
 @card .secondary
-The default theme used on your site is defined in the `marque.toml` file, with the `theme` key. You can change this to any theme you like, and Marque will use it when you run `marque serve` or `marque build`. To override a theme on a per-page basis (like this page), add `theme = <name>` to the page's frontmatter, and Marque will use that theme instead of the default one.
+
+## Create your own theme
+
+The main theme used on your site is defined in the `marque.toml` file, with the `theme:` parameter. You can change this to any theme you like, and Marque will use it when you run `marque serve` or `marque build`. To override a theme on a per-page basis (like this page), add `theme = <name>` to the page's [frontmatter/](../configuration/frontmatter.mq), and Marque will use that theme instead of the default one.
 
 @end card
+
 @end row
 
-@card
-
-## Minimal theme file
-@divider 
-```css
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap");
-
-:root {
-  --mq-primary: #c85a2a;
-  --mq-secondary: #2a5ac8;
-  --mq-tertiary: #2ac852;
-  --mq-background: #f7f5f0;
-  --mq-surface: #ffffff;
-  --mq-surface-alt: #eeece7;
-  --mq-text: #1a1916;
-  --mq-muted: #6b6860;
-  --mq-border: rgba(0,0,0,0.09);
-  --mq-radius: 8px;
-  --mq-max-width: 860px;
-  --mq-font-sans: 'DM Sans', system-ui, sans-serif;
-  --mq-font-serif: Georgia, serif;
-  --mq-font-mono: 'IBM Plex Mono', monospace;
-}
-
-body {
-  font-family: var(--mq-font-sans);
-  background: var(--mq-background);
-  color: var(--mq-text);
-}
-```
-@end card
-
-
-## Useful baseline styles
-
-- Theme variables in `:root`
-- Typography and links
-- Card and button classes
-- Page section spacing
-- Responsive defaults
-
-## Common theme variables
-
-You can define and edit variables like:
-
-- Core: `--mq-primary`, `--mq-secondary`, `--mq-tertiary`, `--mq-background`, `--mq-surface`, `--mq-surface-alt`, `--mq-text`, `--mq-muted`, `--mq-border`
-- Geometry: `--mq-radius`, `--mq-max-width`
-- Fonts: `--mq-font-sans`, `--mq-font-serif`, `--mq-font-mono`
-- Optional component vars: `--mq-nav-*`, `--mq-code-*`, `--mq-card-*`, `--mq-callout-*`
-
-@row classes
-  @card .primary
-    ## Normalized style classes
-    I'm saying some **_words_**!
-    - `.primary`
-    - `.secondary`
-    - `.tertiary`
-  @end card
-
-  @card .secondary
-    ## Compatibility classes
-    Existing styles still work:
-    - `.accent` (primary)
-    - `.accent2` / `.blue` (secondary)
-  @end card
-
-  @card .tertiary
-    ## Custom classes
-    Add your own classes and use them in content:
-    - `.blue` (secondary)
-    - `.red` (primary)
-@end row classes
-
-## Overrides layer
-
-Use regular CSS below your variable declarations.
-
-```css
-.mq-card.primary {
-  border-top-width: 4px;
-}
-
-.mq-main h1 {
-  letter-spacing: -0.04em;
-}
-```
+----
 
 ## Quick flow
 
-@container flow
-1. Create theme file: add `themes/my-theme.css`.
-2. Paste baseline variables and base styles.
-3. Activate theme in `marque.toml`: `theme = "my-theme"`.
-4. Run `marque serve .` or `marque build .`.
-@end container flow
+@card
 
-@callout .ok
+@step
+Create theme file: add `themes/<my-theme.css>`.
+@end step
+
+@step
+Paste baseline variables and base styles.
+@end step
+
+@step
+Activate theme in `marque.toml`: `theme = "my-theme"`.
+@end step
+
+@step 
+Run `marque serve .` or `marque build .`.
+@end step
+
+@end card
+
+@callout
 If `themes/my-theme.css` exists, Marque uses it.
 @end callout
 
+## Official themes
+@divider
+
+### _"Yes I'm French, how did you guess?" - @Lox_
+
+----
+
+@row classes
+
+  @card .secondary
+    ## comté.css `(default)`
+
+    [Comté](https://en.wikipedia.org/wiki/Comté) is the default theme for Marque. Clean, readable, and responsive, with no holes in its design.
+
+    ![Comté Theme](../../topnav.png)
+  @end card
+
+  @card .primary
+    ## rustique.css
+
+    Rustique is a modern, warm theme for Marque, based on [Rust](https://rust-lang.org/). (Rustique is a French brand of [Camembert](https://en.wikipedia.org/wiki/Camembert))
+
+    ![Rustique Theme](../../topnav.png)
+
+  @end card
+
+  @card .tertiary
+    ## pycorino.css
+
+    Pycorino is a playful light theme inspired by [Python](https://python.org/). (Python + [Pecorino](https://en.wikipedia.org/wiki/Pecorino) = Pycorino ??? It's 4am when I'm writing this)
+
+    ![Pycorino Theme](../../topnav.png)
+  @end card
+
+@end row
+
+@row
+
+  @card .primary
+    ## javarti.css
+
+    Javarti is a classic light theme for Marque, influenced by [Java](https://java.com/). Like [Havarti](https://en.wikipedia.org/wiki/Havarti), it's old enough but ages well.
+
+    ![Javarti Theme](../../topnav.png)
+  @end card
+
+  @card .tertiary
+    ## gouda.css
+
+    [Gouda](https://en.wikipedia.org/wiki/Gouda_cheese) is a cool, simple dark theme for Marque, based on [Go](https://go.dev/). Gouda is a simple, pleasant cheese anyone can enjoy.
+
+    ![Gouda Theme](../../topnav.png)
+
+  @end card
+
+  @card .secondary
+    ## elmental.css
+
+    Elmental is a bright, paper-like theme for Marque, inspired by [Elm](https://elm-lang.org/). [Emmental](https://en.wikipedia.org/wiki/Emmental) (not [Gruyère](https://en.wikipedia.org/wiki/Gruyère)!) has holes in it, Elm doesn't.
+
+    ![Mida Theme](../../topnav.png)
+  @end card
+@end row
+
+**_I'm hungry now._**
+
+@spotlight
