@@ -17,18 +17,18 @@ theme: marathon
 
 As you can see on this page, Marque supports multiple themes and [layouts](../configuration/layouts.mq).
 
-Themes are stored in a format called `.mqs` (MarQue Style), a format derived from `.css` files. Themes are stored in the `themes/` directory of your Marque project, and you can have as many as you like. This theme (`marathon.mqs`) is a very dense theme, used for demonstration purposes on this page to showcase what's possible with Marque's theming system.
+Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) files in the `themes/` directory of your Marque project, and you can have as many as you like. These files can still use Marque's MQS directives (`@mqs-palette`, `@mqs-essentials`, and `@mqs-import`) for faster theme authoring. This page uses the `marathon.css` theme to showcase what's possible.
 
 @end card
 @card .secondary
-The normal site theme is defined in the `marque.toml` file, with the `theme` key. You can change this to any theme you like, and Marque will use it when you run `marque serve` or `marque build`. To override a theme on a per-page basis (like this page), add `theme = <name>` to the page's frontmatter, and Marque will use that theme instead of the default one.
+The default theme used on your site is defined in the `marque.toml` file, with the `theme` key. You can change this to any theme you like, and Marque will use it when you run `marque serve` or `marque build`. To override a theme on a per-page basis (like this page), add `theme = <name>` to the page's frontmatter, and Marque will use that theme instead of the default one.
 
 @end card
 @end row
 
 @card
 
-## Minimal MQS theme
+## Minimal theme file
 @divider 
 ```css
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap");
@@ -125,13 +125,13 @@ Anything after `@mqs-essentials;` is your custom layer.
 ## Quick flow
 
 @container flow
-1. Create theme file: add `themes/my-theme.mqs`.
+1. Create theme file: add `themes/my-theme.css`.
 2. Paste minimal config: start with palette + essentials.
 3. Activate theme in `marque.toml`: `theme = "my-theme"`.
 4. Run `marque serve .` or `marque build .`.
 @end container flow
 
 @callout .ok
-If `themes/my-theme.mqs` exists, Marque uses it. You can also use `themes/my-theme.css`.
+If `themes/my-theme.css` exists, Marque uses it.
 @end callout
 

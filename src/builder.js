@@ -204,11 +204,11 @@ function resolveTheme(theme, siteDir) {
   ];
 
   for (const root of searchRoots) {
-    const flatMqs = path.join(root, `${name}.mqs`);
-    if (fs.existsSync(flatMqs)) return flatMqs;
-
     const flatCss = path.join(root, `${name}.css`);
     if (fs.existsSync(flatCss)) return flatCss;
+
+    const flatMqs = path.join(root, `${name}.mqs`);
+    if (fs.existsSync(flatMqs)) return flatMqs;
 
     // Backward compatibility for legacy themes/<name>/theme.mqs|theme.css.
     const legacyDir = path.join(root, name);
@@ -248,13 +248,13 @@ function loadThemeStyle(themeDir, siteDir) {
     } else {
       const cssPath = path.join(themeDir, 'theme.css');
       if (fs.existsSync(cssPath)) {
-        themeCss = fs.readFileSync(cssPath, 'utf8');
+        themeCss = compileMqsFile(cssPath);
       }
     }
   } else if (/\.mqs$/i.test(themeDir)) {
     themeCss = compileMqsFile(themeDir);
   } else if (/\.css$/i.test(themeDir)) {
-    themeCss = fs.readFileSync(themeDir, 'utf8');
+    themeCss = compileMqsFile(themeDir);
   }
 
   if (typeof themeCss !== 'string') {
@@ -317,36 +317,36 @@ function resolveLayoutCSSPath(layout, siteDir) {
   const builtinTemplateLayoutsDir = path.join(__dirname, '..', 'template', 'layouts');
   const legacyBuiltinLayoutsDir = path.join(__dirname, '..', 'layouts');
 
-  const customMqs = path.join(siteDir, 'layouts', `${name}.mqs`);
-  if (fs.existsSync(customMqs)) return customMqs;
-
   const custom = path.join(siteDir, 'layouts', `${name}.css`);
   if (fs.existsSync(custom)) return custom;
 
-  const builtinLibraryMqs = path.join(libraryLayoutsDir, `${name}.mqs`);
-  if (fs.existsSync(builtinLibraryMqs)) return builtinLibraryMqs;
+  const customMqs = path.join(siteDir, 'layouts', `${name}.mqs`);
+  if (fs.existsSync(customMqs)) return customMqs;
 
   const builtinLibrary = path.join(libraryLayoutsDir, `${name}.css`);
   if (fs.existsSync(builtinLibrary)) return builtinLibrary;
 
-  const builtinMqs = path.join(builtinTemplateLayoutsDir, `${name}.mqs`);
-  if (fs.existsSync(builtinMqs)) return builtinMqs;
+  const builtinLibraryMqs = path.join(libraryLayoutsDir, `${name}.mqs`);
+  if (fs.existsSync(builtinLibraryMqs)) return builtinLibraryMqs;
 
   const builtin = path.join(builtinTemplateLayoutsDir, `${name}.css`);
   if (fs.existsSync(builtin)) return builtin;
 
-  const legacyBuiltinMqs = path.join(legacyBuiltinLayoutsDir, `${name}.mqs`);
-  if (fs.existsSync(legacyBuiltinMqs)) return legacyBuiltinMqs;
+  const builtinMqs = path.join(builtinTemplateLayoutsDir, `${name}.mqs`);
+  if (fs.existsSync(builtinMqs)) return builtinMqs;
 
   const legacyBuiltin = path.join(legacyBuiltinLayoutsDir, `${name}.css`);
   if (fs.existsSync(legacyBuiltin)) return legacyBuiltin;
+
+  const legacyBuiltinMqs = path.join(legacyBuiltinLayoutsDir, `${name}.mqs`);
+  if (fs.existsSync(legacyBuiltinMqs)) return legacyBuiltinMqs;
 
   throw new Error(`Layout "${name}" not found`);
 }
 
 function loadLayoutStyle(layout, siteDir) {
   const stylePath = resolveLayoutCSSPath(layout, siteDir);
-  if (stylePath.toLowerCase().endsWith('.mqs')) {
+  if (stylePath.toLowerCase().endsWith('.mqs') || stylePath.toLowerCase().endsWith('.css')) {
     return compileMqsFile(stylePath);
   }
   return fs.readFileSync(stylePath, 'utf8');

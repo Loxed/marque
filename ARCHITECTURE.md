@@ -85,7 +85,7 @@ All directives use the same node type:
 - `src/builder.js`: orchestrates complete site generation.
 - `src/parser.js`: `.mq` source to AST.
 - `src/renderer.js`: AST to HTML + markdown transforms + syntax highlighting.
-- `src/mqs.js`: `.mqs` to CSS.
+- `src/mqs.js`: expands MQS directives inside theme/layout stylesheets.
 - `src/diagnostics.js`: structured diagnostics model.
 - `src/utils/errors.js`: pretty diagnostic printing.
 
@@ -109,9 +109,9 @@ All directives use the same node type:
 - `pages/**/*.mq`
 - `summary.mq`
 - `marque.toml`
-- `themes/<name>.css` or `themes/<name>.mqs`
+- `themes/<name>.css`
 - `themes/index.html` (optional shared template)
-- `layouts/<name>.css` or `<name>.mqs`
+- `layouts/<name>.css`
 - `static/**`
 
 ## 7) Active vs Split Modules

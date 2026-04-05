@@ -194,18 +194,18 @@ Add directives there with `defineDirective(name, def)`.
 
 Themes live in `themes/` and use flat files:
 
-- `<name>.css` or `<name>.mqs` (required)
+- `<name>.css` (required)
 - `index.html` (optional shared template)
 
-Layouts live in `layouts/<name>.css` or `layouts/<name>.mqs` and define structure only (nav placement, page framing, responsive layout).
+Layouts live in `layouts/<name>.css` and define structure only (nav placement, page framing, responsive layout).
 
-MQS is a CSS-compatible stylesheet format. Supported features:
+Marque supports MQS directives directly inside CSS files. Supported features:
 
 - `@mqs-import "./relative-file.css";` to inline local stylesheet files at build time.
 - `@mqs-palette { ... }` to define normalized design tokens.
 - `@mqs-essentials;` to auto-generate the core Marque theme CSS.
 
-Recommended MQS pattern (normalized colors):
+Recommended pattern (normalized colors):
 
 ```css
 @mqs-palette {
@@ -243,7 +243,7 @@ The generated essentials include normalized style hooks (`.primary`, `.secondary
 
 ## Complete `@mqs-palette` Reference
 
-Every editable palette key currently supported by MQS:
+Every editable palette key currently supported by Marque's MQS directives:
 
 ### Core keys
 
@@ -368,10 +368,10 @@ Template resolution order:
 
 Layout resolution order:
 
-1. `site/layouts/<layout>.mqs`
-2. `site/layouts/<layout>.css`
-3. `marque-pkg/layouts/<layout>.mqs`
-4. `marque-pkg/layouts/<layout>.css`
+1. `site/layouts/<layout>.css`
+2. `site/layouts/<layout>.mqs` (legacy support)
+3. `marque-pkg/layouts/<layout>.css`
+4. `marque-pkg/layouts/<layout>.mqs` (legacy support)
 
 Built-in themes in this repo include:
 
@@ -382,7 +382,7 @@ Built-in themes in this repo include:
 ## Create a Custom Theme
 
 ```sh
-cp /path/to/marque-pkg/library/themes/default.mqs themes/my-theme.mqs
+cp /path/to/marque-pkg/library/themes/default.css themes/my-theme.css
 ```
 
 Optional custom shell:
