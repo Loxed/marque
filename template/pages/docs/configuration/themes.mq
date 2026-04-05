@@ -15,9 +15,10 @@ theme: marathon
 @row
 @card .primary
 
+## Customise your site's look
 As you can see on this page, Marque supports multiple themes and [layouts](../configuration/layouts.mq).
 
-Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) files in the `themes/` directory of your Marque project, and you can have as many as you like. These files can still use Marque's MQS directives (`@mqs-palette`, `@mqs-essentials`, and `@mqs-import`) for faster theme authoring. This page uses the `marathon.css` theme to showcase what's possible.
+Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) files in the `themes/` directory of your Marque project, and you can have as many as you like. This page uses the [`marathon.css`](../../../themes/marathon.css) theme to showcase what's possible.
 
 @end card
 @card .secondary
@@ -33,55 +34,48 @@ The default theme used on your site is defined in the `marque.toml` file, with t
 ```css
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap");
 
-@mqs-palette {
-  primary: #c85a2a;
-  secondary: #2a5ac8;
-  tertiary: #2ac852;
-
-  background: #f7f5f0;
-  surface: #ffffff;
-  surface-alt: #eeece7;
-  text: #1a1916;
-  muted: #6b6860;
-  border: rgba(0,0,0,0.09);
-
-  radius: 8px;
-  max-width: 860px;
-
-  font-sans: 'DM Sans', system-ui, sans-serif;
-  font-serif: Georgia, serif;
-  font-mono: 'IBM Plex Mono', monospace;
+:root {
+  --mq-primary: #c85a2a;
+  --mq-secondary: #2a5ac8;
+  --mq-tertiary: #2ac852;
+  --mq-background: #f7f5f0;
+  --mq-surface: #ffffff;
+  --mq-surface-alt: #eeece7;
+  --mq-text: #1a1916;
+  --mq-muted: #6b6860;
+  --mq-border: rgba(0,0,0,0.09);
+  --mq-radius: 8px;
+  --mq-max-width: 860px;
+  --mq-font-sans: 'DM Sans', system-ui, sans-serif;
+  --mq-font-serif: Georgia, serif;
+  --mq-font-mono: 'IBM Plex Mono', monospace;
 }
 
-@mqs-essentials;
+body {
+  font-family: var(--mq-font-sans);
+  background: var(--mq-background);
+  color: var(--mq-text);
+}
 ```
 @end card
 
 
-## What essentials generates
+## Useful baseline styles
 
 - Theme variables in `:root`
 - Typography and links
-- Nav and footer skin
-- Row, card, button, callout, stat
-- Tabs, steps, spotlight, badge
+- Card and button classes
+- Page section spacing
 - Responsive defaults
 
-## Complete `@mqs-palette` keys
+## Common theme variables
 
-You can edit all these keys today:
+You can define and edit variables like:
 
-- Core: `primary`, `secondary`, `tertiary`, `background`, `surface`, `surface-alt`, `text`, `muted`, `border`, `radius`, `max-width`, `font-sans`, `font-serif`, `font-mono`
-- Nav pack: `nav-bg`, `nav-text`, `nav-border`, `nav-active-bg`, `nav-active-text`
-- Code pack: `code-bg`, `code-text`, `code-border`, `code-head-bg`, `code-head-text`
-- Card pack: `card-bg`, `card-border`, `card-radius`, `card-shadow`
-- Callout pack: `callout-info-bg`, `callout-info-border`, `callout-info-text`, `callout-warn-bg`, `callout-warn-border`, `callout-warn-text`, `callout-danger-bg`, `callout-danger-border`, `callout-danger-text`, `callout-ok-bg`, `callout-ok-border`, `callout-ok-text`
-
-Aliases accepted in palette:
-
-- `bg` → `background`
-- `accent` → `primary`
-- `accent2` → `secondary`
+- Core: `--mq-primary`, `--mq-secondary`, `--mq-tertiary`, `--mq-background`, `--mq-surface`, `--mq-surface-alt`, `--mq-text`, `--mq-muted`, `--mq-border`
+- Geometry: `--mq-radius`, `--mq-max-width`
+- Fonts: `--mq-font-sans`, `--mq-font-serif`, `--mq-font-mono`
+- Optional component vars: `--mq-nav-*`, `--mq-code-*`, `--mq-card-*`, `--mq-callout-*`
 
 @row classes
   @card .primary
@@ -108,11 +102,9 @@ Aliases accepted in palette:
 
 ## Overrides layer
 
-Anything after `@mqs-essentials;` is your custom layer.
+Use regular CSS below your variable declarations.
 
 ```css
-@mqs-essentials;
-
 .mq-card.primary {
   border-top-width: 4px;
 }
@@ -126,7 +118,7 @@ Anything after `@mqs-essentials;` is your custom layer.
 
 @container flow
 1. Create theme file: add `themes/my-theme.css`.
-2. Paste minimal config: start with palette + essentials.
+2. Paste baseline variables and base styles.
 3. Activate theme in `marque.toml`: `theme = "my-theme"`.
 4. Run `marque serve .` or `marque build .`.
 @end container flow

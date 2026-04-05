@@ -45,7 +45,7 @@ function parseNewArgs(argv) {
 
 function resolveScaffoldLayout(layoutArg, templateLayoutsDir) {
   const requested = normalizeLayoutName(layoutArg);
-  const available = listNames(templateLayoutsDir, ['.css', '.mqs']);
+  const available = listNames(templateLayoutsDir, ['.css']);
   const availableSet = new Set(available.map(normalizeLayoutName));
 
   if (availableSet.size && !availableSet.has(requested)) {
@@ -64,16 +64,15 @@ function resolveScaffoldTheme(themeArg, templateThemesDir) {
     const entries = fs.readdirSync(templateThemesDir, { withFileTypes: true });
     for (const entry of entries) {
       if (entry.isFile()) {
-        const m = entry.name.match(/^(.+)\.(mqs|css)$/i);
+        const m = entry.name.match(/^(.+)\.css$/i);
         if (m) names.add(m[1]);
         continue;
       }
 
-      // Backward compatibility for legacy themes/<name>/theme.mqs|theme.css.
+      // Backward compatibility for legacy themes/<name>/theme.css.
       if (entry.isDirectory()) {
-        const legacyMqs = fs.existsSync(path.join(templateThemesDir, entry.name, 'theme.mqs'));
         const legacyCss = fs.existsSync(path.join(templateThemesDir, entry.name, 'theme.css'));
-        if (legacyMqs || legacyCss) names.add(entry.name);
+        if (legacyCss) names.add(entry.name);
       }
     }
   }

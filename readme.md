@@ -72,7 +72,7 @@ my-site/
 └── dist/          # generated output
 ```
 
-Built-in starter layouts/themes are sourced from `library/` in the package, then copied into each new project.
+Built-in starter layouts/themes are sourced from `template/` in the package, then copied into each new project.
 
 ## Configuration
 
@@ -199,179 +199,109 @@ Themes live in `themes/` and use flat files:
 
 Layouts live in `layouts/<name>.css` and define structure only (nav placement, page framing, responsive layout).
 
-Marque supports MQS directives directly inside CSS files. Supported features:
-
-- `@mqs-import "./relative-file.css";` to inline local stylesheet files at build time.
-- `@mqs-palette { ... }` to define normalized design tokens.
-- `@mqs-essentials;` to auto-generate the core Marque theme CSS.
-
-Recommended pattern (normalized colors):
+Themes are plain CSS files. Recommended pattern:
 
 ```css
-@mqs-palette {
-  primary: #c85a2a;
-  secondary: #2a5ac8;
-  tertiary: #2ac852;
-  background: #f7f5f0;
-  surface: #ffffff;
-  surface-alt: #eeece7;
-  text: #1a1916;
-  muted: #6b6860;
-  border: rgba(0,0,0,0.09);
-
-  callout-info-bg: #eef3fb;
-  callout-info-border: #2a5ac8;
-  callout-info-text: #1a3060;
-  callout-warn-bg: #fdf5e8;
-  callout-warn-border: #c87a2a;
-  callout-warn-text: #5a3510;
-  callout-danger-bg: #fbeaea;
-  callout-danger-border: #c82a2a;
-  callout-danger-text: #5a1010;
-  callout-ok-bg: #eaf4ee;
-  callout-ok-border: #2ac852;
-  callout-ok-text: #0e4020;
-
-  radius: 8px;
-  max-width: 860px;
+:root {
+  --mq-primary: #c85a2a;
+  --mq-secondary: #2a5ac8;
+  --mq-tertiary: #2ac852;
+  --mq-background: #f7f5f0;
+  --mq-surface: #ffffff;
+  --mq-surface-alt: #eeece7;
+  --mq-text: #1a1916;
+  --mq-muted: #6b6860;
+  --mq-border: rgba(0,0,0,0.09);
+  --mq-radius: 8px;
+  --mq-max-width: 860px;
 }
-
-@mqs-essentials;
 ```
 
-The generated essentials include normalized style hooks (`.primary`, `.secondary`, `.tertiary`) and compatibility aliases for existing classes (`.accent`, `.accent2`, `.blue`).
+## Theme Variable Reference
 
-## Complete `@mqs-palette` Reference
-
-Every editable palette key currently supported by Marque's MQS directives:
+Editable variables used by built-in styles:
 
 ### Core keys
 
-- `primary`
-- `secondary`
-- `tertiary`
-- `background`
-- `surface`
-- `surface-alt`
-- `text`
-- `muted`
-- `border`
-- `radius`
-- `max-width`
-- `font-sans`
-- `font-serif`
-- `font-mono`
+- `--mq-primary`
+- `--mq-secondary`
+- `--mq-tertiary`
+- `--mq-background`
+- `--mq-surface`
+- `--mq-surface-alt`
+- `--mq-text`
+- `--mq-muted`
+- `--mq-border`
+- `--mq-radius`
+- `--mq-max-width`
+- `--mq-font-sans`
+- `--mq-font-serif`
+- `--mq-font-mono`
 
 ### Nav pack
 
-- `nav-bg`
-- `nav-text`
-- `nav-border`
-- `nav-active-bg`
-- `nav-active-text`
+- `--mq-nav-bg`
+- `--mq-nav-text`
+- `--mq-nav-border`
+- `--mq-nav-active-bg`
+- `--mq-nav-active-text`
 
 ### Code pack
 
-- `code-bg`
-- `code-text`
-- `code-border`
-- `code-head-bg`
-- `code-head-text`
+- `--mq-code-bg`
+- `--mq-code-text`
+- `--mq-code-border`
+- `--mq-code-head-bg`
+- `--mq-code-head-text`
 
 ### Card pack
 
-- `card-bg`
-- `card-border`
-- `card-radius`
-- `card-shadow`
+- `--mq-card-bg`
+- `--mq-card-border`
+- `--mq-card-radius`
+- `--mq-card-shadow`
 
 ### Callout pack
 
-- `callout-info-bg`
-- `callout-info-border`
-- `callout-info-text`
-- `callout-warn-bg`
-- `callout-warn-border`
-- `callout-warn-text`
-- `callout-danger-bg`
-- `callout-danger-border`
-- `callout-danger-text`
-- `callout-ok-bg`
-- `callout-ok-border`
-- `callout-ok-text`
-
-### Alias keys
-
-These aliases are accepted in `@mqs-palette` and mapped internally:
-
-- `bg` -> `background`
-- `accent` -> `primary`
-- `accent2` -> `secondary`
+- `--mq-callout-info-bg`
+- `--mq-callout-info-border`
+- `--mq-callout-info-text`
+- `--mq-callout-warn-bg`
+- `--mq-callout-warn-border`
+- `--mq-callout-warn-text`
+- `--mq-callout-danger-bg`
+- `--mq-callout-danger-border`
+- `--mq-callout-danger-text`
+- `--mq-callout-ok-bg`
+- `--mq-callout-ok-border`
+- `--mq-callout-ok-text`
 
 ### Full editable example
 
 ```css
-@mqs-palette {
-  /* core */
-  primary: #c85a2a;
-  secondary: #2a5ac8;
-  tertiary: #2ac852;
-  background: #f7f5f0;
-  surface: #ffffff;
-  surface-alt: #eeece7;
-  text: #1a1916;
-  muted: #6b6860;
-  border: rgba(0,0,0,0.09);
-
-  /* optional nav pack */
-  nav-bg: #111827;
-  nav-text: #f8fafc;
-  nav-border: #1f2937;
-  nav-active-bg: #1f2937;
-  nav-active-text: #ffffff;
-
-  /* optional code pack */
-  code-bg: #0b1220;
-  code-text: #dbeafe;
-  code-border: #1e293b;
-  code-head-bg: #111827;
-  code-head-text: #e2e8f0;
-
-  /* optional card pack */
-  card-bg: #ffffff;
-  card-border: #dbe2ea;
-  card-radius: 14px;
-  card-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
-
-  /* optional callout pack */
-  callout-info-bg: #eef3fb;
-  callout-info-border: #2a5ac8;
-  callout-info-text: #1a3060;
-  callout-warn-bg: #fdf5e8;
-  callout-warn-border: #c87a2a;
-  callout-warn-text: #5a3510;
-  callout-danger-bg: #fbeaea;
-  callout-danger-border: #c82a2a;
-  callout-danger-text: #5a1010;
-  callout-ok-bg: #eaf4ee;
-  callout-ok-border: #2ac852;
-  callout-ok-text: #0e4020;
+:root {
+  --mq-primary: #c85a2a;
+  --mq-secondary: #2a5ac8;
+  --mq-tertiary: #2ac852;
+  --mq-background: #f7f5f0;
+  --mq-surface: #ffffff;
+  --mq-text: #1a1916;
+  --mq-border: rgba(0,0,0,0.09);
+  --mq-nav-bg: #111827;
+  --mq-code-bg: #0b1220;
+  --mq-card-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
 }
-
-@mqs-essentials;
 ```
 
 Template resolution order:
 
 1. `themes/index.html` (shared default template)
-2. `marque-pkg/library/themes/index.html`
+2. `marque-pkg/template/themes/index.html`
 
 Layout resolution order:
 
 1. `site/layouts/<layout>.css`
-2. `site/layouts/<layout>.mqs` (legacy support)
-3. `marque-pkg/layouts/<layout>.css`
-4. `marque-pkg/layouts/<layout>.mqs` (legacy support)
+2. `marque-pkg/layouts/<layout>.css`
 
 Built-in themes in this repo include:
 
@@ -382,13 +312,13 @@ Built-in themes in this repo include:
 ## Create a Custom Theme
 
 ```sh
-cp /path/to/marque-pkg/library/themes/default.css themes/my-theme.css
+cp /path/to/marque-pkg/template/themes/default.css themes/my-theme.css
 ```
 
 Optional custom shell:
 
 ```sh
-cp /path/to/marque-pkg/library/themes/index.html themes/index.html
+cp /path/to/marque-pkg/template/themes/index.html themes/index.html
 ```
 
 Then set:

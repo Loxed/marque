@@ -52,16 +52,14 @@ Layouts behave the same way as themes but have a different purpose. Themes defin
 
 	@row
 		@card
-			In the [Marque](https://github.com/Loxed/marque) repository, the layouts are defined as `.css` files inside of `library/layouts/` and copied into each new project at `marque new <name>`. They directly apply onto the `index.html` inside of `library/themes/` when building the project. When creating new layouts, make sure you match the classes used in the `index.html` file.
+			In the [Marque](https://github.com/Loxed/marque) repository, the layouts are defined as `.css` files inside of `template/layouts/` and copied into each new project at `marque new <name>`. They directly apply onto the `index.html` inside of `template/themes/` when building the project. When creating new layouts, make sure you match the classes used in the `index.html` file.
 
-			<!-- When creating a new project with `marque new <name>`, the `index.html` file is copied from `library/themes/index.html` and the layout `.css` files are copied from `library/layouts/`. This means that if you want to create a new layout, you need to create a new `.css` file in `library/layouts/` and then copy it into the new project when creating it. You also need to make sure that the new layout is applied in the `index.html` file of the new project.
-
-			@TODO: make sure the library's content is copied into new projects on `marque new <name>`. -->
+			<!-- When creating a new project with `marque new <name>`, the `index.html` file is copied from `template/themes/index.html` and the layout `.css` files are copied from `template/layouts/`. This means that if you want to create a new layout, you need to create a new `.css` file in `template/layouts/` and then copy it into the new project when creating it. You also need to make sure that the new layout is applied in the `index.html` file of the new project. -->
 		@end card
 
 		@card
 			```layout
-			library/
+			template/
 			├── layouts/
 			│   ├── sidebar.css
 			│   └── topnav.css
@@ -69,7 +67,7 @@ Layouts behave the same way as themes but have a different purpose. Themes defin
 			└── themes/
 				├── index.html
 				├── index.js
-				└── theme/
+				└── *.css
 			```
 		@end card
 	@end row
