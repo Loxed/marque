@@ -1,51 +1,42 @@
 ---
 title: Themes
 nav: themes
-theme: gruyere
+theme: marathon
 ---
 
-# Themes
-@divider
+# Themes 
 
-Build your theme with tokens, not giant CSS files.
+@spotlight
 
-@callout .info
-Define your palette once, call `@mqs-essentials;`, then only override what you really want.
-@end callout
+## _[Marathon](https://marathonthegame.com/)-style, baby!_
 
-## The core idea
+----
 
-@row core
-  @card .accent
-    ## 1) URL / fonts
-    Keep your `@import url(...)` at the top if needed.
-  @end card
+@row
+@card .primary
 
-  @card
-    ## 2) Define palette
-    Use `@mqs-palette` with normalized tokens: `primary`, `secondary`, `ternary`, `background`, etc.
-  @end card
+As you can see on this page, Marque supports multiple themes and [layouts](../configuration/layouts.mq).
 
-  @card
-    ## 3) Generate essentials
-    `@mqs-essentials;` expands to the base Marque theme automatically.
-  @end card
+Themes are stored in a format called `.mqs` (MarQue Style), a format derived from `.css` files. Themes are stored in the `themes/` directory of your Marque project, and you can have as many as you like. This theme (`marathon.mqs`) is a very dense theme, used for demonstration purposes on this page to showcase what's possible with Marque's theming system.
 
-  @card
-    ## 4) Override manually
-    Put custom CSS below essentials for fine tuning.
-  @end card
-@end row core
+@end card
+@card .secondary
+The normal site theme is defined in the `marque.toml` file, with the `theme` key. You can change this to any theme you like, and Marque will use it when you run `marque serve` or `marque build`. To override a theme on a per-page basis (like this page), add `theme = <name>` to the page's frontmatter, and Marque will use that theme instead of the default one.
+
+@end card
+@end row
+
+@card
 
 ## Minimal MQS theme
-
+@divider 
 ```css
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap");
 
 @mqs-palette {
   primary: #c85a2a;
   secondary: #2a5ac8;
-  ternary: #2ac852;
+  tertiary: #2ac852;
 
   background: #f7f5f0;
   surface: #ffffff;
@@ -64,6 +55,8 @@ Define your palette once, call `@mqs-essentials;`, then only override what you r
 
 @mqs-essentials;
 ```
+@end card
+
 
 ## What essentials generates
 
@@ -71,14 +64,14 @@ Define your palette once, call `@mqs-essentials;`, then only override what you r
 - Typography and links
 - Nav and footer skin
 - Row, card, button, callout, stat
-- Tabs, steps, hero, badge
+- Tabs, steps, spotlight, badge
 - Responsive defaults
 
 ## Complete `@mqs-palette` keys
 
 You can edit all these keys today:
 
-- Core: `primary`, `secondary`, `ternary`, `background`, `surface`, `surface-alt`, `text`, `muted`, `border`, `radius`, `max-width`, `font-sans`, `font-serif`, `font-mono`
+- Core: `primary`, `secondary`, `tertiary`, `background`, `surface`, `surface-alt`, `text`, `muted`, `border`, `radius`, `max-width`, `font-sans`, `font-serif`, `font-mono`
 - Nav pack: `nav-bg`, `nav-text`, `nav-border`, `nav-active-bg`, `nav-active-text`
 - Code pack: `code-bg`, `code-text`, `code-border`, `code-head-bg`, `code-head-text`
 - Card pack: `card-bg`, `card-border`, `card-radius`, `card-shadow`
@@ -91,19 +84,26 @@ Aliases accepted in palette:
 - `accent2` → `secondary`
 
 @row classes
-  @card .secondary
+  @card .primary
     ## Normalized style classes
+    I'm saying some **_words_**!
     - `.primary`
     - `.secondary`
-    - `.ternary`
+    - `.tertiary`
   @end card
 
-  @card .primary
+  @card .secondary
     ## Compatibility classes
     Existing styles still work:
     - `.accent` (primary)
     - `.accent2` / `.blue` (secondary)
   @end card
+
+  @card .tertiary
+    ## Custom classes
+    Add your own classes and use them in content:
+    - `.blue` (secondary)
+    - `.red` (primary)
 @end row classes
 
 ## Overrides layer
@@ -125,13 +125,13 @@ Anything after `@mqs-essentials;` is your custom layer.
 ## Quick flow
 
 @container flow
-1. Create theme file: add `themes/my-theme/theme.mqs`.
+1. Create theme file: add `themes/my-theme.mqs`.
 2. Paste minimal config: start with palette + essentials.
 3. Activate theme in `marque.toml`: `theme = "my-theme"`.
 4. Run `marque serve .` or `marque build .`.
 @end container flow
 
 @callout .ok
-If `theme.mqs` exists, Marque uses it first. Otherwise it falls back to `theme.css`.
+If `themes/my-theme.mqs` exists, Marque uses it. You can also use `themes/my-theme.css`.
 @end callout
 

@@ -6,7 +6,7 @@
   /* ── core ── */
   primary: #60b5cc;          /* Elm teal — links, accents */
   secondary: #f0ad00;        /* Elm amber — logo colour */
-  ternary: #7fd13b;          /* Elm green — third accent */
+  tertiary: #7fd13b;          /* Elm green — third accent */
   background: #ffffff;       /* pure white body */
   surface: #ffffff;
   surface-alt: #f0f0f0;      /* Elm's light grey sections */
@@ -171,8 +171,8 @@ body {
 .mq-card.accent2 {
   border-top: 3px solid var(--mq-secondary);
 }
-.mq-card.ternary {
-  border-top: 3px solid var(--mq-ternary);
+.mq-card.tertiary {
+  border-top: 3px solid var(--mq-tertiary);
 }
 
 /* ── Buttons — Elm's clean flat style ── */

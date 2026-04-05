@@ -11,7 +11,7 @@
   /* core */
   primary: #c9a227;           /* Exotic gold */
   secondary: #7b5ea7;         /* Legendary amethyst */
-  ternary: #4a9e8a;           /* Void teal */
+  tertiary: #4a9e8a;           /* Void teal */
   background: #0b0d12;        /* deep space */
   surface: #111520;           /* card/content surface */
   surface-alt: #191e2e;       /* alternate section bg */

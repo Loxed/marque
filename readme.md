@@ -192,10 +192,10 @@ Add directives there with `defineDirective(name, def)`.
 
 ## Themes
 
-Themes live in `themes/<name>/` and require:
+Themes live in `themes/` and use flat files:
 
-- `theme.css` or `theme.mqs` (required)
-- `index.html` (optional)
+- `<name>.css` or `<name>.mqs` (required)
+- `index.html` (optional shared template)
 
 Layouts live in `layouts/<name>.css` or `layouts/<name>.mqs` and define structure only (nav placement, page framing, responsive layout).
 
@@ -211,7 +211,7 @@ Recommended MQS pattern (normalized colors):
 @mqs-palette {
   primary: #c85a2a;
   secondary: #2a5ac8;
-  ternary: #2ac852;
+  tertiary: #2ac852;
   background: #f7f5f0;
   surface: #ffffff;
   surface-alt: #eeece7;
@@ -239,7 +239,7 @@ Recommended MQS pattern (normalized colors):
 @mqs-essentials;
 ```
 
-The generated essentials include normalized style hooks (`.primary`, `.secondary`, `.ternary`) and compatibility aliases for existing classes (`.accent`, `.accent2`, `.blue`).
+The generated essentials include normalized style hooks (`.primary`, `.secondary`, `.tertiary`) and compatibility aliases for existing classes (`.accent`, `.accent2`, `.blue`).
 
 ## Complete `@mqs-palette` Reference
 
@@ -249,7 +249,7 @@ Every editable palette key currently supported by MQS:
 
 - `primary`
 - `secondary`
-- `ternary`
+- `tertiary`
 - `background`
 - `surface`
 - `surface-alt`
@@ -315,7 +315,7 @@ These aliases are accepted in `@mqs-palette` and mapped internally:
   /* core */
   primary: #c85a2a;
   secondary: #2a5ac8;
-  ternary: #2ac852;
+  tertiary: #2ac852;
   background: #f7f5f0;
   surface: #ffffff;
   surface-alt: #eeece7;
@@ -363,8 +363,8 @@ These aliases are accepted in `@mqs-palette` and mapped internally:
 
 Template resolution order:
 
-1. `themes/<theme>/index.html`
-2. `themes/index.html` (shared default template)
+1. `themes/index.html` (shared default template)
+2. `marque-pkg/library/themes/index.html`
 
 Layout resolution order:
 
@@ -382,14 +382,13 @@ Built-in themes in this repo include:
 ## Create a Custom Theme
 
 ```sh
-mkdir -p themes/my-theme
-cp /path/to/marque-pkg/themes/default/theme.mqs themes/my-theme/
+cp /path/to/marque-pkg/library/themes/default.mqs themes/my-theme.mqs
 ```
 
 Optional custom shell:
 
 ```sh
-cp /path/to/marque-pkg/themes/index.html themes/my-theme/index.html
+cp /path/to/marque-pkg/library/themes/index.html themes/index.html
 ```
 
 Then set:

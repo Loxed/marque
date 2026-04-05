@@ -6,7 +6,7 @@
   /* core */
   primary: #00acd7;
   secondary: #66d9ef;
-  ternary: #1d1d1f;
+  tertiary: #1d1d1f;
   background: #0d1117;
   surface: #161b22;
   surface-alt: #21262d;

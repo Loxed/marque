@@ -6,7 +6,7 @@
   /* core */
   primary: #3776ab;        /* Python blue */
   secondary: #ffd43b;      /* Python yellow */
-  ternary: #27ae60;        /* green accent */
+  tertiary: #27ae60;        /* green accent */
   background: #f5f8fc;     /* page background */
   surface: #ffffff;        /* cards and main content */
   surface-alt: #edf2f9;    /* alternate sections */

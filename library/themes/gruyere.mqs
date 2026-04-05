@@ -6,7 +6,7 @@
   /* core */
   primary: #d79921;         /* muted gold */
   secondary: #cc241d;       /* deep red */
-  ternary: #98971a;         /* olive green */
+  tertiary: #98971a;         /* olive green */
 
   background: #1b1b1b;      /* flatter, terminal-like */
   surface: #232323;

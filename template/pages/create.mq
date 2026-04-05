@@ -87,7 +87,7 @@ Once you installed the `marque` package, you can create a static website with it
         @end card
 
         
-        @card .ternary
+        @card .tertiary
             ## `404.mq`
             
             `404.mq` is the fallback page shown when a user tries to access a non-existent URL on your site. It provides a button to create the missing page automatically.
@@ -169,7 +169,7 @@ Once you installed the `marque` package, you can create a static website with it
 
     @end card
 
-    @card .ternary
+    @card .tertiary
     ### `dist/`
 
     This is generated output from `marque build`.

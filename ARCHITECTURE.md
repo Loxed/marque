@@ -109,8 +109,8 @@ All directives use the same node type:
 - `pages/**/*.mq`
 - `summary.mq`
 - `marque.toml`
-- `themes/<name>/theme.css` or `theme.mqs`
-- `themes/<name>/index.html` (optional)
+- `themes/<name>.css` or `themes/<name>.mqs`
+- `themes/index.html` (optional shared template)
 - `layouts/<name>.css` or `<name>.mqs`
 - `static/**`
 

@@ -39,7 +39,7 @@ Welcome to the Marque documentation set. Start with quickstart, then move to con
 - `@row` + `@card`
 - `@callout`
 - `@stat`
-- `@hero` / `@section`
+- `@spotlight` / `@section` (`@hero` is a legacy alias)
 - `@divider`
 
 ## Frontmatter essentials

@@ -3,7 +3,7 @@
 @mqs-palette {
 	primary: #c85a2a;
 	secondary: #2a5ac8;
-	ternary: #2ac852;
+	tertiary: #2ac852;
 
 	background: #f7f5f0;
 	surface: #ffffff;

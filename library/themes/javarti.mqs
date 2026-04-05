@@ -6,7 +6,7 @@
   /* core */
   primary: #e76f26;         /* Java orange accent */
   secondary: #c0392b;       /* secondary red accent */
-  ternary: #2f7b42;         /* tertiary green accent */
+  tertiary: #2f7b42;         /* tertiary green accent */
   background: #f4f4f4;      /* page bg */
   surface: #ffffff;         /* cards & main content */
   surface-alt: #f0f0f0;     /* alternate sections */

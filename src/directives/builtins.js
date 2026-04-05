@@ -87,7 +87,7 @@ defineDirective('card', {
 defineDirective('callout', {
   type: 'block',
   validate: (node, { diagnostics }, { createDiagnostic, DiagnosticLevel }) => {
-    const KNOWN = new Set(['info', 'warn', 'danger', 'ok', 'primary', 'secondary', 'ternary']);
+    const KNOWN = new Set(['info', 'warn', 'danger', 'ok', 'primary', 'secondary', 'tertiary']);
     const variant = (node.mods || [])[0];
     if (variant && !KNOWN.has(variant)) {
       diagnostics.push(createDiagnostic({

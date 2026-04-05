@@ -191,42 +191,40 @@ function loadConfig(configPath) {
 }
 
 function resolveTheme(theme, siteDir) {
+  const name = String(theme || 'default').trim();
   const libraryThemesDir = path.join(__dirname, '..', 'library', 'themes');
   const builtinTemplateThemesDir = path.join(__dirname, '..', 'template', 'themes');
   const legacyBuiltinThemesDir = path.join(__dirname, '..', 'themes');
 
-  if (!theme) {
-    // default theme bundled with marque (canonical source: library/themes)
-    const libraryDefault = path.join(libraryThemesDir, 'default');
-    if (fs.existsSync(libraryDefault)) return libraryDefault;
+  const searchRoots = [
+    path.join(siteDir, 'themes'),
+    libraryThemesDir,
+    builtinTemplateThemesDir,
+    legacyBuiltinThemesDir,
+  ];
 
-    const builtinDefault = path.join(builtinTemplateThemesDir, 'default');
-    if (fs.existsSync(builtinDefault)) return builtinDefault;
+  for (const root of searchRoots) {
+    const flatMqs = path.join(root, `${name}.mqs`);
+    if (fs.existsSync(flatMqs)) return flatMqs;
 
-    return path.join(legacyBuiltinThemesDir, 'default');
+    const flatCss = path.join(root, `${name}.css`);
+    if (fs.existsSync(flatCss)) return flatCss;
+
+    // Backward compatibility for legacy themes/<name>/theme.mqs|theme.css.
+    const legacyDir = path.join(root, name);
+    if (fs.existsSync(legacyDir)) return legacyDir;
   }
-  // custom theme path relative to site
-  const custom = path.join(siteDir, 'themes', theme);
-  if (fs.existsSync(custom)) return custom;
-  // fallback to built-in (library first, then template, then legacy)
-  const builtinLibrary = path.join(libraryThemesDir, theme);
-  if (fs.existsSync(builtinLibrary)) return builtinLibrary;
 
-  const builtin = path.join(builtinTemplateThemesDir, theme);
-  if (fs.existsSync(builtin)) return builtin;
-
-  const legacyBuiltin = path.join(legacyBuiltinThemesDir, theme);
-  if (fs.existsSync(legacyBuiltin)) return legacyBuiltin;
-  throw new Error(`Theme "${theme}" not found`);
+  throw new Error(`Theme "${name}" not found`);
 }
 
 function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false) {
   const key = themeName || 'default';
   if (cache.has(key)) return cache.get(key);
 
-  const themeDir = resolveTheme(key, siteDir);
-  const baseTemplate = loadPageTemplate(themeDir, siteDir);
-  const css = loadThemeStyle(themeDir, siteDir);
+  const themeRef = resolveTheme(key, siteDir);
+  const baseTemplate = loadPageTemplate(themeRef, siteDir);
+  const css = loadThemeStyle(themeRef, siteDir);
 
   const cssFile = `theme-${safeName(key)}.css`;
   writeFileWithRetry(path.join(outDir, cssFile), css, softFsErrors);
@@ -242,18 +240,25 @@ function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false)
 
 function loadThemeStyle(themeDir, siteDir) {
   let themeCss;
-  const mqsPath = path.join(themeDir, 'theme.mqs');
-  if (fs.existsSync(mqsPath)) {
-    themeCss = compileMqsFile(mqsPath);
-  } else {
-    const cssPath = path.join(themeDir, 'theme.css');
-    if (fs.existsSync(cssPath)) {
-      themeCss = fs.readFileSync(cssPath, 'utf8');
+
+  if (fs.existsSync(themeDir) && fs.statSync(themeDir).isDirectory()) {
+    const mqsPath = path.join(themeDir, 'theme.mqs');
+    if (fs.existsSync(mqsPath)) {
+      themeCss = compileMqsFile(mqsPath);
+    } else {
+      const cssPath = path.join(themeDir, 'theme.css');
+      if (fs.existsSync(cssPath)) {
+        themeCss = fs.readFileSync(cssPath, 'utf8');
+      }
     }
+  } else if (/\.mqs$/i.test(themeDir)) {
+    themeCss = compileMqsFile(themeDir);
+  } else if (/\.css$/i.test(themeDir)) {
+    themeCss = fs.readFileSync(themeDir, 'utf8');
   }
 
   if (typeof themeCss !== 'string') {
-    throw new Error(`Theme style not found in ${themeDir}. Expected theme.mqs or theme.css.`);
+    throw new Error(`Theme style not found in ${themeDir}. Expected <name>.mqs or <name>.css.`);
   }
 
   const directiveCss = buildDirectiveStylesCSS(siteDir);
@@ -353,16 +358,18 @@ function normalizeLayoutName(layout) {
   return name || 'topnav';
 }
 
-function loadPageTemplate(themeDir, siteDir) {
-  const themeIndexTemplate = path.join(themeDir, 'index.html');
-  if (fs.existsSync(themeIndexTemplate)) {
-    return fs.readFileSync(themeIndexTemplate, 'utf8');
-  }
+function loadPageTemplate(themeRef, siteDir) {
+  if (fs.existsSync(themeRef) && fs.statSync(themeRef).isDirectory()) {
+    const themeIndexTemplate = path.join(themeRef, 'index.html');
+    if (fs.existsSync(themeIndexTemplate)) {
+      return fs.readFileSync(themeIndexTemplate, 'utf8');
+    }
 
-  // Backward compatibility for older themes.
-  const legacyBaseTemplate = path.join(themeDir, 'base.html');
-  if (fs.existsSync(legacyBaseTemplate)) {
-    return fs.readFileSync(legacyBaseTemplate, 'utf8');
+    // Backward compatibility for older themes.
+    const legacyBaseTemplate = path.join(themeRef, 'base.html');
+    if (fs.existsSync(legacyBaseTemplate)) {
+      return fs.readFileSync(legacyBaseTemplate, 'utf8');
+    }
   }
 
   // Project-level shared template override.

@@ -6,7 +6,7 @@
   /* core */
   primary: #d34516;         /* Rust orange */
   secondary: #7d2711;       /* dark red accent */
-  ternary: #50784d;         /* green accent */
+  tertiary: #50784d;         /* green accent */
   background: #f2eee8;      /* page background */
   surface: #fffdfa;         /* main content/cards */
   surface-alt: #f6f0e8;     /* alternate sections */

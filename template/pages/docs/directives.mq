@@ -111,7 +111,8 @@ Minimal example:
 ## Notes
 
 - `@stat` exists but is optional. Use it only for KPI-like blocks.
-- `@hero` and `@section` are wrappers useful when your theme styles them.
+- `@spotlight` and `@section` are wrappers useful when your theme styles them.
+- `@hero` still works as a backward-compatible alias for `@spotlight`.
 - `@tabs`, `@steps`, and `@line` are removed.
 - `@step` is a block directive and is closed with `@end step`.
 

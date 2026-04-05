@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 const { normalizeLayoutName } = require('../utils/strings');
 const { listNames } = require('../utils/fs');
 
@@ -57,12 +58,27 @@ function resolveScaffoldLayout(layoutArg, templateLayoutsDir) {
 
 function resolveScaffoldTheme(themeArg, templateThemesDir) {
   const requested = String(themeArg || 'default').trim();
-  const available = fs.existsSync(templateThemesDir)
-    ? fs.readdirSync(templateThemesDir, { withFileTypes: true })
-      .filter(d => d.isDirectory())
-      .map(d => d.name)
-      .sort((a, b) => a.localeCompare(b))
-    : [];
+  const names = new Set();
+
+  if (fs.existsSync(templateThemesDir)) {
+    const entries = fs.readdirSync(templateThemesDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isFile()) {
+        const m = entry.name.match(/^(.+)\.(mqs|css)$/i);
+        if (m) names.add(m[1]);
+        continue;
+      }
+
+      // Backward compatibility for legacy themes/<name>/theme.mqs|theme.css.
+      if (entry.isDirectory()) {
+        const legacyMqs = fs.existsSync(path.join(templateThemesDir, entry.name, 'theme.mqs'));
+        const legacyCss = fs.existsSync(path.join(templateThemesDir, entry.name, 'theme.css'));
+        if (legacyMqs || legacyCss) names.add(entry.name);
+      }
+    }
+  }
+
+  const available = Array.from(names).sort((a, b) => a.localeCompare(b));
   const availableSet = new Set(available);
 
   if (availableSet.size && !availableSet.has(requested)) {

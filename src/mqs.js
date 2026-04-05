@@ -4,7 +4,7 @@ const path = require('path');
 const DEFAULT_PALETTE = {
   primary: '#c85a2a',
   secondary: '#2a5ac8',
-  ternary: '#2ac852',
+  tertiary: '#2ac852',
   background: '#f7f5f0',
   surface: '#ffffff',
   'surface-alt': '#eeece7',
@@ -156,7 +156,7 @@ function buildEssentialsCSS(palette) {
 :root {
   --mq-primary: ${palette.primary};
   --mq-secondary: ${palette.secondary};
-  --mq-ternary: ${palette.ternary};
+  --mq-tertiary: ${palette.tertiary};
   --mq-background: ${palette.background};
   --mq-surface: ${palette.surface};
   --mq-surface-alt: ${palette['surface-alt']};
@@ -224,7 +224,7 @@ body {
 
 .primary { --mq-tone: var(--mq-primary); }
 .secondary { --mq-tone: var(--mq-secondary); }
-.ternary { --mq-tone: var(--mq-ternary); }
+.tertiary { --mq-tone: var(--mq-tertiary); }
 
 .mq-nav {
   background: var(--mq-nav-bg);
@@ -341,7 +341,7 @@ body {
 .mq-card.secondary,
 .mq-card.accent2 { border-top: 3px solid var(--mq-secondary); }
 
-.mq-card.ternary { border-top: 3px solid var(--mq-ternary); }
+.mq-card.tertiary { border-top: 3px solid var(--mq-tertiary); }
 .mq-card.ghost { background: transparent; }
 .mq-card.dark { background: var(--mq-text); border-color: transparent; }
 .mq-card.dark h2,
@@ -366,11 +366,11 @@ a.mq-btn:hover { background: var(--mq-surface-alt); }
 a.mq-btn.primary { background: var(--mq-primary); border-color: var(--mq-primary); color: #fff; }
 a.mq-btn.secondary,
 a.mq-btn.blue { background: var(--mq-secondary); border-color: var(--mq-secondary); color: #fff; }
-a.mq-btn.ternary { background: var(--mq-ternary); border-color: var(--mq-ternary); color: #fff; }
+a.mq-btn.tertiary { background: var(--mq-tertiary); border-color: var(--mq-tertiary); color: #fff; }
 a.mq-btn.primary:hover,
 a.mq-btn.secondary:hover,
 a.mq-btn.blue:hover,
-a.mq-btn.ternary:hover { filter: brightness(0.92); }
+a.mq-btn.tertiary:hover { filter: brightness(0.92); }
 
 .mq-callout {
   padding: 1rem 1.25rem;
@@ -393,9 +393,9 @@ a.mq-btn.ternary:hover { filter: brightness(0.92); }
 .mq-callout.danger { background: var(--mq-callout-danger-bg); border-color: var(--mq-callout-danger-border); }
 .mq-callout.danger p { color: var(--mq-callout-danger-text); }
 .mq-callout.ok,
-.mq-callout.ternary { background: var(--mq-callout-ok-bg); border-color: var(--mq-callout-ok-border); }
+.mq-callout.tertiary { background: var(--mq-callout-ok-bg); border-color: var(--mq-callout-ok-border); }
 .mq-callout.ok p,
-.mq-callout.ternary p { color: var(--mq-callout-ok-text); }
+.mq-callout.tertiary p { color: var(--mq-callout-ok-text); }
 
 .mq-divider {
   width: 36px;
@@ -458,11 +458,16 @@ a.mq-btn.ternary:hover { filter: brightness(0.92); }
 
 .mq-step-num::before { content: attr(data-step); }
 
+.mq-spotlight,
 .mq-hero {
-  padding: 4rem 0 3rem;
-  margin-bottom: 2rem;
+  padding: 2.2rem 1.3rem;
+  margin: 0 0 2rem;
+  border: 1px solid var(--mq-border);
+  border-radius: var(--mq-radius);
+  background: var(--mq-surface-alt);
 }
 
+.mq-spotlight.center,
 .mq-hero.center { text-align: center; }
 
 .mq-badge {
@@ -481,7 +486,7 @@ a.mq-btn.ternary:hover { filter: brightness(0.92); }
 .mq-badge.accent { background: #fdf0eb; color: var(--mq-primary); }
 .mq-badge.secondary,
 .mq-badge.blue { background: #eef3fb; color: var(--mq-secondary); }
-.mq-badge.ternary { background: #eaf4ee; color: var(--mq-ternary); }
+.mq-badge.tertiary { background: #eaf4ee; color: var(--mq-tertiary); }
 
 @media (max-width: 640px) {
   .mq-row { grid-template-columns: 1fr !important; }
