@@ -1,7 +1,7 @@
-title = Marque
-description = Built with Marque
-layout = sidebar
-theme = comté
+title = "Marque"
+description = "Built with Marque"
+layout = "sidebar"
+theme = "comté"
 width = 82
 
 # Marque config
@@ -12,4 +12,3 @@ width = 82
 #
 # theme options (built-in):
 #   comté, rustique, pycorino, gouda, javarti, elmental, mida
-

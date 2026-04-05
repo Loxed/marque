@@ -4,6 +4,7 @@
 // Marque DSL — @tag .modifier name / @tag "name with spaces" / @end tag syntax
 
 const { isInline } = require('./directives/registry');
+const { parseFlatToml } = require('./utils/toml');
 
 function parse(src) {
   const lines = src.split('\n');
@@ -17,7 +18,7 @@ function parse(src) {
 //   @tag [.mod ...] [name]              — open (block or inline, decided by registry)
 //   @tag [.mod ...] ["name with spaces"]
 //   @end tag [name|"name with spaces"] — close block
-//   ---                      — hr / frontmatter fence
+//   ---                      — horizontal rule
 //   anything else            — raw markdown text
 //
 // The tokeniser is intentionally dumb — it emits 'open' tokens for every
@@ -67,7 +68,7 @@ function tokenize(lines) {
       continue;
     }
 
-    // Frontmatter / hr
+    // Horizontal rule
     if (trimmed === '---') {
       tokens.push({ type: 'hr_or_fm', lineNo, col: 1, endCol: 3 });
       continue;
@@ -167,7 +168,7 @@ function consumeBlock(tokens, start, end, openTag) {
       continue;
     }
 
-    // ── HR / frontmatter fence ───────────────────────────────────────────
+    // ── Horizontal rule ──────────────────────────────────────────────────
     if (tok.type === 'hr_or_fm') {
       flushText();
       nodes.push({ type: 'hr', loc: locFromToken(tok) });
@@ -211,22 +212,55 @@ function locFromToken(tok) {
 // ── Frontmatter ────────────────────────────────────────────────────────────
 
 function extractFrontmatter(src) {
+  const source = String(src || '');
+  const toml = extractDelimitedFrontmatter(source, '+++', (raw) => parseFlatToml(raw, { allowBareStrings: true }));
+  if (toml) return toml;
+
+  const legacy = extractDelimitedFrontmatter(source, '---', parseLegacyFrontmatter);
+  if (legacy) return legacy;
+
+  return { fm: {}, body: source, bodyStartLine: 1 };
+}
+
+function extractDelimitedFrontmatter(src, fence, parseMeta) {
+  const lines = String(src || '').split(/\r?\n/);
+  if (!lines.length || lines[0].trim() !== fence) return null;
+
+  let endIndex = -1;
+  for (let i = 1; i < lines.length; i++) {
+    if (lines[i].trim() === fence) {
+      endIndex = i;
+      break;
+    }
+  }
+
+  if (endIndex === -1) return null;
+
+  const fmRaw = lines.slice(1, endIndex).join('\n');
+  const bodyLines = lines.slice(endIndex + 1);
+  let skipped = 0;
+
+  while (bodyLines.length && !bodyLines[0].trim()) {
+    bodyLines.shift();
+    skipped += 1;
+  }
+
+  return {
+    fm: typeof parseMeta === 'function' ? parseMeta(fmRaw) : {},
+    body: bodyLines.join('\n').trim(),
+    bodyStartLine: endIndex + 2 + skipped,
+  };
+}
+
+function parseLegacyFrontmatter(source) {
   const fm = {};
-  if (!src.startsWith('---')) return { fm, body: src, bodyStartLine: 1 };
 
-  const end = src.indexOf('\n---', 3);
-  if (end === -1) return { fm, body: src, bodyStartLine: 1 };
-
-  for (const rawLine of src.slice(4, end).trim().split('\n')) {
+  for (const rawLine of String(source || '').split(/\r?\n/)) {
     const m = rawLine.trim().match(/^([\w-]+):\s*(.*)$/);
     if (m) fm[m[1].trim()] = m[2].trim();
   }
 
-  const bodyRaw = src.slice(end + 4);
-  const body = bodyRaw.trim();
-  const baseStart = src.slice(0, end + 4).split(/\r?\n/).length;
-  const leadingBreaks = ((bodyRaw.match(/^\s*/) || [''])[0].match(/\r?\n/g) || []).length;
-  return { fm, body, bodyStartLine: baseStart + leadingBreaks };
+  return fm;
 }
 
 module.exports = { parse, extractFrontmatter };

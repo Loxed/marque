@@ -52,7 +52,7 @@ function tokenize(lines) {
       continue;
     }
 
-    // frontmatter fence / hr
+    // horizontal rule
     if (trimmed === '---') {
       tokens.push({ type: 'hr_or_fm' });
       continue;

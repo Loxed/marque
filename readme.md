@@ -83,7 +83,7 @@ title = "My Site"
 description = "Built with Marque"
 layout = "topnav"
 theme = "default"
-width = "82"
+width = 82
 ```
 
 - `title`: site title used in templates.
@@ -95,20 +95,20 @@ width = "82"
 
 ## Frontmatter
 
-Each page can override defaults:
+Each page can override defaults with TOML frontmatter:
 
-```yaml
----
-title: Syntax Reference
-nav: Docs
-theme: rustique
-layout: sidebar
-width: 90
----
+```toml
++++
+title = "Syntax Reference"
+nav = "syntax-reference"
+theme = "rustique"
+layout = "sidebar"
+width = 90
++++
 ```
 
 - `title`: page title.
-- `nav`: nav label.
+- `nav`: output slug / route filename.
 - `theme`: optional per-page theme override.
 - `layout`: optional per-page layout override.
 - `width`: optional per-page width override.

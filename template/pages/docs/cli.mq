@@ -1,7 +1,7 @@
----
-title: CLI
-nav: cli
----
++++
+title = "CLI"
+nav = "cli"
++++
 
 # CLI
 
@@ -62,7 +62,7 @@ marque new my-site # creates a new site copying the template
 ## `marque serve`
 @divider
 ```sh
-marque serve . # serves the website on default :3030 port
+marque serve . # serves the website on default :3000 port
 ```
 
 - Description: Start local dev server with live reload.

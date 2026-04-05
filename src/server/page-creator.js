@@ -37,10 +37,10 @@ function buildStarterPage(relPath) {
   const nav   = base.toLowerCase() === 'index' ? 'index' : slugify(base);
   const title = toTitle(base);
 
-  return `---
-title: ${title}
-nav: ${nav}
----
+  return `+++
+title = ${JSON.stringify(title)}
+nav = ${JSON.stringify(nav)}
++++
 
 # ${title}
 

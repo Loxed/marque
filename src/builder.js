@@ -8,6 +8,7 @@ const { collectDirectiveDiagnostics } = require('./directive-diagnostics');
 const { collectDirectiveStyles } = require('./directives/registry');
 const { loadProjectDirectives } = require('./directives/project-loader');
 const { printDiagnostic } = require('./utils/errors');
+const { parseFlatToml } = require('./utils/toml');
 
 function build(siteDir, outDir, options = {}) {
   const cleanDist = options.cleanDist !== false;
@@ -181,12 +182,7 @@ function build(siteDir, outDir, options = {}) {
 function loadConfig(configPath) {
   if (!fs.existsSync(configPath)) return {};
   const raw = fs.readFileSync(configPath, 'utf8');
-  const config = {};
-  for (const line of raw.split('\n')) {
-    const m = line.match(/^(\w+)\s*=\s*"?([^"]+)"?$/);
-    if (m) config[m[1].trim()] = m[2].trim();
-  }
-  return config;
+  return parseFlatToml(raw, { allowBareStrings: true });
 }
 
 function resolveTheme(theme, siteDir) {
