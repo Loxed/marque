@@ -13,7 +13,7 @@ Directive extension workflow is documented in `DIRECTIVES_DEV.md`.
 - Zero runtime framework on the generated site.
 - Built-in live reload for fast docs and content workflows.
 - Theme system with CSS-only themes and a shared layout shell.
-- Per-page controls via frontmatter (`theme`, `width`, nav metadata, etc.).
+- Per-page controls via frontmatter (`theme`, `width`, `align`, nav metadata, etc.).
 
 ## Install
 
@@ -123,6 +123,7 @@ nav = "syntax-reference"
 theme = "rustique"
 layout = "sidebar"
 width = 90
+align = "left"
 +++
 ```
 
@@ -131,6 +132,7 @@ width = 90
 - `theme`: optional per-page theme override.
 - `layout`: optional per-page layout override.
 - `width`: optional per-page width override.
+- `align`: optional per-page content alignment (`left`, `center`, `right`).
 
 ## Summary Navigation
 

@@ -1448,8 +1448,27 @@ function writeFileWithRetry(filePath, content, softFsErrors = false) {
 function resolveMainStyle(fm, defaultPageWidth) {
   const pageWidth = normalizeWidth(fm.width);
   const width = pageWidth || defaultPageWidth;
-  if (!width) return '';
-  return ` style="--page-width: ${width}; --page-max-w: none;"`;
+  const align = normalizeContentAlign(fm.align);
+  const declarations = [];
+
+  if (width) {
+    declarations.push(`--page-width: ${width}`);
+    declarations.push(`--page-max-w: none`);
+  }
+
+  if (align === 'left') {
+    declarations.push(`--page-margin-left: 0`);
+    declarations.push(`--page-margin-right: auto`);
+  } else if (align === 'right') {
+    declarations.push(`--page-margin-left: auto`);
+    declarations.push(`--page-margin-right: 0`);
+  } else if (align === 'center') {
+    declarations.push(`--page-margin-left: auto`);
+    declarations.push(`--page-margin-right: auto`);
+  }
+
+  if (!declarations.length) return '';
+  return ` style="${declarations.join('; ')};"`;
 }
 
 function normalizeWidth(value) {
@@ -1473,6 +1492,14 @@ function normalizeWidth(value) {
     if (Number.isFinite(n) && n > 0 && n <= 100) return raw;
   }
 
+  return null;
+}
+
+function normalizeContentAlign(value) {
+  if (value === undefined || value === null) return null;
+  const raw = String(value).trim().toLowerCase();
+  if (!raw) return null;
+  if (raw === 'left' || raw === 'center' || raw === 'right') return raw;
   return null;
 }
 
