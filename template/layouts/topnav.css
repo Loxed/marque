@@ -264,8 +264,35 @@ body {
 }
 
 .mq-footer {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
   padding: 2rem;
+}
+
+.mq-footer-built {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+}
+
+.mq-footer-repo {
+  margin-left: auto;
+}
+
+.mq-footer-repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.mq-footer-repo-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
 }
 
 .mq-page-nav {
@@ -395,6 +422,19 @@ body {
   .mq-main {
     width: 100% !important;
     padding: 2rem var(--mq-page-gutter, 1rem);
+  }
+
+  .mq-footer {
+    align-items: flex-start;
+  }
+
+  .mq-footer-repo {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .mq-footer-repo-link {
+    justify-content: flex-end;
   }
 }
 
