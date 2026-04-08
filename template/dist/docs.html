@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marque — Docs</title>
+<meta name="description" content="Built with Marque">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="/layout-sidebar.css">
+<link rel="stylesheet" href="/theme-default.css">
+</head>
+<body>
+  <nav class="mq-nav">
+    <a class="mq-nav-brand" href="/">Marque</a>
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+    <div class="mq-nav-links">
+      <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="/index.html"><span class="mq-nav-num">1.</span>Home</a>
+<div class="mq-nav-heading">User Guide</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="/quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="/create.html"><span class="mq-nav-num">3.</span>Create Website</a>
+<div class="mq-nav-heading">Reference</div>
+<div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link active" href="/docs.html"><span class="mq-nav-num">4.</span>Docs</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs/configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/frontmatter.html"><span class="mq-nav-num">4.2.1</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/themes.html"><span class="mq-nav-num">4.2.2</span>Themes</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/layouts.html"><span class="mq-nav-num">4.2.3</span>Layouts</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
+    </div>
+  </nav>
+
+  <main class="mq-main" style="--page-width: 82%; --page-max-w: none;">
+    <h1>Documentation</h1>
+<p>Welcome to the Marque documentation set. Start with quickstart, then move to configuration and advanced layout/theme usage.</p>
+
+<div class="mq-row" style="grid-template-columns: repeat(4, 1fr);"><div class="mq-card accent"><h2>Quickstart</h2>
+<p>Install flow, local serve workflow, and publishing sequence.<br><a href="/start.html" class="mq-btn primary">Go to quickstart →</a></p>
+</div>
+
+<div class="mq-card"><h2>MQS Themes</h2>
+<p>Build themes with <code>@mqs-palette</code> + <code>@mqs-essentials</code>, then add manual overrides.<br><a href="/docs/themes.html" class="mq-btn">Open theme docs →</a></p>
+</div>
+
+<div class="mq-card"><h2>Configuration</h2>
+<p>Learn <code>marque.toml</code>, frontmatter precedence, and page-level overrides.<br><a href="/config.html">Open configuration →</a></p>
+</div>
+
+<div class="mq-card"><h2>Showcase</h2>
+<p>See nested docs pages with per-page layout/theme overrides.<br><a href="/docs/showcase.html">Open showcase →</a></p>
+</div></div>
+<h2>Core directives</h2>
+<ul>
+<li><code>@container</code></li>
+<li><code>@row</code> + <code>@card</code></li>
+<li><code>@callout</code></li>
+<li><code>@stat</code></li>
+<li><code>@hero</code> / <code>@section</code></li>
+<li><code>&lt;span class=&quot;mq-divider-inline&quot; aria-hidden=&quot;true&quot; style=&quot;display:inline-block;vertical-align:middle;width:1.8rem;height:2px;margin:0 .35rem;background:var(--mq-primary,currentColor);opacity:.75;border-radius:2px;&quot;&gt;&lt;/span&gt;</code></li>
+</ul>
+<h2>Frontmatter essentials</h2>
+<ul>
+<li><code>title</code>: browser title segment and nav display label.</li>
+<li><code>nav</code>: output slug / target HTML filename.</li>
+<li><code>layout</code>, <code>theme</code>, <code>width</code>: page-level overrides.</li>
+</ul>
+<h2>Navigation order</h2>
+<ul>
+<li>Use <code>summary.mq</code> to define navbar labels and page ordering.</li>
+<li>Frontmatter <code>order</code> is deprecated.</li>
+</ul>
+
+<div class="mq-callout ok"><p>Use <code>title</code> for human-readable labels and <code>nav</code> for stable machine-friendly URLs.</p>
+</div>
+    <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="/create.html" aria-label="Previous page: Create Website"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Create Website</span></a><a class="mq-page-nav-link mq-page-nav-next" href="/docs/cli.html" aria-label="Next page: CLI Commands"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">CLI Commands ↪</span></a></nav>
+  </main>
+
+  <footer class="mq-footer">
+    Built with <a href="https://github.com/marque">Marque</a>
+  </footer>
+
+  <script>
+  function mqTab(id, idx) {
+    const el = document.getElementById(id);
+    el.querySelectorAll('.mq-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+    el.querySelectorAll('.mq-tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+  }
+
+  function mqToggleNav(btn) {
+    const nav = btn.closest('.mq-nav');
+    if (!nav) return;
+    const open = nav.classList.toggle('mq-nav-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function mqPositionSubmenus() {
+    const groups = document.querySelectorAll('.mq-nav-group');
+    groups.forEach(group => {
+      const submenu = group.querySelector(':scope > .mq-nav-submenu');
+      if (!submenu) return;
+
+      group.classList.remove('mq-nav-group-open-left');
+
+      const style = window.getComputedStyle(submenu);
+      if (style.position !== 'absolute') return;
+
+      const rect = submenu.getBoundingClientRect();
+      if (rect.right > window.innerWidth - 8) {
+        group.classList.add('mq-nav-group-open-left');
+      }
+    });
+  }
+
+  window.addEventListener('resize', mqPositionSubmenus);
+  document.addEventListener('DOMContentLoaded', mqPositionSubmenus);
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
+  });
+  document.addEventListener('focusin', (e) => {
+    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
+  });
+
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.mq-code-copy');
+    if (!btn) return;
+    const block = btn.closest('.mq-code-block');
+    const codeEl = block && block.querySelector('pre code');
+    if (!codeEl) return;
+
+    const source = codeEl.textContent || '';
+    const original = btn.textContent;
+
+    try {
+      await navigator.clipboard.writeText(source);
+      btn.textContent = 'Copied';
+    } catch (_) {
+      btn.textContent = 'Failed';
+    }
+
+    setTimeout(() => {
+      btn.textContent = original;
+    }, 1200);
+  });
+  </script>
+</body>
+</html>
