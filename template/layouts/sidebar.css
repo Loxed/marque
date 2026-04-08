@@ -40,30 +40,36 @@ body {
 }
 
 .mq-search-toggle {
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: 0 0 auto;
   width: 2.2rem;
   height: 2.2rem;
   padding: 0;
-  border: 1px solid var(--mq-search-trigger-border, var(--mq-search-trigger-text, var(--mq-secondary, var(--accent2, var(--mq-nav-text, var(--accent, var(--text, inherit)))))));
+  border: 1px solid var(--mq-search-sidebar-border, color-mix(in srgb, var(--mq-nav-text, var(--text, currentColor)) 26%, transparent));
   border-radius: 999px;
-  background: var(--mq-search-trigger-bg, var(--mq-nav-bg, var(--surface, rgba(255, 255, 255, 0.66))));
-  color: var(--mq-search-trigger-text, var(--mq-secondary, var(--accent2, var(--mq-nav-text, var(--accent, var(--text, inherit))))));
+  background: var(--mq-search-sidebar-bg, color-mix(in srgb, var(--mq-nav-active-bg, var(--mq-nav-bg, transparent)) 58%, transparent));
+  color: var(--mq-search-sidebar-text, var(--mq-nav-text, var(--text, inherit)));
   cursor: pointer;
   font: inherit;
   line-height: 1;
 }
 
 .mq-search-toggle:hover {
-  background: var(--mq-search-trigger-bg-hover, var(--mq-nav-active-bg, color-mix(in srgb, var(--mq-secondary, var(--accent2, currentColor)) 12%, var(--mq-search-trigger-bg, transparent))));
-  color: var(--mq-search-trigger-text-hover, var(--mq-nav-active-text, var(--mq-search-trigger-text, inherit)));
+  background: var(--mq-search-sidebar-bg-hover, var(--mq-nav-active-bg, color-mix(in srgb, var(--mq-nav-text, currentColor) 8%, transparent)));
+  color: var(--mq-search-sidebar-text-hover, var(--mq-nav-active-text, var(--mq-nav-text, inherit)));
 }
 
 .mq-search-toggle-icon {
   width: 0.95rem;
   height: 0.95rem;
   flex-shrink: 0;
+}
+
+.mq-search-toggle-label,
+.mq-search-toggle-shortcut {
+  display: none !important;
 }
 
 .mq-nav-toggle {
@@ -404,15 +410,53 @@ body.mq-search-open {
 }
 
 .mq-search-close {
-  border: 1px solid var(--mq-search-trigger-border, var(--mq-nav-border, var(--border, rgba(0, 0, 0, 0.14))));
-  background: var(--mq-search-trigger-bg, var(--mq-nav-bg, var(--surface, rgba(255, 255, 255, 0.66))));
-  color: var(--mq-search-trigger-text, var(--mq-secondary, var(--accent2, var(--mq-nav-text, var(--accent, var(--text, inherit))))));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--mq-search-close-border, color-mix(in srgb, var(--mq-text, var(--text, currentColor)) 18%, transparent));
+  background: var(--mq-search-close-bg, var(--mq-surface-alt, var(--surface2, color-mix(in srgb, var(--mq-text, var(--text, currentColor)) 6%, transparent))));
+  color: var(--mq-search-close-text, var(--mq-text, var(--text, inherit)));
   font: inherit;
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   border-radius: 999px;
   min-height: 2rem;
-  padding: 0 0.68rem;
+  padding: 0 0.62rem;
   cursor: pointer;
+  opacity: 0.84;
+  transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease, opacity 0.14s ease;
+}
+
+.mq-search-close:hover {
+  background: var(--mq-search-close-bg-hover, color-mix(in srgb, var(--mq-search-close-bg, var(--mq-surface-alt, var(--surface2, transparent))) 82%, var(--mq-text, var(--text, currentColor)) 10%));
+  color: var(--mq-search-close-text-hover, var(--mq-text, var(--text, inherit)));
+  opacity: 1;
+}
+
+.mq-search-close-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+}
+
+.mq-search-close-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.mq-search-close-hint {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.1rem;
+  padding: 0 0.28rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  font-size: 0.65rem;
+  letter-spacing: 0.01em;
+  opacity: 0.64;
+}
+
+.mq-search-close-hint[hidden] {
+  display: none !important;
 }
 
 .mq-search-meta {
@@ -705,6 +749,24 @@ body.mq-search-open {
   .mq-search-close {
     grid-column: 1 / -1;
     justify-self: flex-end;
+  }
+}
+
+@media (max-width: 720px) {
+  .mq-search-close-hint {
+    display: none !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .mq-search-close-label {
+    display: none;
+  }
+
+  .mq-search-close {
+    padding: 0;
+    width: 2rem;
+    justify-content: center;
   }
 }
 

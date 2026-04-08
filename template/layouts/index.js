@@ -64,6 +64,47 @@ const mqSearchState = {
   root: null,
 };
 
+function mqApplySearchShortcutHints() {
+  const hints = document.querySelectorAll('[data-search-shortcut]');
+  const closeHints = document.querySelectorAll('[data-search-close-hint]');
+  if (!hints.length && !closeHints.length) return;
+
+  const coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  const smallScreen = window.matchMedia && window.matchMedia('(max-width: 720px)').matches;
+  const touchDevice = coarsePointer || smallScreen;
+  const platform = String(
+    (navigator.userAgentData && navigator.userAgentData.platform)
+    || navigator.platform
+    || navigator.userAgent
+    || ''
+  ).toLowerCase();
+  const isApple = /(mac|iphone|ipad|ipod)/.test(platform);
+  const shortcutHint = touchDevice ? '' : (isApple ? '⌘K' : 'Ctrl K');
+  const closeHint = touchDevice ? '' : 'Esc';
+
+  hints.forEach(el => {
+    if (!shortcutHint) {
+      el.hidden = true;
+      el.textContent = '';
+      return;
+    }
+
+    el.hidden = false;
+    el.textContent = shortcutHint;
+  });
+
+  closeHints.forEach(el => {
+    if (!closeHint) {
+      el.hidden = true;
+      el.textContent = '';
+      return;
+    }
+
+    el.hidden = false;
+    el.textContent = closeHint;
+  });
+}
+
 function mqSearchElements() {
   if (mqSearchState.root && mqSearchState.root.isConnected) return mqSearchState;
 
@@ -487,11 +528,13 @@ window.addEventListener('resize', () => {
     if (!mqIsCompactNav(nav)) mqCloseNav(nav);
   });
   mqPositionSubmenus();
+  mqApplySearchShortcutHints();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
   mqPositionSubmenus();
   mqInitSearch();
+  mqApplySearchShortcutHints();
 });
 
 document.addEventListener('mouseover', e => {

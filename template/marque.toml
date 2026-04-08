@@ -1,14 +1,14 @@
 title = Marque
 description = Built with Marque
 layout = sidebar
-theme = elmental
+theme = comte
 width = full
 align = left
 repo = https://github.com/Loxed/marque
 
 # Marque config
 #
-# repo:
+# repo (optional):
 #   repository url shown in the shared footer
 #
 # layout options:
