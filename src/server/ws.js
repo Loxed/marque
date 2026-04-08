@@ -7,15 +7,39 @@ const { WebSocketServer, WebSocket } = require('ws');
  * that sends a `'reload'` message to all connected clients.
  */
 function createWsServer(port) {
-  const wss = new WebSocketServer({ port });
+  return new Promise((resolve, reject) => {
+    let wss;
 
-  function broadcast() {
-    wss.clients.forEach(c => {
-      if (c.readyState === WebSocket.OPEN) c.send('reload');
-    });
-  }
+    try {
+      wss = new WebSocketServer({ port });
+    } catch (err) {
+      reject(err);
+      return;
+    }
 
-  return { wss, broadcast };
+    function broadcast() {
+      wss.clients.forEach(c => {
+        if (c.readyState === WebSocket.OPEN) c.send('reload');
+      });
+    }
+
+    const onListening = () => {
+      cleanup();
+      resolve({ wss, broadcast });
+    };
+    const onError = (err) => {
+      cleanup();
+      try { wss.close(); } catch (_) {}
+      reject(err);
+    };
+    const cleanup = () => {
+      wss.removeListener('listening', onListening);
+      wss.removeListener('error', onError);
+    };
+
+    wss.once('listening', onListening);
+    wss.once('error', onError);
+  });
 }
 
 module.exports = { createWsServer };

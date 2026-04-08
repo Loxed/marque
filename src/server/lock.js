@@ -6,7 +6,7 @@ const path = require('path');
 /**
  * Write a `.marque-serve.lock` file in `siteDir`.
  * Throws if another live process already owns the lock.
- * Returns a `release()` function that deletes the lock.
+ * Returns lock controls for updating the port and releasing the lock.
  */
 function acquireServeLock(siteDir, port) {
   const lockPath = path.join(siteDir, '.marque-serve.lock');
@@ -34,16 +34,32 @@ function acquireServeLock(siteDir, port) {
     }
   }
 
-  fs.writeFileSync(lockPath, JSON.stringify({ pid: process.pid, port, startedAt: now }, null, 2));
+  writeLock(lockPath, { pid: process.pid, port, startedAt: now });
 
-  return function release() {
-    if (!fs.existsSync(lockPath)) return;
-    try {
-      const data = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
-      if (parseInt(data.pid, 10) !== process.pid) return; // not ours
-    } catch (_) { /* best effort */ }
-    try { fs.rmSync(lockPath, { force: true }); } catch (_) {}
+  return {
+    updatePort(nextPort) {
+      if (!fs.existsSync(lockPath)) return;
+      try {
+        const data = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
+        if (parseInt(data.pid, 10) !== process.pid) return;
+        writeLock(lockPath, { ...data, port: nextPort });
+      } catch (_) {
+        writeLock(lockPath, { pid: process.pid, port: nextPort, startedAt: now });
+      }
+    },
+    release() {
+      if (!fs.existsSync(lockPath)) return;
+      try {
+        const data = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
+        if (parseInt(data.pid, 10) !== process.pid) return; // not ours
+      } catch (_) { /* best effort */ }
+      try { fs.rmSync(lockPath, { force: true }); } catch (_) {}
+    },
   };
+}
+
+function writeLock(lockPath, payload) {
+  fs.writeFileSync(lockPath, JSON.stringify(payload, null, 2));
 }
 
 module.exports = { acquireServeLock };

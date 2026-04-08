@@ -17,4 +17,9 @@ Reference
         [Themes](docs/configuration/themes.mq)
     [Directives](docs/directives.mq)
 
+For Developers
+
 [Migration](migration.mq)
+    [mdbook Guide](migration/mdbook.mq)
+    [MkDocs Guide](migration/mkdocs.mq)
+    [Obsidian Guide](migration/obsidian.mq)

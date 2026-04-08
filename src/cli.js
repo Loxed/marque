@@ -65,7 +65,10 @@ function runServe(rawArgs) {
   const siteDir = path.resolve(rawArgs[0] || '.');
   const outDir = path.join(siteDir, 'dist');
   const port = parseInt(rawArgs[1] || '3000', 10);
-  serve(siteDir, outDir, port);
+  Promise.resolve(serve(siteDir, outDir, port)).catch((err) => {
+    printBuildError(err);
+    process.exit(1);
+  });
 }
 
 function runNew(rawArgs) {
