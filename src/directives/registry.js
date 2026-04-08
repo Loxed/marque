@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 /**
  * Directive Registry
  * ==================
@@ -54,9 +56,21 @@ function ensureBootstrapped() {
 }
 
 function loadBuiltinsFresh() {
-  const builtinsPath = require.resolve('./builtins');
-  delete require.cache[builtinsPath];
-  require(builtinsPath);
+  const builtinsPath = path.resolve(__dirname, '..', '..', 'template', 'directives', 'builtins.js');
+  const resolved = require.resolve(builtinsPath);
+  delete require.cache[resolved];
+
+  const mod = require(resolved);
+  const api = { defineDirective };
+
+  if (typeof mod === 'function') {
+    mod(api);
+    return;
+  }
+
+  if (mod && typeof mod.register === 'function') {
+    mod.register(api);
+  }
 }
 
 function resetDirectives() {

@@ -48,7 +48,7 @@ Layouts behave the same way as themes but have a different purpose. Themes defin
 	@end card
 @end row 
 
-@dropdown "For developpers"
+@dropdown "For developers"
 
 	@row
 		@card

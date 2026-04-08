@@ -118,28 +118,28 @@ Minimal example:
 
 ## Custom directives (dev)
 
-You can add your own directives by registering them with `defineDirective(...)`.
+You can add your own directives by creating files in `directives/` and registering them with `defineDirective(...)`.
 
 No parser core edit is needed, no renderer switch-case is needed.
 
 Example registration:
 
 ```js
-const { defineDirective } = require('./src/directives');
+module.exports = ({ defineDirective }) => {
+  defineDirective('product-card', {
+    type: 'block',
+    render: ({ mods, name, children, ctx }) => {
+      const variant = ctx.escapeAttr(mods[0] || 'default');
+      const title = ctx.escapeAttr(name || '');
+      return `<product-card variant="${variant}" title="${title}">${children}</product-card>`;
+    },
+  });
 
-defineDirective('product-card', {
-  type: 'block',
-  render: ({ mods, name, children, ctx }) => {
-    const variant = ctx.escapeAttr(mods[0] || 'default');
-    const title = ctx.escapeAttr(name || '');
-    return `<product-card variant="${variant}" title="${title}">${children}</product-card>`;
-  },
-});
-
-defineDirective('sparkle', {
-  type: 'inline',
-  render: () => '<span class="mq-sparkle" aria-hidden="true">*</span>',
-});
+  defineDirective('sparkle', {
+    type: 'inline',
+    render: () => '<span class="mq-sparkle" aria-hidden="true">*</span>',
+  });
+};
 ```
 
 @card

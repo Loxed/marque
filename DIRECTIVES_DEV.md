@@ -17,10 +17,12 @@ No parser switch-case, no renderer switch-case.
 
 - `src/directives/registry.js`
   - Core API: `defineDirective`, `getDirective`, `isInline`, `isBlock`.
-- `src/directives/builtins.js`
-  - All built-in directives are defined here.
+- `template/directives/builtins.js`
+  - Packaged built-in directives live here so scaffolded sites and runtime defaults match.
+- `src/directives/project-loader.js`
+  - Loads `directives/*.js` from the active site on each build.
 - `src/directives/index.js`
-  - Loads built-ins and re-exports API.
+  - Re-exports the registry API.
 - `src/parser.js`
   - Reads tags and asks registry if tag is inline.
 - `src/renderer/node-renderers.js`
@@ -55,17 +57,20 @@ defineDirective('my-tag', {
 
 Example: add `@product-card` that wraps content in a web component.
 
-Add this in `src/directives/builtins.js` (or in your app startup if custom/userland):
+Add this in `directives/product-card.js` in your site
+(or `template/directives/builtins.js` if you're editing package defaults):
 
 ```js
-defineDirective('product-card', {
-  type: 'block',
-  render: ({ mods, name, children, ctx }) => {
-    const variant = ctx.escapeAttr(mods[0] || 'default');
-    const title = ctx.escapeAttr(name || '');
-    return `<product-card variant="${variant}" title="${title}">${children}</product-card>`;
-  },
-});
+module.exports = ({ defineDirective }) => {
+  defineDirective('product-card', {
+    type: 'block',
+    render: ({ mods, name, children, ctx }) => {
+      const variant = ctx.escapeAttr(mods[0] || 'default');
+      const title = ctx.escapeAttr(name || '');
+      return `<product-card variant="${variant}" title="${title}">${children}</product-card>`;
+    },
+  });
+};
 ```
 
 Use it in `.mq`:
@@ -85,10 +90,12 @@ Notes:
 ## 5) Create a new inline element
 
 ```js
-defineDirective('sparkle', {
-  type: 'inline',
-  render: () => '<span class="mq-sparkle" aria-hidden="true">*</span>',
-});
+module.exports = ({ defineDirective }) => {
+  defineDirective('sparkle', {
+    type: 'inline',
+    render: () => '<span class="mq-sparkle" aria-hidden="true">*</span>',
+  });
+};
 ```
 
 Use it in `.mq`:
@@ -104,21 +111,23 @@ Inline directives are self-closing and do not use `@end`.
 If a directive needs lint-like checks, add `validate`:
 
 ```js
-defineDirective('callout', {
-  type: 'block',
-  validate: (node, { diagnostics }, { createDiagnostic, DiagnosticLevel }) => {
-    const variant = (node.mods || [])[0];
-    const ok = new Set(['info', 'warn', 'danger']);
-    if (variant && !ok.has(variant)) {
-      diagnostics.push(createDiagnostic({
-        level: DiagnosticLevel.WARNING,
-        code: 'MQ301',
-        message: `Unknown @callout variant '${variant}'.`,
-      }));
-    }
-  },
-  render: ({ children }) => `<div class="mq-callout">${children}</div>`,
-});
+module.exports = ({ defineDirective }) => {
+  defineDirective('callout', {
+    type: 'block',
+    validate: (node, { diagnostics }, { createDiagnostic, DiagnosticLevel }) => {
+      const variant = (node.mods || [])[0];
+      const ok = new Set(['info', 'warn', 'danger']);
+      if (variant && !ok.has(variant)) {
+        diagnostics.push(createDiagnostic({
+          level: DiagnosticLevel.WARNING,
+          code: 'MQ301',
+          message: `Unknown @callout variant '${variant}'.`,
+        }));
+      }
+    },
+    render: ({ children }) => `<div class="mq-callout">${children}</div>`,
+  });
+};
 ```
 
 ## 7) Zero-core-change workflow
@@ -126,6 +135,7 @@ defineDirective('callout', {
 For most new elements, only do this:
 
 1. Register directive with `defineDirective(...)`.
+   Put it in `directives/*.js` so Marque loads it with the rest of the template/site directives.
 2. Add CSS classes/styles in theme/layout.
 3. Use directive in `.mq` files.
 

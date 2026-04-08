@@ -24,7 +24,7 @@ function build(siteDir, outDir, options = {}) {
   const defaultLayoutName = normalizeLayoutName(configuredLayoutName);
   const defaultPageWidth = normalizeWidth(config.width);
 
-  // Refresh custom directives from <site>/custom on every build.
+  // Refresh packaged + project directives on every build.
   loadProjectDirectives(siteDir);
 
   // clean + create dist

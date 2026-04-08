@@ -1,8 +1,5 @@
 // renderer.js — AST → HTML
 
-// Bootstrap built-in directives (idempotent — safe to require multiple times)
-require('./directives/index');
-
 const { marked } = require('marked');
 const hljs = require('highlight.js');
 const { renderNodeWithRegistry } = require('./renderer/node-renderers');

@@ -64,6 +64,7 @@ marque build <dir>    compile site to dist/
 
 ```text
 my-site/
+├── directives/    # custom or overridden directive definitions
 ├── pages/         # .mq source pages
 ├── layouts/       # local editable layouts copied at scaffold
 ├── themes/        # local editable themes copied at scaffold
@@ -72,7 +73,7 @@ my-site/
 └── dist/          # generated output
 ```
 
-Built-in starter layouts/themes are sourced from `template/` in the package, then copied into each new project.
+Built-in starter layouts, themes, and directive files are sourced from `template/` in the package, then copied into each new project.
 
 ## Configuration
 
@@ -181,8 +182,21 @@ Example:
 @end row intro
 ```
 
-Custom directive registration lives in `src/directives/customs.js`.
-Add directives there with `defineDirective(name, def)`.
+Custom directives live in `directives/*.js` inside your site.
+Each file exports a registration function that receives `{ defineDirective }`.
+
+```js
+module.exports = ({ defineDirective }) => {
+  defineDirective('product-card', {
+    type: 'block',
+    render: ({ mods, name, children, ctx }) => {
+      const variant = ctx.escapeAttr(mods[0] || 'default');
+      const title = ctx.escapeAttr(name || '');
+      return `<product-card variant="${variant}" title="${title}">${children}</product-card>`;
+    },
+  });
+};
+```
 
 ## Markdown Enhancements
 

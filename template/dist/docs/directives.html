@@ -105,24 +105,24 @@ This works inline too: before @divider after</code></pre></div><p>This is a <a h
 <li><code>@step</code> is a block directive and is closed with <code>@end step</code>.</li>
 </ul>
 <h2>Custom directives (dev)</h2>
-<p>You can add your own directives by registering them with <code>defineDirective(...)</code>.</p>
+<p>You can add your own directives by creating files in <code>directives/</code> and registering them with <code>defineDirective(...)</code>.</p>
 <p>No parser core edit is needed, no renderer switch-case is needed.</p>
 <p>Example registration:</p>
-<div class="mq-code-block" data-lang="js"><div class="mq-code-head"><span class="mq-code-lang">js</span><button class="mq-code-copy" type="button" aria-label="Copy js code">Copy</button></div><pre><code class="hljs language-js"><span class="hljs-keyword">const</span> { defineDirective } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;./src/directives&#x27;</span>);
+<div class="mq-code-block" data-lang="js"><div class="mq-code-head"><span class="mq-code-lang">js</span><button class="mq-code-copy" type="button" aria-label="Copy js code">Copy</button></div><pre><code class="hljs language-js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-function">(<span class="hljs-params">{ defineDirective }</span>) =&gt;</span> {
+  <span class="hljs-title function_">defineDirective</span>(<span class="hljs-string">&#x27;product-card&#x27;</span>, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;block&#x27;</span>,
+    <span class="hljs-attr">render</span>: <span class="hljs-function">(<span class="hljs-params">{ mods, name, children, ctx }</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> variant = ctx.<span class="hljs-title function_">escapeAttr</span>(mods[<span class="hljs-number">0</span>] || <span class="hljs-string">&#x27;default&#x27;</span>);
+      <span class="hljs-keyword">const</span> title = ctx.<span class="hljs-title function_">escapeAttr</span>(name || <span class="hljs-string">&#x27;&#x27;</span>);
+      <span class="hljs-keyword">return</span> <span class="hljs-string">`&lt;product-card variant=&quot;<span class="hljs-subst">${variant}</span>&quot; title=&quot;<span class="hljs-subst">${title}</span>&quot;&gt;<span class="hljs-subst">${children}</span>&lt;/product-card&gt;`</span>;
+    },
+  });
 
-<span class="hljs-title function_">defineDirective</span>(<span class="hljs-string">&#x27;product-card&#x27;</span>, {
-  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;block&#x27;</span>,
-  <span class="hljs-attr">render</span>: <span class="hljs-function">(<span class="hljs-params">{ mods, name, children, ctx }</span>) =&gt;</span> {
-    <span class="hljs-keyword">const</span> variant = ctx.<span class="hljs-title function_">escapeAttr</span>(mods[<span class="hljs-number">0</span>] || <span class="hljs-string">&#x27;default&#x27;</span>);
-    <span class="hljs-keyword">const</span> title = ctx.<span class="hljs-title function_">escapeAttr</span>(name || <span class="hljs-string">&#x27;&#x27;</span>);
-    <span class="hljs-keyword">return</span> <span class="hljs-string">`&lt;product-card variant=&quot;<span class="hljs-subst">${variant}</span>&quot; title=&quot;<span class="hljs-subst">${title}</span>&quot;&gt;<span class="hljs-subst">${children}</span>&lt;/product-card&gt;`</span>;
-  },
-});
-
-<span class="hljs-title function_">defineDirective</span>(<span class="hljs-string">&#x27;sparkle&#x27;</span>, {
-  <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;inline&#x27;</span>,
-  <span class="hljs-attr">render</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-string">&#x27;&lt;span class=&quot;mq-sparkle&quot; aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;&#x27;</span>,
-});</code></pre></div>
+  <span class="hljs-title function_">defineDirective</span>(<span class="hljs-string">&#x27;sparkle&#x27;</span>, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;inline&#x27;</span>,
+    <span class="hljs-attr">render</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-string">&#x27;&lt;span class=&quot;mq-sparkle&quot; aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;&#x27;</span>,
+  });
+};</code></pre></div>
 <div class="mq-card"><p>Example usage in <code>.mq</code>:</p>
 
 <div class="mq-row" style="grid-template-columns: repeat(2, 1fr);">

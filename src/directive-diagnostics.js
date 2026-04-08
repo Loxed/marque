@@ -5,7 +5,7 @@ const { getDirective } = require('./directives/registry');
 
 /**
  * Walk the AST and call any validate() hooks registered on directives.
- * Built-in directives define their own validation inline in builtins.js.
+ * Packaged directives define validation in template/directives/builtins.js.
  * Custom directives can do the same.
  */
 function collectDirectiveDiagnostics(ast, context) {

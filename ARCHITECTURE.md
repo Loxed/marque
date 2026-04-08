@@ -39,9 +39,10 @@ Marque now uses one unified directive pipeline.
 
 ### Built-in directives
 
-- `src/directives/builtins.js` defines all built-ins in one place.
-- `src/directives/index.js` bootstraps built-ins and re-exports the registry API.
-- `src/renderer.js` requires this entry point once at startup.
+- `template/directives/builtins.js` defines the packaged built-ins.
+- `src/directives/registry.js` lazily bootstraps those packaged defaults.
+- `src/directives/project-loader.js` then loads site-local `directives/*.js` files on each build.
+- `src/directives/index.js` re-exports the registry API.
 
 ### Parsing behavior
 
@@ -112,6 +113,7 @@ All directives use the same node type:
 - `themes/index.html` (optional shared template)
 - `layouts/<name>.css`
 - `static/**`
+- `directives/**/*.js`
 
 ## 7) Active vs Split Modules
 
