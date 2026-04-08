@@ -3,7 +3,7 @@ title = Layouts
 layout = topnav
 +++
 
-# Layout
+# Layouts
 @divider
 
 Layouts behave the same way as themes but have a different purpose. Themes define the global theming of elements in your website, whereas layouts are responsible for laying out what shows up automatically and where it should go. This page forcibly uses the `topnav` layout, whereas the rest of this website uses the `sidebar` layout.
