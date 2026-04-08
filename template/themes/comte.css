@@ -66,6 +66,8 @@
   /* Layout And Typography */
   --mq-radius: 8px;
   --mq-max-width: 860px;
+  --mq-page-gutter: clamp(1rem, 3vw, 2rem);
+  --mq-block-gap: clamp(1rem, 2vw, 1.5rem);
   --mq-font-sans: 'DM Sans', system-ui, sans-serif;
   --mq-font-serif: 'Fraunces', Georgia, serif;
   --mq-font-mono: 'IBM Plex Mono', monospace;
@@ -89,7 +91,13 @@
 /* Base Theme Structure */
 /* Shared typography, layout, navigation, utilities, and non-directive component styles copied from the reference theme. */
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
+  margin: 0;
+  min-width: 320px;
   font-family: var(--mq-font-sans);
   background: var(--mq-background);
   color: var(--mq-text);
@@ -149,6 +157,20 @@ body {
 .mq-nav-submenu {
   background: var(--mq-nav-bg);
   border: 1px solid var(--mq-nav-border);
+}
+
+.mq-nav-heading {
+  padding: 0.7rem 0.8rem 0.25rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mq-muted);
+}
+
+.mq-nav-divider {
+  height: 1px;
+  margin: 0.45rem 0;
+  background: var(--mq-nav-border);
 }
 
 .mq-footer {
@@ -230,6 +252,14 @@ body {
   font-weight: 500; color: var(--mq-text);
 }
 
+.mq-main :where(h1, h2, h3, p, li, blockquote) {
+  overflow-wrap: anywhere;
+}
+
+.mq-main :where(h1, h2, h3, h4, h5, h6)[id] {
+  scroll-margin-top: 5rem;
+}
+
 a.mq-btn {
   display: inline-block;
   margin-top: 0.75rem;
@@ -240,6 +270,8 @@ a.mq-btn {
   font-weight: 500;
   text-decoration: none !important;
   color: var(--mq-text);
+  text-align: center;
+  white-space: normal;
   transition: background 0.15s;
 }
 
@@ -294,15 +326,17 @@ a.mq-btn.tertiary:hover {
 }
 
 img {
-  border-radius: 20px;
+  max-width: 100%;
+  height: auto;
+  border-radius: clamp(14px, 3vw, 20px);
   border: 1px solid #eeece7;
 }
 
 /* Shared Directive Blocks: @hero, @spotlight */
 .mq-spotlight,
 .mq-hero {
-  padding: 2.2rem 1.3rem;
-  margin: 0 0 2rem;
+  padding: clamp(1.4rem, 4vw, 2.2rem) clamp(1rem, 4vw, 1.3rem);
+  margin: 0 0 clamp(1.5rem, 4vw, 2rem);
   border: 1px solid var(--mq-border);
   border-radius: var(--mq-radius);
   background: var(--mq-surface-alt);
@@ -331,7 +365,7 @@ img {
 /* selectors: .mq-row */
 .mq-row {
   display: grid;
-  gap: 1.25rem;
+  gap: var(--mq-block-gap);
   margin: 1.75rem 0;
   align-items: stretch;
 }
@@ -344,7 +378,7 @@ img {
 /* selectors: .mq-column */
 .mq-column {
   display: grid;
-  gap: 1.25rem;
+  gap: var(--mq-block-gap);
   align-content: start;
 }
 
@@ -477,7 +511,7 @@ img {
 
 .mq-stat-value {
   font-family: var(--mq-font-serif);
-  font-size: 2.6rem;
+  font-size: clamp(2rem, 6vw, 2.6rem);
   font-weight: 300;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -576,6 +610,7 @@ img {
 /* selectors: product-card */
 product-card {
   display: block;
+  min-width: 0;
   border: 1px solid var(--mq-border);
   background: var(--mq-surface);
   border-radius: var(--mq-radius);
@@ -611,3 +646,58 @@ product-card > :last-child {
 /* @spotlight (inline) */
 /* selectors: .mq-spotlight */
 /* Shared baseline for this directive lives in the shared directive section above. Add directive-specific selectors here only if this theme needs extra treatment. */
+
+@container mq-main (max-width: 960px) {
+  .mq-row {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)) !important;
+  }
+
+  .mq-main h1 {
+    margin-bottom: 0.85rem;
+  }
+
+  .mq-card,
+  .mq-callout,
+  .mq-stat,
+  product-card {
+    padding: 1.1rem;
+  }
+
+  .mq-dropdown > summary,
+  .mq-dropdown-content {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@container mq-main (max-width: 640px) {
+  .mq-main h2 {
+    font-size: 1.25rem;
+  }
+
+  .mq-main h3 {
+    font-size: 0.95rem;
+  }
+
+  .mq-card,
+  .mq-callout,
+  .mq-stat,
+  product-card {
+    padding: 1rem;
+  }
+
+  .mq-step {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+
+  .mq-step-num {
+    justify-self: start;
+  }
+}

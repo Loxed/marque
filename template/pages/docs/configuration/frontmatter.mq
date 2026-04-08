@@ -76,10 +76,10 @@ Try overriding this page's content width:
 
 <div id="try-width">
   <button class="mq-try-btn" onclick="mqTryWidth('50%', this)">narrow</button>
-  <button class="mq-try-btn active" onclick="mqTryWidth('82%', this)">normal</button>
+  <button class="mq-try-btn" onclick="mqTryWidth('82%', this)">normal</button>
   <button class="mq-try-btn" onclick="mqTryWidth('95%', this)">wide</button>
-  <button class="mq-try-btn" onclick="mqTryWidth('100%', this)">full</button>
-  <input class="mq-try-input" id="try-width-input" type="number" min="10" max="100" placeholder="82" />
+  <button class="mq-try-btn active" onclick="mqTryWidth('100%', this)">full</button>
+  <input class="mq-try-input" id="try-width-input" type="number" min="30" max="100" placeholder="100" />
   <button class="mq-try-btn" onclick="mqTryWidthCustom()">apply</button>
 </div>
 

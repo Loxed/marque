@@ -2,7 +2,7 @@ title = "Marque"
 description = "Built with Marque"
 layout = "sidebar"
 theme = "comte"
-width = 82
+width = full
 
 # Marque config
 #

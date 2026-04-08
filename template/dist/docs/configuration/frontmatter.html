@@ -28,7 +28,7 @@
   </nav>
 
   <!-- main content in which .mq files are injected -->
-  <main class="mq-main" style="--page-width: 82%; --page-max-w: none;">
+  <main class="mq-main" style="--page-width: 100%; --page-max-w: none;">
     <h1>Frontmatter</h1>
 
 <div class="mq-divider"></div>
@@ -90,10 +90,10 @@ nav = &quot;new-link&quot;      &lt;--- override output slug
 <p>Try overriding this page&#39;s content width:</p>
 <div id="try-width">
   <button class="mq-try-btn" onclick="mqTryWidth('50%', this)">narrow</button>
-  <button class="mq-try-btn active" onclick="mqTryWidth('82%', this)">normal</button>
+  <button class="mq-try-btn" onclick="mqTryWidth('82%', this)">normal</button>
   <button class="mq-try-btn" onclick="mqTryWidth('95%', this)">wide</button>
-  <button class="mq-try-btn" onclick="mqTryWidth('100%', this)">full</button>
-  <input class="mq-try-input" id="try-width-input" type="number" min="10" max="100" placeholder="82" />
+  <button class="mq-try-btn active" onclick="mqTryWidth('100%', this)">full</button>
+  <input class="mq-try-input" id="try-width-input" type="number" min="30" max="100" placeholder="100" />
   <button class="mq-try-btn" onclick="mqTryWidthCustom()">apply</button>
 </div>
 </div>
