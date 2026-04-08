@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marque — Directives</title>
+
+<meta name="description" content="Built with Marque">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+<link rel="stylesheet" href="../layout-sidebar.css">
+<link rel="stylesheet" href="../theme-comte.css">
+</head>
+<body>
+
+  <!-- Navigation Bar (Works with topnav and sidebar) -->
+  <nav class="mq-nav">
+    <a class="mq-nav-brand" href="../">Marque</a>
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+    <div class="mq-nav-links">
+      <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../"><span class="mq-nav-num">1.</span>Home</a>
+<div class="mq-nav-heading">User Guide</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../create.html"><span class="mq-nav-num">3.</span>Create Website</a>
+<div class="mq-nav-heading">Reference</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../docs.html"><span class="mq-nav-num">4.</span>Docs</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="cli.html"><span class="mq-nav-num">5.</span>CLI Commands</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="configuration.html"><span class="mq-nav-num">6.</span>Configuration</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="configuration/frontmatter.html"><span class="mq-nav-num">7.</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="configuration/layouts.html"><span class="mq-nav-num">8.</span>Layouts</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="configuration/themes.html"><span class="mq-nav-num">9.</span>Themes</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="migration.html"><span class="mq-nav-num">10.</span>Migration</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link active" style="--mq-nav-level:0;" href="directives.html"><span class="mq-nav-num">11.</span>Directives</a>
+    </div>
+  </nav>
+
+  <!-- main content in which .mq files are injected -->
+  <main class="mq-main" style="--page-width: 100%; --page-max-w: none;">
+    <h1>Directives</h1>
+
+<div class="mq-divider"></div>
+<p>In Marque, anything that starts with <code>@</code> is part of the directive layer.</p>
+
+<div class="mq-callout info"><p>Directives are how you move from plain markdown into page structure, reusable UI blocks, and project-specific components.</p>
+</div>
+<h2>The three authoring layers</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card primary"><h2>Markdown</h2>
+
+<div class="mq-divider"></div>
+<p>Use plain markdown for headings, paragraphs, lists, links, blockquotes, and code blocks.</p>
+</div>
+
+<div class="mq-card secondary"><h2>Directives</h2>
+
+<div class="mq-divider"></div>
+<p>Use directives when you want layout primitives like rows, cards, callouts, steps, or themed wrappers.</p>
+</div>
+
+<div class="mq-card tertiary"><h2>Inline syntax</h2>
+
+<div class="mq-divider"></div>
+<p>Use button-style links, badges, and inline dividers inside markdown paragraphs when you need lighter UI affordances.</p>
+</div></div>
+<h2>Built-in block directives</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card"><h2>Layout primitives</h2>
+
+<div class="mq-divider"></div>
+<ul>
+<li><code>@container</code>: neutral grouping scope</li>
+<li><code>@row</code>: horizontal layout container</li>
+<li><code>@column</code>: vertical stack inside a row</li>
+<li><code>@card</code>: padded content block</li>
+</ul>
+</div>
+
+<div class="mq-card"><h2>Content blocks</h2>
+
+<div class="mq-divider"></div>
+<ul>
+<li><code>@callout</code>: highlighted note block</li>
+<li><code>@stat</code>: value + label pair</li>
+<li><code>@step</code>: numbered process item</li>
+<li><code>@section</code> / <code>@hero</code>: themed wrappers when your theme styles them</li>
+</ul>
+</div>
+
+<div class="mq-card"><h2>Project directives in the starter</h2>
+
+<div class="mq-divider"></div>
+<ul>
+<li><code>@dropdown</code></li>
+<li><code>@product-card</code></li>
+<li><code>&lt;span class=&quot;mq-sparkle&quot; aria-hidden=&quot;true&quot;&gt;✶&lt;/span&gt;</code></li>
+<li><code>&lt;div class=&quot;mq-spotlight&quot;&gt;&lt;/div&gt;</code></li>
+</ul>
+</div></div>
+<h2>Inline syntax</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card"><h2>Buttons</h2>
+
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">&lt;a href=&quot;docs.html&quot; class=&quot;mq-btn primary&quot;&gt;Read more&lt;/a&gt;
+&lt;a href=&quot;docs/configuration/themes.html&quot; class=&quot;mq-btn&quot;&gt;Open theme docs&lt;/a&gt;</code></pre></div><p>This renders as button-style links.</p>
+</div>
+
+<div class="mq-card"><h2>Badges</h2>
+
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">&lt;span class=&quot;mq-badge accent&quot;&gt;New&lt;/span&gt;
+&lt;span class=&quot;mq-badge secondary&quot;&gt;Stable&lt;/span&gt;</code></pre></div><p>Example: <span class="mq-badge accent">New</span> <span class="mq-badge secondary">Stable</span></p>
+</div>
+
+<div class="mq-card"><h2>Inline divider</h2>
+
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">Before @divider after</code></pre></div><p>Example: Before <span class="mq-divider-inline" aria-hidden="true" style="display:inline-block;vertical-align:middle;width:1.8rem;height:2px;margin:0 .35rem;background:var(--mq-primary,currentColor);opacity:.75;border-radius:2px;"></span> after</p>
+</div></div>
+<h2>Example page composition</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card"><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@container hero-intro
+  ## Welcome
+  Build the page with markdown and directives.
+
+  @row features
+    @card
+      Fast setup.
+    @end card
+
+    @card
+      Plain static output.
+    @end card
+  @end row features
+@end container hero-intro</code></pre></div></div>
+
+<div class="mq-card"><h2>Welcome</h2>
+<p>Build the page with markdown and directives.</p>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card"><p>Fast setup.</p>
+</div>
+
+<div class="mq-card"><p>Plain static output.</p>
+</div></div></div></div>
+<h2>Project directive examples</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card"><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@dropdown &quot;What ships in the starter?&quot;
+Marque includes a few example project directives.
+@end dropdown
+
+@product-card .featured Starter
+## Starter Plan
+Best for small teams.
+@end product-card
+
+Add some shine @sparkle</code></pre></div></div>
+
+<div class="mq-card"><details class="mq-dropdown"><summary>What ships in the starter?</summary><div class="mq-dropdown-content"><p>Marque includes a few example project directives.</p>
+</div></details>
+
+<product-card variant="featured" title="Starter"><h2>Starter Plan</h2>
+<p>Best for small teams.</p>
+</product-card>
+<p>Add some shine <span class="mq-sparkle" aria-hidden="true">✶</span></p>
+</div></div>
+<h2>Writing your own directives</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-card"><p>Create files in <code>directives/</code> and register them with <code>defineDirective(...)</code>.</p>
+<div class="mq-code-block" data-lang="js"><div class="mq-code-head"><span class="mq-code-lang">js</span><button class="mq-code-copy" type="button" aria-label="Copy js code">Copy</button></div><pre><code class="hljs language-js"><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-function">(<span class="hljs-params">{ defineDirective }</span>) =&gt;</span> {
+  <span class="hljs-title function_">defineDirective</span>(<span class="hljs-string">&#x27;product-card&#x27;</span>, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;block&#x27;</span>,
+    <span class="hljs-attr">render</span>: <span class="hljs-function">(<span class="hljs-params">{ mods, name, children, ctx }</span>) =&gt;</span> {
+      <span class="hljs-keyword">const</span> variant = ctx.<span class="hljs-title function_">escapeAttr</span>(mods[<span class="hljs-number">0</span>] || <span class="hljs-string">&#x27;default&#x27;</span>);
+      <span class="hljs-keyword">const</span> title = ctx.<span class="hljs-title function_">escapeAttr</span>(name || <span class="hljs-string">&#x27;&#x27;</span>);
+      <span class="hljs-keyword">return</span> <span class="hljs-string">`&lt;product-card variant=&quot;<span class="hljs-subst">${variant}</span>&quot; title=&quot;<span class="hljs-subst">${title}</span>&quot;&gt;<span class="hljs-subst">${children}</span>&lt;/product-card&gt;`</span>;
+    },
+  });
+
+  <span class="hljs-title function_">defineDirective</span>(<span class="hljs-string">&#x27;sparkle&#x27;</span>, {
+    <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;inline&#x27;</span>,
+    <span class="hljs-attr">render</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-string">&#x27;&lt;span class=&quot;mq-sparkle&quot; aria-hidden=&quot;true&quot;&gt;✶&lt;/span&gt;&#x27;</span>,
+  });
+};</code></pre></div></div>
+
+<div class="mq-callout ok"><p>You do not need to edit the parser core to add project directives. Put them in <code>directives/*.js</code>, register them, and Marque will load them.</p>
+</div>
+<h2>Notes</h2>
+
+<div class="mq-divider"></div>
+<ul>
+<li><code>@container</code> is structural and does not add a wrapper by itself.</li>
+<li><code>@row</code> and <code>@column</code> control axis and grouping.</li>
+<li><code>@step</code> numbering resets when you start a new container flow.</li>
+<li>Inline buttons and badges are renderer syntax, not block directives.</li>
+<li>Hyphenated directive names like <code>product-card</code> are supported.</li>
+</ul>
+
+    <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="migration.html" aria-label="Previous page: Migration"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Migration</span></a><span class="mq-page-nav-spacer" aria-hidden="true"></span></nav>
+  </main>
+
+  <!-- footer at the bottom of every page -->
+  <footer class="mq-footer">
+    Built with <a href="https://github.com/Loxed/marque">Marque</a>
+  </footer>
+
+  <script src="../index.js"></script>
+</body>
+</html>

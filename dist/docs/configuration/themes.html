@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marque — Themes</title>
+
+<meta name="description" content="Built with Marque">
+<link rel="icon" href="../../favicon.ico" type="image/x-icon">
+
+<link rel="stylesheet" href="../../layout-sidebar.css">
+<link rel="stylesheet" href="../../theme-mida.css">
+</head>
+<body>
+
+  <!-- Navigation Bar (Works with topnav and sidebar) -->
+  <nav class="mq-nav">
+    <a class="mq-nav-brand" href="../../">Marque</a>
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+    <div class="mq-nav-links">
+      <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../"><span class="mq-nav-num">1.</span>Home</a>
+<div class="mq-nav-heading">User Guide</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../create.html"><span class="mq-nav-num">3.</span>Create Website</a>
+<div class="mq-nav-heading">Reference</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../docs.html"><span class="mq-nav-num">4.</span>Docs</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../cli.html"><span class="mq-nav-num">5.</span>CLI Commands</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../configuration.html"><span class="mq-nav-num">6.</span>Configuration</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="frontmatter.html"><span class="mq-nav-num">7.</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="layouts.html"><span class="mq-nav-num">8.</span>Layouts</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link active" style="--mq-nav-level:0;" href="themes.html"><span class="mq-nav-num">9.</span>Themes</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../migration.html"><span class="mq-nav-num">10.</span>Migration</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../directives.html"><span class="mq-nav-num">11.</span>Directives</a>
+    </div>
+  </nav>
+
+  <!-- main content in which .mq files are injected -->
+  <main class="mq-main" style="--page-width: 100%; --page-max-w: none;">
+    <h1>Themes</h1>
+
+<div class="mq-spotlight"></div>
+<h2><em><a href="https://marathonthegame.com/">Marathon</a>-style, baby!</em></h2>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card primary"><h2>Customise your site&#39;s look</h2>
+
+<div class="mq-divider"></div>
+<p>Marque supports multiple themes and <a href="layouts.html">layouts</a>.</p>
+<p>Themes are stored as <a href="https://developer.mozilla.org/en-US/docs/Web/CSS"><code>.css</code></a> files in the <code>themes/</code> directory of your Marque project, and you can have as many as you like. This page uses the <code>mida.css</code> theme to showcase what&#39;s possible.</p>
+</div>
+<div class="mq-card secondary"><h2>Create your own theme</h2>
+<p>The main theme used on your site is defined in the <code>marque.toml</code> file with the <code>theme = &quot;...&quot;</code> key. You can change this to any theme you like, and Marque will use it when you run <code>marque serve</code> or <code>marque build</code>. To override a theme on a per-page basis (like this page), add <code>theme = &quot;name&quot;</code> to the page&#39;s <a href="frontmatter.html">frontmatter</a>, and Marque will use that theme instead of the default one.</p>
+</div>
+</div>
+<hr>
+<h2>Quick flow</h2>
+
+<div class="mq-card">
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Create theme file: add <code>themes/&lt;my-theme.css&gt;</code>.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Paste baseline variables and base styles.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Activate theme in <code>marque.toml</code>: <code>theme = &quot;my-theme&quot;</code>.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Run <code>marque serve .</code> or <code>marque build .</code>.</p>
+</div></div>
+</div>
+
+<div class="mq-callout info"><p>If <code>themes/my-theme.css</code> exists, Marque uses it.</p>
+</div>
+<h2>Official themes</h2>
+
+<div class="mq-divider"></div>
+<p><em>&quot;Yes I&#39;m French, how did you guess?&quot;</em></p>
+<hr>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);">
+<div class="mq-card secondary"><h2>comté.css <code>(default)</code></h2>
+<p><a href="https://en.wikipedia.org/wiki/Comt%C3%A9">Comté</a> is the default theme for Marque. Clean, readable, and responsive, with no holes in its design.</p>
+<p><img src="../../topnav.png" alt="Comté Theme"></p>
+</div>
+
+<div class="mq-card primary"><h2>rustique.css</h2>
+<p>Rustique is a modern, warm theme for Marque, based on <a href="https://rust-lang.org/">Rust</a>. (Rustique is a French brand of <a href="https://en.wikipedia.org/wiki/Camembert">Camembert</a>)</p>
+<p><img src="../../topnav.png" alt="Rustique Theme"></p>
+</div>
+
+<div class="mq-card tertiary"><h2>pycorino.css</h2>
+<p>Pycorino is a playful light theme inspired by <a href="https://python.org/">Python</a>. (Python + <a href="https://en.wikipedia.org/wiki/Pecorino">Pecorino</a> = Pycorino ??? It&#39;s 4am when I&#39;m writing this)</p>
+<p><img src="../../topnav.png" alt="Pycorino Theme"></p>
+</div>
+</div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);">
+<div class="mq-card primary"><h2>javarti.css</h2>
+<p>Javarti is a classic light theme for Marque, influenced by <a href="https://java.com/">Java</a>. Like <a href="https://en.wikipedia.org/wiki/Havarti">Havarti</a>, it&#39;s old enough but ages well.</p>
+<p><img src="../../topnav.png" alt="Javarti Theme"></p>
+</div>
+
+<div class="mq-card tertiary"><h2>gouda.css</h2>
+<p><a href="https://en.wikipedia.org/wiki/Gouda_cheese">Gouda</a> is a cool, simple dark theme for Marque, based on <a href="https://go.dev/">Go</a>. Gouda is a simple, pleasant cheese anyone can enjoy.</p>
+<p><img src="../../topnav.png" alt="Gouda Theme"></p>
+</div>
+
+<div class="mq-card secondary"><h2>elmental.css</h2>
+<p>Elmental is a bright, paper-like theme for Marque, inspired by <a href="https://elm-lang.org/">Elm</a>. <a href="https://en.wikipedia.org/wiki/Emmental">Emmental</a> (not <a href="https://en.wikipedia.org/wiki/Gruy%C3%A8re">Gruyère</a>!) has holes in it, Elm doesn&#39;t.</p>
+<p><img src="../../topnav.png" alt="Mida Theme"></p>
+</div></div>
+<p><strong><em>I&#39;m hungry now.</em></strong></p>
+
+<div class="mq-spotlight"></div>
+    <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="layouts.html" aria-label="Previous page: Layouts"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Layouts</span></a><a class="mq-page-nav-link mq-page-nav-next" href="../migration.html" aria-label="Next page: Migration"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Migration ↪</span></a></nav>
+  </main>
+
+  <!-- footer at the bottom of every page -->
+  <footer class="mq-footer">
+    Built with <a href="https://github.com/Loxed/marque">Marque</a>
+  </footer>
+
+  <script src="../../index.js"></script>
+</body>
+</html>

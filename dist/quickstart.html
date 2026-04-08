@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marque — Quickstart</title>
+
+<meta name="description" content="Built with Marque">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+
+<link rel="stylesheet" href="layout-sidebar.css">
+<link rel="stylesheet" href="theme-comte.css">
+</head>
+<body>
+
+  <!-- Navigation Bar (Works with topnav and sidebar) -->
+  <nav class="mq-nav">
+    <a class="mq-nav-brand" href="./">Marque</a>
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+    <div class="mq-nav-links">
+      <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="./"><span class="mq-nav-num">1.</span>Home</a>
+<div class="mq-nav-heading">User Guide</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link active" style="--mq-nav-level:0;" href="quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="create.html"><span class="mq-nav-num">3.</span>Create Website</a>
+<div class="mq-nav-heading">Reference</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="docs.html"><span class="mq-nav-num">4.</span>Docs</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="docs/cli.html"><span class="mq-nav-num">5.</span>CLI Commands</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="docs/configuration.html"><span class="mq-nav-num">6.</span>Configuration</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="docs/configuration/frontmatter.html"><span class="mq-nav-num">7.</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="docs/configuration/layouts.html"><span class="mq-nav-num">8.</span>Layouts</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="docs/configuration/themes.html"><span class="mq-nav-num">9.</span>Themes</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="docs/migration.html"><span class="mq-nav-num">10.</span>Migration</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="docs/directives.html"><span class="mq-nav-num">11.</span>Directives</a>
+    </div>
+  </nav>
+
+  <!-- main content in which .mq files are injected -->
+  <main class="mq-main" style="--page-width: 100%; --page-max-w: none;">
+    <h1>Quickstart</h1>
+<p>Get from zero to a running site in a few minutes.</p>
+
+<div class="mq-callout warn"><h3>Windows Users!</h3>
+<p>  Make sure you use the correct workspace for your CLI tool! </p>
+<ul>
+<li>If you’re using WSL, clone the project inside the WSL filesystem (<code>/home/username/...</code>)</li>
+<li>If you’re using CMD or PowerShell, keep it on the Windows filesystem.</li>
+</ul>
+<p>Running the project on the Windows filesystem with WSL (<code>mnt/c/...</code>) can cause significant performance issues!</p>
+</div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-column"><div class="mq-card"><div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><h2>Requirements</h2>
+
+<div class="mq-divider"></div>
+<p>Before installing Marque, make sure you have:</p>
+<ul>
+<li><a href="https://nodejs.org/en/download">Node.js 18</a> or newer</li>
+<li>npm (comes with Node.js)</li>
+</ul>
+<p>Check your versions:</p>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">  node -v <span class="hljs-comment"># &gt;= v18.0.0</span>
+  npm -v</code></pre></div></div></div></div>
+
+<div class="mq-card"><div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><h2>Installation</h2>
+
+<div class="mq-divider"></div>
+<h3>Install from source (recommended)</h3>
+<p>Install the <code>marque</code> package directly from github</p>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">  npm install -g github:Loxed/marque</code></pre></div><p>This makes the <code>marque</code> command available globally.</p>
+<h3>Verify installation</h3>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque --<span class="hljs-built_in">help</span></code></pre></div><p>If the command runs, you&#39;re ready to go.</p>
+</div></div></div></div>
+
+<div class="mq-card"><div class="mq-step"><div class="mq-step-num" data-step="3"></div><div class="mq-step-body"><h2>Create and run your site</h2>
+
+<div class="mq-divider"></div></div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><h2>Create a project</h2>
+<p>Scaffold a new site:</p>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque new my-site
+<span class="hljs-built_in">cd</span> my-site</code></pre></div></div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><h2>Start the dev server</h2>
+<p>Run the local server with live reload:</p>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque serve .</code></pre></div><p>Then open <a href="http://localhost:3000">http://localhost:3000</a>.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="3"></div><div class="mq-step-body"><h2>Edit content</h2>
+<p>Modify files inside <code>pages/</code>.
+Changes are reflected instantly in your browser.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="4"></div><div class="mq-step-body"><h2>Build for production</h2>
+<p>Generate static files:</p>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque build .</code></pre></div><p>Output is written to <code>dist/</code>.</p>
+</div></div></div></div>
+    <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="./" aria-label="Previous page: Home"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Home</span></a><a class="mq-page-nav-link mq-page-nav-next" href="create.html" aria-label="Next page: Create Website"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Create Website ↪</span></a></nav>
+  </main>
+
+  <!-- footer at the bottom of every page -->
+  <footer class="mq-footer">
+    Built with <a href="https://github.com/Loxed/marque">Marque</a>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>

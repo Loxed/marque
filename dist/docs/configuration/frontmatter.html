@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marque — Frontmatter</title>
+
+<meta name="description" content="Built with Marque">
+<link rel="icon" href="../../favicon.ico" type="image/x-icon">
+
+<link rel="stylesheet" href="../../layout-sidebar.css">
+<link rel="stylesheet" href="../../theme-comte.css">
+</head>
+<body>
+
+  <!-- Navigation Bar (Works with topnav and sidebar) -->
+  <nav class="mq-nav">
+    <a class="mq-nav-brand" href="../../">Marque</a>
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+    <div class="mq-nav-links">
+      <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../"><span class="mq-nav-num">1.</span>Home</a>
+<div class="mq-nav-heading">User Guide</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../create.html"><span class="mq-nav-num">3.</span>Create Website</a>
+<div class="mq-nav-heading">Reference</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../docs.html"><span class="mq-nav-num">4.</span>Docs</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../cli.html"><span class="mq-nav-num">5.</span>CLI Commands</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../configuration.html"><span class="mq-nav-num">6.</span>Configuration</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link active" style="--mq-nav-level:0;" href="frontmatter.html"><span class="mq-nav-num">7.</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="layouts.html"><span class="mq-nav-num">8.</span>Layouts</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="themes.html"><span class="mq-nav-num">9.</span>Themes</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../migration.html"><span class="mq-nav-num">10.</span>Migration</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../directives.html"><span class="mq-nav-num">11.</span>Directives</a>
+    </div>
+  </nav>
+
+  <!-- main content in which .mq files are injected -->
+  <main class="mq-main" style="--page-width: 100%; --page-max-w: none;">
+    <h1>Frontmatter</h1>
+
+<div class="mq-divider"></div>
+<div class="mq-card"><h2>Overview</h2>
+
+<div class="mq-divider"></div>
+<div class="mq-callout info"><p><em>Frontmatter</em> is the TOML block at the top of an <code>.mq</code> page. It lets you override site-wide defaults for things like theme, layout, content width, and page metadata.</p>
+</div>
+<p>There are two places where you can define configuration settings in a Marque project:</p>
+
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p><code>marque.toml</code> at the project&#39;s root for site-wide defaults.</p>
+</div></div>
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Frontmatter at the top of each <code>.mq</code> page for per-page overrides.</p>
+</div></div></div>
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card"><h2>Defaults Configuration (<code>marque.toml</code>)</h2>
+
+<div class="mq-divider"></div>
+<p>The <code>marque.toml</code> file is where you define your configuration settings that apply to the entire site. This is where you define key parameters such as:</p>
+<div class="mq-code-block" data-lang="toml"><div class="mq-code-head"><span class="mq-code-lang">toml</span><button class="mq-code-copy" type="button" aria-label="Copy toml code">Copy</button></div><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = <span class="hljs-string">&quot;Marque&quot;</span>
+<span class="hljs-attr">description</span> = <span class="hljs-string">&quot;Built with Marque&quot;</span>
+<span class="hljs-attr">layout</span> = <span class="hljs-string">&quot;sidebar&quot;</span>
+<span class="hljs-attr">theme</span> = <span class="hljs-string">&quot;rustique&quot;</span>
+<span class="hljs-attr">width</span> = <span class="hljs-number">82</span></code></pre></div>
+<div class="mq-callout ok"><p><em>These settings apply to the entire site.</em></p>
+</div>
+<p>Here&#39;s what each parameter does:</p>
+<ul>
+<li><code>title</code>: The default title of your site, used as main icon in the navbar and in page titles.</li>
+<li><code>description</code>: A default meta description for your site, used in the <code>&lt;head&gt;</code> of your pages.</li>
+<li><code>layout</code>: The default navigation <a href="__layouts__"><strong>layout</strong></a> for your pages (<code>topnav</code>/<code>sidebar</code>).</li>
+<li><code>theme</code>: The default <a href="__themes__"><strong>theme</strong></a> for your pages (for example <code>rustique</code> or <code>javarti</code>).</li>
+<li><code>width</code>: The default content width for your pages, which can be a percentage (<code>82</code>, <code>50%</code>) or predefined values like <code>narrow</code> (70%), <code>normal</code> (82%), <code>wide</code> (92%), or <code>full</code> (100%).</li>
+</ul>
+</div>
+<div class="mq-card"><h2>Per-page Overrides (Inline Frontmatter)</h2>
+
+<div class="mq-divider"></div>
+<p>Pages can override site-wide defaults by including frontmatter at the top of the <code>.mq</code> file:</p>
+<div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">+++               &lt;--- opening TOML frontmatter fence
+title = &quot;Layouts&quot;     &lt;--- override page title
+layout = &quot;topnav&quot;     &lt;--- override page layout
+theme = &quot;mida&quot;        &lt;--- override page theme
+width = &quot;50%&quot;         &lt;--- override page width
+nav = &quot;new-link&quot;      &lt;--- override output slug
++++               &lt;--- closing fence
+# Layout          &lt;--- page content starts here
+@divider
+  rest of content...</code></pre></div>
+<div class="mq-callout warn"><p><em>These settings override default settings and apply only to the page they are defined in.</em></p>
+</div>
+<p>Every parameter defined in a page&#39;s frontmatter is optional. A page can work without any frontmatter, in which case it will simply inherit all settings from <code>marque.toml</code>. Missing or invalid parameters in the frontmatter will fall back to the defaults defined in <code>marque.toml</code>.</p>
+
+<div class="mq-callout info"><p><code>nav</code> overrides the page slug used for the output filename and route. Navigation labels come from <code>summary.mq</code>.</p>
+</div></div></div>
+
+<div class="mq-card"><h2>Try it out!</h2>
+
+<div class="mq-divider"></div>
+<p>Try overriding this page&#39;s content width:</p>
+<div id="try-width">
+  <button class="mq-try-btn" onclick="mqTryWidth('50%', this)">narrow</button>
+  <button class="mq-try-btn" onclick="mqTryWidth('82%', this)">normal</button>
+  <button class="mq-try-btn" onclick="mqTryWidth('95%', this)">wide</button>
+  <button class="mq-try-btn active" onclick="mqTryWidth('100%', this)">full</button>
+  <input class="mq-try-input" id="try-width-input" type="number" min="30" max="100" placeholder="100" />
+  <button class="mq-try-btn" onclick="mqTryWidthCustom()">apply</button>
+</div>
+</div>
+<style>
+  #try-width {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  .mq-try-btn {
+    padding: 0.2rem 0.6rem;
+    font-family: var(--mq-font-mono);
+    font-size: 0.8rem;
+    border: 1px solid var(--mq-border);
+    background: var(--mq-surface);
+    color: var(--mq-muted);
+    border-radius: var(--mq-radius);
+    cursor: pointer;
+    opacity: 0.65;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+
+  .mq-try-btn:hover {
+    opacity: 1;
+    color: var(--mq-text);
+    background: var(--mq-surface-alt);
+  }
+
+  .mq-try-btn.active {
+    background: var(--mq-primary);
+    color: #fff;
+    border-color: transparent;
+    opacity: 1;
+  }
+
+  .mq-try-input {
+    width: 4.5rem;
+    padding: 0.2rem 0.4rem;
+    font-family: var(--mq-font-mono);
+    font-size: 0.8rem;
+    border: 1px solid var(--mq-border);
+    border-radius: var(--mq-radius);
+    background: var(--mq-surface);
+    color: var(--mq-text);
+  }
+</style>
+
+<script>
+  function mqTryWidth(value, btn) {
+    document.querySelectorAll('#try-width .mq-try-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    if (btn) btn.classList.add('active');
+    document.querySelector('.mq-main').style.setProperty('--page-width', value);
+  }
+
+  function mqTryWidthCustom() {
+    var input = document.getElementById('try-width-input');
+    var val = parseFloat(input.value);
+    if (!isNaN(val) && val > 0 && val <= 100) {
+      mqTryWidth(val + '%', null);
+    }
+  }
+
+  document.getElementById('try-width-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') mqTryWidthCustom();
+  });
+</script>
+
+<h2>Common mistakes</h2>
+<ul>
+<li>Missing opening or closing <code>+++</code> fence.</li>
+<li>Reusing the same <code>nav</code> slug across multiple pages.</li>
+<li>Renaming <code>nav</code> without updating links and summary entries.</li>
+</ul>
+
+<div class="mq-callout warn"><p><code>summary.mq</code> controls navigation order and labels.
+Frontmatter does not define nav ordering.</p>
+</div>
+    <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="../configuration.html" aria-label="Previous page: Configuration"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Configuration</span></a><a class="mq-page-nav-link mq-page-nav-next" href="layouts.html" aria-label="Next page: Layouts"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Layouts ↪</span></a></nav>
+  </main>
+
+  <!-- footer at the bottom of every page -->
+  <footer class="mq-footer">
+    Built with <a href="https://github.com/Loxed/marque">Marque</a>
+  </footer>
+
+  <script src="../../index.js"></script>
+</body>
+</html>
