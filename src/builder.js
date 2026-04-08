@@ -451,7 +451,6 @@ function loadSummary(siteDir, pagesDir) {
   const map = new Map();
   const items = [];
   const isMqSummary = /\.mq$/i.test(summaryPath);
-  const dirByLevel = [];
   let order = 0;
   let firstPageKey = null;
 
@@ -459,8 +458,6 @@ function loadSummary(siteDir, pagesDir) {
     const rawLine = String(line || '');
     const trimmed = rawLine.trim();
     if (!trimmed) continue;
-
-    const level = getSummaryIndentLevel(rawLine);
 
     if (/^@divider\b/i.test(trimmed)) {
       items.push({ type: 'divider' });
@@ -474,12 +471,8 @@ function loadSummary(siteDir, pagesDir) {
     if (fullLink) {
       const label = String(fullLink[1] || '').trim();
       const href = String(fullLink[2] || '').trim();
-      const parentDir = level > 0 ? (dirByLevel[level - 1] || '') : '';
-      const rel = normalizeSummaryTarget(href, parentDir);
+      const rel = normalizeSummaryTarget(href);
       if (!rel) continue;
-
-      dirByLevel[level] = getSummaryChildBase(rel);
-      dirByLevel.length = level + 1;
 
       const key = rel.toLowerCase();
       if (!map.has(key)) {
@@ -493,7 +486,6 @@ function loadSummary(siteDir, pagesDir) {
         type: 'page',
         key,
         label: label || path.basename(rel, '.mq'),
-        level,
         order: map.get(key).order,
       });
       if (!firstPageKey) firstPageKey = key;
@@ -501,36 +493,15 @@ function loadSummary(siteDir, pagesDir) {
     }
 
     if (isMqSummary) {
-      items.push({ type: 'heading', label: trimmed, level });
+      items.push({ type: 'heading', label: trimmed });
     }
   }
 
+  applySummaryPathHierarchy(items);
   return { path: summaryPath, map, items, firstPageKey };
 }
 
-function getSummaryIndentLevel(line) {
-  const lead = String(line || '').match(/^[\t ]*/);
-  const leading = lead ? lead[0] : '';
-  let spaces = 0;
-
-  for (const ch of leading) {
-    spaces += ch === '\t' ? 2 : 1;
-  }
-
-  return Math.floor(spaces / 2);
-}
-
-function getSummaryChildBase(relPath) {
-  const rel = normalizeRelPath(relPath || '');
-  const dir = normalizeRelPath(path.posix.dirname(rel));
-  if (dir && dir !== '.') return dir;
-
-  const base = path.posix.basename(rel, '.mq').toLowerCase();
-  if (!base || base === 'index') return '';
-  return base;
-}
-
-function normalizeSummaryTarget(href, baseDir = '') {
+function normalizeSummaryTarget(href) {
   const raw = String(href || '').trim();
   if (!raw) return null;
   if (/^[a-z][a-z0-9+.-]*:/i.test(raw) || raw.startsWith('//') || raw.startsWith('#')) {
@@ -554,18 +525,57 @@ function normalizeSummaryTarget(href, baseDir = '') {
 
   if (!/\.mq$/i.test(pathPart)) return null;
 
-  let resolved = normalizeRelPath(pathPart);
-  const normalizedBase = normalizeRelPath(baseDir || '').replace(/^\.$/, '');
+  if (absolute) {
+    pathPart = pathPart.replace(/^\/+/, '');
+  }
 
-  if (!absolute && normalizedBase) {
-    const hasSlash = resolved.includes('/');
-    const hasDotPrefix = resolved.startsWith('./') || resolved.startsWith('../');
-    if (!hasSlash || hasDotPrefix) {
-      resolved = normalizeRelPath(path.posix.join(normalizedBase, resolved));
+  return normalizeRelPath(pathPart);
+}
+
+function applySummaryPathHierarchy(items) {
+  const pages = items.filter(item => item.type === 'page');
+  const pageByPath = new Map();
+  const levelCache = new Map();
+  const parentCache = new Map();
+
+  for (const item of pages) {
+    const pathKey = summaryPathKey(item.key);
+    if (!pathKey) continue;
+    item.pathKey = pathKey;
+    if (!pageByPath.has(pathKey)) {
+      pageByPath.set(pathKey, item);
     }
   }
 
-  return normalizeRelPath(resolved);
+  function findParentPath(pathKey) {
+    let current = path.posix.dirname(summaryPathKey(pathKey));
+    while (current && current !== '.' && current !== pathKey) {
+      const candidate = current.toLowerCase();
+      if (pageByPath.has(candidate)) return candidate;
+      current = path.posix.dirname(current);
+    }
+    return '';
+  }
+
+  function resolveLevel(pathKey) {
+    const normalizedPath = summaryPathKey(pathKey);
+    if (!normalizedPath) return 0;
+    if (levelCache.has(normalizedPath)) return levelCache.get(normalizedPath);
+
+    const parentPath = findParentPath(normalizedPath);
+    parentCache.set(normalizedPath, parentPath);
+    const level = parentPath ? resolveLevel(parentPath) + 1 : 0;
+    levelCache.set(normalizedPath, level);
+    return level;
+  }
+
+  for (const item of pages) {
+    const pathKey = item.pathKey || summaryPathKey(item.key);
+    item.pathKey = pathKey;
+    item.parentPathKey = pathKey ? (parentCache.get(pathKey) || findParentPath(pathKey)) : '';
+    item.level = pathKey ? resolveLevel(pathKey) : 0;
+    item.navKey = pathKey || '';
+  }
 }
 
 function createPageHrefResolver(pageEntries, currentRel) {
