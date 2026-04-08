@@ -1,137 +1,127 @@
----
-title: Themes
-nav: themes
-theme: rustique
----
++++
+title = "Themes"
+nav = "themes"
+theme = "mida"
++++
 
-# Themes
+# Themes 
+
+@spotlight
+
+## _[Marathon](https://marathonthegame.com/)-style, baby!_
+
+@row
+@card .primary
+
+## Customise your site's look
 @divider
+Marque supports multiple themes and [layouts](../configuration/layouts.mq).
 
-Build your theme with tokens, not giant CSS files.
+Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) files in the `themes/` directory of your Marque project, and you can have as many as you like. This page uses the `mida.css` theme to showcase what's possible.
 
-@callout .info
-Define your palette once, call `@mqs-essentials;`, then only override what you really want.
-@end callout
+@end card
+@card .secondary
 
-## The core idea
+## Create your own theme
 
-@row core
-  @card .accent
-    ## 1) URL / fonts
-    Keep your `@import url(...)` at the top if needed.
-  @end card
+The main theme used on your site is defined in the `marque.toml` file with the `theme = "..."` key. You can change this to any theme you like, and Marque will use it when you run `marque serve` or `marque build`. To override a theme on a per-page basis (like this page), add `theme = "name"` to the page's [frontmatter](../configuration/frontmatter.mq), and Marque will use that theme instead of the default one.
 
-  @card
-    ## 2) Define palette
-    Use `@mqs-palette` with normalized tokens: `primary`, `secondary`, `ternary`, `background`, etc.
-  @end card
+@end card
 
-  @card
-    ## 3) Generate essentials
-    `@mqs-essentials;` expands to the base Marque theme automatically.
-  @end card
+@end row
 
-  @card
-    ## 4) Override manually
-    Put custom CSS below essentials for fine tuning.
-  @end card
-@end row core
-
-## Minimal MQS theme
-
-```css
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap");
-
-@mqs-palette {
-  primary: #c85a2a;
-  secondary: #2a5ac8;
-  ternary: #2ac852;
-
-  background: #f7f5f0;
-  surface: #ffffff;
-  surface-alt: #eeece7;
-  text: #1a1916;
-  muted: #6b6860;
-  border: rgba(0,0,0,0.09);
-
-  radius: 8px;
-  max-width: 860px;
-
-  font-sans: 'DM Sans', system-ui, sans-serif;
-  font-serif: Georgia, serif;
-  font-mono: 'IBM Plex Mono', monospace;
-}
-
-@mqs-essentials;
-```
-
-## What essentials generates
-
-- Theme variables in `:root`
-- Typography and links
-- Nav and footer skin
-- Row, card, button, callout, stat
-- Tabs, steps, hero, badge
-- Responsive defaults
-
-## Complete `@mqs-palette` keys
-
-You can edit all these keys today:
-
-- Core: `primary`, `secondary`, `ternary`, `background`, `surface`, `surface-alt`, `text`, `muted`, `border`, `radius`, `max-width`, `font-sans`, `font-serif`, `font-mono`
-- Nav pack: `nav-bg`, `nav-text`, `nav-border`, `nav-active-bg`, `nav-active-text`
-- Code pack: `code-bg`, `code-text`, `code-border`, `code-head-bg`, `code-head-text`
-- Card pack: `card-bg`, `card-border`, `card-radius`, `card-shadow`
-- Callout pack: `callout-info-bg`, `callout-info-border`, `callout-info-text`, `callout-warn-bg`, `callout-warn-border`, `callout-warn-text`, `callout-danger-bg`, `callout-danger-border`, `callout-danger-text`, `callout-ok-bg`, `callout-ok-border`, `callout-ok-text`
-
-Aliases accepted in palette:
-
-- `bg` → `background`
-- `accent` → `primary`
-- `accent2` → `secondary`
-
-@row classes
-  @card .secondary
-    ## Normalized style classes
-    - `.primary`
-    - `.secondary`
-    - `.ternary`
-  @end card
-
-  @card
-    ## Compatibility classes
-    Existing styles still work:
-    - `.accent` (primary)
-    - `.accent2` / `.blue` (secondary)
-  @end card
-@end row classes
-
-## Overrides layer
-
-Anything after `@mqs-essentials;` is your custom layer.
-
-```css
-@mqs-essentials;
-
-.mq-card.primary {
-  border-top-width: 4px;
-}
-
-.mq-main h1 {
-  letter-spacing: -0.04em;
-}
-```
+----
 
 ## Quick flow
 
-@container flow
-1. Create theme file: add `themes/my-theme/theme.mqs`.
-2. Paste minimal config: start with palette + essentials.
-3. Activate theme in `marque.toml`: `theme = "my-theme"`.
-4. Run `marque serve .` or `marque build .`.
-@end container flow
+@card
 
-@callout .ok
-If `theme.mqs` exists, Marque uses it first. Otherwise it falls back to `theme.css`.
+@step
+Create theme file: add `themes/<my-theme.css>`.
+@end step
+
+@step
+Paste baseline variables and base styles.
+@end step
+
+@step
+Activate theme in `marque.toml`: `theme = "my-theme"`.
+@end step
+
+@step 
+Run `marque serve .` or `marque build .`.
+@end step
+
+@end card
+
+@callout
+If `themes/my-theme.css` exists, Marque uses it.
 @end callout
 
+## Official themes
+@divider
+
+### _"Yes I'm French, how did you guess?" - @Lox_
+
+----
+
+@row classes
+
+  @card .secondary
+    ## comté.css `(default)`
+
+    [Comté](https://en.wikipedia.org/wiki/Comté) is the default theme for Marque. Clean, readable, and responsive, with no holes in its design.
+
+    ![Comté Theme](../../topnav.png)
+  @end card
+
+  @card .primary
+    ## rustique.css
+
+    Rustique is a modern, warm theme for Marque, based on [Rust](https://rust-lang.org/). (Rustique is a French brand of [Camembert](https://en.wikipedia.org/wiki/Camembert))
+
+    ![Rustique Theme](../../topnav.png)
+
+  @end card
+
+  @card .tertiary
+    ## pycorino.css
+
+    Pycorino is a playful light theme inspired by [Python](https://python.org/). (Python + [Pecorino](https://en.wikipedia.org/wiki/Pecorino) = Pycorino ??? It's 4am when I'm writing this)
+
+    ![Pycorino Theme](../../topnav.png)
+  @end card
+
+@end row
+
+@row
+
+  @card .primary
+    ## javarti.css
+
+    Javarti is a classic light theme for Marque, influenced by [Java](https://java.com/). Like [Havarti](https://en.wikipedia.org/wiki/Havarti), it's old enough but ages well.
+
+    ![Javarti Theme](../../topnav.png)
+  @end card
+
+  @card .tertiary
+    ## gouda.css
+
+    [Gouda](https://en.wikipedia.org/wiki/Gouda_cheese) is a cool, simple dark theme for Marque, based on [Go](https://go.dev/). Gouda is a simple, pleasant cheese anyone can enjoy.
+
+    ![Gouda Theme](../../topnav.png)
+
+  @end card
+
+  @card .secondary
+    ## elmental.css
+
+    Elmental is a bright, paper-like theme for Marque, inspired by [Elm](https://elm-lang.org/). [Emmental](https://en.wikipedia.org/wiki/Emmental) (not [Gruyère](https://en.wikipedia.org/wiki/Gruyère)!) has holes in it, Elm doesn't.
+
+    ![Mida Theme](../../topnav.png)
+  @end card
+@end row
+
+**_I'm hungry now._**
+
+@spotlight

@@ -1,7 +1,7 @@
----
-title: Quickstart
-nav: quickstart
----
++++
+title = "Quickstart"
+nav = "quickstart"
++++
 
 # Quickstart
 
@@ -86,7 +86,7 @@ Get from zero to a running site in a few minutes.
       marque serve .
       ```
 
-      Then open http://localhost:3000
+      Then open http://localhost:3000.
       @end step
 
       @step

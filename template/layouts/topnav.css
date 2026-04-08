@@ -87,6 +87,7 @@ body {
   top: 100%;
   left: 0;
   min-width: 220px;
+  max-width: min(92vw, 360px);
   display: flex;
   opacity: 0;
   transform: translateY(-4px);
@@ -117,6 +118,7 @@ body {
   border-radius: 7px;
   height: auto;
   white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .mq-nav-submenu .mq-nav-link {

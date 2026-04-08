@@ -1,7 +1,7 @@
----
-title: Docs
-nav: docs
----
++++
+title = "Docs"
+nav = "docs"
++++
 
 # Documentation
 
@@ -11,25 +11,25 @@ Welcome to the Marque documentation set. Start with quickstart, then move to con
   @card .accent
     ## Quickstart
     Install flow, local serve workflow, and publishing sequence.
-    @[Go to quickstart →](/start.html){.primary}
+    @[Go to quickstart ->](/quickstart.html){.primary}
   @end card
 
   @card
     ## MQS Themes
     Build themes with `@mqs-palette` + `@mqs-essentials`, then add manual overrides.
-    @[Open theme docs →](/docs/themes.html)
+    @[Open theme docs ->](/docs/configuration/themes.html)
   @end card
 
   @card
     ## Configuration
     Learn `marque.toml`, frontmatter precedence, and page-level overrides.
-    [Open configuration →](/config.html)
+    [Open configuration ->](/docs/configuration.html)
   @end card
 
   @card
-    ## Showcase
-    See nested docs pages with per-page layout/theme overrides.
-    [Open showcase →](/docs/showcase.html)
+    ## Layouts
+    See layout overrides and summary-driven navigation in action.
+    [Open layouts ->](/docs/configuration/layouts.html)
   @end card
 @end row docs-index
 
@@ -39,8 +39,8 @@ Welcome to the Marque documentation set. Start with quickstart, then move to con
 - `@row` + `@card`
 - `@callout`
 - `@stat`
-- `@hero` / `@section`
-- `@divider`
+- `spotlight` / `section` (`hero` is a legacy alias)
+- `divider`
 
 ## Frontmatter essentials
 
@@ -56,4 +56,3 @@ Welcome to the Marque documentation set. Start with quickstart, then move to con
 @callout .ok
   Use `title` for human-readable labels and `nav` for stable machine-friendly URLs.
 @end callout
-

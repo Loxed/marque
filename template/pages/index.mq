@@ -1,33 +1,33 @@
----
-title: Home
-nav: index
----
++++
+title = "Home"
+nav = "index"
++++
 
 # Marque
 @divider
-_**Marque**_ is an enhanced **_Markdown to static_** site compiler. 
-It’s designed for creators who want to build documentation, blogs, guides, and knowledge bases effortlessly.
+_**Marque**_ is an enhanced **_Markdown to static_** site compiler.
+It's designed for creators who want to build documentation, blogs, guides, and knowledge bases effortlessly.
 
-@[Quickstart ➽](/quickstart.mq){.primary} @[Read the docs](/docs.html)
+@[Quickstart ->](/quickstart.mq){.primary} @[Read the docs](/docs.html)
 @callout .info
 Marque supports every feature from Markdown, including extra directives to make your website more like a website and less like your Obsidian vault / Notion notes.
 @end callout
 
 ## Features
-@divider 
+@divider
 
 @row features
-	@card 
+	@card
 		## Markdown-first
 		Marque (`.mq`) files support plain Markdown, inline HTML and extra directives when structure matters.
 	@end card
 
-	@card 
+	@card
 		## @ directives
-		Enhance pages using custom [directives](docs/directives.mq) such as `@container`, `@row`, `@card`, `@callout`, `@hero`, and more.
+		Enhance pages using custom [directives](docs/directives.mq) such as `@container`, `@row`, `@card`, `@callout`, `@spotlight`, and more.
 	@end card
 
-	@card 
+	@card
 		## Flexible navigation
 		Elements automatically adapt responsively inside the page you're building.
 	@end card
@@ -39,22 +39,22 @@ Marque supports every feature from Markdown, including extra directives to make 
 		Generate plain HTML files you can host anywhere with no dependencies.
 	@end card
 
-	@card 
+	@card
 		## Theme & style
 		Keep layout and visual styling separate (`.css`) for easy customisation.
 	@end card
 
-	@card 
+	@card
 		## Per-page configuration
 		Override `theme`, `layout`, and `width` from frontmatter where needed.
 	@end card
 
-	@card 
+	@card
 		## Quick publishing
 		Run `marque build .` to generate deployable static files instantly.
 	@end card
 
-	@card 
+	@card
 		## Documentation-ready
 		Ideal for product docs, API references, tutorials, and release notes.
 	@end card
@@ -65,15 +65,14 @@ Marque supports every feature from Markdown, including extra directives to make 
 		## Start building
     @divider
 		Install Marque and use the starter template to make your first website.
-		@[Quickstart ➽](/quickstart.mq){.primary}
+		@[Quickstart ->](/quickstart.mq){.primary}
 	@end card
 
 	@card
 		## Explore examples
   		@divider
 		Browse nested docs, layout overrides, and advanced features in action.
-		@[Open docs showcase →](/docs/layout-override.html){.secondary}
+		@[Open layout docs ->](/docs/configuration/layouts.html){.secondary}
 	@end card
 @end row links
 @end section
-

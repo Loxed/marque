@@ -85,7 +85,6 @@ All directives use the same node type:
 - `src/builder.js`: orchestrates complete site generation.
 - `src/parser.js`: `.mq` source to AST.
 - `src/renderer.js`: AST to HTML + markdown transforms + syntax highlighting.
-- `src/mqs.js`: `.mqs` to CSS.
 - `src/diagnostics.js`: structured diagnostics model.
 - `src/utils/errors.js`: pretty diagnostic printing.
 
@@ -109,9 +108,9 @@ All directives use the same node type:
 - `pages/**/*.mq`
 - `summary.mq`
 - `marque.toml`
-- `themes/<name>/theme.css` or `theme.mqs`
-- `themes/<name>/index.html` (optional)
-- `layouts/<name>.css` or `<name>.mqs`
+- `themes/<name>.css`
+- `themes/index.html` (optional shared template)
+- `layouts/<name>.css`
 - `static/**`
 
 ## 7) Active vs Split Modules
@@ -120,6 +119,5 @@ Active runtime path currently uses:
 
 - `src/parser.js`
 - `src/renderer.js`
-- `src/mqs.js`
 
-Split directories (`src/parser/`, `src/renderer/`, `src/mqs/`) exist as modular mirrors and are not the primary path yet.
+Split directories (`src/parser/`, `src/renderer/`) exist as modular mirrors and are not the primary path yet.

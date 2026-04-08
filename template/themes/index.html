@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{{ document_title }}</title>
+
+<meta name="description" content="{{ description }}">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<link rel="stylesheet" href="{{ layout_css }}">
+<link rel="stylesheet" href="{{ theme_css }}">
+</head>
+<body>
+
+  <!-- Navigation Bar (Works with topnav and sidebar) -->
+
+  <nav class="mq-nav">
+    <a class="mq-nav-brand" href="/">{{ site_title }}</a>
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+    <div class="mq-nav-links">
+      {{ nav }}
+    </div>
+  </nav>
+
+  <!-- main content in which .mq files are injected -->
+  <main class="mq-main"{{ page_main_style }}>
+    {{ content }}
+    {{ page_nav }}
+  </main>
+
+  <!-- footer at the bottom of every page -->
+  <footer class="mq-footer">
+    Built with <a href="https://github.com/Loxed/marque">Marque</a>
+  </footer>
+
+  <script src="/index.js"></script>
+</body>
+</html>

@@ -135,5 +135,5 @@ No edits needed in parser core or renderer core.
 
 1. Directive registered (`type`, `render`).
 2. Optional `validate` added for guardrails.
-3. Styles added in CSS/MQS.
+3. Styles added in CSS.
 4. Example usage tested in a page.

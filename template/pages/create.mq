@@ -1,7 +1,7 @@
----
-title: Create
-nav: create
----
++++
+title = "Create"
+nav = "create"
++++
 
 # Create
 
@@ -28,7 +28,7 @@ Once you installed the `marque` package, you can create a static website with it
     marque serve .
     ```
 
-    This hosts your site on the default port (`3030`). You can then access your site in your browser at [http://localhost:3000](http://localhost:3000).
+    This hosts your site on the default port (`3000`). You can then access your site in your browser at [http://localhost:3000](http://localhost:3000).
 @end card
 
 ----
@@ -74,10 +74,10 @@ Once you installed the `marque` package, you can create a static website with it
             Minimal example:
 
             ```toml
-            title = Marque
-            description = Built with Marque
-            layout = topnav
-            theme = default
+            title = "Marque"
+            description = "Built with Marque"
+            layout = "topnav"
+            theme = "default"
             width = 82 # can be a number (percentage) 
             ```
 
@@ -87,7 +87,7 @@ Once you installed the `marque` package, you can create a static website with it
         @end card
 
         
-        @card .ternary
+        @card .tertiary
             ## `404.mq`
             
             `404.mq` is the fallback page shown when a user tries to access a non-existent URL on your site. It provides a button to create the missing page automatically.
@@ -148,10 +148,10 @@ Once you installed the `marque` package, you can create a static website with it
     Typical page:
 
     ```mq
-    ---
-    title: My Page
-    nav: my-page
-    ---
+    +++
+    title = "My Page"
+    nav = "my-page"
+    +++
 
     # My Page
     ```
@@ -169,7 +169,7 @@ Once you installed the `marque` package, you can create a static website with it
 
     @end card
 
-    @card .ternary
+    @card .tertiary
     ### `dist/`
 
     This is generated output from `marque build`.

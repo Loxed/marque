@@ -1,92 +1,163 @@
----
-title: Frontmatter
-nav: frontmatter
----
-
++++
+title = "Frontmatter"
+nav = "frontmatter"
++++
 # Frontmatter
 @divider
-
-Frontmatter controls page-level metadata and overrides.
-
+@card
+## Overview
+@divider
 @callout .info
-  Frontmatter applies to a single `.mq` file.
-  Site-wide defaults are defined in `marque.toml`.
+*Frontmatter* is the TOML block at the top of an `.mq` page. It lets you override site-wide defaults for things like theme, layout, content width, and page metadata.
+@end callout
+There are two places where you can define configuration settings in a Marque project:
+@step
+`marque.toml` at the project's root for site-wide defaults.
+@end step
+@step
+Frontmatter at the top of each `.mq` page for per-page overrides.
+@end step
+@end card
+@row
+@card site-wide
+## Defaults Configuration (`marque.toml`)
+@divider
+The `marque.toml` file is where you define your configuration settings that apply to the entire site. This is where you define key parameters such as:
+```toml
+title = "Marque"
+description = "Built with Marque"
+layout = "sidebar"
+theme = "rustique"
+width = 82
+```
+@callout .ok
+*These settings apply to the entire site.*
+@end callout
+Here's what each parameter does:
+- `title`: The default title of your site, used as main icon in the navbar and in page titles.
+- `description`: A default meta description for your site, used in the `<head>` of your pages.
+- `layout`: The default navigation [__layout__](__layouts__) for your pages (`topnav`/`sidebar`).
+- `theme`: The default [__theme__](__themes__) for your pages (for example `rustique` or `javarti`).
+- `width`: The default content width for your pages, which can be a percentage (`82`, `50%`) or predefined values like `narrow` (70%), `normal` (82%), `wide` (92%), or `full` (100%).
+@end card
+@card per-page
+## Per-page Overrides (Inline Frontmatter)
+@divider
+Pages can override site-wide defaults by including frontmatter at the top of the `.mq` file:
+```mq
++++               <--- opening TOML frontmatter fence
+title = "Layouts"     <--- override page title
+layout = "topnav"     <--- override page layout
+theme = "mida"        <--- override page theme
+width = "50%"         <--- override page width
+nav = "new-link"      <--- override output slug
++++               <--- closing fence
+# Layout          <--- page content starts here
+@divider
+  rest of content...
+```
+@callout .warn
+*These settings override default settings and apply only to the page they are defined in.*
 @end callout
 
-## Basic shape
+Every parameter defined in a page's frontmatter is optional. A page can work without any frontmatter, in which case it will simply inherit all settings from `marque.toml`. Missing or invalid parameters in the frontmatter will fall back to the defaults defined in `marque.toml`.
 
-```yaml
----
-title: Frontmatter
-nav: frontmatter
-layout: sidebar
-theme: default
-width: wide
----
-```
+@callout .info
+`nav` overrides the page slug used for the output filename and route. Navigation labels come from `summary.mq`.
+@end callout
+@end card
+@end row
 
-## Supported keys
 
-### `title`
+@card try
+## Try it out!
+@divider
+Try overriding this page's content width:
 
-- Used for page display label fallback.
-- Used in the document title in `<head>`.
+<div id="try-width">
+  <button class="mq-try-btn" onclick="mqTryWidth('50%', this)">narrow</button>
+  <button class="mq-try-btn active" onclick="mqTryWidth('82%', this)">normal</button>
+  <button class="mq-try-btn" onclick="mqTryWidth('95%', this)">wide</button>
+  <button class="mq-try-btn" onclick="mqTryWidth('100%', this)">full</button>
+  <input class="mq-try-input" id="try-width-input" type="number" min="10" max="100" placeholder="82" />
+  <button class="mq-try-btn" onclick="mqTryWidthCustom()">apply</button>
+</div>
 
-```yaml
-title: Quick Start
-```
+@end card
 
-### `nav`
+<style>
+  #try-width {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
 
-- Controls output filename/route slug.
-- `nav: quickstart` -> `quickstart.html`.
+  .mq-try-btn {
+    padding: 0.2rem 0.6rem;
+    font-family: var(--mq-font-mono);
+    font-size: 0.8rem;
+    border: 1px solid var(--mq-border);
+    background: var(--mq-surface);
+    color: var(--mq-muted);
+    border-radius: var(--mq-radius);
+    cursor: pointer;
+    opacity: 0.65;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
 
-```yaml
-nav: quickstart
-```
+  .mq-try-btn:hover {
+    opacity: 1;
+    color: var(--mq-text);
+    background: var(--mq-surface-alt);
+  }
 
-### `layout`
+  .mq-try-btn.active {
+    background: var(--mq-primary);
+    color: #fff;
+    border-color: transparent;
+    opacity: 1;
+  }
 
-- Per-page layout override.
-- Typical values: `topnav`, `sidebar`.
+  .mq-try-input {
+    width: 4.5rem;
+    padding: 0.2rem 0.4rem;
+    font-family: var(--mq-font-mono);
+    font-size: 0.8rem;
+    border: 1px solid var(--mq-border);
+    border-radius: var(--mq-radius);
+    background: var(--mq-surface);
+    color: var(--mq-text);
+  }
+</style>
 
-```yaml
-layout: sidebar
-```
+<script>
+  function mqTryWidth(value, btn) {
+    document.querySelectorAll('#try-width .mq-try-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    if (btn) btn.classList.add('active');
+    document.querySelector('.mq-main').style.setProperty('--page-width', value);
+  }
 
-### `theme`
+  function mqTryWidthCustom() {
+    var input = document.getElementById('try-width-input');
+    var val = parseFloat(input.value);
+    if (!isNaN(val) && val > 0 && val <= 100) {
+      mqTryWidth(val + '%', null);
+    }
+  }
 
-- Per-page theme override.
-- Can be any built-in or custom theme name.
-
-```yaml
-theme: pycorino
-```
-
-### `width`
-
-- Page content width override.
-- Accepts: `narrow`, `normal`, `wide`, `full`, or percent values.
-
-```yaml
-width: wide
-# or
-width: 86
-# or
-width: 86%
-```
-
-## Precedence
-
-1. Frontmatter values override `marque.toml` for that page.
-2. Missing keys fall back to `marque.toml`.
+  document.getElementById('try-width-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') mqTryWidthCustom();
+  });
+</script>
 
 ## Common mistakes
-
-- Missing opening/closing `---` fence.
+- Missing opening or closing `+++` fence.
 - Reusing the same `nav` slug across multiple pages.
 - Renaming `nav` without updating links and summary entries.
-
 @callout .warn
   `summary.mq` controls navigation order and labels.
   Frontmatter does not define nav ordering.

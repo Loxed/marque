@@ -1,8 +1,8 @@
----
-title: Configuration
-nav: configuration
-layout: sidebar
----
++++
+title = "Configuration"
+nav = "configuration"
+layout = "sidebar"
++++
 
 # Configuration
 @divider
@@ -15,10 +15,10 @@ Marque configuration is split into two layers:
 ## `marque.toml` essentials
 
 ```toml
-title = Marque
-description = Built with Marque
-layout = topnav
-theme = default
+title = "Marque"
+description = "Built with Marque"
+layout = "topnav"
+theme = "default"
 width = 82
 ```
 
@@ -58,6 +58,6 @@ A page can exist in `pages/` without appearing in nav if not listed in summary.
 
 ## Related docs
 
-- [Frontmatter](/docs/frontmatter.html)
-- [Theme](/docs/theme.html)
-- [CLI Commands](/cli.html)
+- [Frontmatter](/docs/configuration/frontmatter.html)
+- [Themes](/docs/configuration/themes.html)
+- [CLI Commands](/docs/cli.html)

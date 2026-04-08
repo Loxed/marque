@@ -1,33 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ document_title }}</title>
-<meta name="description" content="{{ description }}">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-<link rel="stylesheet" href="{{ layout_css }}">
-<link rel="stylesheet" href="{{ theme_css }}">
-</head>
-<body>
-  <nav class="mq-nav">
-    <a class="mq-nav-brand" href="/">{{ site_title }}</a>
-    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
-    <div class="mq-nav-links">
-      {{ nav }}
-    </div>
-  </nav>
-
-  <main class="mq-main"{{ page_main_style }}>
-    {{ content }}
-    {{ page_nav }}
-  </main>
-
-  <footer class="mq-footer">
-    Built with <a href="https://github.com/marque">Marque</a>
-  </footer>
-
-  <script>
   function mqTab(id, idx) {
     const el = document.getElementById(id);
     el.querySelectorAll('.mq-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
@@ -42,6 +12,8 @@
   }
 
   function mqPositionSubmenus() {
+    const viewportPadding = 8;
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
     const groups = document.querySelectorAll('.mq-nav-group');
     groups.forEach(group => {
       const submenu = group.querySelector(':scope > .mq-nav-submenu');
@@ -52,8 +24,14 @@
       const style = window.getComputedStyle(submenu);
       if (style.position !== 'absolute') return;
 
-      const rect = submenu.getBoundingClientRect();
-      if (rect.right > window.innerWidth - 8) {
+      const groupRect = group.getBoundingClientRect();
+      const submenuWidth = Math.max(submenu.offsetWidth || 0, submenu.scrollWidth || 0);
+      const openRightEdge = groupRect.left + submenuWidth;
+      const openLeftEdge = groupRect.right - submenuWidth;
+      const overflowsRight = openRightEdge > (viewportWidth - viewportPadding);
+      const fitsWhenOpenLeft = openLeftEdge >= viewportPadding;
+
+      if (overflowsRight && fitsWhenOpenLeft) {
         group.classList.add('mq-nav-group-open-left');
       }
     });
@@ -89,6 +67,3 @@
       btn.textContent = original;
     }, 1200);
   });
-  </script>
-</body>
-</html>

@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap');
+
+/* ========= TOKENS ========= */
+:root {
+  --bg: #000;
+  --surface: #050505;
+  --border: #151515;
+  --text: #e8e8e8;
+  --muted: #a8a8a8;
+  --accent: #b8ff00;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Merriweather', serif;
+  --font-mono: 'Space Mono', monospace;
+  --bar-gradient: repeating-linear-gradient(
+      -45deg,
+      var(--accent) 0%,
+      var(--accent) 5%,
+      var(--bg) 5%,
+      var(--bg) 10%
+    );
+  --pixel-grid: repeating-conic-gradient(
+      var(--accent) 0% 25%, var(--bg) 25% 50%
+    ) 0 0 / 10px 10px;
+}
+
+/* ========= BASE ========= */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+/* ========= NAV ========= */
+.mq-nav {
+  background: #000;
+}
+.mq-nav-heading {
+  font: 800 0.75rem/1 var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+.mq-nav-brand {
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.mq-nav-links a {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  border: var(--bg) 1px solid;
+}
+.mq-nav-links a:hover {
+  color: var(--accent);
+  border: var(--accent) 1px solid;
+}
+.mq-nav-links a.active {
+  background: var(--accent);
+  color: var(--bg);
+  border: var(--accent) 1px solid;
+}
+.mq-nav-links a.active:hover {
+  background: var(--text);
+  color: var(--bg);
+  border: var(--text) 1px solid;
+}
+
+/* ========= TYPO ========= */
+.mq-main h1 {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--accent);
+  line-height: 0.9;
+}
+.mq-main h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.mq-main h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+.mq-main p,
+.mq-main li {
+  color: #d0d0d0;
+  font-size: 0.95rem;
+}
+.mq-main a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 2px solid rgba(184, 255, 0, 0.5);
+}
+.mq-main a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* a wrapping a code pill — underline lives on the <a>, tint on hover */
+.mq-main a > code {
+  color: var(--accent) !important;
+  border-bottom: none;
+  cursor: pointer;
+}
+.mq-main a:hover > code {
+  background: rgba(184, 255, 0, 0.1);
+}
+
+/* ========= LAYOUT ========= */
+.mq-row {
+  display: grid;
+  gap: 0;
+}
+
+/* ========= CARDS ========= */
+.mq-card {
+  background: var(--surface);
+  padding: 1.5rem;
+}
+.mq-card.primary {
+  background: var(--accent);
+  color: #000;
+}
+.mq-card.secondary {
+  background: #fff;
+  color: #000;
+}
+.mq-card.tertiary {
+  background: #0d0d0d;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.mq-card.primary *,
+.mq-card.secondary * {
+  color: #000;
+}
+.mq-card.tertiary * {
+  color: var(--text);
+}
+
+/* ========= CARD LINK OVERRIDES ========= */
+
+/* primary */
+.mq-card.primary a {
+  color: #000 !important;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.35);
+}
+.mq-card.primary a:hover {
+  border-bottom-color: #000;
+}
+.mq-card.primary a > code {
+  color: #000 !important;
+  background: rgba(0, 0, 0, 0.08);
+  border-bottom: none;
+}
+.mq-card.primary a:hover > code {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* secondary */
+.mq-card.secondary a {
+  color: #000 !important;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+}
+.mq-card.secondary a:hover {
+  border-bottom-color: #000;
+}
+.mq-card.secondary a > code {
+  color: #000 !important;
+  background: rgba(0, 0, 0, 0.06);
+  border-bottom: none;
+}
+.mq-card.secondary a:hover > code {
+  background: rgba(0, 0, 0, 0.13);
+}
+
+/* tertiary */
+.mq-card.tertiary a {
+  color: var(--accent) !important;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(184, 255, 0, 0.4);
+}
+.mq-card.tertiary a:hover {
+  border-bottom-color: var(--accent);
+}
+.mq-card.tertiary a > code {
+  color: var(--accent) !important;
+  border-bottom: none;
+}
+.mq-card.tertiary a:hover > code {
+  background: rgba(184, 255, 0, 0.1);
+}
+
+/* ========= CODE ========= */
+pre,
+.mq-code-block {
+  background: #050505;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  font-family: var(--font-mono);
+  padding: 1rem;
+  overflow-x: auto;
+}
+.mq-main code {
+  background: #050505;
+  border: 1px solid var(--border);
+  color: var(--accent) !important;
+  padding: 0.1em 0.3em;
+}
+
+/* ========= SMALL COMPONENTS ========= */
+.mq-spotlight {
+  height: 3em;
+  background: var(--bar-gradient);
+}
+.mq-divider {
+  width: 200px;
+  height: 10px;
+  background: var(--pixel-grid);
+}
+
+/* ========= CALLOUT ========= */
+.mq-callout {
+  border-left: 3px solid var(--accent);
+  background: #050505;
+  padding: 0.8rem 1rem;
+  color: var(--muted);
+}
+
+/* ========= FOOTER ========= */
+.mq-footer {
+  border-top: 1px solid var(--border);
+  color: #888;
+}
+.mq-footer a {
+  color: var(--accent);
+}
+
+/* ========= RESPONSIVE ========= */
+@media (max-width: 640px) {
+  .mq-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+hr {
+  border: none; 
+  height: 1px;
+}
