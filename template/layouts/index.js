@@ -79,7 +79,7 @@ function mqApplySearchShortcutHints() {
     || ''
   ).toLowerCase();
   const isApple = /(mac|iphone|ipad|ipod)/.test(platform);
-  const shortcutHint = touchDevice ? '' : (isApple ? '⌘K' : 'Ctrl K');
+  const shortcutHint = touchDevice ? '' : (isApple ? '⌘ K' : 'Ctrl K');
   const closeHint = touchDevice ? '' : 'Esc';
 
   hints.forEach(el => {

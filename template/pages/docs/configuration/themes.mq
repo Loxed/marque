@@ -116,7 +116,7 @@ _"Yes I'm French, how did you guess?"_
   @card .secondary
     ## elmental.css
 
-    Elmental is a bright, paper-like theme for Marque, inspired by [Elm](https://elm-lang.org/). [Emmental](https://en.wikipedia.org/wiki/Emmental) (not [Gruyère](https://en.wikipedia.org/wiki/Gruyère)!) has holes in it, Elm doesn't.
+    Elmental is a bright, paper-like theme for Marque, inspired by [Elm](https://elm-lang.org/). [Emmental](https://en.wikipedia.org/wiki/Emmental_cheese) (not [Gruyère](https://en.wikipedia.org/wiki/Gruyère)!) has holes in it, Elm doesn't.
 
     ![Mida Theme](../../topnav.png)
   @end card
