@@ -132,7 +132,10 @@ body {
 .mq-main {
   width: min(var(--page-width, 100%), 100%);
   max-width: var(--page-max-w, var(--max-w, 1000px));
-  margin: 0 auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: var(--page-margin-left, auto);
+  margin-right: var(--page-margin-right, auto);
   padding: 3.4rem var(--mq-page-gutter, clamp(1.25rem, 3vw, 2rem));
   container-type: inline-size;
   container-name: mq-main;

@@ -10,10 +10,10 @@ User Guide
 Reference
 
 [Docs](docs.mq)
-[CLI Commands](docs/cli.mq)
-[Configuration](docs/configuration.mq)
-[Frontmatter](docs/configuration/frontmatter.mq)
-[Layouts](docs/configuration/layouts.mq)
-[Themes](docs/configuration/themes.mq)
-[Migration](docs/migration.mq)
-[Directives](docs/directives.mq)
+    [CLI Commands](docs/cli.mq)
+    [Configuration](docs/configuration.mq)
+        [Frontmatter](docs/configuration/frontmatter.mq)
+        [Layouts](docs/configuration/layouts.mq)
+        [Themes](docs/configuration/themes.mq)
+    [Migration](docs/migration.mq)
+    [Directives](docs/directives.mq)

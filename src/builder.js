@@ -926,6 +926,7 @@ function buildNavFromSummary(pageEntries, summary) {
           order: Number.isFinite(item.order) ? item.order : page.order,
           level,
           navKey,
+          pathKey: summaryPathKey(item.key),
         });
       } else {
         nav.push({
@@ -935,6 +936,7 @@ function buildNavFromSummary(pageEntries, summary) {
           order: Number.isFinite(item.order) ? item.order : Number.POSITIVE_INFINITY,
           level,
           navKey,
+          pathKey: summaryPathKey(item.key),
           virtual: true,
         });
       }
@@ -1050,12 +1052,12 @@ function buildLevelSummaryLinkTrees(links) {
   for (const link of links) {
     const node = { item: link, prefix: navGroupPrefix(link), children: [] };
     const level = Math.max(0, Number(link.level || 0));
-    const parentIndex = Math.min(level - 1, stack.length - 1);
+    const parent = findSummaryTreeParent(stack, level, link);
 
     stack.length = Math.max(0, level);
 
-    if (level > 0 && parentIndex >= 0 && stack[parentIndex]) {
-      stack[parentIndex].children.push(node);
+    if (level > 0 && parent) {
+      parent.children.push(node);
     } else {
       roots.push(node);
     }
@@ -1065,6 +1067,36 @@ function buildLevelSummaryLinkTrees(links) {
   }
 
   return roots;
+}
+
+function findSummaryTreeParent(stack, level, link) {
+  if (level <= 0) return null;
+
+  const maxIndex = Math.min(level - 1, stack.length - 1);
+  let fallback = null;
+
+  for (let i = maxIndex; i >= 0; i--) {
+    const candidate = stack[i];
+    if (!candidate) continue;
+    if (!fallback) fallback = candidate;
+    if (isSummaryPathAncestor(candidate.item, link)) {
+      return candidate;
+    }
+  }
+
+  return fallback;
+}
+
+function isSummaryPathAncestor(parentItem, childItem) {
+  const parentPath = summaryPathKey(parentItem && parentItem.pathKey);
+  const childPath = summaryPathKey(childItem && childItem.pathKey);
+  if (!parentPath || !childPath || parentPath === childPath) return false;
+  return childPath.startsWith(`${parentPath}/`);
+}
+
+function summaryPathKey(value) {
+  const rel = normalizeRelPath(String(value || '')).replace(/\.mq$/i, '').replace(/^\.$/, '');
+  return rel.toLowerCase();
 }
 
 function buildPrefixSummaryLinkTrees(links) {
@@ -1211,7 +1243,7 @@ function hrefToSitePath(href) {
 }
 
 function navGroupPrefix(item) {
-  return String((item && item.navKey) || hrefPrefix(item && item.href)).trim().toLowerCase();
+  return String((item && item.navKey) || (item && item.pathKey) || hrefPrefix(item && item.href)).trim().toLowerCase();
 }
 
 function renderNavLink(item, current) {

@@ -23,7 +23,7 @@
 <div class="mq-nav-heading">User Guide</div>
 <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../create.html"><span class="mq-nav-num">3.</span>Create Website</a>
 <div class="mq-nav-heading">Reference</div>
-<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../docs.html"><span class="mq-nav-num">4.</span>Docs</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../cli.html"><span class="mq-nav-num">5.</span>CLI Commands</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../configuration.html"><span class="mq-nav-num">6.</span>Configuration</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link active" style="--mq-nav-level:0;" href="frontmatter.html"><span class="mq-nav-num">7.</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="layouts.html"><span class="mq-nav-num">8.</span>Layouts</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="themes.html"><span class="mq-nav-num">9.</span>Themes</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../migration.html"><span class="mq-nav-num">10.</span>Migration</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../directives.html"><span class="mq-nav-num">11.</span>Directives</a>
+<div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="../../docs.html"><span class="mq-nav-num">4.</span>Docs</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="../configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link active" style="--mq-nav-level:2;" href="frontmatter.html"><span class="mq-nav-num">4.2.1</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="layouts.html"><span class="mq-nav-num">4.2.2</span>Layouts</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="themes.html"><span class="mq-nav-num">4.2.3</span>Themes</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../migration.html"><span class="mq-nav-num">4.3</span>Migration</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../directives.html"><span class="mq-nav-num">4.4</span>Directives</a></div></div>
     </div>
   </nav>
 
@@ -35,7 +35,7 @@
 <div class="mq-card"><h2>Overview</h2>
 
 <div class="mq-divider"></div>
-<div class="mq-callout info"><p><em>Frontmatter</em> is the TOML block at the top of an <code>.mq</code> page. It lets you override site-wide defaults for things like theme, layout, content width, and page metadata.</p>
+<div class="mq-callout info"><p><em>Frontmatter</em> is the TOML block at the top of an <code>.mq</code> page. It lets you override site-wide defaults for things like theme, layout, content width, content alignment, and page metadata.</p>
 </div>
 <p>There are two places where you can define configuration settings in a Marque project:</p>
 
@@ -72,6 +72,7 @@ title = &quot;Layouts&quot;     &lt;--- override page title
 layout = &quot;topnav&quot;     &lt;--- override page layout
 theme = &quot;mida&quot;        &lt;--- override page theme
 width = &quot;50%&quot;         &lt;--- override page width
+align = &quot;right&quot;       &lt;--- place the content column on the right
 nav = &quot;new-link&quot;      &lt;--- override output slug
 +++               &lt;--- closing fence
 # Layout          &lt;--- page content starts here
@@ -82,12 +83,21 @@ nav = &quot;new-link&quot;      &lt;--- override output slug
 <p>Every parameter defined in a page&#39;s frontmatter is optional. A page can work without any frontmatter, in which case it will simply inherit all settings from <code>marque.toml</code>. Missing or invalid parameters in the frontmatter will fall back to the defaults defined in <code>marque.toml</code>.</p>
 
 <div class="mq-callout info"><p><code>nav</code> overrides the page slug used for the output filename and route. Navigation labels come from <code>summary.mq</code>.</p>
+</div>
+<p><code>align</code> controls where the page content column sits inside the available space:</p>
+<ul>
+<li><code>left</code></li>
+<li><code>center</code></li>
+<li><code>right</code></li>
+</ul>
+
+<div class="mq-callout info"><p><code>align</code> moves the content column itself. It does not change paragraph text alignment. If <code>width</code> is <code>full</code>, alignment usually has little or no visible effect.</p>
 </div></div></div>
 
 <div class="mq-card"><h2>Try it out!</h2>
 
 <div class="mq-divider"></div>
-<p>Try overriding this page&#39;s content width:</p>
+<p>Try overriding this page&#39;s content width and alignment:</p>
 <div id="try-width">
   <button class="mq-try-btn" onclick="mqTryWidth('50%', this)">narrow</button>
   <button class="mq-try-btn" onclick="mqTryWidth('82%', this)">normal</button>
@@ -95,6 +105,12 @@ nav = &quot;new-link&quot;      &lt;--- override output slug
   <button class="mq-try-btn active" onclick="mqTryWidth('100%', this)">full</button>
   <input class="mq-try-input" id="try-width-input" type="number" min="30" max="100" placeholder="100" />
   <button class="mq-try-btn" onclick="mqTryWidthCustom()">apply</button>
+</div>
+
+<div id="try-align">
+  <button class="mq-try-btn" onclick="mqTryAlign('left', this)">left</button>
+  <button class="mq-try-btn active" onclick="mqTryAlign('center', this)">center</button>
+  <button class="mq-try-btn" onclick="mqTryAlign('right', this)">right</button>
 </div>
 </div>
 <style>
@@ -104,6 +120,14 @@ nav = &quot;new-link&quot;      &lt;--- override output slug
     gap: 0.4rem;
     flex-wrap: wrap;
     margin-top: 0.5rem;
+  }
+
+  #try-align {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
   }
 
   .mq-try-btn {
@@ -159,6 +183,31 @@ nav = &quot;new-link&quot;      &lt;--- override output slug
     if (!isNaN(val) && val > 0 && val <= 100) {
       mqTryWidth(val + '%', null);
     }
+  }
+
+  function mqTryAlign(value, btn) {
+    document.querySelectorAll('#try-align .mq-try-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    if (btn) btn.classList.add('active');
+
+    var main = document.querySelector('.mq-main');
+    if (!main) return;
+
+    if (value === 'left') {
+      main.style.setProperty('--page-margin-left', '0');
+      main.style.setProperty('--page-margin-right', 'auto');
+      return;
+    }
+
+    if (value === 'right') {
+      main.style.setProperty('--page-margin-left', 'auto');
+      main.style.setProperty('--page-margin-right', '0');
+      return;
+    }
+
+    main.style.setProperty('--page-margin-left', 'auto');
+    main.style.setProperty('--page-margin-right', 'auto');
   }
 
   document.getElementById('try-width-input').addEventListener('keydown', function(e) {
