@@ -3,7 +3,7 @@ node_modules/
 
 # Build output
 dist/
-!template/dist/  
+# !template/dist/  
 coverage/
 
 # Logs
