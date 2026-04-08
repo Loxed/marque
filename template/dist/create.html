@@ -3,13 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Marque — Create</title>
+
 <meta name="description" content="Built with Marque">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
 <link rel="stylesheet" href="/layout-sidebar.css">
-<link rel="stylesheet" href="/theme-default.css">
+<link rel="stylesheet" href="/theme-comt.css">
 </head>
 <body>
+
+  <!-- Navigation Bar (Works with topnav and sidebar) -->
+
   <nav class="mq-nav">
     <a class="mq-nav-brand" href="/">Marque</a>
     <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
@@ -18,10 +24,11 @@
 <div class="mq-nav-heading">User Guide</div>
 <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="/quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link active" style="--mq-nav-level:0;" href="/create.html"><span class="mq-nav-num">3.</span>Create Website</a>
 <div class="mq-nav-heading">Reference</div>
-<div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs.html"><span class="mq-nav-num">4.</span>Docs</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs/configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/frontmatter.html"><span class="mq-nav-num">4.2.1</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/themes.html"><span class="mq-nav-num">4.2.2</span>Themes</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/layouts.html"><span class="mq-nav-num">4.2.3</span>Layouts</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
+<div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs.html"><span class="mq-nav-num">4.</span>Docs</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs/configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/frontmatter.html"><span class="mq-nav-num">4.2.1</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/layouts.html"><span class="mq-nav-num">4.2.2</span>Layouts</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/themes.html"><span class="mq-nav-num">4.2.3</span>Themes</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
     </div>
   </nav>
 
+  <!-- main content in which .mq files are injected -->
   <main class="mq-main" style="--page-width: 82%; --page-max-w: none;">
     <h1>Create</h1>
 <p>Once you installed the <code>marque</code> package, you can create a static website with it.</p>
@@ -32,7 +39,7 @@
 <p>To create a new site, use <code>marque new &lt;site_name&gt;</code> to create your site. It will create itself in your current directory.</p>
 <div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque new my_site <span class="hljs-comment"># creates my_site/ directory with a template</span></code></pre></div><p>You can enter the site by changing directory in your terminal:</p>
 <div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh"><span class="hljs-built_in">cd</span> my_site</code></pre></div><p>To start previewing your site and live changes, use the <code>marque serve</code> command:</p>
-<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque serve .</code></pre></div><p>This hosts your site on the default port (<code>3030</code>). You can then access your site in your browser at <a href="http://localhost:3000">http://localhost:3000</a>.</p>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque serve .</code></pre></div><p>This hosts your site on the default port (<code>3000</code>). You can then access your site in your browser at <a href="http://localhost:3000">http://localhost:3000</a>.</p>
 </div>
 <hr>
 
@@ -64,15 +71,15 @@
 <li>default page width (markdown body width)</li>
 </ul>
 <p>Minimal example:</p>
-<div class="mq-code-block" data-lang="toml"><div class="mq-code-head"><span class="mq-code-lang">toml</span><button class="mq-code-copy" type="button" aria-label="Copy toml code">Copy</button></div><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = Marque
-<span class="hljs-attr">description</span> = Built with Marque
-<span class="hljs-attr">layout</span> = topnav
-<span class="hljs-attr">theme</span> = default
+<div class="mq-code-block" data-lang="toml"><div class="mq-code-head"><span class="mq-code-lang">toml</span><button class="mq-code-copy" type="button" aria-label="Copy toml code">Copy</button></div><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = <span class="hljs-string">&quot;Marque&quot;</span>
+<span class="hljs-attr">description</span> = <span class="hljs-string">&quot;Built with Marque&quot;</span>
+<span class="hljs-attr">layout</span> = <span class="hljs-string">&quot;topnav&quot;</span>
+<span class="hljs-attr">theme</span> = <span class="hljs-string">&quot;default&quot;</span>
 <span class="hljs-attr">width</span> = <span class="hljs-number">82</span> <span class="hljs-comment"># can be a number (percentage) </span></code></pre></div>
 <div class="mq-callout info"><p>these settings apply to every <code>.mq</code> in your project. they can be manually overwritten individually in any page&#39;s <a href="/docs/configuration/frontmatter.html">frontmatter</a>.</p>
 </div></div>
 
-<div class="mq-card ternary"><h2><code>404.mq</code></h2>
+<div class="mq-card tertiary"><h2><code>404.mq</code></h2>
 <p><code>404.mq</code> is the fallback page shown when a user tries to access a non-existent URL on your site. It provides a button to create the missing page automatically.</p>
 </div>
 </div>
@@ -106,10 +113,10 @@ Guides # separator, not a link
 <div class="mq-card primary"><h3><code>pages/</code></h3>
 <p>This is your source content directory.<br>Each <code>.mq</code> file becomes an HTML page.</p>
 <p>Typical page:</p>
-<div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">---
-title: My Page
-nav: my-page
----
+<div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">+++
+title = &quot;My Page&quot;
+nav = &quot;my-page&quot;
++++
 
 # My Page</code></pre></div></div>
 
@@ -118,7 +125,7 @@ nav: my-page
 <p><img src="create_screenshot.png" alt="Create Page"><br><code>![Create Page](create_screenshot.png)</code></p>
 </div>
 
-<div class="mq-card ternary"><h3><code>dist/</code></h3>
+<div class="mq-card tertiary"><h3><code>dist/</code></h3>
 <p>This is generated output from <code>marque build</code>.<br>It contains the static HTML/CSS/assets you deploy.</p>
 <p>Build command:</p>
 <div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque build .</code></pre></div><p>After build, upload <code>dist/</code> to any static host.</p>
@@ -128,72 +135,11 @@ nav: my-page
     <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="/quickstart.html" aria-label="Previous page: Quick Start"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Quick Start</span></a><a class="mq-page-nav-link mq-page-nav-next" href="/docs.html" aria-label="Next page: Docs"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Docs ↪</span></a></nav>
   </main>
 
+  <!-- footer at the bottom of every page -->
   <footer class="mq-footer">
-    Built with <a href="https://github.com/marque">Marque</a>
+    Built with <a href="https://github.com/Loxed/marque">Marque</a>
   </footer>
 
-  <script>
-  function mqTab(id, idx) {
-    const el = document.getElementById(id);
-    el.querySelectorAll('.mq-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-    el.querySelectorAll('.mq-tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
-  }
-
-  function mqToggleNav(btn) {
-    const nav = btn.closest('.mq-nav');
-    if (!nav) return;
-    const open = nav.classList.toggle('mq-nav-open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-
-  function mqPositionSubmenus() {
-    const groups = document.querySelectorAll('.mq-nav-group');
-    groups.forEach(group => {
-      const submenu = group.querySelector(':scope > .mq-nav-submenu');
-      if (!submenu) return;
-
-      group.classList.remove('mq-nav-group-open-left');
-
-      const style = window.getComputedStyle(submenu);
-      if (style.position !== 'absolute') return;
-
-      const rect = submenu.getBoundingClientRect();
-      if (rect.right > window.innerWidth - 8) {
-        group.classList.add('mq-nav-group-open-left');
-      }
-    });
-  }
-
-  window.addEventListener('resize', mqPositionSubmenus);
-  document.addEventListener('DOMContentLoaded', mqPositionSubmenus);
-  document.addEventListener('mouseover', (e) => {
-    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
-  });
-  document.addEventListener('focusin', (e) => {
-    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
-  });
-
-  document.addEventListener('click', async (e) => {
-    const btn = e.target.closest('.mq-code-copy');
-    if (!btn) return;
-    const block = btn.closest('.mq-code-block');
-    const codeEl = block && block.querySelector('pre code');
-    if (!codeEl) return;
-
-    const source = codeEl.textContent || '';
-    const original = btn.textContent;
-
-    try {
-      await navigator.clipboard.writeText(source);
-      btn.textContent = 'Copied';
-    } catch (_) {
-      btn.textContent = 'Failed';
-    }
-
-    setTimeout(() => {
-      btn.textContent = original;
-    }, 1200);
-  });
-  </script>
+  <script src="/index.js"></script>
 </body>
 </html>

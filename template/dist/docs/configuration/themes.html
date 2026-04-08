@@ -3,13 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Marque — Themes</title>
+
 <meta name="description" content="Built with Marque">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
 <link rel="stylesheet" href="/layout-sidebar.css">
-<link rel="stylesheet" href="/theme-rustique.css">
+<link rel="stylesheet" href="/theme-mida.css">
 </head>
 <body>
+
+  <!-- Navigation Bar (Works with topnav and sidebar) -->
+
   <nav class="mq-nav">
     <a class="mq-nav-brand" href="/">Marque</a>
     <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
@@ -18,189 +24,95 @@
 <div class="mq-nav-heading">User Guide</div>
 <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="/quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="/create.html"><span class="mq-nav-num">3.</span>Create Website</a>
 <div class="mq-nav-heading">Reference</div>
-<div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs.html"><span class="mq-nav-num">4.</span>Docs</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs/configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/frontmatter.html"><span class="mq-nav-num">4.2.1</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link active" style="--mq-nav-level:2;" href="/docs/configuration/themes.html"><span class="mq-nav-num">4.2.2</span>Themes</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/layouts.html"><span class="mq-nav-num">4.2.3</span>Layouts</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
+<div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs.html"><span class="mq-nav-num">4.</span>Docs</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs/configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/frontmatter.html"><span class="mq-nav-num">4.2.1</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/layouts.html"><span class="mq-nav-num">4.2.2</span>Layouts</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link active" style="--mq-nav-level:2;" href="/docs/configuration/themes.html"><span class="mq-nav-num">4.2.3</span>Themes</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
     </div>
   </nav>
 
+  <!-- main content in which .mq files are injected -->
   <main class="mq-main" style="--page-width: 82%; --page-max-w: none;">
     <h1>Themes</h1>
 
+<div class="mq-spotlight"></div>
+<h2><em><a href="https://marathonthegame.com/">Marathon</a>-style, baby!</em></h2>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card primary"><h2>Customise your site&#39;s look</h2>
+
 <div class="mq-divider"></div>
-<p>Build your theme with tokens, not giant CSS files.</p>
-
-<div class="mq-callout info"><p>Define your palette once, call <code>@mqs-essentials;</code>, then only override what you really want.</p>
+<p>Marque supports multiple themes and <a href="/docs/configuration/layouts.html">layouts</a>.</p>
+<p>Themes are stored as <a href="https://developer.mozilla.org/en-US/docs/Web/CSS"><code>.css</code></a> files in the <code>themes/</code> directory of your Marque project, and you can have as many as you like. This page uses the <code>mida.css</code> theme to showcase what&#39;s possible.</p>
 </div>
-<h2>The core idea</h2>
-
-<div class="mq-row" style="grid-template-columns: repeat(4, 1fr);"><div class="mq-card accent"><h2>1) URL / fonts</h2>
-<p>Keep your <code>@import url(...)</code> at the top if needed.</p>
+<div class="mq-card secondary"><h2>Create your own theme</h2>
+<p>The main theme used on your site is defined in the <code>marque.toml</code> file with the <code>theme = &quot;...&quot;</code> key. You can change this to any theme you like, and Marque will use it when you run <code>marque serve</code> or <code>marque build</code>. To override a theme on a per-page basis (like this page), add <code>theme = &quot;name&quot;</code> to the page&#39;s <a href="/docs/configuration/frontmatter.html">frontmatter</a>, and Marque will use that theme instead of the default one.</p>
 </div>
-
-<div class="mq-card"><h2>2) Define palette</h2>
-<p>Use <code>@mqs-palette</code> with normalized tokens: <code>primary</code>, <code>secondary</code>, <code>ternary</code>, <code>background</code>, etc.</p>
 </div>
+<hr>
+<h2>Quick flow</h2>
 
-<div class="mq-card"><h2>3) Generate essentials</h2>
-<p><code>@mqs-essentials;</code> expands to the base Marque theme automatically.</p>
-</div>
-
-<div class="mq-card"><h2>4) Override manually</h2>
-<p>Put custom CSS below essentials for fine tuning.</p>
+<div class="mq-card">
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Create theme file: add <code>themes/&lt;my-theme.css&gt;</code>.</p>
 </div></div>
-<h2>Minimal MQS theme</h2>
-<div class="mq-code-block" data-lang="css"><div class="mq-code-head"><span class="mq-code-lang">css</span><button class="mq-code-copy" type="button" aria-label="Copy css code">Copy</button></div><pre><code class="hljs language-css"><span class="hljs-keyword">@import</span> url(<span class="hljs-string">&quot;https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&amp;display=swap&quot;</span>);
 
-<span class="hljs-keyword">@mqs-palette</span> {
-  primary: <span class="hljs-number">#c85a2a</span>;
-  secondary: <span class="hljs-number">#2a5ac8</span>;
-  ternary: <span class="hljs-number">#2ac852</span>;
-
-  <span class="hljs-attribute">background</span>: <span class="hljs-number">#f7f5f0</span>;
-  surface: <span class="hljs-number">#ffffff</span>;
-  surface-alt: <span class="hljs-number">#eeece7</span>;
-  <span class="hljs-selector-tag">text</span>: <span class="hljs-number">#1a1916</span>;
-  muted: <span class="hljs-number">#6b6860</span>;
-  <span class="hljs-attribute">border</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.09</span>);
-
-  radius: <span class="hljs-number">8px</span>;
-  <span class="hljs-attribute">max-width</span>: <span class="hljs-number">860px</span>;
-
-  <span class="hljs-attribute">font</span>-sans: <span class="hljs-string">&#x27;DM Sans&#x27;</span>, system-ui, sans-serif;
-  <span class="hljs-attribute">font</span>-serif: Georgia, serif;
-  <span class="hljs-attribute">font</span>-mono: <span class="hljs-string">&#x27;IBM Plex Mono&#x27;</span>, monospace;
-}
-
-<span class="hljs-keyword">@mqs-essentials</span>;</code></pre></div><h2>What essentials generates</h2>
-<ul>
-<li>Theme variables in <code>:root</code></li>
-<li>Typography and links</li>
-<li>Nav and footer skin</li>
-<li>Row, card, button, callout, stat</li>
-<li>Tabs, steps, hero, badge</li>
-<li>Responsive defaults</li>
-</ul>
-<h2>Complete <code>@mqs-palette</code> keys</h2>
-<p>You can edit all these keys today:</p>
-<ul>
-<li>Core: <code>primary</code>, <code>secondary</code>, <code>ternary</code>, <code>background</code>, <code>surface</code>, <code>surface-alt</code>, <code>text</code>, <code>muted</code>, <code>border</code>, <code>radius</code>, <code>max-width</code>, <code>font-sans</code>, <code>font-serif</code>, <code>font-mono</code></li>
-<li>Nav pack: <code>nav-bg</code>, <code>nav-text</code>, <code>nav-border</code>, <code>nav-active-bg</code>, <code>nav-active-text</code></li>
-<li>Code pack: <code>code-bg</code>, <code>code-text</code>, <code>code-border</code>, <code>code-head-bg</code>, <code>code-head-text</code></li>
-<li>Card pack: <code>card-bg</code>, <code>card-border</code>, <code>card-radius</code>, <code>card-shadow</code></li>
-<li>Callout pack: <code>callout-info-bg</code>, <code>callout-info-border</code>, <code>callout-info-text</code>, <code>callout-warn-bg</code>, <code>callout-warn-border</code>, <code>callout-warn-text</code>, <code>callout-danger-bg</code>, <code>callout-danger-border</code>, <code>callout-danger-text</code>, <code>callout-ok-bg</code>, <code>callout-ok-border</code>, <code>callout-ok-text</code></li>
-</ul>
-<p>Aliases accepted in palette:</p>
-<ul>
-<li><code>bg</code> → <code>background</code></li>
-<li><code>accent</code> → <code>primary</code></li>
-<li><code>accent2</code> → <code>secondary</code></li>
-</ul>
-
-<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card secondary"><h2>Normalized style classes</h2>
-<ul>
-<li><code>.primary</code></li>
-<li><code>.secondary</code></li>
-<li><code>.ternary</code></li>
-</ul>
-</div>
-
-<div class="mq-card"><h2>Compatibility classes</h2>
-<p>Existing styles still work:</p>
-<ul>
-<li><code>.accent</code> (primary)</li>
-<li><code>.accent2</code> / <code>.blue</code> (secondary)</li>
-</ul>
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Paste baseline variables and base styles.</p>
 </div></div>
-<h2>Overrides layer</h2>
-<p>Anything after <code>@mqs-essentials;</code> is your custom layer.</p>
-<div class="mq-code-block" data-lang="css"><div class="mq-code-head"><span class="mq-code-lang">css</span><button class="mq-code-copy" type="button" aria-label="Copy css code">Copy</button></div><pre><code class="hljs language-css"><span class="hljs-keyword">@mqs-essentials</span>;
 
-<span class="hljs-selector-class">.mq-card</span><span class="hljs-selector-class">.primary</span> {
-  <span class="hljs-attribute">border-top-width</span>: <span class="hljs-number">4px</span>;
-}
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Activate theme in <code>marque.toml</code>: <code>theme = &quot;my-theme&quot;</code>.</p>
+</div></div>
 
-<span class="hljs-selector-class">.mq-main</span> <span class="hljs-selector-tag">h1</span> {
-  <span class="hljs-attribute">letter-spacing</span>: -<span class="hljs-number">0.04em</span>;
-}</code></pre></div><h2>Quick flow</h2>
-
-<ol>
-<li>Create theme file: add <code>themes/my-theme/theme.mqs</code>.</li>
-<li>Paste minimal config: start with palette + essentials.</li>
-<li>Activate theme in <code>marque.toml</code>: <code>theme = &quot;my-theme&quot;</code>.</li>
-<li>Run <code>marque serve .</code> or <code>marque build .</code>.</li>
-</ol>
-
-
-<div class="mq-callout ok"><p>If <code>theme.mqs</code> exists, Marque uses it first. Otherwise it falls back to <code>theme.css</code>.</p>
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Run <code>marque serve .</code> or <code>marque build .</code>.</p>
+</div></div>
 </div>
-    <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="/docs/configuration/frontmatter.html" aria-label="Previous page: Frontmatter"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Frontmatter</span></a><a class="mq-page-nav-link mq-page-nav-next" href="/docs/directives.html" aria-label="Next page: Directives"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Directives ↪</span></a></nav>
+
+<div class="mq-callout info"><p>If <code>themes/my-theme.css</code> exists, Marque uses it.</p>
+</div>
+<h2>Official themes</h2>
+
+<div class="mq-divider"></div>
+<h3><em>&quot;Yes I&#39;m French, how did you guess?&quot; - @Lox</em></h3>
+<hr>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);">
+<div class="mq-card secondary"><h2>comté.css <code>(default)</code></h2>
+<p><a href="https://en.wikipedia.org/wiki/Comt%C3%A9">Comté</a> is the default theme for Marque. Clean, readable, and responsive, with no holes in its design.</p>
+<p><img src="../../topnav.png" alt="Comté Theme"></p>
+</div>
+
+<div class="mq-card primary"><h2>rustique.css</h2>
+<p>Rustique is a modern, warm theme for Marque, based on <a href="https://rust-lang.org/">Rust</a>. (Rustique is a French brand of <a href="https://en.wikipedia.org/wiki/Camembert">Camembert</a>)</p>
+<p><img src="../../topnav.png" alt="Rustique Theme"></p>
+</div>
+
+<div class="mq-card tertiary"><h2>pycorino.css</h2>
+<p>Pycorino is a playful light theme inspired by <a href="https://python.org/">Python</a>. (Python + <a href="https://en.wikipedia.org/wiki/Pecorino">Pecorino</a> = Pycorino ??? It&#39;s 4am when I&#39;m writing this)</p>
+<p><img src="../../topnav.png" alt="Pycorino Theme"></p>
+</div>
+</div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);">
+<div class="mq-card primary"><h2>javarti.css</h2>
+<p>Javarti is a classic light theme for Marque, influenced by <a href="https://java.com/">Java</a>. Like <a href="https://en.wikipedia.org/wiki/Havarti">Havarti</a>, it&#39;s old enough but ages well.</p>
+<p><img src="../../topnav.png" alt="Javarti Theme"></p>
+</div>
+
+<div class="mq-card tertiary"><h2>gouda.css</h2>
+<p><a href="https://en.wikipedia.org/wiki/Gouda_cheese">Gouda</a> is a cool, simple dark theme for Marque, based on <a href="https://go.dev/">Go</a>. Gouda is a simple, pleasant cheese anyone can enjoy.</p>
+<p><img src="../../topnav.png" alt="Gouda Theme"></p>
+</div>
+
+<div class="mq-card secondary"><h2>elmental.css</h2>
+<p>Elmental is a bright, paper-like theme for Marque, inspired by <a href="https://elm-lang.org/">Elm</a>. <a href="https://en.wikipedia.org/wiki/Emmental">Emmental</a> (not <a href="https://en.wikipedia.org/wiki/Gruy%C3%A8re">Gruyère</a>!) has holes in it, Elm doesn&#39;t.</p>
+<p><img src="../../topnav.png" alt="Mida Theme"></p>
+</div></div>
+<p><strong><em>I&#39;m hungry now.</em></strong></p>
+
+<div class="mq-spotlight"></div>
+    <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="/docs/configuration/layouts.html" aria-label="Previous page: Layouts"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Layouts</span></a><a class="mq-page-nav-link mq-page-nav-next" href="/docs/directives.html" aria-label="Next page: Directives"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Directives ↪</span></a></nav>
   </main>
 
+  <!-- footer at the bottom of every page -->
   <footer class="mq-footer">
-    Built with <a href="https://github.com/marque">Marque</a>
+    Built with <a href="https://github.com/Loxed/marque">Marque</a>
   </footer>
 
-  <script>
-  function mqTab(id, idx) {
-    const el = document.getElementById(id);
-    el.querySelectorAll('.mq-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-    el.querySelectorAll('.mq-tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
-  }
-
-  function mqToggleNav(btn) {
-    const nav = btn.closest('.mq-nav');
-    if (!nav) return;
-    const open = nav.classList.toggle('mq-nav-open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-
-  function mqPositionSubmenus() {
-    const groups = document.querySelectorAll('.mq-nav-group');
-    groups.forEach(group => {
-      const submenu = group.querySelector(':scope > .mq-nav-submenu');
-      if (!submenu) return;
-
-      group.classList.remove('mq-nav-group-open-left');
-
-      const style = window.getComputedStyle(submenu);
-      if (style.position !== 'absolute') return;
-
-      const rect = submenu.getBoundingClientRect();
-      if (rect.right > window.innerWidth - 8) {
-        group.classList.add('mq-nav-group-open-left');
-      }
-    });
-  }
-
-  window.addEventListener('resize', mqPositionSubmenus);
-  document.addEventListener('DOMContentLoaded', mqPositionSubmenus);
-  document.addEventListener('mouseover', (e) => {
-    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
-  });
-  document.addEventListener('focusin', (e) => {
-    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
-  });
-
-  document.addEventListener('click', async (e) => {
-    const btn = e.target.closest('.mq-code-copy');
-    if (!btn) return;
-    const block = btn.closest('.mq-code-block');
-    const codeEl = block && block.querySelector('pre code');
-    if (!codeEl) return;
-
-    const source = codeEl.textContent || '';
-    const original = btn.textContent;
-
-    try {
-      await navigator.clipboard.writeText(source);
-      btn.textContent = 'Copied';
-    } catch (_) {
-      btn.textContent = 'Failed';
-    }
-
-    setTimeout(() => {
-      btn.textContent = original;
-    }, 1200);
-  });
-  </script>
+  <script src="/index.js"></script>
 </body>
 </html>
