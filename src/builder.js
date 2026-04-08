@@ -77,6 +77,7 @@ function build(siteDir, outDir, options = {}) {
   const pageSequence = buildPageSequence(pageEntries, summary);
 
   let built = 0;
+  const searchEntries = [];
   for (const page of pageEntries) {
     const { file, fm, body, bodyStartLine, href: outName, layoutLine } = page;
     const pageThemeName = fm.theme || defaultThemeName;
@@ -123,6 +124,7 @@ function build(siteDir, outDir, options = {}) {
     const siteTitle = config.title || 'Marque';
     const title = fm.title || config.title || 'Marque Site';
     const documentTitle = title ? `${siteTitle} — ${title}` : siteTitle;
+    const searchTitle = String(fm.title || page.label || title || path.basename(page.rel, '.mq')).trim();
     const pageMainStyle = resolveMainStyle(fm, defaultPageWidth, defaultContentAlign);
     let html = applyTemplate(pageTemplate, {
       document_title: documentTitle,
@@ -151,6 +153,12 @@ function build(siteDir, outDir, options = {}) {
 
     html = rewriteLocalDocumentPaths(html, outName);
     writeFileWithRetry(outFile, html, softFsErrors);
+    searchEntries.push(buildSearchIndexEntry({
+      page,
+      title: searchTitle,
+      description: fm.description || '',
+      content,
+    }));
     built++;
     if (logBuiltFiles) {
       console.log(`  built → ${outName}`);
@@ -176,6 +184,11 @@ function build(siteDir, outDir, options = {}) {
     if (logStaticCopy) {
       console.log(`  copied static/`);
     }
+  }
+
+  writeFileWithRetry(path.join(outDir, 'search-index.json'), `${JSON.stringify(searchEntries, null, 2)}\n`, softFsErrors);
+  if (logBuiltFiles) {
+    console.log('  built → search-index.json');
   }
 
   if (logSummary) {
@@ -269,6 +282,65 @@ function buildDirectiveStylesCSS(siteDir) {
   }
 
   return out.join('\n');
+}
+
+function buildSearchIndexEntry({ page, title, description, content }) {
+  return {
+    title: String(title || path.basename(page && page.rel ? page.rel : 'page', '.mq')).trim(),
+    href: hrefToSitePath(page && page.href),
+    description: normalizeSearchText(decodeHtmlEntities(description)),
+    headings: extractSearchHeadings(content),
+    text: extractSearchText(content),
+  };
+}
+
+function extractSearchHeadings(html) {
+  const headings = [];
+  const pattern = /<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/gi;
+  let match;
+
+  while ((match = pattern.exec(String(html || '')))) {
+    const text = normalizeSearchText(decodeHtmlEntities(stripHtmlTags(match[2])));
+    if (text) headings.push(text);
+  }
+
+  return headings;
+}
+
+function extractSearchText(html) {
+  const blockSeparated = String(html || '')
+    .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<(br|hr)\s*\/?>/gi, '\n')
+    .replace(/<\/(p|div|section|article|aside|header|footer|li|ul|ol|blockquote|pre|h[1-6]|table|tr|td|th)>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ');
+
+  return normalizeSearchText(decodeHtmlEntities(blockSeparated));
+}
+
+function stripHtmlTags(value) {
+  return String(value || '').replace(/<[^>]+>/g, ' ');
+}
+
+function normalizeSearchText(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim();
+}
+
+function decodeHtmlEntities(value) {
+  return String(value || '')
+    .replace(/&#(\d+);/g, (_, code) => {
+      const num = Number(code);
+      return Number.isFinite(num) ? String.fromCodePoint(num) : _;
+    })
+    .replace(/&#x([0-9a-f]+);/gi, (_, code) => {
+      const num = parseInt(code, 16);
+      return Number.isFinite(num) ? String.fromCodePoint(num) : _;
+    })
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, '\'');
 }
 
 function getLayoutAssets(layoutName, siteDir, outDir, cache, softFsErrors = false) {

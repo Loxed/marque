@@ -1,107 +1,566 @@
-  function mqTab(id, idx) {
-    const el = document.getElementById(id);
-    el.querySelectorAll('.mq-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-    el.querySelectorAll('.mq-tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
-  }
+function mqTab(id, idx) {
+  const el = document.getElementById(id);
+  el.querySelectorAll('.mq-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  el.querySelectorAll('.mq-tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+}
 
-  function mqToggleNav(btn) {
-    const nav = btn.closest('.mq-nav');
-    if (!nav) return;
-    const open = nav.classList.toggle('mq-nav-open');
+function mqToggleNav(btn) {
+  const nav = btn.closest('.mq-nav');
+  if (!nav) return;
+  const open = nav.classList.toggle('mq-nav-open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+function mqCloseNav(nav) {
+  if (!nav) return;
+  nav.classList.remove('mq-nav-open');
+  const btn = nav.querySelector('.mq-nav-toggle');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+function mqIsCompactNav(nav) {
+  if (!nav) return false;
+  const btn = nav.querySelector('.mq-nav-toggle');
+  if (!btn) return false;
+  return window.getComputedStyle(btn).display !== 'none';
+}
+
+function mqPositionSubmenus() {
+  const viewportPadding = 8;
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+  const groups = document.querySelectorAll('.mq-nav-group');
+  groups.forEach(group => {
+    const submenu = group.querySelector(':scope > .mq-nav-submenu');
+    if (!submenu) return;
+
+    group.classList.remove('mq-nav-group-open-left');
+
+    const style = window.getComputedStyle(submenu);
+    if (style.position !== 'absolute') return;
+
+    const groupRect = group.getBoundingClientRect();
+    const submenuWidth = Math.max(submenu.offsetWidth || 0, submenu.scrollWidth || 0);
+    const openRightEdge = groupRect.left + submenuWidth;
+    const openLeftEdge = groupRect.right - submenuWidth;
+    const overflowsRight = openRightEdge > (viewportWidth - viewportPadding);
+    const fitsWhenOpenLeft = openLeftEdge >= viewportPadding;
+
+    if (overflowsRight && fitsWhenOpenLeft) {
+      group.classList.add('mq-nav-group-open-left');
+    }
+  });
+}
+
+const mqSearchState = {
+  activeIndex: -1,
+  index: null,
+  indexPromise: null,
+  initialized: false,
+  input: null,
+  lastTrigger: null,
+  meta: null,
+  results: null,
+  resultsData: [],
+  root: null,
+};
+
+function mqSearchElements() {
+  if (mqSearchState.root && mqSearchState.root.isConnected) return mqSearchState;
+
+  mqSearchState.root = document.getElementById('mq-search');
+  mqSearchState.input = document.getElementById('mq-search-input');
+  mqSearchState.results = document.getElementById('mq-search-results');
+  mqSearchState.meta = document.getElementById('mq-search-meta');
+  return mqSearchState;
+}
+
+function mqSetSearchExpanded(open) {
+  document.querySelectorAll('.mq-search-toggle').forEach(btn => {
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+
+function mqIsSearchOpen() {
+  const state = mqSearchElements();
+  return !!(state.root && !state.root.hidden);
+}
+
+function mqToggleSearch(btn) {
+  if (mqIsSearchOpen()) {
+    mqCloseSearch();
+    return;
   }
 
-  function mqCloseNav(nav) {
-    if (!nav) return;
-    nav.classList.remove('mq-nav-open');
-    const btn = nav.querySelector('.mq-nav-toggle');
-    if (btn) btn.setAttribute('aria-expanded', 'false');
-  }
+  mqOpenSearch(btn);
+}
 
-  function mqIsCompactNav(nav) {
-    if (!nav) return false;
-    const btn = nav.querySelector('.mq-nav-toggle');
-    if (!btn) return false;
-    return window.getComputedStyle(btn).display !== 'none';
-  }
+async function mqOpenSearch(btn) {
+  const state = mqSearchElements();
+  if (!state.root) return;
 
-  function mqPositionSubmenus() {
-    const viewportPadding = 8;
-    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
-    const groups = document.querySelectorAll('.mq-nav-group');
-    groups.forEach(group => {
-      const submenu = group.querySelector(':scope > .mq-nav-submenu');
-      if (!submenu) return;
+  mqInitSearch();
+  state.lastTrigger = btn || document.activeElement;
 
-      group.classList.remove('mq-nav-group-open-left');
+  document.querySelectorAll('.mq-nav.mq-nav-open').forEach(mqCloseNav);
+  state.root.hidden = false;
+  state.root.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('mq-search-open');
+  mqSetSearchExpanded(true);
 
-      const style = window.getComputedStyle(submenu);
-      if (style.position !== 'absolute') return;
-
-      const groupRect = group.getBoundingClientRect();
-      const submenuWidth = Math.max(submenu.offsetWidth || 0, submenu.scrollWidth || 0);
-      const openRightEdge = groupRect.left + submenuWidth;
-      const openLeftEdge = groupRect.right - submenuWidth;
-      const overflowsRight = openRightEdge > (viewportWidth - viewportPadding);
-      const fitsWhenOpenLeft = openLeftEdge >= viewportPadding;
-
-      if (overflowsRight && fitsWhenOpenLeft) {
-        group.classList.add('mq-nav-group-open-left');
-      }
+  if (state.input) {
+    window.requestAnimationFrame(() => {
+      state.input.focus();
+      state.input.select();
     });
   }
 
-  window.addEventListener('resize', () => {
-    document.querySelectorAll('.mq-nav.mq-nav-open').forEach(nav => {
-      if (!mqIsCompactNav(nav)) mqCloseNav(nav);
-    });
-    mqPositionSubmenus();
-  });
-  document.addEventListener('DOMContentLoaded', mqPositionSubmenus);
-  document.addEventListener('mouseover', (e) => {
-    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
-  });
-  document.addEventListener('focusin', (e) => {
-    if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
+  if (!state.index) {
+    mqRenderSearchLoading();
+  }
+
+  try {
+    await mqLoadSearchIndex();
+    if (state.input && state.input.value.trim()) {
+      mqRunSearch(state.input.value);
+    } else {
+      mqRenderSearchIdle();
+    }
+  } catch (err) {
+    mqRenderSearchError(err);
+  }
+}
+
+function mqCloseSearch() {
+  const state = mqSearchElements();
+  if (!state.root) return;
+
+  state.root.hidden = true;
+  state.root.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('mq-search-open');
+  mqSetSearchExpanded(false);
+
+  if (state.lastTrigger && typeof state.lastTrigger.focus === 'function') {
+    state.lastTrigger.focus();
+  }
+}
+
+function mqInitSearch() {
+  const state = mqSearchElements();
+  if (state.initialized || !state.root || !state.input || !state.results) return;
+
+  state.initialized = true;
+
+  state.input.addEventListener('input', () => {
+    mqRunSearch(state.input.value);
   });
 
-  document.addEventListener('click', (e) => {
-    const nav = document.querySelector('.mq-nav.mq-nav-open');
-    if (!nav) return;
-    if (!e.target.closest('.mq-nav')) {
-      mqCloseNav(nav);
+  state.input.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      mqMoveSearchSelection(1);
       return;
     }
 
-    const link = e.target.closest('.mq-nav a');
-    if (link && mqIsCompactNav(nav)) {
-      mqCloseNav(nav);
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      mqMoveSearchSelection(-1);
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      const target = mqGetActiveSearchResult();
+      if (target) {
+        e.preventDefault();
+        target.click();
+      }
     }
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return;
-    document.querySelectorAll('.mq-nav.mq-nav-open').forEach(mqCloseNav);
+  state.results.addEventListener('mouseover', e => {
+    const result = e.target.closest('.mq-search-result');
+    if (!result) return;
+    state.activeIndex = Number(result.dataset.resultIndex || -1);
+    mqSyncActiveSearchResult();
   });
 
-  document.addEventListener('click', async (e) => {
-    const btn = e.target.closest('.mq-code-copy');
-    if (!btn) return;
-    const block = btn.closest('.mq-code-block');
-    const codeEl = block && block.querySelector('pre code');
-    if (!codeEl) return;
+  state.results.addEventListener('click', e => {
+    const result = e.target.closest('.mq-search-result');
+    if (!result) return;
+    mqCloseSearch();
+  });
+}
 
-    const source = codeEl.textContent || '';
-    const original = btn.textContent;
+async function mqLoadSearchIndex() {
+  const state = mqSearchElements();
+  if (state.index) return state.index;
+  if (state.indexPromise) return state.indexPromise;
 
-    try {
-      await navigator.clipboard.writeText(source);
-      btn.textContent = 'Copied';
-    } catch (_) {
-      btn.textContent = 'Failed';
+  state.indexPromise = fetch('/search-index.json', {
+    headers: { Accept: 'application/json' },
+  })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`Search index unavailable (${res.status})`);
+      }
+      return res.json();
+    })
+    .then(entries => Array.isArray(entries) ? entries : [])
+    .then(entries => entries.map(entry => ({
+      ...entry,
+      _descriptionSearch: mqNormalizeSearchValue(entry.description),
+      _headingsSearch: Array.isArray(entry.headings) ? entry.headings.map(mqNormalizeSearchValue) : [],
+      _headingsJoined: Array.isArray(entry.headings) ? entry.headings.map(mqNormalizeSearchValue).join(' ') : '',
+      _textSearch: mqNormalizeSearchValue(entry.text),
+      _titleSearch: mqNormalizeSearchValue(entry.title),
+    })))
+    .then(entries => {
+      state.index = entries;
+      state.indexPromise = null;
+      return entries;
+    })
+    .catch(err => {
+      state.indexPromise = null;
+      throw err;
+    });
+
+  return state.indexPromise;
+}
+
+function mqRunSearch(query) {
+  const state = mqSearchElements();
+  if (!state.results || !state.meta) return;
+
+  const rawQuery = String(query || '').trim();
+  if (!rawQuery) {
+    mqRenderSearchIdle();
+    return;
+  }
+
+  const normalizedQuery = mqNormalizeSearchValue(rawQuery);
+  const terms = Array.from(new Set(normalizedQuery.split(/\s+/).filter(Boolean)));
+
+  if (!terms.length || !Array.isArray(state.index)) {
+    mqRenderSearchIdle();
+    return;
+  }
+
+  const matches = state.index
+    .map(entry => mqScoreSearchEntry(entry, terms, normalizedQuery))
+    .filter(Boolean)
+    .sort((a, b) => {
+      if (b._score !== a._score) return b._score - a._score;
+      return String(a.title || '').localeCompare(String(b.title || ''));
+    })
+    .slice(0, 40);
+
+  state.resultsData = matches;
+  state.activeIndex = matches.length ? 0 : -1;
+
+  if (!matches.length) {
+    state.meta.textContent = `No results for "${rawQuery}".`;
+    state.results.innerHTML = `<div class="mq-search-empty">No pages matched <strong>${mqEscapeHtml(rawQuery)}</strong>. Try a shorter title, a section heading, or a broader phrase.</div>`;
+    return;
+  }
+
+  const capped = matches.length === 40 && state.index.length > 40;
+  state.meta.textContent = `${matches.length} result${matches.length === 1 ? '' : 's'}${capped ? ' shown' : ''} for "${rawQuery}".`;
+  state.results.innerHTML = matches.map((entry, index) => mqRenderSearchResult(entry, index, terms)).join('');
+  mqSyncActiveSearchResult();
+}
+
+function mqScoreSearchEntry(entry, terms, phrase) {
+  let score = 0;
+  let firstHit = Number.POSITIVE_INFINITY;
+
+  for (const term of terms) {
+    let matched = false;
+
+    const titlePos = entry._titleSearch.indexOf(term);
+    if (titlePos >= 0) {
+      score += titlePos === 0 ? 120 : 88;
+      firstHit = Math.min(firstHit, titlePos);
+      matched = true;
     }
 
-    setTimeout(() => {
-      btn.textContent = original;
-    }, 1200);
+    const headingPos = entry._headingsJoined.indexOf(term);
+    if (headingPos >= 0) {
+      score += 46;
+      firstHit = Math.min(firstHit, 700 + headingPos);
+      matched = true;
+    }
+
+    const descriptionPos = entry._descriptionSearch.indexOf(term);
+    if (descriptionPos >= 0) {
+      score += 28;
+      firstHit = Math.min(firstHit, 1400 + descriptionPos);
+      matched = true;
+    }
+
+    const textPos = entry._textSearch.indexOf(term);
+    if (textPos >= 0) {
+      score += 12;
+      firstHit = Math.min(firstHit, 2200 + textPos);
+      matched = true;
+    }
+
+    if (!matched) return null;
+  }
+
+  if (entry._titleSearch.includes(phrase)) score += 140;
+  else if (entry._headingsJoined.includes(phrase)) score += 84;
+  else if (entry._descriptionSearch.includes(phrase)) score += 52;
+  else if (entry._textSearch.includes(phrase)) score += 26;
+
+  score -= Math.min(30, Math.floor(firstHit / 180));
+
+  return {
+    ...entry,
+    _score: score,
+  };
+}
+
+function mqRenderSearchIdle() {
+  const state = mqSearchElements();
+  if (!state.results || !state.meta) return;
+
+  if (Array.isArray(state.index) && state.index.length) {
+    const suggestions = state.index.slice(0, 8);
+    state.resultsData = suggestions;
+    state.activeIndex = suggestions.length ? 0 : -1;
+    state.meta.textContent = `Search across ${state.index.length} page${state.index.length === 1 ? '' : 's'}.`;
+    state.results.innerHTML = suggestions
+      .map((entry, index) => mqRenderSearchResult(entry, index, [], true))
+      .join('');
+    mqSyncActiveSearchResult();
+    return;
+  }
+
+  state.resultsData = [];
+  state.activeIndex = -1;
+  state.meta.textContent = 'Type to search titles, headings, and page content.';
+  state.results.innerHTML = '<div class="mq-search-empty">Search is ready. Try a page title, a section heading, or a phrase from the content.</div>';
+}
+
+function mqRenderSearchLoading() {
+  const state = mqSearchElements();
+  if (!state.results || !state.meta) return;
+  state.resultsData = [];
+  state.activeIndex = -1;
+  state.meta.textContent = 'Loading the search index...';
+  state.results.innerHTML = '<div class="mq-search-empty">Loading searchable content...</div>';
+}
+
+function mqRenderSearchError(err) {
+  const state = mqSearchElements();
+  if (!state.results || !state.meta) return;
+  state.resultsData = [];
+  state.activeIndex = -1;
+  state.meta.textContent = 'Search could not load.';
+  state.results.innerHTML = `<div class="mq-search-empty">The search index could not be loaded${err && err.message ? `: ${mqEscapeHtml(err.message)}` : '.'}</div>`;
+}
+
+function mqRenderSearchResult(entry, index, terms, suggestionMode) {
+  const matchedHeadings = Array.isArray(entry.headings)
+    ? entry.headings.filter(heading => terms.length ? terms.some(term => mqNormalizeSearchValue(heading).includes(term)) : true).slice(0, 2)
+    : [];
+  const snippet = mqBuildSearchSnippet(entry, terms);
+  const pathLabel = entry.href || '/';
+  const headingsHtml = matchedHeadings.length
+    ? `<div class="mq-search-result-headings">${matchedHeadings.map(heading => `<span class="mq-search-result-chip">${mqHighlightText(heading, terms)}</span>`).join('')}</div>`
+    : '';
+  const snippetHtml = snippet
+    ? `<p class="mq-search-result-snippet">${mqHighlightText(snippet, terms)}</p>`
+    : '';
+  const pathPrefix = suggestionMode ? 'Page' : 'Match';
+
+  return `<a class="mq-search-result" href="${mqEscapeHtml(entry.href || '/')}" data-result-index="${index}"><span class="mq-search-result-meta">${mqEscapeHtml(pathPrefix)} <span class="mq-search-result-path">${mqEscapeHtml(pathLabel)}</span></span><strong class="mq-search-result-title">${mqHighlightText(entry.title || entry.href || 'Untitled', terms)}</strong>${headingsHtml}${snippetHtml}</a>`;
+}
+
+function mqBuildSearchSnippet(entry, terms) {
+  const source = String(entry.description || entry.text || '').trim();
+  if (!source) return '';
+
+  if (!terms.length) {
+    return source.length > 180 ? `${source.slice(0, 177).trimEnd()}...` : source;
+  }
+
+  const haystack = source.toLowerCase();
+  let index = -1;
+  for (const term of terms) {
+    const match = haystack.indexOf(term.toLowerCase());
+    if (match >= 0 && (index === -1 || match < index)) {
+      index = match;
+    }
+  }
+
+  if (index === -1) {
+    return source.length > 180 ? `${source.slice(0, 177).trimEnd()}...` : source;
+  }
+
+  const start = Math.max(0, index - 48);
+  const end = Math.min(source.length, index + 132);
+  let snippet = source.slice(start, end).trim();
+
+  if (start > 0) snippet = `...${snippet}`;
+  if (end < source.length) snippet = `${snippet}...`;
+  return snippet;
+}
+
+function mqMoveSearchSelection(step) {
+  const state = mqSearchElements();
+  if (!state.resultsData.length) return;
+
+  const total = state.resultsData.length;
+  state.activeIndex = state.activeIndex < 0
+    ? 0
+    : (state.activeIndex + step + total) % total;
+
+  mqSyncActiveSearchResult();
+}
+
+function mqSyncActiveSearchResult() {
+  const state = mqSearchElements();
+  const items = state.results ? state.results.querySelectorAll('.mq-search-result') : [];
+  items.forEach((item, index) => {
+    const active = index === state.activeIndex;
+    item.classList.toggle('active', active);
+    item.setAttribute('aria-selected', active ? 'true' : 'false');
   });
+
+  const active = mqGetActiveSearchResult();
+  if (active) {
+    active.scrollIntoView({ block: 'nearest' });
+  }
+}
+
+function mqGetActiveSearchResult() {
+  const state = mqSearchElements();
+  if (!state.results || state.activeIndex < 0) return null;
+  return state.results.querySelector(`.mq-search-result[data-result-index="${state.activeIndex}"]`);
+}
+
+function mqNormalizeSearchValue(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function mqHighlightText(text, terms) {
+  const source = String(text || '');
+  if (!terms.length) return mqEscapeHtml(source);
+
+  const escapedTerms = Array.from(new Set(terms.filter(Boolean)))
+    .sort((a, b) => b.length - a.length)
+    .map(mqEscapeRegex);
+
+  if (!escapedTerms.length) return mqEscapeHtml(source);
+
+  const pattern = new RegExp(`(${escapedTerms.join('|')})`, 'ig');
+  return mqEscapeHtml(source).replace(pattern, '<mark>$1</mark>');
+}
+
+function mqEscapeRegex(value) {
+  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function mqEscapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function mqIsTypingTarget(target) {
+  if (!target) return false;
+  if (target.isContentEditable) return true;
+  const tag = String(target.tagName || '').toLowerCase();
+  return tag === 'input' || tag === 'textarea' || tag === 'select';
+}
+
+window.addEventListener('resize', () => {
+  document.querySelectorAll('.mq-nav.mq-nav-open').forEach(nav => {
+    if (!mqIsCompactNav(nav)) mqCloseNav(nav);
+  });
+  mqPositionSubmenus();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  mqPositionSubmenus();
+  mqInitSearch();
+});
+
+document.addEventListener('mouseover', e => {
+  if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
+});
+
+document.addEventListener('focusin', e => {
+  if (e.target.closest('.mq-nav-group')) mqPositionSubmenus();
+});
+
+document.addEventListener('click', e => {
+  const nav = document.querySelector('.mq-nav.mq-nav-open');
+  if (!nav) return;
+  if (!e.target.closest('.mq-nav')) {
+    mqCloseNav(nav);
+    return;
+  }
+
+  const link = e.target.closest('.mq-nav a');
+  if (link && mqIsCompactNav(nav)) {
+    mqCloseNav(nav);
+  }
+});
+
+document.addEventListener('keydown', e => {
+  const key = String(e.key || '').toLowerCase();
+  const typing = mqIsTypingTarget(e.target);
+
+  if ((e.ctrlKey || e.metaKey) && key === 'k') {
+    e.preventDefault();
+    mqOpenSearch();
+    return;
+  }
+
+  if (!typing && !e.ctrlKey && !e.metaKey && !e.altKey && key === '/') {
+    e.preventDefault();
+    mqOpenSearch();
+    return;
+  }
+
+  if (e.key !== 'Escape') return;
+
+  if (mqIsSearchOpen()) {
+    e.preventDefault();
+    mqCloseSearch();
+    return;
+  }
+
+  document.querySelectorAll('.mq-nav.mq-nav-open').forEach(mqCloseNav);
+});
+
+document.addEventListener('click', async e => {
+  const btn = e.target.closest('.mq-code-copy');
+  if (!btn) return;
+  const block = btn.closest('.mq-code-block');
+  const codeEl = block && block.querySelector('pre code');
+  if (!codeEl) return;
+
+  const source = codeEl.textContent || '';
+  const original = btn.textContent;
+
+  try {
+    await navigator.clipboard.writeText(source);
+    btn.textContent = 'Copied';
+  } catch (_) {
+    btn.textContent = 'Failed';
+  }
+
+  setTimeout(() => {
+    btn.textContent = original;
+  }, 1200);
+});

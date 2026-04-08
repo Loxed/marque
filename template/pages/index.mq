@@ -62,17 +62,19 @@ Marque supports every feature from Markdown, including extra directives to make 
 @end row temp
 
 @row links
-	@card .accent
+	@card .primary
 		## Start building
     @divider
 		Install Marque and use the starter template to make your first website.
+
 		@[Quickstart ->](/quickstart.mq){.primary}
 	@end card
 
-	@card
+	@card .secondary
 		## Explore examples
   		@divider
 		Browse nested docs, layout overrides, and advanced features in action.
+		
 		@[Open layout docs ->](/docs/configuration/layouts.html){.secondary}
 	@end card
 @end row links
