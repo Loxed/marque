@@ -6,6 +6,7 @@ const fs = require('fs');
 const { build } = require('./builder');
 const { serve } = require('./server');
 const { scaffold, parseNewArgs } = require('./scaffold');
+const { writeThemeTemplate } = require('./theme-generator');
 const { printBuildError } = require('./utils/errors');
 
 const [, , cmd, ...args] = process.argv;
@@ -17,6 +18,7 @@ marque, a .mq site compiler
   marque serve [site-dir] [port]                  dev server with live reload
   marque new [site-dir] [--layout name] [--theme name]
   marque new [site-dir] [layout:name] [theme:name]
+  marque theme-template [site-dir] [out-file] [--reference name]
   marque help                                     show this message
 `;
 
@@ -29,6 +31,9 @@ switch (cmd) {
     break;
   case 'new':
     runNew(args);
+    break;
+  case 'theme-template':
+    runThemeTemplate(args);
     break;
   case 'help':
   case '--help':
@@ -84,4 +89,55 @@ function runNew(rawArgs) {
     console.error(String((err && err.message) || err || 'Scaffold failed'));
     process.exit(1);
   }
+}
+
+function runThemeTemplate(rawArgs) {
+  const parsed = parseThemeTemplateArgs(rawArgs);
+  const siteDir = path.resolve(parsed.siteDir || '.');
+
+  try {
+    const result = writeThemeTemplate({
+      siteDir,
+      outputFile: parsed.outputFile,
+      referenceTheme: parsed.referenceTheme,
+    });
+
+    console.log(`\nmarque: theme scaffold written -> ${result.outputFile}`);
+    console.log(`reference theme: ${result.referenceThemePath}`);
+    console.log(`directives analyzed: ${result.directives.length}\n`);
+    if (result.warnings && result.warnings.length) {
+      for (const warning of result.warnings) {
+        console.log(`warning: ${warning}`);
+      }
+      console.log('');
+    }
+  } catch (err) {
+    console.error(`\nTheme template error: ${String((err && err.message) || err || 'Unknown error')}\n`);
+    process.exit(1);
+  }
+}
+
+function parseThemeTemplateArgs(argv) {
+  const opts = { referenceTheme: 'comte' };
+  const positional = [];
+
+  for (let i = 0; i < argv.length; i += 1) {
+    const token = argv[i];
+    if (token === '--reference' && i + 1 < argv.length) {
+      opts.referenceTheme = argv[i + 1];
+      i += 1;
+      continue;
+    }
+    if (token.startsWith('--reference=')) {
+      opts.referenceTheme = token.slice('--reference='.length);
+      continue;
+    }
+    positional.push(token);
+  }
+
+  return {
+    siteDir: positional[0] || '.',
+    outputFile: positional[1] || null,
+    referenceTheme: opts.referenceTheme,
+  };
 }
