@@ -85,6 +85,7 @@ function createHttpServer({ siteDir, outDir, pagesDir, wsPort, broadcast, build,
 			const fallback404 = path.join(outDir, '404.html');
 			if (fs.existsSync(fallback404)) {
 				let content = fs.readFileSync(fallback404, 'utf8').toString();
+				content = absolutizeFallbackDocumentPaths(content);
 				const reload = RELOAD_SNIPPET.replace('__PORT__', wsPort);
 				const createSnippet = CREATE_FROM_404_SNIPPET.replace('__REQUEST_PATH__', escapeForJs(urlPath));
 				content = injectBeforeBodyEnd(content, `${reload}${createSnippet}`);
@@ -153,6 +154,33 @@ function injectBeforeBodyEnd(html, snippet) {
 		return doc.replace(/<\/body>/i, `${snippet}</body>`);
 	}
 	return `${doc}${snippet}`;
+}
+
+function absolutizeFallbackDocumentPaths(html) {
+	return String(html || '').replace(
+		/(\b(?:href|src)=["'])([^"']*)(["'])/gi,
+		(_, head, rawHref, tail) => `${head}${toAbsoluteFallbackHref(rawHref)}${tail}`,
+	);
+}
+
+function toAbsoluteFallbackHref(rawHref) {
+	const href = String(rawHref || '').trim();
+	if (!href) return rawHref;
+	if (href.startsWith('/') || href.startsWith('//') || href.startsWith('#')) return href;
+	if (/^[a-z][a-z0-9+.-]*:/i.test(href)) return href;
+
+	const hashIndex = href.indexOf('#');
+	const queryIndex = href.indexOf('?');
+	let splitIndex = -1;
+	if (hashIndex >= 0 && queryIndex >= 0) splitIndex = Math.min(hashIndex, queryIndex);
+	else splitIndex = Math.max(hashIndex, queryIndex);
+
+	const pathPart = splitIndex >= 0 ? href.slice(0, splitIndex) : href;
+	const suffix = splitIndex >= 0 ? href.slice(splitIndex) : '';
+	if (!pathPart || pathPart === '.') return `/${suffix}`;
+
+	const absolutePath = path.posix.normalize(`/${pathPart.replace(/^\.\/+/, '')}`);
+	return `${absolutePath}${suffix}`;
 }
 
 module.exports = { createHttpServer };
