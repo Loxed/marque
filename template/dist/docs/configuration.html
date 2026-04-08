@@ -32,48 +32,103 @@
     <h1>Configuration</h1>
 
 <div class="mq-divider"></div>
-<p>Marque configuration is split into two layers:</p>
-<ul>
-<li>Site-level defaults in <code>marque.toml</code></li>
-<li>Page-level overrides in frontmatter</li>
-</ul>
-<h2><code>marque.toml</code> essentials</h2>
-<div class="mq-code-block" data-lang="toml"><div class="mq-code-head"><span class="mq-code-lang">toml</span><button class="mq-code-copy" type="button" aria-label="Copy toml code">Copy</button></div><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = <span class="hljs-string">&quot;Marque&quot;</span>
-<span class="hljs-attr">description</span> = <span class="hljs-string">&quot;Built with Marque&quot;</span>
-<span class="hljs-attr">layout</span> = <span class="hljs-string">&quot;topnav&quot;</span>
-<span class="hljs-attr">theme</span> = <span class="hljs-string">&quot;default&quot;</span>
-<span class="hljs-attr">width</span> = <span class="hljs-number">82</span></code></pre></div><p>What these keys control:</p>
-<ul>
-<li><code>title</code>: site title used in page titles and branding</li>
-<li><code>description</code>: default meta description</li>
-<li><code>layout</code>: default layout for pages</li>
-<li><code>theme</code>: default theme for pages</li>
-<li><code>width</code>: default page content width</li>
-</ul>
-<h2>How this maps to mdBook-style config thinking</h2>
-<p>If you come from mdBook&#39;s <code>book.toml</code>:</p>
-<ul>
-<li><code>book.title</code> -&gt; <code>title</code></li>
-<li><code>book.description</code> -&gt; <code>description</code></li>
-<li><code>src</code> is effectively <code>pages/</code> in Marque</li>
-<li>output directory is <code>dist/</code> after <code>marque build</code></li>
-</ul>
-<p>Marque keeps the config intentionally small and focused.</p>
-<h2>Build and watch behavior</h2>
-<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque serve .
-marque build .</code></pre></div><ul>
-<li><code>serve</code> watches source/config/summary and rebuilds automatically</li>
-<li><code>build</code> emits static output into <code>dist/</code></li>
-</ul>
-<h2>Navigation source</h2>
-<p><code>summary.mq</code> is the source of nav labels and ordering.<br>A page can exist in <code>pages/</code> without appearing in nav if not listed in summary.</p>
-<h2>Related docs</h2>
-<ul>
-<li><a href="configuration/frontmatter.html">Frontmatter</a></li>
-<li><a href="configuration/themes.html">Themes</a></li>
-<li><a href="cli.html">CLI Commands</a></li>
-</ul>
+<p>Marque configuration is split across two places:</p>
 
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card primary"><h2><code>marque.toml</code></h2>
+
+<div class="mq-divider"></div>
+<p>Site-wide defaults live here. This is where you set your title, description, default layout, theme, and page width once for the whole site.</p>
+</div>
+
+<div class="mq-card secondary"><h2>Page frontmatter</h2>
+
+<div class="mq-divider"></div>
+<p>Individual <code>.mq</code> pages can override the defaults they care about without changing the rest of the site.</p>
+</div></div>
+
+<div class="mq-callout info"><p>If a page does not define an override, it inherits the value from <code>marque.toml</code>.</p>
+</div>
+<h2>Minimal site config</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-card"><div class="mq-code-block" data-lang="toml"><div class="mq-code-head"><span class="mq-code-lang">toml</span><button class="mq-code-copy" type="button" aria-label="Copy toml code">Copy</button></div><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = <span class="hljs-string">&quot;Marque&quot;</span>
+<span class="hljs-attr">description</span> = <span class="hljs-string">&quot;Built with Marque&quot;</span>
+<span class="hljs-attr">layout</span> = <span class="hljs-string">&quot;sidebar&quot;</span>
+<span class="hljs-attr">theme</span> = <span class="hljs-string">&quot;comte&quot;</span>
+<span class="hljs-attr">width</span> = <span class="hljs-string">&quot;full&quot;</span></code></pre></div><p>That is enough to define the site&#39;s baseline behavior.</p>
+</div>
+<h2>What each setting controls</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card"><h2>Identity</h2>
+
+<div class="mq-divider"></div>
+<p><code>title</code> and <code>description</code> define the site&#39;s default branding and metadata.</p>
+<ul>
+<li><code>title</code>: used in page titles and nav branding</li>
+<li><code>description</code>: fallback meta description for generated pages</li>
+</ul>
+</div>
+
+<div class="mq-card"><h2>Presentation</h2>
+
+<div class="mq-divider"></div>
+<p><code>layout</code> and <code>theme</code> decide how the site looks and where global navigation appears.</p>
+<ul>
+<li><code>layout</code>: <code>sidebar</code> or <code>topnav</code></li>
+<li><code>theme</code>: the active CSS theme file</li>
+</ul>
+</div>
+
+<div class="mq-card"><h2>Content width</h2>
+
+<div class="mq-divider"></div>
+<p><code>width</code> controls the usable width of <code>.mq-main</code>. It can be a number, a percentage, or named presets like <code>narrow</code>, <code>normal</code>, <code>wide</code>, and <code>full</code>.</p>
+</div></div>
+<h2>Choose the right place</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-card"><div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Use <code>marque.toml</code> when you want a default that should apply everywhere.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><p>Use frontmatter when a page needs a one-off layout, width, theme, or slug.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="3"></div><div class="mq-step-body"><p>Use <code>summary.mq</code> when you want to change labels, ordering, and navigation structure.</p>
+</div></div></div>
+<h2>Files that work together</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card"><h2><code>marque.toml</code></h2>
+<p>Defines defaults for the whole site.</p>
+</div>
+
+<div class="mq-card"><h2>Frontmatter</h2>
+<p>Overrides defaults for one page at a time.</p>
+</div>
+
+<div class="mq-card"><h2><code>summary.mq</code></h2>
+<p>Controls navigation labels, ordering, grouping, and nesting.</p>
+</div></div>
+<h2>Continue with the focused pages</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card accent"><h2>Frontmatter</h2>
+<p>See the exact page-level keys, examples, and width override behavior.<br><a href="configuration/frontmatter.html" class="mq-btn primary">Open frontmatter docs -&gt;</a></p>
+</div>
+
+<div class="mq-card"><h2>Layouts</h2>
+<p>Compare <code>sidebar</code> and <code>topnav</code>, and see how summary-driven navigation changes between them.<br><a href="configuration/layouts.html" class="mq-btn">Open layout docs -&gt;</a></p>
+</div>
+
+<div class="mq-card"><h2>Themes</h2>
+<p>Learn how theme files work, how to override a page theme, and which built-in themes ship with Marque.<br><a href="configuration/themes.html" class="mq-btn">Open theme docs -&gt;</a></p>
+</div></div>
     <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="cli.html" aria-label="Previous page: CLI Commands"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ CLI Commands</span></a><a class="mq-page-nav-link mq-page-nav-next" href="configuration/frontmatter.html" aria-label="Next page: Frontmatter"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Frontmatter ↪</span></a></nav>
   </main>
 

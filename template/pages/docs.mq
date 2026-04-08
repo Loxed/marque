@@ -4,55 +4,158 @@ nav = "docs"
 +++
 
 # Documentation
+@divider
 
-Welcome to the Marque documentation set. Start with quickstart, then move to configuration and advanced layout/theme usage.
+Use this page as the map for the rest of the site.
 
-@row docs-index
+@callout .info
+Marque stays intentionally small:
+- write source pages in `.mq`
+- define navigation in `summary.mq`
+- set defaults in `marque.toml`
+- build plain static HTML with `marque build`
+@end callout
+
+@row
   @card .accent
-    ## Quickstart
-    Install flow, local serve workflow, and publishing sequence.
-    @[Go to quickstart ->](/quickstart.html){.primary}
-  @end card
+    ## Start here
+    @divider
+    New to Marque? Follow the setup path first, then come back for reference pages.
 
-  @card
-    ## Themes
-    Build themes with plain CSS variables and manual overrides.
-    @[Open theme docs ->](/docs/configuration/themes.html)
+    @[Quickstart ->](/quickstart.html){.primary}
+    @[Create a site ->](/create.html)
   @end card
 
   @card
     ## Configuration
-    Learn `marque.toml`, frontmatter precedence, and page-level overrides.
-    [Open configuration ->](/docs/configuration.html)
+    @divider
+    Learn where settings live, how page overrides work, and how themes and layouts fit together.
+
+    @[Configuration ->](/docs/configuration.html)
+    @[Frontmatter ->](/docs/configuration/frontmatter.html)
   @end card
 
   @card
-    ## Layouts
-    See layout overrides and summary-driven navigation in action.
-    [Open layouts ->](/docs/configuration/layouts.html)
+    ## Reference
+    @divider
+    Browse CLI commands, directives, layouts, and themes once your site is running.
+
+    @[CLI ->](/docs/cli.html)
+    @[Directives ->](/docs/directives.html)
   @end card
-@end row docs-index
+@end row
 
-## Core directives
+## Read by goal
+@divider
 
-- `@container`
-- `@row` + `@card`
-- `@callout`
-- `@stat`
-- `spotlight` / `section` (`hero` is a legacy alias)
-- `divider`
+@row
+  @card
+    ## I want to launch a site
+    @divider
+    Start with [Quickstart](/quickstart.html), then use [Create Website](/create.html) to understand the scaffold you get from `marque new`.
+  @end card
 
-## Frontmatter essentials
+  @card
+    ## I want to change defaults
+    @divider
+    Read [Configuration](/docs/configuration.html), then go deeper with [Frontmatter](/docs/configuration/frontmatter.html), [Layouts](/docs/configuration/layouts.html), and [Themes](/docs/configuration/themes.html).
+  @end card
 
-- `title`: browser title segment and nav display label.
-- `nav`: output slug / target HTML filename.
-- `layout`, `theme`, `width`: page-level overrides.
+  @card
+    ## I want to extend pages
+    @divider
+    Open [Directives](/docs/directives.html) for layout primitives, inline syntax, and custom directive registration.
+  @end card
+@end row
 
-## Navigation order
+## Documentation paths
+@divider
 
-- Use `summary.mq` to define navbar labels and page ordering.
-- Frontmatter `order` is deprecated.
+@row
+  @card .primary
+    ## Setup path
+    @divider
 
-@callout .ok
-  Use `title` for human-readable labels and `nav` for stable machine-friendly URLs.
-@end callout
+    @container
+      @step
+      Install Marque and confirm the CLI works.
+      @end step
+
+      @step
+      Scaffold a new project with `marque new`.
+      @end step
+
+      @step
+      Run `marque serve .` and edit pages locally.
+      @end step
+    @end container
+  @end card
+
+  @card .secondary
+    ## Configuration path
+    @divider
+
+    @container
+      @step
+      Set site-wide defaults in `marque.toml`.
+      @end step
+
+      @step
+      Override page behavior with frontmatter.
+      @end step
+
+      @step
+      Adjust layout, theme, and width page by page when needed.
+      @end step
+    @end container
+  @end card
+
+  @card .tertiary
+    ## Authoring path
+    @divider
+
+    @container
+      @step
+      Build pages from markdown plus directives.
+      @end step
+
+      @step
+      Use `summary.mq` to control labels and navigation order.
+      @end step
+
+      @step
+      Add custom directives or local themes when the starter setup is no longer enough.
+      @end step
+    @end container
+  @end card
+@end row
+
+## Reference index
+@divider
+
+@row
+  @card
+    ## CLI Commands
+    Everything the terminal interface can do: `new`, `serve`, `build`, `theme-template`, and `help`.
+    @[Open CLI docs ->](/docs/cli.html){.secondary}
+  @end card
+
+  @card
+    ## Configuration
+    Site defaults, page overrides, width behavior, and how settings flow through a project.
+    @[Open configuration docs ->](/docs/configuration.html){.secondary}
+  @end card
+
+  @card
+    ## Themes and layouts
+    Visual style lives in themes; automatic page chrome lives in layouts.
+    @[Open theme docs ->](/docs/configuration/themes.html)
+    @[Open layout docs ->](/docs/configuration/layouts.html)
+  @end card
+
+  @card
+    ## Directives
+    Learn the built-ins, inline syntax, and how to register your own components in `directives/*.js`.
+    @[Open directive docs ->](/docs/directives.html)
+  @end card
+@end row

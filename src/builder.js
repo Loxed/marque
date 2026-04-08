@@ -114,6 +114,7 @@ function build(siteDir, outDir, options = {}) {
     const content = render(ast, { resolveHref });
 
     const outFile = path.join(outDir, outName);
+    const pageTemplate = loadPageTemplate(pageTheme.source, siteDir, pageLayoutName);
 
     mkdirWithRetry(path.dirname(outFile), { recursive: true });
 
@@ -121,7 +122,7 @@ function build(siteDir, outDir, options = {}) {
     const title = fm.title || config.title || 'Marque Site';
     const documentTitle = title ? `${siteTitle} — ${title}` : siteTitle;
     const pageMainStyle = resolveMainStyle(fm, defaultPageWidth);
-    let html = applyTemplate(pageTheme.baseTemplate, {
+    let html = applyTemplate(pageTemplate, {
       document_title: documentTitle,
       title,
       content,
@@ -135,12 +136,12 @@ function build(siteDir, outDir, options = {}) {
     });
 
     // Backward compatibility for templates that don't have layout_css token.
-    if (!/\{\{\s*layout_css\s*\}\}/.test(pageTheme.baseTemplate)) {
+    if (!/\{\{\s*layout_css\s*\}\}/.test(pageTemplate)) {
       html = html.replace(/<link rel="stylesheet" href="([^"]*theme[^"]*)">/, `<link rel="stylesheet" href="${pageLayout.href}">\n<link rel="stylesheet" href="$1">`);
     }
 
     // Backward compatibility for templates that hardcode /theme.css.
-    if (!/\{\{\s*theme_css\s*\}\}/.test(pageTheme.baseTemplate)) {
+    if (!/\{\{\s*theme_css\s*\}\}/.test(pageTemplate)) {
       html = html.replace(/href="\/theme\.css"/g, `href="${pageTheme.href}"`);
     }
 
@@ -214,14 +215,13 @@ function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false)
   if (cache.has(key)) return cache.get(key);
 
   const themeRef = resolveTheme(key, siteDir);
-  const baseTemplate = loadPageTemplate(themeRef, siteDir);
   const css = loadThemeStyle(themeRef, siteDir);
 
   const cssFile = `theme-${safeName(key)}.css`;
   writeFileWithRetry(path.join(outDir, cssFile), css, softFsErrors);
 
   const assets = {
-    baseTemplate,
+    source: themeRef,
     css,
     href: `/${cssFile}`,
   };
@@ -311,7 +311,7 @@ function normalizeLayoutName(layout) {
   return name || 'topnav';
 }
 
-function loadPageTemplate(themeRef, siteDir) {
+function loadPageTemplate(themeRef, siteDir, layoutName) {
   if (fs.existsSync(themeRef) && fs.statSync(themeRef).isDirectory()) {
     const themeIndexTemplate = path.join(themeRef, 'index.html');
     if (fs.existsSync(themeIndexTemplate)) {
@@ -325,29 +325,32 @@ function loadPageTemplate(themeRef, siteDir) {
     }
   }
 
-  // Project-level shared template override.
-  const projectSharedTemplate = path.join(siteDir, 'themes', 'index.html');
-  if (fs.existsSync(projectSharedTemplate)) {
-    return fs.readFileSync(projectSharedTemplate, 'utf8');
+  const layout = normalizeLayoutName(layoutName || 'topnav');
+  const candidates = [
+    path.join(siteDir, 'layouts', `${layout}.html`),
+    path.join(__dirname, '..', 'template', 'layouts', `${layout}.html`),
+    path.join(__dirname, '..', 'layouts', `${layout}.html`),
+    path.join(siteDir, 'layouts', 'index.html'),
+    path.join(__dirname, '..', 'template', 'layouts', 'index.html'),
+    path.join(__dirname, '..', 'layouts', 'index.html'),
+    path.join(siteDir, 'themes', 'index.html'),
+    path.join(__dirname, '..', 'template', 'themes', 'index.html'),
+    path.join(__dirname, '..', 'themes', 'index.html'),
+  ];
+
+  const templatePath = candidates.find(p => fs.existsSync(p));
+  if (templatePath) {
+    return fs.readFileSync(templatePath, 'utf8');
   }
 
-  // Shared default template used when themes only provide CSS.
-  const sharedTemplate = path.join(__dirname, '..', 'template', 'themes', 'index.html');
-  if (fs.existsSync(sharedTemplate)) {
-    return fs.readFileSync(sharedTemplate, 'utf8');
-  }
-
-  // Backward compatibility for older package structure.
-  const legacySharedTemplate = path.join(__dirname, '..', 'themes', 'index.html');
-  if (fs.existsSync(legacySharedTemplate)) {
-    return fs.readFileSync(legacySharedTemplate, 'utf8');
-  }
-
-  throw new Error('No template found. Add themes/index.html or a theme-level index.html/base.html.');
+  throw new Error('No template found. Add layouts/index.html (preferred) or a theme-level index.html/base.html.');
 }
 
 function loadSharedRuntimeScript(siteDir) {
   const candidates = [
+    path.join(siteDir, 'layouts', 'index.js'),
+    path.join(__dirname, '..', 'template', 'layouts', 'index.js'),
+    path.join(__dirname, '..', 'layouts', 'index.js'),
     path.join(siteDir, 'themes', 'index.js'),
     path.join(__dirname, '..', 'template', 'themes', 'index.js'),
     path.join(__dirname, '..', 'themes', 'index.js'),

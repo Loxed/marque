@@ -4,9 +4,29 @@ nav = "404"
 +++
 
 # 404: Page not found
-
 @divider
 
-The route you opened does not have a page yet.
+The route you opened does not have a source page yet.
 
-@[Create this page](){!mq-create-missing-page .secondary}
+@row
+  @card
+    ## What happened?
+    @divider
+    This usually means one of two things:
+
+    - the page file does not exist yet
+    - the route changed and a link still points at the old location
+  @end card
+
+  @card .secondary
+    ## Fix it now
+    @divider
+    If this route should exist, create the missing page from here and then add it to `summary.mq` if you want it to show up in navigation.
+
+    @[Create this page](){!mq-create-missing-page .secondary}
+  @end card
+@end row
+
+@callout .warn
+Creating the page gives you the source file. Navigation labels and ordering still come from `summary.mq`.
+@end callout

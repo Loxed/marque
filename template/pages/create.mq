@@ -4,148 +4,88 @@ nav = "create"
 +++
 
 # Create
+@divider
 
-Once you installed the `marque` package, you can create a static website with it.
+@callout .info
+Once Marque is installed, creating a site is mostly about two things:
+  1. Creating the starter project
+  2. Understanding the template's core files and folders
+@end callout
 
-@card
-
-    ## Initialising a site
+@row
+  @card .primary
+    ## Create a new site
     @divider
 
-    To create a new site, use `marque new <site_name>` to create your site. It will create itself in your current directory.
-
+    To create and serve a new Marque site, run:
     ```sh
-    marque new my_site # creates my_site/ directory with a template
-    ```
-
-    You can enter the site by changing directory in your terminal:
-    ```sh
-    cd my_site
-    ```
-
-    To start previewing your site and live changes, use the `marque serve` command:
-    ```sh
+    marque new my-site
+    cd my-site
     marque serve .
     ```
 
-    This hosts your site on the default port (`3000`). You can then access your site in your browser at [http://localhost:3000](http://localhost:3000).
-@end card
+    You can also choose a [layout](../docs/configuration/layouts.mq) and [theme](../docs/configuration/themes.mq) up front:
 
-----
+    ```sh
+    marque new my-site --layout topnav --theme rustique
+    ```
+  @end card
 
-@card
-    ## Architecture of a Marque site
+  @card
+    ## What you get
     @divider
 
-    A Marque site is built from a small set of files that define settings, navigation, source content, and output.
-
-    ```architecture
+    ```txt
     my-site/
-    ├── pages/         # .mq source pages (index.mq, 404.mq,docs.mq, docs/cli.mq, etc)
-    ├── layouts/       # local editable layouts copied at scaffold
-    ├── themes/        # local editable themes copied at scaffold
-    ├── static/        # store extra assets here, copied as-is to dist/
-    ├── marque.toml    # site config
-    └── dist/          # generated output
+    ├── pages/        # source content: each `.mq` file becomes an HTML page
+    ├── layouts/      # shared shell plus layout css for nav and page chrome
+    ├── themes/       # theme css files that control visual styling
+    ├── static/       # put assets like images and documents here
+    ├── marque.toml   # default configuration for all pages
+    ├── summary.mq    # controls navigation labels and order
+    ├── 404.mq        # fallback page when a route does not exist yet
+    └── dist/         # generated website
     ```
 
-    ### Required files
+    The starter is meant to be edited directly. Themes, layouts, directives, and pages all live in the project.
+  @end card
+@end row
+
+## The core files
+@divider
+
+@card 
+
+Marque projects require 3 core files to function: the default configuration (`marque.toml`), the navigation structure (`summary.mq`), and the fallback page (`404.mq`). These files are generated for you when you create a new site, and you can edit them to change your site's defaults, navigation, and 404 page.
+
+@row
+  @card
+    ## `marque.toml`
     @divider
+    Site-wide defaults live here: title, description, layout, theme, and width.
+  @end card
 
-    @callout .danger
-        If your site is missing either `marque.toml`, `summary.mq`, or `404.mq`, it will not function properly. These files are required for a valid Marque site.
-    @end callout
-    
-
-    @row
-
-    @column
-    
-        @card .primary
-            ## `marque.toml`
-
-            This is the root config file for your site. It controls global settings such as:
-
-            - site title and description
-            - the layout (topnav / sidebar)
-            - the theme (default / rustique, etc)
-            - default page width (markdown body width)
-
-            Minimal example:
-
-            ```toml
-            title = "Marque"
-            description = "Built with Marque"
-            layout = "topnav"
-            theme = "default"
-            width = 82 # can be a number (percentage) 
-            ```
-
-            @callout .info
-                these settings apply to every `.mq` in your project. they can be manually overwritten individually in any page's [frontmatter](/docs/configuration/frontmatter.mq).
-            @end callout
-        @end card
-
-        
-        @card .tertiary
-            ## `404.mq`
-            
-            `404.mq` is the fallback page shown when a user tries to access a non-existent URL on your site. It provides a button to create the missing page automatically.
-        @end card
-
-    @end column
-
-    @card .secondary
+  @card
     ## `summary.mq`
-
-    This file defines your navigation order and labels.
-    A page can exist on disk, but if it is not listed in `summary.mq`,
-    it will not appear in nav order.
-
-    Example:
-
-    ```md
-    # Summary
-
-    [Home](index.mq)
-
-    Guides # separator, not a link
-    [Quickstart](quickstart.mq)
-    [Create](create.mq)
-
-    [Docs](docs.mq)
-    [CLI](docs/cli.mq) # nested under Docs
-    [Commands](docs/commands.mq) # ^
-    ```
-    @callout
-        Note: the `.mq` files listed in `summary.mq` should exist in your `pages/` directory. If they don't, you can create them with the 404 page button.
-    @end callout
-
-
-    @callout .ok
-        `summary.mq` has two display modes: a `topnav` layout that shows all pages in a horizontal navbar with hover dropdowns for nested pages, and a `sidebar` layout that shows all pages in a vertical sidebar. You can choose either layout globally or per page.
-
-    @end card
-
-    @end row
-
-    ----
-
-
-
-
-    ### Required folders
     @divider
+    Controls navigation labels, ordering, grouping, and nesting.
+  @end card
 
-    @row
+  @card
+    ## `404.mq`
+    @divider
+    The fallback page when a route does not exist yet.
+  @end card
+@end row
 
-    @card .primary
-    ### `pages/`
+## The working folders
+@divider
 
-    This is your source content directory.
-    Each `.mq` file becomes an HTML page.
-
-    Typical page:
+@row
+  @card .primary
+    ## `pages/`
+    @divider
+    This is your source content. Each `.mq` file becomes an HTML page.
 
     ```mq
     +++
@@ -155,36 +95,64 @@ Once you installed the `marque` package, you can create a static website with it
 
     # My Page
     ```
-    @end card
+  @end card
 
-    @card .secondary
-    ### `static/`
+  @card .secondary
+    ## `themes/` and `layouts/`
+    @divider
+    Themes control visual styling. Layouts control the shared HTML shell, runtime behavior, and automatic page chrome such as navigation placement.
+  @end card
 
-    Put images, downloads, and other static assets here.
-    Marque copies this folder into output as-is.
+  @card .tertiary
+    ## `static/` and `dist/`
+    @divider
+    Put assets in `static/`. Marque copies them as-is. `dist/` is generated output from `marque build`.
+  @end card
+@end row
 
-    
-    ![Create Page](create_screenshot.png)
-    `![Create Page](create_screenshot.png)`
+## What to edit first
+@divider
 
-    @end card
+@card
+@container
+  @step
+  Open `marque.toml` and set the site title, layout, and theme.
+  @end step
 
-    @card .tertiary
-    ### `dist/`
+  @step
+  Edit `summary.mq` to define your real navigation.
+  @end step
 
-    This is generated output from `marque build`.
-    It contains the static HTML/CSS/assets you deploy.
+  @step
+  Replace the starter pages in `pages/` with your content.
+  @end step
 
-    Build command:
-
-    ```sh
-    marque build .
-    ```
-
-    After build, upload `dist/` to any static host.
-    @end card
-
-    @end row
-
+  @step
+  Adjust `themes/` and `layouts/` only when the starter setup is not enough.
+  @end step
+@end container
 @end card
 
+## Notes
+@divider
+
+@row
+  @card
+    ## Navigation comes from `summary.mq`
+    A page can exist in `pages/` without appearing in nav if it is not listed in `summary.mq`.
+  @end card
+
+  @card
+    ## Frontmatter is optional
+    A page can rely entirely on the defaults in `marque.toml`, then override only what it needs.
+  @end card
+
+  @card
+    ## Build output is disposable
+    `dist/` is generated. Edit source files, not generated HTML.
+  @end card
+@end row
+
+@callout .ok
+If you already finished [Quickstart](/quickstart.html), this page is the next step: use it to understand the scaffold you are now editing.
+@end callout

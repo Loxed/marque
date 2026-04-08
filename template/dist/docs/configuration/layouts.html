@@ -34,18 +34,18 @@
 <p>Layouts behave the same way as themes but have a different purpose. Themes define the global theming of elements in your website, whereas layouts are responsible for laying out what shows up automatically and where it should go. This page forcibly uses the <code>topnav</code> layout, whereas the rest of this website uses the <code>sidebar</code> layout.</p>
 
 <div class="mq-row" style="grid-template-columns: repeat(3, 1fr);">
-<div class="mq-card"><h2><code>topnav</code></h2>
-
-<div class="mq-divider"></div>
-<p>The topnav layout (used on this page) places the navigation bar at the top of the page. The navigation bar contains the website&#39;s title on the left and the navigation links on the right. The content of the page goes below it. Sub-pages are available when hovering the main buttons.</p>
-<p><img src="../../topnav.png" alt="Topnav"></p>
-</div>
-
 <div class="mq-card"><h2><code>sidebar</code></h2>
 
 <div class="mq-divider"></div>
-<p>The sidebar layout (used on the rest of the site) places the navigation to the left side of the page. The navigation bar displays The title on the top, and the rest of the navigations links below it, with numbered sections, subsections and subsubsections. Some divider text also renders to help organize furthermore sections. The content goes to the right of the sidebar. </p>
+<p>The sidebar layout (used on the rest of the site) places the navigation on the left side of the page. The navigation bar displays the website’s title at the top, with the main navigation links listed below it. Section are numbered and divider text is visible. The main page content appears to the right of the sidebar.</p>
 <p><img src="../../sidebar.png" alt="Sidebar"></p>
+</div>
+
+<div class="mq-card"><h2><code>topnav</code></h2>
+
+<div class="mq-divider"></div>
+<p>The topnav layout (used on this page) places the navigation bar at the top of the page. The bar shows the website’s title on the left and the main navigation links on the right. Hovering over the main buttons reveals subsections. Divider text is not used, and the page content appears below the navigation bar.</p>
+<p><img src="../../topnav.png" alt="Topnav"></p>
 </div>
 
 <div class="mq-card"><h2><code>summary.mq</code> used for these examples</h2>
@@ -61,19 +61,82 @@ User Guide # only in sidebar
 Reference # only in sidebar
 
 [Docs](docs.mq)</code></pre></div></div></div>
+<h2>Shared shell: <code>index.html</code> and <code>index.js</code></h2>
+
+<div class="mq-divider"></div>
+<p>The layout system is not only the <code>sidebar.css</code> and <code>topnav.css</code> files. Marque also uses a shared shell in <code>layouts/index.html</code>, plus a small runtime in <code>layouts/index.js</code>.</p>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card primary"><h2><code>layouts/index.html</code></h2>
+
+<div class="mq-divider"></div>
+<p>This is the HTML frame around every page. It defines the elements that always exist:</p>
+<ul>
+<li>the site navigation (<code>.mq-nav</code>)</li>
+<li>the main content area (<code>.mq-main</code>)</li>
+<li>the footer (<code>.mq-footer</code>)</li>
+</ul>
+<p>It also injects the build-time values that Marque generates for each page:</p>
+<ul>
+<li><code>{{ layout_css }}</code>: the active layout stylesheet</li>
+<li><code>{{ theme_css }}</code>: the active theme stylesheet</li>
+<li><code>{{ nav }}</code>: the rendered navigation links</li>
+<li><code>{{ content }}</code>: the page body rendered from <code>.mq</code></li>
+<li><code>{{ page_nav }}</code>: previous / next page links</li>
+<li><code>{{ document_title }}</code>, <code>{{ site_title }}</code>, <code>{{ description }}</code></li>
+</ul>
+</div>
+
+<div class="mq-card"><h2><code>layouts/index.js</code></h2>
+
+<div class="mq-divider"></div>
+<p>This file is intentionally small. It handles the shared interactive behavior used by layouts:</p>
+<ul>
+<li>mobile nav toggle open / close</li>
+<li>submenu positioning near the viewport edge</li>
+<li>closing nav menus on click, <code>Escape</code>, or resize</li>
+<li>code block copy button behavior</li>
+</ul>
+<p>Most layout work still happens in CSS. <code>index.js</code> only supports the interactive pieces.</p>
+</div></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card"><h2>The important structure</h2>
+
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="html"><div class="mq-code-head"><span class="mq-code-lang">html</span><button class="mq-code-copy" type="button" aria-label="Copy html code">Copy</button></div><pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mq-nav&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mq-nav-brand&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/&quot;</span>&gt;</span>{{ site_title }}<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mq-nav-toggle&quot;</span> <span class="hljs-attr">...</span>&gt;</span>☰<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mq-nav-links&quot;</span>&gt;</span>{{ nav }}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">main</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mq-main&quot;</span>{{ <span class="hljs-attr">page_main_style</span> }}&gt;</span>
+  {{ content }}
+  {{ page_nav }}
+<span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span></code></pre></div><p>This structure is the contract the layout CSS relies on. <code>topnav.css</code> and <code>sidebar.css</code> style the same shell differently.</p>
+</div>
+
+<div class="mq-card"><h2>When to edit it</h2>
+
+<div class="mq-divider"></div>
+<p>Edit <code>layouts/index.html</code> when you want to change what appears on every page, for example:</p>
+<ul>
+<li>adding a persistent banner or footer section</li>
+<li>changing where the brand or page navigation renders</li>
+<li>inserting extra wrappers that every layout should share</li>
+</ul>
+<p>Edit <code>sidebar.css</code> or <code>topnav.css</code> when the HTML structure is already correct and you only want to change placement, spacing, or responsive behavior.</p>
+</div></div>
 
 <details class="mq-dropdown"><summary>For developers</summary><div class="mq-dropdown-content">
-<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card"><p>In the <a href="https://github.com/Loxed/marque">Marque</a> repository, the layouts are defined as <code>.css</code> files inside of <code>template/layouts/</code> and copied into each new project at <code>marque new &lt;name&gt;</code>. They directly apply onto the <code>index.html</code> inside of <code>template/themes/</code> when building the project. When creating new layouts, make sure you match the classes used in the <code>index.html</code> file.</p>
-<!-- When creating a new project with `marque new <name>`, the `index.html` file is copied from `template/themes/index.html` and the layout `.css` files are copied from `template/layouts/`. This means that if you want to create a new layout, you need to create a new `.css` file in `template/layouts/` and then copy it into the new project when creating it. You also need to make sure that the new layout is applied in the `index.html` file of the new project. --></div>
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card"><p>In the <a href="https://github.com/Loxed/marque">Marque</a> repository, layouts live in <code>template/layouts/</code> and are copied into each new project at <code>marque new &lt;name&gt;</code>. That folder now owns the shared HTML shell (<code>index.html</code>), the shared runtime (<code>index.js</code>), and the layout-specific CSS files like <code>sidebar.css</code> and <code>topnav.css</code>. When creating new layouts, make sure your CSS matches the classes used in the shared layout shell.</p>
+<!-- When creating a new project with `marque new <name>`, the shared shell files are copied from `template/layouts/`. This means that if you want to create a new layout, you add a new `.css` file in `template/layouts/` and keep it compatible with the shared `layouts/index.html` structure. --></div>
 
 <div class="mq-card"><div class="mq-code-block" data-lang="layout"><div class="mq-code-head"><span class="mq-code-lang">layout</span><button class="mq-code-copy" type="button" aria-label="Copy layout code">Copy</button></div><pre><code class="hljs language-layout">template/
 ├── layouts/
+│   ├── index.html
+│   ├── index.js
 │   ├── sidebar.css
 │   └── topnav.css
-│
 └── themes/
-	├── index.html
-	├── index.js
 	└── *.css</code></pre></div></div></div></div></details>
     <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="frontmatter.html" aria-label="Previous page: Frontmatter"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Frontmatter</span></a><a class="mq-page-nav-link mq-page-nav-next" href="themes.html" aria-label="Next page: Themes"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Themes ↪</span></a></nav>
   </main>

@@ -12,7 +12,7 @@ Directive extension workflow is documented in `DIRECTIVES_DEV.md`.
 - Markdown-first authoring with composable layout blocks.
 - Zero runtime framework on the generated site.
 - Built-in live reload for fast docs and content workflows.
-- Theme system with shared default template and optional per-theme HTML shell.
+- Theme system with CSS-only themes and a shared layout shell.
 - Per-page controls via frontmatter (`theme`, `width`, nav metadata, etc.).
 
 ## Install
@@ -66,8 +66,8 @@ marque build <dir>    compile site to dist/
 my-site/
 ├── directives/    # custom or overridden directive definitions
 ├── pages/         # .mq source pages
-├── layouts/       # local editable layouts copied at scaffold
-├── themes/        # local editable themes copied at scaffold
+├── layouts/       # shared shell + layout CSS copied at scaffold
+├── themes/        # theme CSS files copied at scaffold
 ├── static/        # copied as-is to dist/
 ├── marque.toml    # site config
 └── dist/          # generated output
@@ -209,9 +209,12 @@ module.exports = ({ defineDirective }) => {
 Themes live in `themes/` and use flat files:
 
 - `<name>.css` (required)
-- `index.html` (optional shared template)
 
-Layouts live in `layouts/<name>.css` and define structure only (nav placement, page framing, responsive layout).
+Layouts own the shared page shell and layout behavior:
+
+- `index.html` (shared HTML shell)
+- `index.js` (shared runtime helpers)
+- `<name>.css` (layout-specific structure and responsive framing)
 
 Themes are plain CSS files. Recommended pattern:
 
@@ -309,8 +312,10 @@ Editable variables used by built-in styles:
 
 Template resolution order:
 
-1. `themes/index.html` (shared default template)
-2. `marque-pkg/template/themes/index.html`
+1. `layouts/<layout>.html`
+2. `layouts/index.html`
+3. legacy `themes/index.html`
+4. packaged fallbacks in `template/layouts/` and `template/themes/`
 
 Layout resolution order:
 
@@ -332,7 +337,7 @@ cp /path/to/marque-pkg/template/themes/default.css themes/my-theme.css
 Optional custom shell:
 
 ```sh
-cp /path/to/marque-pkg/template/themes/index.html themes/index.html
+cp /path/to/marque-pkg/template/layouts/index.html layouts/index.html
 ```
 
 Then set:
@@ -343,7 +348,7 @@ theme = my-theme
 
 ## Development Notes
 
-- `marque serve` watches `pages/`, `static/`, `themes/`, and `marque.toml`.
+- `marque serve` watches `pages/`, `static/`, `themes/`, `layouts/`, `directives/`, and `marque.toml`.
 - Any change triggers rebuild + browser reload.
 - `static/` is copied directly into `dist/`.
 

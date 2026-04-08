@@ -10,24 +10,25 @@ Layouts behave the same way as themes but have a different purpose. Themes defin
 
 @row
 
-	@card topnav
-		## `topnav`
-		@divider
-
-		The topnav layout (used on this page) places the navigation bar at the top of the page. The navigation bar contains the website's title on the left and the navigation links on the right. The content of the page goes below it. Sub-pages are available when hovering the main buttons.
-
-		![Topnav](../../topnav.png)
-	@end card topnav
-
 	@card sidebar
 		## `sidebar`
 		@divider
 
-		The sidebar layout (used on the rest of the site) places the navigation to the left side of the page. The navigation bar displays The title on the top, and the rest of the navigations links below it, with numbered sections, subsections and subsubsections. Some divider text also renders to help organize furthermore sections. The content goes to the right of the sidebar. 
+		The sidebar layout (used on the rest of the site) places the navigation on the left side of the page. The navigation bar displays the website’s title at the top, with the main navigation links listed below it. Section are numbered and divider text is visible. The main page content appears to the right of the sidebar.
 
 		![Sidebar](../../sidebar.png)
 
 	@end card
+
+	@card topnav
+		## `topnav`
+		@divider
+
+		The topnav layout (used on this page) places the navigation bar at the top of the page. The bar shows the website’s title on the left and the main navigation links on the right. Hovering over the main buttons reveals subsections. Divider text is not used, and the page content appears below the navigation bar.
+
+		![Topnav](../../topnav.png)
+	@end card topnav
+
 
 	@card 
 		## `summary.mq` used for these examples
@@ -48,25 +49,100 @@ Layouts behave the same way as themes but have a different purpose. Themes defin
 	@end card
 @end row 
 
+## Shared shell: `index.html` and `index.js`
+@divider
+
+The layout system is not only the `sidebar.css` and `topnav.css` files. Marque also uses a shared shell in `layouts/index.html`, plus a small runtime in `layouts/index.js`.
+
+@row
+	@card .primary
+		## `layouts/index.html`
+		@divider
+
+		This is the HTML frame around every page. It defines the elements that always exist:
+
+		- the site navigation (`.mq-nav`)
+		- the main content area (`.mq-main`)
+		- the footer (`.mq-footer`)
+
+		It also injects the build-time values that Marque generates for each page:
+
+		- `{{ layout_css }}`: the active layout stylesheet
+		- `{{ theme_css }}`: the active theme stylesheet
+		- `{{ nav }}`: the rendered navigation links
+		- `{{ content }}`: the page body rendered from `.mq`
+		- `{{ page_nav }}`: previous / next page links
+		- `{{ document_title }}`, `{{ site_title }}`, `{{ description }}`
+	@end card
+
+	@card
+		## `layouts/index.js`
+		@divider
+
+		This file is intentionally small. It handles the shared interactive behavior used by layouts:
+
+		- mobile nav toggle open / close
+		- submenu positioning near the viewport edge
+		- closing nav menus on click, `Escape`, or resize
+		- code block copy button behavior
+
+		Most layout work still happens in CSS. `index.js` only supports the interactive pieces.
+	@end card
+@end row
+
+@row
+	@card
+		## The important structure
+		@divider
+
+		```html
+		<nav class="mq-nav">
+		  <a class="mq-nav-brand" href="/">{{ site_title }}</a>
+		  <button class="mq-nav-toggle" ...>☰</button>
+		  <div class="mq-nav-links">{{ nav }}</div>
+		</nav>
+
+		<main class="mq-main"{{ page_main_style }}>
+		  {{ content }}
+		  {{ page_nav }}
+		</main>
+		```
+
+		This structure is the contract the layout CSS relies on. `topnav.css` and `sidebar.css` style the same shell differently.
+	@end card
+
+	@card
+		## When to edit it
+		@divider
+
+		Edit `layouts/index.html` when you want to change what appears on every page, for example:
+
+		- adding a persistent banner or footer section
+		- changing where the brand or page navigation renders
+		- inserting extra wrappers that every layout should share
+
+		Edit `sidebar.css` or `topnav.css` when the HTML structure is already correct and you only want to change placement, spacing, or responsive behavior.
+	@end card
+@end row
+
 @dropdown "For developers"
 
 	@row
 		@card
-			In the [Marque](https://github.com/Loxed/marque) repository, the layouts are defined as `.css` files inside of `template/layouts/` and copied into each new project at `marque new <name>`. They directly apply onto the `index.html` inside of `template/themes/` when building the project. When creating new layouts, make sure you match the classes used in the `index.html` file.
+			In the [Marque](https://github.com/Loxed/marque) repository, layouts live in `template/layouts/` and are copied into each new project at `marque new <name>`. That folder now owns the shared HTML shell (`index.html`), the shared runtime (`index.js`), and the layout-specific CSS files like `sidebar.css` and `topnav.css`. When creating new layouts, make sure your CSS matches the classes used in the shared layout shell.
 
-			<!-- When creating a new project with `marque new <name>`, the `index.html` file is copied from `template/themes/index.html` and the layout `.css` files are copied from `template/layouts/`. This means that if you want to create a new layout, you need to create a new `.css` file in `template/layouts/` and then copy it into the new project when creating it. You also need to make sure that the new layout is applied in the `index.html` file of the new project. -->
+			<!-- When creating a new project with `marque new <name>`, the shared shell files are copied from `template/layouts/`. This means that if you want to create a new layout, you add a new `.css` file in `template/layouts/` and keep it compatible with the shared `layouts/index.html` structure. -->
 		@end card
 
 		@card
 			```layout
 			template/
 			├── layouts/
+			│   ├── index.html
+			│   ├── index.js
 			│   ├── sidebar.css
 			│   └── topnav.css
-			│
 			└── themes/
-				├── index.html
-				├── index.js
 				└── *.css
 			```
 		@end card

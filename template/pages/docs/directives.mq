@@ -3,86 +3,121 @@ title = "Directives"
 nav = "directives"
 +++
 
-## Directives
-
+# Directives
 @divider
 
-In Marque, anything that starts with `@` is treated as a directive.
+In Marque, anything that starts with `@` is part of the directive layer.
 
-## What is actually useful
+@callout .info
+Directives are how you move from plain markdown into page structure, reusable UI blocks, and project-specific components.
+@end callout
 
-- `@row`: horizontal layout container
-- `@column`: vertical stack container (cards on top of each other)
-- `@card` + `@callout`: core content primitives
-- `@container <name>`: neutral scope/grouping block
-- `@step ... @end step`: block step item
-- @[Label](url){.primary}: inline button/link directive
-- `@badge "Text" {.class}`: inline badge directive
-- `@divider`: block or inline divider
+## The three authoring layers
+@divider
 
-## Two directive families
-
-### 1) Block directives
-
-Block directives define page structure and layout.
-They use a start tag and an end tag.
-
-@row directive-families
-  @card
-    ## Block directives
+@row
+  @card .primary
+    ## Markdown
     @divider
-    Examples: `@container`, `@row`, `@card`, `@callout`.
+    Use plain markdown for headings, paragraphs, lists, links, blockquotes, and code blocks.
+  @end card
 
-    They're defined by a start tag (`@<name>`) and end tag (`@end <name>`), with content in between.
+  @card .secondary
+    ## Directives
+    @divider
+    Use directives when you want layout primitives like rows, cards, callouts, steps, or themed wrappers.
+  @end card
 
-    ```mq
-    @row features # begin block directive calling @<name>
-      @card .accent
-        ## Left card
-        This is a card inside a row.
-      @end card
+  @card .tertiary
+    ## Inline syntax
+    @divider
+    Use button-style links, badges, and inline dividers inside markdown paragraphs when you need lighter UI affordances.
+  @end card
+@end row
 
-      @card
-        ## Right card
-        This is another card inside the same row.
-      @end card
-    @end row # end block directive with @end <name>
-    ```
+## Built-in block directives
+@divider
+
+@row
+  @card
+    ## Layout primitives
+    @divider
+    - `@container`: neutral grouping scope
+    - `@row`: horizontal layout container
+    - `@column`: vertical stack inside a row
+    - `@card`: padded content block
   @end card
 
   @card
-    ## Inline directives
+    ## Content blocks
     @divider
-    Inline directives don't require a separate end tag.
+    - `@callout`: highlighted note block
+    - `@stat`: value + label pair
+    - `@step`: numbered process item
+    - `@section` / `@hero`: themed wrappers when your theme styles them
+  @end card
 
-    Examples: `@[Label](url){.primary}` button syntax, `@badge "Text" {.ok}` badges, and `@divider` inline.
+  @card
+    ## Project directives in the starter
+    @divider
+    - `@dropdown`
+    - `@product-card`
+    - `@sparkle`
+    - `@spotlight`
+  @end card
+@end row
+
+## Inline syntax
+@divider
+
+@row
+  @card
+    ## Buttons
+    @divider
 
     ```mq
-    This is a @[link](directives.mq){.primary} with button styling.
-    Here is a badge: @badge "New" {.accent}.
-    This works inline too: before @divider after
+    @[Read more](docs.mq){.primary}
+    @[Open theme docs](docs/configuration/themes.mq)
     ```
 
-    This is a @[link](directives.mq){.primary} with button styling.
-    Here is a badge: @badge "New" {.accent}.
-    This works inline too: before @divider after
-    
+    This renders as button-style links.
   @end card
-@end row directive-families
 
-## Container scope (recommended)
+  @card
+    ## Badges
+    @divider
 
-`@container` is a neutral block scope. It does not add layout or styles by itself.
+    ```mq
+    @badge "New" {.accent}
+    @badge "Stable" {.secondary}
+    ```
 
-Use it to group content semantically, then compose with `@row`, `@card`, or markdown inside.
+    Example: @badge "New" {.accent} @badge "Stable" {.secondary}
+  @end card
 
-Minimal example:
+  @card
+    ## Inline divider
+    @divider
 
+    ```mq
+    Before @divider after
+    ```
+
+    Example: Before @divider after
+  @end card
+@end row
+
+## Example page composition
+@divider
+
+@row
+  @card
+    ```mq
     @container hero-intro
       ## Welcome
-      Use this scope to group related blocks.
+      Build the page with markdown and directives.
 
-      @row intro-cards
+      @row features
         @card
           Fast setup.
         @end card
@@ -90,39 +125,67 @@ Minimal example:
         @card
           Plain static output.
         @end card
-      @end row
+      @end row features
     @end container hero-intro
+    ```
+  @end card
 
-@container hero-intro
-  **Welcome**
-  Use this scope to group related blocks.
+  @card
+    @container hero-intro
+      ## Welcome
+      Build the page with markdown and directives.
 
-  @row intro-cards
-    @card
-      Fast setup.
-    @end card
+      @row features
+        @card
+          Fast setup.
+        @end card
 
-    @card
-      Plain static output.
-    @end card
-  @end row
-@end container hero-intro
+        @card
+          Plain static output.
+        @end card
+      @end row features
+    @end container hero-intro
+  @end card
+@end row
 
-## Notes
+## Project directive examples
+@divider
 
-- `@stat` exists but is optional. Use it only for KPI-like blocks.
-- `@spotlight` and `@section` are wrappers useful when your theme styles them.
-- `@hero` still works as a backward-compatible alias for `@spotlight`.
-- `@tabs`, `@steps`, and `@line` are removed.
-- `@step` is a block directive and is closed with `@end step`.
+@row
+  @card
+    ```mq
+    @dropdown "What ships in the starter?"
+    Marque includes a few example project directives.
+    @end dropdown
 
-## Custom directives (dev)
+    @product-card .featured Starter
+    ## Starter Plan
+    Best for small teams.
+    @end product-card
 
-You can add your own directives by creating files in `directives/` and registering them with `defineDirective(...)`.
+    Add some shine @sparkle
+    ```
+  @end card
 
-No parser core edit is needed, no renderer switch-case is needed.
+  @card
+    @dropdown "What ships in the starter?"
+    Marque includes a few example project directives.
+    @end dropdown
 
-Example registration:
+    @product-card .featured Starter
+    ## Starter Plan
+    Best for small teams.
+    @end product-card
+
+    Add some shine @sparkle
+  @end card
+@end row
+
+## Writing your own directives
+@divider
+
+@card
+Create files in `directives/` and register them with `defineDirective(...)`.
 
 ```js
 module.exports = ({ defineDirective }) => {
@@ -137,97 +200,21 @@ module.exports = ({ defineDirective }) => {
 
   defineDirective('sparkle', {
     type: 'inline',
-    render: () => '<span class="mq-sparkle" aria-hidden="true">*</span>',
+    render: () => '<span class="mq-sparkle" aria-hidden="true">✶</span>',
   });
 };
 ```
-
-@card
-
-Example usage in `.mq`:
-
-@row
-
-@card
-```mq
-@product-card .featured Starter
-## Starter Plan
-Best for small teams.
-@end product-card
-
-Add some shine @sparkle
-```
 @end card
 
-@card
-@product-card .featured Starter
-## Starter Plan
-Best for small teams.
-@end product-card
+@callout .ok
+You do not need to edit the parser core to add project directives. Put them in `directives/*.js`, register them, and Marque will load them.
+@end callout
 
-Add some shine @sparkle
+## Notes
+@divider
 
-@sparkle
-@end card
-
-@end row
-@end card
-
-Tip: directive names with hyphens are supported (`product-card`, `my-alert`, etc.).
-
-## Axis quick reference
-
-- `@row` lays children horizontally.
-- `@column` lays children vertically.
-
-Example:
-
-    @row two-panels
-      @column
-        @card
-          Top in left column
-        @end card
-        @card
-          Bottom in left column
-        @end card
-      @end column
-
-      @column
-        @card
-          Top in right column
-        @end card
-      @end column
-    @end row two-panels
-
-## Step counter scope
-
-Inside a `@container`, each `@step ... @end step` is numbered from 1 to n.
-When you leave that container, numbering resets for the next container.
-
-Example:
-
-    @container setup
-      @step
-        Install dependencies
-      @end step
-      @step
-        Start dev server
-      @end step
-      @step
-        Build for production
-      @end step
-    @end container setup
-
-    @container publish
-      @step
-        Upload dist/
-      @end step
-    @end container publish
-
-
-@dropdown "For Developers"
-This allows you to have multiple independent step sequences on the same page, which is useful for things like "Setup steps" and "Publishing steps" that are conceptually separate.  
-
-
-
-@end dropdown
+- `@container` is structural and does not add a wrapper by itself.
+- `@row` and `@column` control axis and grouping.
+- `@step` numbering resets when you start a new container flow.
+- Inline buttons and badges are renderer syntax, not block directives.
+- Hyphenated directive names like `product-card` are supported.

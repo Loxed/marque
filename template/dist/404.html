@@ -32,9 +32,27 @@
     <h1>404: Page not found</h1>
 
 <div class="mq-divider"></div>
-<p>The route you opened does not have a page yet.</p>
-<p><a href="" class="mq-btn secondary" id="mq-create-missing-page">Create this page</a></p>
+<p>The route you opened does not have a source page yet.</p>
 
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card"><h2>What happened?</h2>
+
+<div class="mq-divider"></div>
+<p>This usually means one of two things:</p>
+<ul>
+<li>the page file does not exist yet</li>
+<li>the route changed and a link still points at the old location</li>
+</ul>
+</div>
+
+<div class="mq-card secondary"><h2>Fix it now</h2>
+
+<div class="mq-divider"></div>
+<p>If this route should exist, create the missing page from here and then add it to <code>summary.mq</code> if you want it to show up in navigation.</p>
+<p><a href="" class="mq-btn secondary" id="mq-create-missing-page">Create this page</a></p>
+</div></div>
+
+<div class="mq-callout warn"><p>Creating the page gives you the source file. Navigation labels and ordering still come from <code>summary.mq</code>.</p>
+</div>
     
   </main>
 

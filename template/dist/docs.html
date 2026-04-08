@@ -30,46 +30,121 @@
   <!-- main content in which .mq files are injected -->
   <main class="mq-main" style="--page-width: 100%; --page-max-w: none;">
     <h1>Documentation</h1>
-<p>Welcome to the Marque documentation set. Start with quickstart, then move to configuration and advanced layout/theme usage.</p>
 
-<div class="mq-row" style="grid-template-columns: repeat(4, 1fr);"><div class="mq-card accent"><h2>Quickstart</h2>
-<p>Install flow, local serve workflow, and publishing sequence.<br><a href="quickstart.html" class="mq-btn primary">Go to quickstart -&gt;</a></p>
+<div class="mq-divider"></div>
+<p>Use this page as the map for the rest of the site.</p>
+
+<div class="mq-callout info"><p>Marque stays intentionally small:</p>
+<ul>
+<li>write source pages in <code>.mq</code></li>
+<li>define navigation in <code>summary.mq</code></li>
+<li>set defaults in <code>marque.toml</code></li>
+<li>build plain static HTML with <code>marque build</code></li>
+</ul>
 </div>
 
-<div class="mq-card"><h2>Themes</h2>
-<p>Build themes with plain CSS variables and manual overrides.<br><a href="docs/configuration/themes.html" class="mq-btn">Open theme docs -&gt;</a></p>
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card accent"><h2>Start here</h2>
+
+<div class="mq-divider"></div>
+<p>New to Marque? Follow the setup path first, then come back for reference pages.</p>
+<p><a href="quickstart.html" class="mq-btn primary">Quickstart -&gt;</a><br><a href="create.html" class="mq-btn">Create a site -&gt;</a></p>
 </div>
 
 <div class="mq-card"><h2>Configuration</h2>
-<p>Learn <code>marque.toml</code>, frontmatter precedence, and page-level overrides.<br><a href="docs/configuration.html">Open configuration -&gt;</a></p>
+
+<div class="mq-divider"></div>
+<p>Learn where settings live, how page overrides work, and how themes and layouts fit together.</p>
+<p><a href="docs/configuration.html" class="mq-btn">Configuration -&gt;</a><br><a href="docs/configuration/frontmatter.html" class="mq-btn">Frontmatter -&gt;</a></p>
 </div>
 
-<div class="mq-card"><h2>Layouts</h2>
-<p>See layout overrides and summary-driven navigation in action.<br><a href="docs/configuration/layouts.html">Open layouts -&gt;</a></p>
+<div class="mq-card"><h2>Reference</h2>
+
+<div class="mq-divider"></div>
+<p>Browse CLI commands, directives, layouts, and themes once your site is running.</p>
+<p><a href="docs/cli.html" class="mq-btn">CLI -&gt;</a><br><a href="docs/directives.html" class="mq-btn">Directives -&gt;</a></p>
 </div></div>
-<h2>Core directives</h2>
-<ul>
-<li><code>@container</code></li>
-<li><code>@row</code> + <code>@card</code></li>
-<li><code>@callout</code></li>
-<li><code>@stat</code></li>
-<li><code>spotlight</code> / <code>section</code> (<code>hero</code> is a legacy alias)</li>
-<li><code>divider</code></li>
-</ul>
-<h2>Frontmatter essentials</h2>
-<ul>
-<li><code>title</code>: browser title segment and nav display label.</li>
-<li><code>nav</code>: output slug / target HTML filename.</li>
-<li><code>layout</code>, <code>theme</code>, <code>width</code>: page-level overrides.</li>
-</ul>
-<h2>Navigation order</h2>
-<ul>
-<li>Use <code>summary.mq</code> to define navbar labels and page ordering.</li>
-<li>Frontmatter <code>order</code> is deprecated.</li>
-</ul>
+<h2>Read by goal</h2>
 
-<div class="mq-callout ok"><p>Use <code>title</code> for human-readable labels and <code>nav</code> for stable machine-friendly URLs.</p>
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card"><h2>I want to launch a site</h2>
+
+<div class="mq-divider"></div>
+<p>Start with <a href="quickstart.html">Quickstart</a>, then use <a href="create.html">Create Website</a> to understand the scaffold you get from <code>marque new</code>.</p>
 </div>
+
+<div class="mq-card"><h2>I want to change defaults</h2>
+
+<div class="mq-divider"></div>
+<p>Read <a href="docs/configuration.html">Configuration</a>, then go deeper with <a href="docs/configuration/frontmatter.html">Frontmatter</a>, <a href="docs/configuration/layouts.html">Layouts</a>, and <a href="docs/configuration/themes.html">Themes</a>.</p>
+</div>
+
+<div class="mq-card"><h2>I want to extend pages</h2>
+
+<div class="mq-divider"></div>
+<p>Open <a href="docs/directives.html">Directives</a> for layout primitives, inline syntax, and custom directive registration.</p>
+</div></div>
+<h2>Documentation paths</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card primary"><h2>Setup path</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Install Marque and confirm the CLI works.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><p>Scaffold a new project with <code>marque new</code>.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="3"></div><div class="mq-step-body"><p>Run <code>marque serve .</code> and edit pages locally.</p>
+</div></div></div>
+
+<div class="mq-card secondary"><h2>Configuration path</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Set site-wide defaults in <code>marque.toml</code>.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><p>Override page behavior with frontmatter.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="3"></div><div class="mq-step-body"><p>Adjust layout, theme, and width page by page when needed.</p>
+</div></div></div>
+
+<div class="mq-card tertiary"><h2>Authoring path</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Build pages from markdown plus directives.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><p>Use <code>summary.mq</code> to control labels and navigation order.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="3"></div><div class="mq-step-body"><p>Add custom directives or local themes when the starter setup is no longer enough.</p>
+</div></div></div></div>
+<h2>Reference index</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(4, 1fr);"><div class="mq-card"><h2>CLI Commands</h2>
+<p>Everything the terminal interface can do: <code>new</code>, <code>serve</code>, <code>build</code>, <code>theme-template</code>, and <code>help</code>.<br><a href="docs/cli.html" class="mq-btn secondary">Open CLI docs -&gt;</a></p>
+</div>
+
+<div class="mq-card"><h2>Configuration</h2>
+<p>Site defaults, page overrides, width behavior, and how settings flow through a project.<br><a href="docs/configuration.html" class="mq-btn secondary">Open configuration docs -&gt;</a></p>
+</div>
+
+<div class="mq-card"><h2>Themes and layouts</h2>
+<p>Visual style lives in themes; automatic page chrome lives in layouts.<br><a href="docs/configuration/themes.html" class="mq-btn">Open theme docs -&gt;</a><br><a href="docs/configuration/layouts.html" class="mq-btn">Open layout docs -&gt;</a></p>
+</div>
+
+<div class="mq-card"><h2>Directives</h2>
+<p>Learn the built-ins, inline syntax, and how to register your own components in <code>directives/*.js</code>.<br><a href="docs/directives.html" class="mq-btn">Open directive docs -&gt;</a></p>
+</div></div>
     <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="create.html" aria-label="Previous page: Create Website"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Create Website</span></a><a class="mq-page-nav-link mq-page-nav-next" href="docs/cli.html" aria-label="Next page: CLI Commands"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">CLI Commands ↪</span></a></nav>
   </main>
 

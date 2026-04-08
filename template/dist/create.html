@@ -30,88 +30,69 @@
   <!-- main content in which .mq files are injected -->
   <main class="mq-main" style="--page-width: 100%; --page-max-w: none;">
     <h1>Create</h1>
-<p>Once you installed the <code>marque</code> package, you can create a static website with it.</p>
-
-<div class="mq-card"><h2>Initialising a site</h2>
-
-<div class="mq-divider"></div>
-<p>To create a new site, use <code>marque new &lt;site_name&gt;</code> to create your site. It will create itself in your current directory.</p>
-<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque new my_site <span class="hljs-comment"># creates my_site/ directory with a template</span></code></pre></div><p>You can enter the site by changing directory in your terminal:</p>
-<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh"><span class="hljs-built_in">cd</span> my_site</code></pre></div><p>To start previewing your site and live changes, use the <code>marque serve</code> command:</p>
-<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque serve .</code></pre></div><p>This hosts your site on the default port (<code>3000</code>). You can then access your site in your browser at <a href="http://localhost:3000">http://localhost:3000</a>.</p>
-</div>
-<hr>
-
-<div class="mq-card"><h2>Architecture of a Marque site</h2>
-
-<div class="mq-divider"></div>
-<p>A Marque site is built from a small set of files that define settings, navigation, source content, and output.</p>
-<div class="mq-code-block" data-lang="architecture"><div class="mq-code-head"><span class="mq-code-lang">architecture</span><button class="mq-code-copy" type="button" aria-label="Copy architecture code">Copy</button></div><pre><code class="hljs language-architecture">my-site/
-├── pages/         # .mq source pages (index.mq, 404.mq,docs.mq, docs/cli.mq, etc)
-├── layouts/       # local editable layouts copied at scaffold
-├── themes/        # local editable themes copied at scaffold
-├── static/        # store extra assets here, copied as-is to dist/
-├── marque.toml    # site config
-└── dist/          # generated output</code></pre></div><h3>Required files</h3>
 
 <div class="mq-divider"></div>
 
-<div class="mq-callout danger"><p>If your site is missing either <code>marque.toml</code>, <code>summary.mq</code>, or <code>404.mq</code>, it will not function properly. These files are required for a valid Marque site.</p>
+<div class="mq-callout info"><p>Once Marque is installed, creating a site is mostly about two things:</p>
+<ol>
+<li>Creating the starter project</li>
+<li>Understanding the template&#39;s core files and folders</li>
+</ol>
 </div>
 
-<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);">
-<div class="mq-column">
-<div class="mq-card primary"><h2><code>marque.toml</code></h2>
-<p>This is the root config file for your site. It controls global settings such as:</p>
-<ul>
-<li>site title and description</li>
-<li>the layout (topnav / sidebar)</li>
-<li>the theme (default / rustique, etc)</li>
-<li>default page width (markdown body width)</li>
-</ul>
-<p>Minimal example:</p>
-<div class="mq-code-block" data-lang="toml"><div class="mq-code-head"><span class="mq-code-lang">toml</span><button class="mq-code-copy" type="button" aria-label="Copy toml code">Copy</button></div><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = <span class="hljs-string">&quot;Marque&quot;</span>
-<span class="hljs-attr">description</span> = <span class="hljs-string">&quot;Built with Marque&quot;</span>
-<span class="hljs-attr">layout</span> = <span class="hljs-string">&quot;topnav&quot;</span>
-<span class="hljs-attr">theme</span> = <span class="hljs-string">&quot;default&quot;</span>
-<span class="hljs-attr">width</span> = <span class="hljs-number">82</span> <span class="hljs-comment"># can be a number (percentage) </span></code></pre></div>
-<div class="mq-callout info"><p>these settings apply to every <code>.mq</code> in your project. they can be manually overwritten individually in any page&#39;s <a href="docs/configuration/frontmatter.html">frontmatter</a>.</p>
+<div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card primary"><h2>Create a new site</h2>
+
+<div class="mq-divider"></div>
+<p>To create and serve a new Marque site, run:</p>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque new my-site
+<span class="hljs-built_in">cd</span> my-site
+marque serve .</code></pre></div><p>You can also choose a <a href="../docs/configuration/layouts.html">layout</a> and <a href="../docs/configuration/themes.html">theme</a> up front:</p>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque new my-site --layout topnav --theme rustique</code></pre></div></div>
+
+<div class="mq-card"><h2>What you get</h2>
+
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="txt"><div class="mq-code-head"><span class="mq-code-lang">txt</span><button class="mq-code-copy" type="button" aria-label="Copy txt code">Copy</button></div><pre><code class="hljs language-txt">my-site/
+├── pages/        # source content: each `.mq` file becomes an HTML page
+├── layouts/      # shared shell plus layout css for nav and page chrome
+├── themes/       # theme css files that control visual styling
+├── static/       # put assets like images and documents here
+├── marque.toml   # default configuration for all pages
+├── summary.mq    # controls navigation labels and order
+├── 404.mq        # fallback page when a route does not exist yet
+└── dist/         # generated website</code></pre></div><p>The starter is meant to be edited directly. Themes, layouts, directives, and pages all live in the project.</p>
 </div></div>
-
-<div class="mq-card tertiary"><h2><code>404.mq</code></h2>
-<p><code>404.mq</code> is the fallback page shown when a user tries to access a non-existent URL on your site. It provides a button to create the missing page automatically.</p>
-</div>
-</div>
-
-<div class="mq-card secondary"><h2><code>summary.mq</code></h2>
-<p>This file defines your navigation order and labels.<br>A page can exist on disk, but if it is not listed in <code>summary.mq</code>,<br>it will not appear in nav order.</p>
-<p>Example:</p>
-<div class="mq-code-block" data-lang="md"><div class="mq-code-head"><span class="mq-code-lang">md</span><button class="mq-code-copy" type="button" aria-label="Copy md code">Copy</button></div><pre><code class="hljs language-md"><span class="hljs-section"># Summary</span>
-
-[<span class="hljs-string">Home</span>](<span class="hljs-link">index.mq</span>)
-
-Guides # separator, not a link
-[<span class="hljs-string">Quickstart</span>](<span class="hljs-link">quickstart.mq</span>)
-[<span class="hljs-string">Create</span>](<span class="hljs-link">create.mq</span>)
-
-[<span class="hljs-string">Docs</span>](<span class="hljs-link">docs.mq</span>)
-[<span class="hljs-string">CLI</span>](<span class="hljs-link">docs/cli.mq</span>) # nested under Docs
-[<span class="hljs-string">Commands</span>](<span class="hljs-link">docs/commands.mq</span>) # ^</code></pre></div>
-<div class="mq-callout info"><p>Note: the <code>.mq</code> files listed in <code>summary.mq</code> should exist in your <code>pages/</code> directory. If they don&#39;t, you can create them with the 404 page button.</p>
-</div>
-
-<div class="mq-callout ok"><p><code>summary.mq</code> has two display modes: a <code>topnav</code> layout that shows all pages in a horizontal navbar with hover dropdowns for nested pages, and a <code>sidebar</code> layout that shows all pages in a vertical sidebar. You can choose either layout globally or per page.</p>
-</div></div>
-</div>
-<hr>
-<h3>Required folders</h3>
+<h2>The core files</h2>
 
 <div class="mq-divider"></div>
 
-<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);">
-<div class="mq-card primary"><h3><code>pages/</code></h3>
-<p>This is your source content directory.<br>Each <code>.mq</code> file becomes an HTML page.</p>
-<p>Typical page:</p>
+<div class="mq-card"><p>Marque projects require 3 core files to function: the default configuration (<code>marque.toml</code>), the navigation structure (<code>summary.mq</code>), and the fallback page (<code>404.mq</code>). These files are generated for you when you create a new site, and you can edit them to change your site&#39;s defaults, navigation, and 404 page.</p>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card"><h2><code>marque.toml</code></h2>
+
+<div class="mq-divider"></div>
+<p>Site-wide defaults live here: title, description, layout, theme, and width.</p>
+</div>
+
+<div class="mq-card"><h2><code>summary.mq</code></h2>
+
+<div class="mq-divider"></div>
+<p>Controls navigation labels, ordering, grouping, and nesting.</p>
+</div>
+
+<div class="mq-card"><h2><code>404.mq</code></h2>
+
+<div class="mq-divider"></div>
+<p>The fallback page when a route does not exist yet.</p>
+</div></div>
+<h2>The working folders</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card primary"><h2><code>pages/</code></h2>
+
+<div class="mq-divider"></div>
+<p>This is your source content. Each <code>.mq</code> file becomes an HTML page.</p>
 <div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">+++
 title = &quot;My Page&quot;
 nav = &quot;my-page&quot;
@@ -119,18 +100,50 @@ nav = &quot;my-page&quot;
 
 # My Page</code></pre></div></div>
 
-<div class="mq-card secondary"><h3><code>static/</code></h3>
-<p>Put images, downloads, and other static assets here.<br>Marque copies this folder into output as-is.</p>
-<p><img src="create_screenshot.png" alt="Create Page"><br><code>![Create Page](create_screenshot.png)</code></p>
+<div class="mq-card secondary"><h2><code>themes/</code> and <code>layouts/</code></h2>
+
+<div class="mq-divider"></div>
+<p>Themes control visual styling. Layouts control the shared HTML shell, runtime behavior, and automatic page chrome such as navigation placement.</p>
 </div>
 
-<div class="mq-card tertiary"><h3><code>dist/</code></h3>
-<p>This is generated output from <code>marque build</code>.<br>It contains the static HTML/CSS/assets you deploy.</p>
-<p>Build command:</p>
-<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque build .</code></pre></div><p>After build, upload <code>dist/</code> to any static host.</p>
+<div class="mq-card tertiary"><h2><code>static/</code> and <code>dist/</code></h2>
+
+<div class="mq-divider"></div>
+<p>Put assets in <code>static/</code>. Marque copies them as-is. <code>dist/</code> is generated output from <code>marque build</code>.</p>
+</div></div>
+<h2>What to edit first</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-card"><div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Open <code>marque.toml</code> and set the site title, layout, and theme.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><p>Edit <code>summary.mq</code> to define your real navigation.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="3"></div><div class="mq-step-body"><p>Replace the starter pages in <code>pages/</code> with your content.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="4"></div><div class="mq-step-body"><p>Adjust <code>themes/</code> and <code>layouts/</code> only when the starter setup is not enough.</p>
+</div></div></div>
+<h2>Notes</h2>
+
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card"><h2>Navigation comes from <code>summary.mq</code></h2>
+<p>A page can exist in <code>pages/</code> without appearing in nav if it is not listed in <code>summary.mq</code>.</p>
 </div>
+
+<div class="mq-card"><h2>Frontmatter is optional</h2>
+<p>A page can rely entirely on the defaults in <code>marque.toml</code>, then override only what it needs.</p>
 </div>
-</div>
+
+<div class="mq-card"><h2>Build output is disposable</h2>
+<p><code>dist/</code> is generated. Edit source files, not generated HTML.</p>
+</div></div>
+
+<div class="mq-callout ok"><p>If you already finished <a href="quickstart.html">Quickstart</a>, this page is the next step: use it to understand the scaffold you are now editing.</p>
+</div></div>
     <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="quickstart.html" aria-label="Previous page: Quick Start"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Quick Start</span></a><a class="mq-page-nav-link mq-page-nav-next" href="docs.html" aria-label="Next page: Docs"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Docs ↪</span></a></nav>
   </main>
 

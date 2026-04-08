@@ -7,57 +7,128 @@ layout = "sidebar"
 # Configuration
 @divider
 
-Marque configuration is split into two layers:
+Marque configuration is split across two places:
 
-- Site-level defaults in `marque.toml`
-- Page-level overrides in frontmatter
+@row
+  @card .primary
+    ## `marque.toml`
+    @divider
+    Site-wide defaults live here. This is where you set your title, description, default layout, theme, and page width once for the whole site.
+  @end card
 
-## `marque.toml` essentials
+  @card .secondary
+    ## Page frontmatter
+    @divider
+    Individual `.mq` pages can override the defaults they care about without changing the rest of the site.
+  @end card
+@end row
 
+@callout .info
+If a page does not define an override, it inherits the value from `marque.toml`.
+@end callout
+
+## Minimal site config
+@divider
+
+@card
 ```toml
 title = "Marque"
 description = "Built with Marque"
-layout = "topnav"
-theme = "default"
-width = 82
+layout = "sidebar"
+theme = "comte"
+width = "full"
 ```
 
-What these keys control:
+That is enough to define the site's baseline behavior.
+@end card
 
-- `title`: site title used in page titles and branding
-- `description`: default meta description
-- `layout`: default layout for pages
-- `theme`: default theme for pages
-- `width`: default page content width
+## What each setting controls
+@divider
 
-## How this maps to mdBook-style config thinking
+@row
+  @card
+    ## Identity
+    @divider
+    `title` and `description` define the site's default branding and metadata.
 
-If you come from mdBook's `book.toml`:
+    - `title`: used in page titles and nav branding
+    - `description`: fallback meta description for generated pages
+  @end card
 
-- `book.title` -> `title`
-- `book.description` -> `description`
-- `src` is effectively `pages/` in Marque
-- output directory is `dist/` after `marque build`
+  @card
+    ## Presentation
+    @divider
+    `layout` and `theme` decide how the site looks and where global navigation appears.
 
-Marque keeps the config intentionally small and focused.
+    - `layout`: `sidebar` or `topnav`
+    - `theme`: the active CSS theme file
+  @end card
 
-## Build and watch behavior
+  @card
+    ## Content width
+    @divider
+    `width` controls the usable width of `.mq-main`. It can be a number, a percentage, or named presets like `narrow`, `normal`, `wide`, and `full`.
+  @end card
+@end row
 
-```sh
-marque serve .
-marque build .
-```
+## Choose the right place
+@divider
 
-- `serve` watches source/config/summary and rebuilds automatically
-- `build` emits static output into `dist/`
+@card
+@container
+  @step
+  Use `marque.toml` when you want a default that should apply everywhere.
+  @end step
 
-## Navigation source
+  @step
+  Use frontmatter when a page needs a one-off layout, width, theme, or slug.
+  @end step
 
-`summary.mq` is the source of nav labels and ordering.
-A page can exist in `pages/` without appearing in nav if not listed in summary.
+  @step
+  Use `summary.mq` when you want to change labels, ordering, and navigation structure.
+  @end step
+@end container
+@end card
 
-## Related docs
+## Files that work together
+@divider
 
-- [Frontmatter](/docs/configuration/frontmatter.html)
-- [Themes](/docs/configuration/themes.html)
-- [CLI Commands](/docs/cli.html)
+@row
+  @card
+    ## `marque.toml`
+    Defines defaults for the whole site.
+  @end card
+
+  @card
+    ## Frontmatter
+    Overrides defaults for one page at a time.
+  @end card
+
+  @card
+    ## `summary.mq`
+    Controls navigation labels, ordering, grouping, and nesting.
+  @end card
+@end row
+
+## Continue with the focused pages
+@divider
+
+@row
+  @card .accent
+    ## Frontmatter
+    See the exact page-level keys, examples, and width override behavior.
+    @[Open frontmatter docs ->](/docs/configuration/frontmatter.html){.primary}
+  @end card
+
+  @card
+    ## Layouts
+    Compare `sidebar` and `topnav`, and see how summary-driven navigation changes between them.
+    @[Open layout docs ->](/docs/configuration/layouts.html)
+  @end card
+
+  @card
+    ## Themes
+    Learn how theme files work, how to override a page theme, and which built-in themes ship with Marque.
+    @[Open theme docs ->](/docs/configuration/themes.html)
+  @end card
+@end row
