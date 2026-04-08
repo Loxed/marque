@@ -665,16 +665,30 @@ function findConfigKeyLine(configPath, key) {
 }
 
 function findFrontmatterKeyLine(src, key) {
-  if (!src.startsWith('---')) return null;
-  const lines = src.split(/\r?\n/);
-  if (lines[0].trim() !== '---') return null;
+  const lines = String(src || '').split(/\r?\n/);
+  if (!lines.length) return null;
+
+  const fence = getFrontmatterFence(lines[0]);
+  if (!fence) return null;
+  const keyPattern = new RegExp(`^\\s*${escapeRegExp(key)}\\s*${fence === '+++' ? '=' : ':'}`, 'i');
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i].trim();
-    if (line === '---') break;
-    if (new RegExp(`^${key}\\s*:`,'i').test(line)) return i + 1;
+    if (line === fence) break;
+    if (keyPattern.test(line)) return i + 1;
   }
   return null;
+}
+
+function getFrontmatterFence(firstLine) {
+  const line = String(firstLine || '').trim();
+  if (line === '+++') return '+++';
+  if (line === '---') return '---';
+  return null;
+}
+
+function escapeRegExp(value) {
+  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function buildMissingLayoutDiagnostic({ layoutName, sourceFile, line, value, siteDir }) {

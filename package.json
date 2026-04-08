@@ -16,6 +16,6 @@
     "ws": "^8.20.0"
   },
   "bin": {
-    "marque": "./bin/cli.js"
+    "marque": "./src/cli.js"
   }
 }

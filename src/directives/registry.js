@@ -128,7 +128,7 @@ function listDirectives() {
 }
 
 /**
- * Resolve optional CSS/MQS snippets provided by directives.
+ * Resolve optional CSS snippets provided by directives.
  * The returned list contains only non-empty style chunks.
  */
 function collectDirectiveStyles() {

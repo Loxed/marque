@@ -21,7 +21,6 @@ function startFileWatcher({
 	themesDir,
 	layoutsDir,
 	directivesDir,
-	customDir,
 	configFile,
 	summaryFile,
 	pagesSummaryFile,
@@ -76,8 +75,6 @@ function startFileWatcher({
 			const inLayouts = !!relToLayouts && !relToLayouts.startsWith('..') && !path.isAbsolute(relToLayouts);
 			const relToDirectives = path.relative(directivesDir, absFile);
 			const inDirectives = !!relToDirectives && !relToDirectives.startsWith('..') && !path.isAbsolute(relToDirectives);
-			const relToCustom = path.relative(customDir, absFile);
-			const inCustom = !!relToCustom && !relToCustom.startsWith('..') && !path.isAbsolute(relToCustom);
 
 			if (absFileNorm === outDirAbsNorm || absFileNorm.startsWith(`${outDirAbsNorm}${path.sep}`)) return;
 
@@ -89,14 +86,11 @@ function startFileWatcher({
 			const isDirectivesEvent = inDirectives
 				&& ['add', 'change', 'unlink', 'addDir', 'unlinkDir'].includes(event)
 				&& (['addDir', 'unlinkDir'].includes(event) || ext === '.js');
-			const isCustomDirectiveEvent = inCustom
-				&& ['add', 'change', 'unlink', 'addDir', 'unlinkDir'].includes(event)
-				&& (['addDir', 'unlinkDir'].includes(event) || ext === '.js');
 			const isTomlChangeEvent = event === 'change' && absFileNorm === configFileNorm;
 			const isSummaryFileEvent = ['add', 'change', 'unlink'].includes(event)
 				&& (absFileNorm === summaryFileNorm || absFileNorm === pagesSummaryFileNorm);
 
-			if (!((inPages && (isMqFileEvent || isPagesDirEvent)) || isThemeEvent || isLayoutEvent || isDirectivesEvent || isCustomDirectiveEvent || isTomlChangeEvent || isSummaryFileEvent)) return;
+			if (!((inPages && (isMqFileEvent || isPagesDirEvent)) || isThemeEvent || isLayoutEvent || isDirectivesEvent || isTomlChangeEvent || isSummaryFileEvent)) return;
 
 			if (inPages && event === 'unlink' && ext === '.mq') {
 				removeGeneratedHtmlForDeletedMq(absFile, pagesDir, outDir);

@@ -6,7 +6,7 @@ This document explains how Marque turns `.mq` files into a static site.
 
 For `marque build <site-dir>`:
 
-1. `bin/cli.js` parses command-line arguments.
+1. `src/cli.js` parses command-line arguments.
 2. `src/builder.js` loads site config, pages, summary, theme, and layout.
 3. `src/parser.js` converts each page body into a unified AST (Abstract Syntax Tree).
 4. `src/renderer.js` renders AST nodes to HTML.
@@ -15,13 +15,13 @@ For `marque build <site-dir>`:
 
 For `marque serve <site-dir> [port]`:
 
-1. `bin/cli.js` calls `src/server/index.js`.
+1. `src/cli.js` calls `src/server/index.js`.
 2. The server does an initial build, then starts HTTP + WebSocket + file watcher.
 3. On file changes, watcher triggers rebuild and reload.
 
 For `marque new <site-dir>`:
 
-1. `bin/cli.js` forwards scaffold options.
+1. `src/cli.js` forwards scaffold options.
 2. `src/scaffold/index.js` creates starter files.
 3. `src/scaffold/starter.js` applies defaults.
 
@@ -86,6 +86,7 @@ All directives use the same node type:
 - `src/builder.js`: orchestrates complete site generation.
 - `src/parser.js`: `.mq` source to AST.
 - `src/renderer.js`: AST to HTML + markdown transforms + syntax highlighting.
+- `src/renderer/node-renderers.js`: directive-aware node rendering helper used by `src/renderer.js`.
 - `src/diagnostics.js`: structured diagnostics model.
 - `src/utils/errors.js`: pretty diagnostic printing.
 
@@ -114,12 +115,3 @@ All directives use the same node type:
 - `layouts/<name>.css`
 - `static/**`
 - `directives/**/*.js`
-
-## 7) Active vs Split Modules
-
-Active runtime path currently uses:
-
-- `src/parser.js`
-- `src/renderer.js`
-
-Split directories (`src/parser/`, `src/renderer/`) exist as modular mirrors and are not the primary path yet.

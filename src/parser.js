@@ -68,7 +68,8 @@ function tokenize(lines) {
       continue;
     }
 
-    // Horizontal rule
+    // Horizontal rule inside page content.
+    // Frontmatter is stripped separately by extractFrontmatter() before build-time parsing.
     if (trimmed === '---') {
       tokens.push({ type: 'hr_or_fm', lineNo, col: 1, endCol: 3 });
       continue;
@@ -213,9 +214,12 @@ function locFromToken(tok) {
 
 function extractFrontmatter(src) {
   const source = String(src || '');
+
+  // Preferred syntax: TOML frontmatter fenced with +++.
   const toml = extractDelimitedFrontmatter(source, '+++', (raw) => parseFlatToml(raw, { allowBareStrings: true }));
   if (toml) return toml;
 
+  // Legacy compatibility: YAML-style key/value frontmatter fenced with ---.
   const legacy = extractDelimitedFrontmatter(source, '---', parseLegacyFrontmatter);
   if (legacy) return legacy;
 

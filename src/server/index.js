@@ -26,7 +26,6 @@ function serve(siteDir, outDir, port = 3000) {
 	const themesDir = path.resolve(siteDir, 'themes');
 	const layoutsDir = path.resolve(siteDir, 'layouts');
 	const directivesDir = path.resolve(siteDir, 'directives');
-	const customDir = path.resolve(siteDir, 'custom');
 	const configFile = path.resolve(siteDir, 'marque.toml');
 	const summaryFile = path.resolve(siteDir, 'summary.mq');
 	const pagesSummaryFile = path.resolve(pagesDir, 'summary.mq');
@@ -53,7 +52,6 @@ function serve(siteDir, outDir, port = 3000) {
 		themesDir,
 		layoutsDir,
 		directivesDir,
-		customDir,
 		configFile,
 		summaryFile,
 		pagesSummaryFile,

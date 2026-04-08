@@ -3,10 +3,10 @@
 
 const path = require('path');
 const fs = require('fs');
-const { build } = require('../src/builder');
-const { serve } = require('../src/server');
-const { scaffold, parseNewArgs } = require('../src/scaffold');
-const { printBuildError } = require('../src/utils/errors');
+const { build } = require('./builder');
+const { serve } = require('./server');
+const { scaffold, parseNewArgs } = require('./scaffold');
+const { printBuildError } = require('./utils/errors');
 
 const [, , cmd, ...args] = process.argv;
 

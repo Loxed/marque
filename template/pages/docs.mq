@@ -15,8 +15,8 @@ Welcome to the Marque documentation set. Start with quickstart, then move to con
   @end card
 
   @card
-    ## MQS Themes
-    Build themes with `@mqs-palette` + `@mqs-essentials`, then add manual overrides.
+    ## Themes
+    Build themes with plain CSS variables and manual overrides.
     @[Open theme docs ->](/docs/configuration/themes.html)
   @end card
 

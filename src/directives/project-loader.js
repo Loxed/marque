@@ -10,31 +10,19 @@ function loadProjectDirectives(siteDir) {
 
   const files = collectProjectDirectiveFiles(siteDir);
   for (const file of files) {
-    loadCustomDirectiveFile(file);
+    loadDirectiveFile(file);
   }
 
   return files;
 }
 
 function collectProjectDirectiveFiles(siteDir) {
-  const out = [];
-
-  // Preferred location: <site>/directives/*.js
   const directivesDir = path.resolve(siteDir, 'directives');
-  if (fs.existsSync(directivesDir)) {
-    out.push(...collectCustomJsFiles(directivesDir));
-  }
-
-  // Backward compatibility: load every .js in <site>/custom
-  const customDir = path.resolve(siteDir, 'custom');
-  if (fs.existsSync(customDir)) {
-    out.push(...collectCustomJsFiles(customDir));
-  }
-
-  return dedupeAndSort(out);
+  if (!fs.existsSync(directivesDir)) return [];
+  return dedupeAndSort(collectDirectiveJsFiles(directivesDir));
 }
 
-function loadCustomDirectiveFile(filePath) {
+function loadDirectiveFile(filePath) {
   const resolved = require.resolve(filePath);
   delete require.cache[resolved];
 
@@ -51,7 +39,7 @@ function loadCustomDirectiveFile(filePath) {
   }
 }
 
-function collectCustomJsFiles(rootDir) {
+function collectDirectiveJsFiles(rootDir) {
   const out = [];
   walk(rootDir, out);
   out.sort((a, b) => a.localeCompare(b));
