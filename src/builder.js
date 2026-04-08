@@ -144,6 +144,7 @@ function build(siteDir, outDir, options = {}) {
       html = html.replace(/href="\/theme\.css"/g, `href="${pageTheme.href}"`);
     }
 
+    html = rewriteLocalDocumentPaths(html, outName);
     writeFileWithRetry(outFile, html, softFsErrors);
     built++;
     if (logBuiltFiles) {
@@ -157,7 +158,7 @@ function build(siteDir, outDir, options = {}) {
     if (!page.redirectFrom || page.redirectFrom === page.href) continue;
     const redirectFile = path.join(outDir, page.redirectFrom);
     mkdirWithRetry(path.dirname(redirectFile), { recursive: true });
-    writeFileWithRetry(redirectFile, buildRedirectPage(`/${page.href}`), softFsErrors);
+    writeFileWithRetry(redirectFile, buildRedirectPage(toRelativeOutputHref(page.redirectFrom, page.href)), softFsErrors);
     if (logBuiltFiles) {
       console.log(`  redirect → ${page.redirectFrom} -> ${page.href}`);
     }
@@ -598,6 +599,59 @@ function normalizeRelPath(value) {
     .split(path.sep).join('/')
     .replace(/^\.\//, '')
     .replace(/\/+/g, '/');
+}
+
+function splitHrefTarget(href) {
+  const raw = String(href || '').trim();
+  const hashIndex = raw.indexOf('#');
+  const queryIndex = raw.indexOf('?');
+  let splitIndex = -1;
+
+  if (hashIndex >= 0 && queryIndex >= 0) splitIndex = Math.min(hashIndex, queryIndex);
+  else splitIndex = Math.max(hashIndex, queryIndex);
+
+  return {
+    pathPart: splitIndex >= 0 ? raw.slice(0, splitIndex) : raw,
+    suffix: splitIndex >= 0 ? raw.slice(splitIndex) : '',
+  };
+}
+
+function toRelativeOutputHref(currentPageHref, targetHref) {
+  const { pathPart, suffix } = splitHrefTarget(targetHref);
+  let targetPath = String(pathPart || '').trim();
+
+  if (!targetPath || targetPath === '/') {
+    targetPath = 'index.html';
+  } else {
+    targetPath = targetPath.replace(/^\/+/, '');
+  }
+
+  if (/\.mq$/i.test(targetPath)) {
+    targetPath = targetPath.replace(/\.mq$/i, '.html');
+  }
+
+  targetPath = normalizeRelPath(path.posix.normalize(targetPath));
+
+  const currentPage = normalizeRelPath(currentPageHref || 'index.html');
+  const currentDir = normalizeRelPath(path.posix.dirname(currentPage)).replace(/^\.$/, '');
+  const relativeTarget = path.posix.relative(currentDir || '.', targetPath);
+  const href = normalizeRelPath(relativeTarget || path.posix.basename(targetPath));
+
+  return `${href || path.posix.basename(targetPath)}${suffix}`;
+}
+
+function rewriteLocalDocumentPaths(html, currentPageHref) {
+  return String(html || '').replace(
+    /(\b(?:href|src)=["'])([^"']+)(["'])/gi,
+    (_, head, rawHref, tail) => {
+      const href = String(rawHref || '').trim();
+      if (!href.startsWith('/') || href.startsWith('//')) {
+        return `${head}${rawHref}${tail}`;
+      }
+
+      return `${head}${toRelativeOutputHref(currentPageHref, href)}${tail}`;
+    },
+  );
 }
 
 function findConfigKeyLine(configPath, key) {

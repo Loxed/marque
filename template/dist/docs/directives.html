@@ -7,24 +7,24 @@
 <title>Marque — Directives</title>
 
 <meta name="description" content="Built with Marque">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
 
-<link rel="stylesheet" href="/layout-sidebar.css">
-<link rel="stylesheet" href="/theme-comt.css">
+<link rel="stylesheet" href="../layout-sidebar.css">
+<link rel="stylesheet" href="../theme-comte.css">
 </head>
 <body>
 
   <!-- Navigation Bar (Works with topnav and sidebar) -->
 
   <nav class="mq-nav">
-    <a class="mq-nav-brand" href="/">Marque</a>
+    <a class="mq-nav-brand" href="../index.html">Marque</a>
     <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
     <div class="mq-nav-links">
-      <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="/index.html"><span class="mq-nav-num">1.</span>Home</a>
+      <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../index.html"><span class="mq-nav-num">1.</span>Home</a>
 <div class="mq-nav-heading">User Guide</div>
-<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="/quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="/create.html"><span class="mq-nav-num">3.</span>Create Website</a>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../create.html"><span class="mq-nav-num">3.</span>Create Website</a>
 <div class="mq-nav-heading">Reference</div>
-<div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs.html"><span class="mq-nav-num">4.</span>Docs</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="/docs/cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="/docs/configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/frontmatter.html"><span class="mq-nav-num">4.2.1</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/layouts.html"><span class="mq-nav-num">4.2.2</span>Layouts</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="/docs/configuration/themes.html"><span class="mq-nav-num">4.2.3</span>Themes</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link active" style="--mq-nav-level:1;" href="/docs/directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
+<div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="../docs.html"><span class="mq-nav-num">4.</span>Docs</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="configuration/frontmatter.html"><span class="mq-nav-num">4.2.1</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="configuration/layouts.html"><span class="mq-nav-num">4.2.2</span>Layouts</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="configuration/themes.html"><span class="mq-nav-num">4.2.3</span>Themes</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link active" style="--mq-nav-level:1;" href="directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
     </div>
   </nav>
 
@@ -73,7 +73,7 @@
 <p>Examples: <code>&lt;a href=&quot;url&quot; class=&quot;mq-btn primary&quot;&gt;Label&lt;/a&gt;</code> button syntax, <code>&lt;span class=&quot;mq-badge ok&quot;&gt;Text&lt;/span&gt;</code> badges, and <code>&lt;span class=&quot;mq-divider-inline&quot; aria-hidden=&quot;true&quot; style=&quot;display:inline-block;vertical-align:middle;width:1.8rem;height:2px;margin:0 .35rem;background:var(--mq-primary,currentColor);opacity:.75;border-radius:2px;&quot;&gt;&lt;/span&gt;</code> inline.</p>
 <div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">This is a &lt;a href=&quot;/docs/directives.html&quot; class=&quot;mq-btn primary&quot;&gt;link&lt;/a&gt; with button styling.
 Here is a badge: &lt;span class=&quot;mq-badge accent&quot;&gt;New&lt;/span&gt;.
-This works inline too: before @divider after</code></pre></div><p>This is a <a href="/docs/directives.html" class="mq-btn primary">link</a> with button styling.<br>Here is a badge: <span class="mq-badge accent">New</span>.<br>This works inline too: before <span class="mq-divider-inline" aria-hidden="true" style="display:inline-block;vertical-align:middle;width:1.8rem;height:2px;margin:0 .35rem;background:var(--mq-primary,currentColor);opacity:.75;border-radius:2px;"></span> after</p>
+This works inline too: before @divider after</code></pre></div><p>This is a <a href="directives.html" class="mq-btn primary">link</a> with button styling.<br>Here is a badge: <span class="mq-badge accent">New</span>.<br>This works inline too: before <span class="mq-divider-inline" aria-hidden="true" style="display:inline-block;vertical-align:middle;width:1.8rem;height:2px;margin:0 .35rem;background:var(--mq-primary,currentColor);opacity:.75;border-radius:2px;"></span> after</p>
 </div></div>
 <h2>Container scope (recommended)</h2>
 <p><code>@container</code> is a neutral block scope. It does not add layout or styles by itself.</p>
@@ -171,7 +171,7 @@ Add some shine @sparkle</code></pre></div></div>
 
 <details class="mq-dropdown"><summary>For Developers</summary><div class="mq-dropdown-content"><p>This allows you to have multiple independent step sequences on the same page, which is useful for things like &quot;Setup steps&quot; and &quot;Publishing steps&quot; that are conceptually separate.  </p>
 </div></details>
-    <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="/docs/configuration/themes.html" aria-label="Previous page: Themes"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Themes</span></a><span class="mq-page-nav-spacer" aria-hidden="true"></span></nav>
+    <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="configuration/themes.html" aria-label="Previous page: Themes"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Themes</span></a><span class="mq-page-nav-spacer" aria-hidden="true"></span></nav>
   </main>
 
   <!-- footer at the bottom of every page -->
@@ -179,6 +179,6 @@ Add some shine @sparkle</code></pre></div></div>
     Built with <a href="https://github.com/Loxed/marque">Marque</a>
   </footer>
 
-  <script src="/index.js"></script>
+  <script src="../index.js"></script>
 </body>
 </html>
