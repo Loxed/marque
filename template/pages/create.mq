@@ -1,6 +1,6 @@
 +++
-title = "Create"
-nav = "create"
+title = Create
+nav = create
 +++
 
 # Create
@@ -62,7 +62,7 @@ Marque projects require 3 core files to function: the default configuration (`ma
   @card
     ## `marque.toml`
     @divider
-    Site-wide defaults live here: title, description, layout, theme, and width.
+    Site-wide defaults live here: title, description, repository link, layout, theme, width, and alignment.
   @end card
 
   @card
@@ -89,8 +89,8 @@ Marque projects require 3 core files to function: the default configuration (`ma
 
     ```mq
     +++
-    title = "My Page"
-    nav = "my-page"
+    title = My Page
+    nav = my-page
     +++
 
     # My Page
@@ -116,7 +116,7 @@ Marque projects require 3 core files to function: the default configuration (`ma
 @card
 @container
   @step
-  Open `marque.toml` and set the site title, layout, and theme.
+  Open `marque.toml` and set the site title, repo link, layout, theme, and default alignment.
   @end step
 
   @step

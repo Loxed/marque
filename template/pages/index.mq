@@ -1,6 +1,7 @@
 +++
-title = "Home"
-nav = "index"
+title = Home
+nav = index
+width = normal
 +++
 
 # Marque

@@ -151,8 +151,13 @@ body {
   margin-left: var(--page-margin-left, auto);
   margin-right: var(--page-margin-right, auto);
   padding: clamp(2rem, 5vw, 3rem) var(--mq-page-gutter, 1rem);
+  text-align: var(--page-text-align, inherit);
   container-type: inline-size;
   container-name: mq-main;
+}
+
+.mq-main :where(pre, .mq-code-block, .mq-code-block pre, .mq-code-head, .mq-page-nav, table) {
+  text-align: left;
 }
 
 .mq-column {

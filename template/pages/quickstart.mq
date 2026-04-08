@@ -1,21 +1,12 @@
 +++
-title = "Quickstart"
-nav = "quickstart"
+title = Quickstart
+nav = quickstart
 +++
 
 # Quickstart
+@divider
 
 Get from zero to a running site in a few minutes.
-
-@callout .warn
-  ### Windows Users!
-    Make sure you use the correct workspace for your CLI tool! 
-    - If you’re using WSL, clone the project inside the WSL filesystem (`/home/username/...`)
-    - If you’re using CMD or PowerShell, keep it on the Windows filesystem. 
-
-  Running the project on the Windows filesystem with WSL (`mnt/c/...`) can cause significant performance issues!
-@end callout
-
 
 @row
   @column
@@ -108,3 +99,13 @@ Get from zero to a running site in a few minutes.
     @end container
   @end card create
 @end row
+
+@dropdown "Windows Users"
+  @callout .warn
+      Make sure you use the correct workspace for your CLI tool! 
+      - If you’re using **WSL**, clone the project inside the WSL filesystem (`/home/username/...`)
+      - If you’re using **CMD** or **PowerShell**, keep it on the Windows filesystem. 
+
+    Running the project on the Windows filesystem with WSL (`mnt/c/...`) can cause significant performance issues!
+  @end callout
+@end dropdown

@@ -23,6 +23,8 @@ function build(siteDir, outDir, options = {}) {
   const configuredLayoutName = config.layout || 'topnav';
   const defaultLayoutName = normalizeLayoutName(configuredLayoutName);
   const defaultPageWidth = normalizeWidth(config.width);
+  const defaultContentAlign = normalizeContentAlign(config.align);
+  const siteRepo = normalizeRepoValue(config.repo || config.repository || '');
 
   // Refresh packaged + project directives on every build.
   loadProjectDirectives(siteDir);
@@ -121,7 +123,7 @@ function build(siteDir, outDir, options = {}) {
     const siteTitle = config.title || 'Marque';
     const title = fm.title || config.title || 'Marque Site';
     const documentTitle = title ? `${siteTitle} — ${title}` : siteTitle;
-    const pageMainStyle = resolveMainStyle(fm, defaultPageWidth);
+    const pageMainStyle = resolveMainStyle(fm, defaultPageWidth, defaultContentAlign);
     let html = applyTemplate(pageTemplate, {
       document_title: documentTitle,
       title,
@@ -133,6 +135,8 @@ function build(siteDir, outDir, options = {}) {
       layout_css: pageLayout.href,
       theme_css: pageTheme.href,
       page_main_style: pageMainStyle,
+      repo: siteRepo,
+      footer_repo_hidden: siteRepo ? '' : ' hidden',
     });
 
     // Backward compatibility for templates that don't have layout_css token.
@@ -740,7 +744,7 @@ function buildMissingLayoutDiagnostic({ layoutName, sourceFile, line, value, sit
   if (suggestion) {
     suggestions.push({
       message: `did you mean "${suggestion}"?`,
-      replacement: `layout = "${suggestion}"`,
+      replacement: `layout = ${suggestion}`,
     });
   }
 
@@ -1466,10 +1470,10 @@ function writeFileWithRetry(filePath, content, softFsErrors = false) {
   return true;
 }
 
-function resolveMainStyle(fm, defaultPageWidth) {
+function resolveMainStyle(fm, defaultPageWidth, defaultContentAlign) {
   const pageWidth = normalizeWidth(fm.width);
   const width = pageWidth || defaultPageWidth;
-  const align = normalizeContentAlign(fm.align);
+  const align = normalizeContentAlign(fm.align) || defaultContentAlign;
   const declarations = [];
 
   if (width) {
@@ -1486,6 +1490,10 @@ function resolveMainStyle(fm, defaultPageWidth) {
   } else if (align === 'center') {
     declarations.push(`--page-margin-left: auto`);
     declarations.push(`--page-margin-right: auto`);
+  }
+
+  if (align) {
+    declarations.push(`--page-text-align: ${align}`);
   }
 
   if (!declarations.length) return '';
@@ -1522,6 +1530,10 @@ function normalizeContentAlign(value) {
   if (!raw) return null;
   if (raw === 'left' || raw === 'center' || raw === 'right') return raw;
   return null;
+}
+
+function normalizeRepoValue(value) {
+  return String(value || '').trim();
 }
 
 module.exports = { build };

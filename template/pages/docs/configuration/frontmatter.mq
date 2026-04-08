@@ -1,6 +1,6 @@
 +++
-title = "Frontmatter"
-nav = "frontmatter"
+title = Frontmatter
+nav = frontmatter
 +++
 # Frontmatter
 @divider
@@ -24,11 +24,13 @@ Frontmatter at the top of each `.mq` page for per-page overrides.
 @divider
 The `marque.toml` file is where you define your configuration settings that apply to the entire site. This is where you define key parameters such as:
 ```toml
-title = "Marque"
-description = "Built with Marque"
-layout = "sidebar"
-theme = "rustique"
+title = Marque
+description = Built with Marque
+repo = https://github.com/Loxed/marque
+layout = sidebar
+theme = rustique
 width = 82
+align = center
 ```
 @callout .ok
 *These settings apply to the entire site.*
@@ -36,9 +38,11 @@ width = 82
 Here's what each parameter does:
 - `title`: The default title of your site, used as main icon in the navbar and in page titles.
 - `description`: A default meta description for your site, used in the `<head>` of your pages.
+- `repo`: An optional Git repository URL shown in the shared footer.
 - `layout`: The default navigation [__layout__](__layouts__) for your pages (`topnav`/`sidebar`).
 - `theme`: The default [__theme__](__themes__) for your pages (for example `rustique` or `javarti`).
 - `width`: The default content width for your pages, which can be a percentage (`82`, `50%`) or predefined values like `narrow` (70%), `normal` (82%), `wide` (92%), or `full` (100%).
+- `align`: The default content alignment for your pages (`left`, `center`, or `right`).
 @end card
 @card per-page
 ## Per-page Overrides (Inline Frontmatter)
@@ -46,12 +50,12 @@ Here's what each parameter does:
 Pages can override site-wide defaults by including frontmatter at the top of the `.mq` file:
 ```mq
 +++               <--- opening TOML frontmatter fence
-title = "Layouts"     <--- override page title
-layout = "topnav"     <--- override page layout
-theme = "mida"        <--- override page theme
-width = "50%"         <--- override page width
-align = "right"       <--- place the content column on the right
-nav = "new-link"      <--- override output slug
+title = Layouts      <--- override page title
+layout = topnav      <--- override page layout
+theme = mida         <--- override page theme
+width = 50%          <--- override page width
+align = right        <--- place the content column on the right
+nav = new-link       <--- override output slug
 +++               <--- closing fence
 # Layout          <--- page content starts here
 @divider
@@ -73,7 +77,7 @@ Every parameter defined in a page's frontmatter is optional. A page can work wit
 - `right`
 
 @callout .info
-`align` moves the content column itself. It does not change paragraph text alignment. If `width` is `full`, alignment usually has little or no visible effect.
+`align` changes how page content is presented. On full-width pages it mainly affects text alignment, and on narrower pages it also changes where the content column sits.
 @end callout
 @end card
 @end row

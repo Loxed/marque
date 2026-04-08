@@ -3,12 +3,22 @@ description = Built with Marque
 layout = sidebar
 theme = comte
 width = full
+align = left
+repo = https://github.com/Loxed/marque
 
 # Marque config
+#
+# repo:
+#   repository url shown in the shared footer
 #
 # layout options:
 #   topnav    -> top navigation layout
 #   sidebar   -> mdbook-like left sidebar layout
+#
+# align options:
+#   left      -> pin content column to the left
+#   center    -> center content column
+#   right     -> pin content column to the right
 #
 # theme options (built-in):
 #   comte, rustique, pycorino, gouda, javarti, elmental, mida

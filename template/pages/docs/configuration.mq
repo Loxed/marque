@@ -1,7 +1,7 @@
 +++
-title = "Configuration"
-nav = "configuration"
-layout = "sidebar"
+title = Configuration
+nav = configuration
+layout = sidebar
 +++
 
 # Configuration
@@ -13,7 +13,7 @@ Marque configuration is split across two places:
   @card .primary
     ## `marque.toml`
     @divider
-    Site-wide defaults live here. This is where you set your title, description, default layout, theme, and page width once for the whole site.
+    Site-wide defaults live here. This is where you set your title, description, repository link, default layout, theme, page width, and page alignment once for the whole site.
   @end card
 
   @card .secondary
@@ -32,11 +32,13 @@ If a page does not define an override, it inherits the value from `marque.toml`.
 
 @card
 ```toml
-title = "Marque"
-description = "Built with Marque"
-layout = "sidebar"
-theme = "comte"
-width = "full"
+title = Marque
+description = Built with Marque
+repo = https://github.com/Loxed/marque
+layout = sidebar
+theme = comte
+width = full
+align = center
 ```
 
 That is enough to define the site's baseline behavior.
@@ -49,19 +51,21 @@ That is enough to define the site's baseline behavior.
   @card
     ## Identity
     @divider
-    `title` and `description` define the site's default branding and metadata.
+    `title`, `description`, and `repo` define the site's default branding, metadata, and footer source link.
 
     - `title`: used in page titles and nav branding
     - `description`: fallback meta description for generated pages
+    - `repo`: optional footer link to the site's Git repository
   @end card
 
   @card
     ## Presentation
     @divider
-    `layout` and `theme` decide how the site looks and where global navigation appears.
+    `layout`, `theme`, and `align` decide how the site looks and how the main content column is placed.
 
     - `layout`: `sidebar` or `topnav`
     - `theme`: the active CSS theme file
+    - `align`: `left`, `center`, or `right`
   @end card
 
   @card
@@ -81,7 +85,7 @@ That is enough to define the site's baseline behavior.
   @end step
 
   @step
-  Use frontmatter when a page needs a one-off layout, width, theme, or slug.
+  Use frontmatter when a page needs a one-off layout, width, align, theme, or slug.
   @end step
 
   @step

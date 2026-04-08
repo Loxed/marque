@@ -98,19 +98,23 @@ Built-in starter layouts, themes, and directive files are sourced from `template
 `marque.toml` controls global defaults:
 
 ```toml
-title = "My Site"
-description = "Built with Marque"
-layout = "topnav"
-theme = "default"
+title = My Site
+description = Built with Marque
+repo = https://github.com/you/my-site
+layout = topnav
+theme = default
 width = 82
+align = center
 ```
 
 - `title`: site title used in templates.
 - `description`: fallback page meta description.
+- `repo`: optional repository URL shown in the shared footer.
 - `layout`: global layout name (`topnav` or `sidebar`).
   legacy values `default`, `xmb`, and `crossmediabar` resolve to `topnav`.
 - `theme`: global theme name.
 - `width`: global page width occupancy (percentage-based, see below).
+- `align`: default content alignment (`left`, `center`, `right`).
 
 ## Frontmatter
 
@@ -118,12 +122,12 @@ Each page can override defaults with TOML frontmatter:
 
 ```toml
 +++
-title = "Syntax Reference"
-nav = "syntax-reference"
-theme = "rustique"
-layout = "sidebar"
+title = Syntax Reference
+nav = syntax-reference
+theme = rustique
+layout = sidebar
 width = 90
-align = "left"
+align = left
 +++
 ```
 

@@ -1,7 +1,7 @@
 +++
-title = "Themes"
-nav = "themes"
-theme = "mida"
+title = Themes
+nav = themes
+theme = mida
 +++
 
 # Themes 
@@ -24,7 +24,7 @@ Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) 
 
 ## Create your own theme
 
-The main theme used on your site is defined in the `marque.toml` file with the `theme = "..."` key. You can change this to any theme you like, and Marque will use it when you run `marque serve` or `marque build`. To override a theme on a per-page basis (like this page), add `theme = "name"` to the page's [frontmatter](../configuration/frontmatter.mq), and Marque will use that theme instead of the default one.
+The main theme used on your site is defined in the `marque.toml` file with the `theme = ...` key. You can change this to any theme you like, and Marque will use it when you run `marque serve` or `marque build`. To override a theme on a per-page basis (like this page), add `theme = name` to the page's [frontmatter](../configuration/frontmatter.mq), and Marque will use that theme instead of the default one.
 
 @end card
 
@@ -45,7 +45,7 @@ Paste baseline variables and base styles.
 @end step
 
 @step
-Activate theme in `marque.toml`: `theme = "my-theme"`.
+Activate theme in `marque.toml`: `theme = my-theme`.
 @end step
 
 @step 

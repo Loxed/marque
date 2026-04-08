@@ -10,8 +10,10 @@ function applyScaffoldDefaults({ targetDir, layout, theme }) {
   if (!fs.existsSync(configPath)) return;
 
   let content = fs.readFileSync(configPath, 'utf8');
-  content = replaceOrAppend(content, /^\s*layout\s*=\s*"[^"]*"\s*$/m, `layout = "${layout}"`, 'layout = "sidebar"');
-  content = replaceOrAppend(content, /^\s*theme\s*=\s*"[^"]*"\s*$/m, `theme = "${theme}"`, 'theme = "default"');
+  content = content.replace(/\r\n?/g, '\n');
+  content = replaceOrAppend(content, /^\s*layout\s*=\s*.+$/m, `layout = ${layout}`, 'layout = sidebar');
+  content = replaceOrAppend(content, /^\s*theme\s*=\s*.+$/m, `theme = ${theme}`, 'theme = default');
+  content = removeMatchingLine(content, /^\s*repo\s*=\s*.+$/m);
   fs.writeFileSync(configPath, content, 'utf8');
 }
 
@@ -34,6 +36,12 @@ function replaceOrAppend(content, regex, replacement, fallbackLine) {
 
   const trimmed = content.replace(/\s+$/, '');
   return `${trimmed}\n${replacement}\n`;
+}
+
+function removeMatchingLine(content, regex) {
+  if (!regex.test(content)) return content;
+  const next = content.replace(new RegExp(`${regex.source}\\r?\\n?`, regex.flags), '');
+  return next.replace(/\n{3,}/g, '\n\n');
 }
 
 function buildStarterFirstPage() {
