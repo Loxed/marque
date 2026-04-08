@@ -56,9 +56,27 @@ Output goes to `dist/`.
 marque new   <dir> [layout:<name>] [theme:<name>]    scaffold a new site
 marque serve <dir>    dev server with live reload (default port 3000)
 marque build <dir>    compile site to dist/
+marque migrate <src> [target] [--from mdbook|mkdocs] import a supported docs site
 ```
 
 `<dir>` defaults to `.`.
+
+## Migration
+
+Marque can import the docs generators that are structurally closest to it first:
+
+- `mdBook`
+- `MkDocs`
+
+Examples:
+
+```sh
+marque migrate ./old-book
+marque migrate ./old-book ./new-marque --from mdbook
+marque migrate ./old-docs ./new-marque --from mkdocs --layout sidebar --theme comte
+```
+
+The migration command creates a fresh Marque site, copies markdown pages into `pages/`, copies non-markdown docs assets into `static/`, generates `summary.mq`, and adds a `migration-notes.mq` page for anything that still needs manual review.
 
 ## Project Structure
 

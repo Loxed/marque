@@ -381,6 +381,7 @@ function findMQ(dir) {
 
 function buildPageEntries(pages, pagesDir, config, summary) {
   const summaryMap = (summary && summary.map) || new Map();
+  const homeKey = summary && summary.firstPageKey ? String(summary.firstPageKey).toLowerCase() : null;
 
   return pages.map(file => {
     const rel = path.relative(pagesDir, file);
@@ -395,17 +396,27 @@ function buildPageEntries(pages, pagesDir, config, summary) {
     const isIndexSource = sourceBase.toLowerCase() === 'index';
     const slugSource = fm.nav || fm.title || sourceBase;
     const fileBase = safeName(slugSource) || safeName(sourceBase);
+    const isSummaryHome = !!homeKey && normalizedRel === homeKey;
 
     let href = webDir ? `${webDir}/${fileBase}.html` : `${fileBase}.html`;
     let redirectFrom = null;
 
-    if (isIndexSource) {
+    if (isIndexSource && !isSummaryHome) {
       const indexHref = webDir ? `${webDir}/index.html` : 'index.html';
       if (fileBase !== 'index') {
         redirectFrom = indexHref;
       } else {
         href = indexHref;
       }
+    }
+
+    if (isSummaryHome) {
+      if (href !== 'index.html') {
+        redirectFrom = href;
+      }
+      href = 'index.html';
+    } else if (homeKey && !webDir && isIndexSource && href === 'index.html') {
+      href = 'index-page.html';
     }
 
     const summaryMeta = summaryMap.get(normalizedRel);
@@ -442,6 +453,7 @@ function loadSummary(siteDir, pagesDir) {
   const isMqSummary = /\.mq$/i.test(summaryPath);
   const dirByLevel = [];
   let order = 0;
+  let firstPageKey = null;
 
   for (const line of lines) {
     const rawLine = String(line || '');
@@ -484,6 +496,7 @@ function loadSummary(siteDir, pagesDir) {
         level,
         order: map.get(key).order,
       });
+      if (!firstPageKey) firstPageKey = key;
       continue;
     }
 
@@ -492,7 +505,7 @@ function loadSummary(siteDir, pagesDir) {
     }
   }
 
-  return { path: summaryPath, map, items };
+  return { path: summaryPath, map, items, firstPageKey };
 }
 
 function getSummaryIndentLevel(line) {
@@ -637,6 +650,13 @@ function toRelativeOutputHref(currentPageHref, targetHref) {
 
   const currentPage = normalizeRelPath(currentPageHref || 'index.html');
   const currentDir = normalizeRelPath(path.posix.dirname(currentPage)).replace(/^\.$/, '');
+
+  if (targetPath === 'index.html') {
+    const up = normalizeRelPath(path.posix.relative(currentDir || '.', '.')).replace(/^\.$/, '');
+    const baseHref = up ? `${up}/` : './';
+    return `${baseHref}${suffix || ''}`;
+  }
+
   const relativeTarget = path.posix.relative(currentDir || '.', targetPath);
   const href = normalizeRelPath(relativeTarget || path.posix.basename(targetPath));
 
@@ -853,9 +873,28 @@ function buildNav(pageEntries, summary) {
   }));
 }
 
+function buildSummaryNavKey(item, navKeyStack) {
+  const level = Math.max(0, Number(item.level || 0));
+  const parentKey = level > 0 ? navKeyStack[level - 1] : '';
+  const segment = summaryNavSegment(item.key || item.label || '');
+  return parentKey ? `${parentKey}/${segment}` : segment;
+}
+
+function summaryNavSegment(value) {
+  const rel = normalizeRelPath(String(value || ''));
+  const noExt = rel.replace(/\.mq$/i, '');
+  const dir = normalizeRelPath(path.posix.dirname(noExt)).replace(/^\.$/, '');
+  const base = path.posix.basename(noExt);
+  if (!base || base.toLowerCase() === 'index') {
+    return safeName(dir ? path.posix.basename(dir) : 'home');
+  }
+  return safeName(base);
+}
+
 function buildNavFromSummary(pageEntries, summary) {
   const nav = [];
   const pageByRel = new Map();
+  const navKeyStack = [];
 
   for (const page of pageEntries) {
     const rel = normalizeRelPath(page.rel).toLowerCase();
@@ -874,6 +913,10 @@ function buildNavFromSummary(pageEntries, summary) {
     }
 
     if (item.type === 'page') {
+      const level = Math.max(0, Number(item.level || 0));
+      const navKey = buildSummaryNavKey(item, navKeyStack);
+      navKeyStack[level] = navKey;
+      navKeyStack.length = level + 1;
       const page = pageByRel.get(item.key);
       if (page) {
         nav.push({
@@ -881,7 +924,8 @@ function buildNavFromSummary(pageEntries, summary) {
           href: page.href,
           label: item.label || page.label,
           order: Number.isFinite(item.order) ? item.order : page.order,
-          level: item.level || 0,
+          level,
+          navKey,
         });
       } else {
         nav.push({
@@ -889,7 +933,8 @@ function buildNavFromSummary(pageEntries, summary) {
           href: item.key.replace(/\.mq$/i, '.html'),
           label: item.label || path.basename(item.key, '.mq'),
           order: Number.isFinite(item.order) ? item.order : Number.POSITIVE_INFINITY,
-          level: item.level || 0,
+          level,
+          navKey,
           virtual: true,
         });
       }
@@ -919,13 +964,13 @@ function renderNav(nav, current, layoutName = 'topnav') {
   return groups.map(group => {
     if (group.root && !group.children.length) {
       const active = group.root.href === current ? ' class="active"' : '';
-      return `<a href="/${group.root.href}"${active}>${escapeHtml(group.root.label)}</a>`;
+      return `<a href="${hrefToSitePath(group.root.href)}"${active}>${escapeHtml(group.root.label)}</a>`;
     }
 
     if (!group.root && group.children.length === 1) {
       const loneChild = group.children[0];
       const active = loneChild && loneChild.href === current ? ' class="active"' : '';
-      return `<a href="/${loneChild.href}"${active}>${escapeHtml(loneChild.label)}</a>`;
+      return `<a href="${hrefToSitePath(loneChild.href)}"${active}>${escapeHtml(loneChild.label)}</a>`;
     }
 
     const triggerItem = group.root;
@@ -933,14 +978,14 @@ function renderNav(nav, current, layoutName = 'topnav') {
 
     if (triggerItem && !submenuItems.length) {
       const active = triggerItem && triggerItem.href === current ? ' class="active"' : '';
-      return `<a href="/${triggerItem.href}"${active}>${escapeHtml(triggerItem.label)}</a>`;
+      return `<a href="${hrefToSitePath(triggerItem.href)}"${active}>${escapeHtml(triggerItem.label)}</a>`;
     }
 
     const submenu = submenuItems
       .sort((a, b) => a.order - b.order)
       .map(item => {
         const active = item.href === current ? ' class="active"' : '';
-        return `<a href="/${item.href}"${active}>${escapeHtml(item.label)}</a>`;
+        return `<a href="${hrefToSitePath(item.href)}"${active}>${escapeHtml(item.label)}</a>`;
       })
       .join('');
 
@@ -952,7 +997,7 @@ function renderNav(nav, current, layoutName = 'topnav') {
       return `<div class="${groupClass}"><span class="mq-nav-group-trigger mq-nav-group-trigger-label${triggerActive}">${escapeHtml(group.label)}</span><div class="mq-nav-submenu">${submenu}</div></div>`;
     }
 
-    return `<div class="${groupClass}"><a class="mq-nav-group-trigger mq-nav-group-trigger-link${triggerActive}" href="/${triggerItem.href}">${escapeHtml(triggerItem.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`;
+    return `<div class="${groupClass}"><a class="mq-nav-group-trigger mq-nav-group-trigger-link${triggerActive}" href="${hrefToSitePath(triggerItem.href)}">${escapeHtml(triggerItem.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`;
   }).join('\n');
 }
 
@@ -991,11 +1036,43 @@ function renderSidebarNav(nav, current) {
 }
 
 function buildSummaryLinkTrees(links) {
+  if (links.some(link => Number(link.level || 0) > 0 || link.navKey)) {
+    return buildLevelSummaryLinkTrees(links);
+  }
+
+  return buildPrefixSummaryLinkTrees(links);
+}
+
+function buildLevelSummaryLinkTrees(links) {
   const roots = [];
   const stack = [];
 
   for (const link of links) {
-    const prefix = hrefPrefix(link.href);
+    const node = { item: link, prefix: navGroupPrefix(link), children: [] };
+    const level = Math.max(0, Number(link.level || 0));
+    const parentIndex = Math.min(level - 1, stack.length - 1);
+
+    stack.length = Math.max(0, level);
+
+    if (level > 0 && parentIndex >= 0 && stack[parentIndex]) {
+      stack[parentIndex].children.push(node);
+    } else {
+      roots.push(node);
+    }
+
+    stack[level] = node;
+    stack.length = level + 1;
+  }
+
+  return roots;
+}
+
+function buildPrefixSummaryLinkTrees(links) {
+  const roots = [];
+  const stack = [];
+
+  for (const link of links) {
+    const prefix = navGroupPrefix(link);
     const node = { item: link, prefix, children: [] };
 
     while (stack.length) {
@@ -1033,14 +1110,14 @@ function renderSidebarLinkTrees(nodes, current, topCounter, depth = 0, parentNum
 
     const hasChildren = Array.isArray(node.children) && node.children.length > 0 && depth < maxDepth;
     if (!hasChildren) {
-      parts.push(`<a class="mq-nav-link mq-nav-level-${depth} mq-nav-numbered-link${activeClass}" style="--mq-nav-level:${depth};" href="/${item.href}">${numSpan}${escapeHtml(item.label)}</a>`);
+      parts.push(`<a class="mq-nav-link mq-nav-level-${depth} mq-nav-numbered-link${activeClass}" style="--mq-nav-level:${depth};" href="${hrefToSitePath(item.href)}">${numSpan}${escapeHtml(item.label)}</a>`);
       continue;
     }
 
     const childHtml = renderSidebarLinkTrees(node.children, current, topCounter, depth + 1, number);
     const childActive = node.children.some(child => isSidebarNodeActive(child, current));
     const groupActive = (isActive || childActive) ? ' active' : '';
-    parts.push(`<div class="mq-nav-group mq-nav-summary-group${groupActive}"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link${activeClass}" href="/${item.href}">${numSpan}${escapeHtml(item.label)}</a><div class="mq-nav-submenu">${childHtml}</div></div>`);
+    parts.push(`<div class="mq-nav-group mq-nav-summary-group${groupActive}"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link${activeClass}" href="${hrefToSitePath(item.href)}">${numSpan}${escapeHtml(item.label)}</a><div class="mq-nav-submenu">${childHtml}</div></div>`);
   }
 
   return parts.join('');
@@ -1089,67 +1166,37 @@ function renderStructuredSummaryNav(nav, current, options = {}) {
 }
 
 function renderSummaryLinkSegment(links, current) {
-  const result = [];
-
-  for (let i = 0; i < links.length; i++) {
-    const root = links[i];
-    const rootPrefix = hrefPrefix(root.href);
-    const children = [];
-    let j = i + 1;
-
-    while (j < links.length) {
-      const candidate = links[j];
-      const candidatePrefix = hrefPrefix(candidate.href);
-      const isChild = !!rootPrefix && !!candidatePrefix && candidatePrefix.startsWith(`${rootPrefix}/`);
-      if (!isChild) break;
-      children.push(candidate);
-      j++;
+  const trees = buildSummaryLinkTrees(links);
+  return trees.map(node => {
+    if (!node.children.length) {
+      return renderNavLink(node.item, current);
     }
 
-    if (!children.length) {
-      result.push(renderNavLink(root, current));
-      continue;
-    }
-
-    const hasActive = root.href === current || children.some(link => link.href === current);
+    const hasActive = isSidebarNodeActive(node, current);
     const groupClass = hasActive ? 'mq-nav-group mq-nav-summary-group active' : 'mq-nav-group mq-nav-summary-group';
     const triggerClass = hasActive ? 'mq-nav-group-trigger mq-nav-group-trigger-link active' : 'mq-nav-group-trigger mq-nav-group-trigger-link';
-    const submenu = renderTopnavDropdownLinks(children, current, rootPrefix);
-    result.push(`<div class="${groupClass}"><a class="${triggerClass}" href="/${root.href}">${escapeHtml(root.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`);
-
-    i = j - 1;
-  }
-
-  return result.join('\n');
+    const submenu = renderTopnavDropdownTree(node.children, current);
+    return `<div class="${groupClass}"><a class="${triggerClass}" href="${hrefToSitePath(node.item.href)}">${escapeHtml(node.item.label)}</a><div class="mq-nav-submenu">${submenu}</div></div>`;
+  }).join('\n');
 }
 
-function renderTopnavDropdownLinks(links, current, rootPrefix) {
-  const counters = [0, 0, 0];
+function renderTopnavDropdownTree(nodes, current, numberPrefix = []) {
   const maxDepth = 2;
-  const rootSegCount = String(rootPrefix || '').split('/').filter(Boolean).length;
 
-  return links.map(link => {
-    const prefix = hrefPrefix(link.href);
-    const segCount = String(prefix || '').split('/').filter(Boolean).length;
-    let depth = segCount - rootSegCount - 1;
-    if (!Number.isFinite(depth)) depth = 0;
-    depth = Math.max(0, Math.min(maxDepth, depth));
-
-    if (depth > 0 && counters[0] === 0) counters[0] = 1;
-    counters[depth] += 1;
-    for (let i = depth + 1; i <= maxDepth; i++) counters[i] = 0;
-
-    const parts = [];
-    for (let i = 0; i <= depth; i++) {
-      if (counters[i] <= 0) break;
-      parts.push(String(counters[i]));
-    }
-    const number = parts.join('.');
-    const numberText = depth === 0 ? `${number}.` : number;
-
+  return nodes.map((node, idx) => {
+    const item = node.item;
+    const numbering = [...numberPrefix, idx + 1];
+    const depth = Math.max(0, Math.min(maxDepth, numberPrefix.length));
+    const numberText = depth === 0 ? `${numbering.join('.')}.` : numbering.join('.');
     const classes = [`mq-nav-link`, `mq-nav-level-${depth}`, `mq-nav-numbered-link`];
-    if (link.href === current) classes.push('active');
-    return `<a class="${classes.join(' ')}" style="--mq-nav-level:${depth};" href="/${link.href}"><span class="mq-nav-num">${escapeHtml(numberText)}</span>${escapeHtml(link.label)}</a>`;
+    if (item.href === current) classes.push('active');
+
+    const linkHtml = `<a class="${classes.join(' ')}" style="--mq-nav-level:${depth};" href="${hrefToSitePath(item.href)}"><span class="mq-nav-num">${escapeHtml(numberText)}</span>${escapeHtml(item.label)}</a>`;
+    if (!node.children.length || depth >= maxDepth) {
+      return linkHtml;
+    }
+
+    return `${linkHtml}${renderTopnavDropdownTree(node.children, current, numbering)}`;
   }).join('');
 }
 
@@ -1157,11 +1204,21 @@ function hrefPrefix(href) {
   return String(href || '').replace(/\.html$/i, '').replace(/^\/+/, '').trim().toLowerCase();
 }
 
+function hrefToSitePath(href) {
+  const normalized = String(href || '').trim();
+  if (!normalized || normalized === 'index.html') return '/';
+  return `/${normalized.replace(/^\/+/, '')}`;
+}
+
+function navGroupPrefix(item) {
+  return String((item && item.navKey) || hrefPrefix(item && item.href)).trim().toLowerCase();
+}
+
 function renderNavLink(item, current) {
   const level = Math.max(0, Math.min(6, Number(item.level || 0)));
   const classes = [`mq-nav-link`, `mq-nav-level-${level}`];
   if (item.href === current) classes.push('active');
-  return `<a class="${classes.join(' ')}" style="--mq-nav-level:${level};" href="/${item.href}">${escapeHtml(item.label)}</a>`;
+  return `<a class="${classes.join(' ')}" style="--mq-nav-level:${level};" href="${hrefToSitePath(item.href)}">${escapeHtml(item.label)}</a>`;
 }
 
 function buildPageSequence(pageEntries, summary) {
@@ -1203,11 +1260,11 @@ function renderPageNav(sequence, currentHref) {
   if (!prev && !next) return '';
 
   const prevHtml = prev
-    ? `<a class="mq-page-nav-link mq-page-nav-prev" href="/${prev.href}" aria-label="Previous page: ${escapeHtml(prev.label)}"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ ${escapeHtml(prev.label)}</span></a>`
+    ? `<a class="mq-page-nav-link mq-page-nav-prev" href="${hrefToSitePath(prev.href)}" aria-label="Previous page: ${escapeHtml(prev.label)}"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ ${escapeHtml(prev.label)}</span></a>`
     : '<span class="mq-page-nav-spacer" aria-hidden="true"></span>';
 
   const nextHtml = next
-    ? `<a class="mq-page-nav-link mq-page-nav-next" href="/${next.href}" aria-label="Next page: ${escapeHtml(next.label)}"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">${escapeHtml(next.label)} ↪</span></a>`
+    ? `<a class="mq-page-nav-link mq-page-nav-next" href="${hrefToSitePath(next.href)}" aria-label="Next page: ${escapeHtml(next.label)}"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">${escapeHtml(next.label)} ↪</span></a>`
     : '<span class="mq-page-nav-spacer" aria-hidden="true"></span>';
 
   return `<nav class="mq-page-nav" aria-label="Page navigation">${prevHtml}${nextHtml}</nav>`;

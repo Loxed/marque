@@ -15,4 +15,5 @@ Reference
 [Frontmatter](docs/configuration/frontmatter.mq)
 [Layouts](docs/configuration/layouts.mq)
 [Themes](docs/configuration/themes.mq)
+[Migration](docs/migration.mq)
 [Directives](docs/directives.mq)

@@ -66,6 +66,12 @@ Marque stays intentionally small:
     @divider
     Open [Directives](/docs/directives.html) for layout primitives, inline syntax, and custom directive registration.
   @end card
+
+  @card
+    ## I want to migrate an existing site
+    @divider
+    Start with [Migration](/docs/migration.html) if you're bringing content from mdBook or MkDocs into Marque.
+  @end card
 @end row
 
 ## Documentation paths
@@ -136,7 +142,7 @@ Marque stays intentionally small:
 @row
   @card
     ## CLI Commands
-    Everything the terminal interface can do: `new`, `serve`, `build`, `theme-template`, and `help`.
+    Everything the terminal interface can do: `new`, `serve`, `build`, `migrate`, `theme-template`, and `help`.
     @[Open CLI docs ->](/docs/cli.html){.secondary}
   @end card
 
@@ -157,5 +163,11 @@ Marque stays intentionally small:
     ## Directives
     Learn the built-ins, inline syntax, and how to register your own components in `directives/*.js`.
     @[Open directive docs ->](/docs/directives.html)
+  @end card
+
+  @card
+    ## Migration
+    Move an existing markdown docs project into Marque with the new migration command and review workflow.
+    @[Open migration guide ->](/docs/migration.html)
   @end card
 @end row

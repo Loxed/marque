@@ -52,7 +52,7 @@ Layouts behave the same way as themes but have a different purpose. Themes defin
 ## Shared shell: `index.html` and `index.js`
 @divider
 
-The layout system is not only the `sidebar.css` and `topnav.css` files. Marque also uses a shared shell in `layouts/index.html`, plus a small runtime in `layouts/index.js`.
+The `layout/` folder also contains the core HTML shell that layouts share. The `index.html` file defines the structure of every page, ordering the navigation bar, main content, and footer. The layout CSS files (`sidebar.css` and `topnav.css`) then style that shared structure differently to create distinct layouts. A small runtime in `index.js` handles the interactive behavior of the navigation bar, like toggling open on mobile and positioning submenus.
 
 @row
 	@card .primary

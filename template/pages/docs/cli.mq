@@ -56,6 +56,20 @@ Run commands from your site folder unless the example says otherwise.
 @end row
 
 @row
+  @card .accent
+    ## `marque migrate`
+    @divider
+    Import a supported markdown docs project into a fresh Marque site.
+
+    ```sh
+    marque migrate ./old-docs
+    marque migrate ./old-book ./new-marque --from mdbook
+    marque migrate ./old-site ./new-marque --from mkdocs
+    ```
+
+    Use it when you already have content in mdBook or MkDocs and want to move it over quickly.
+  @end card
+
   @card .secondary
     ## `marque theme-template`
     @divider
