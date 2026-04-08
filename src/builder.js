@@ -883,28 +883,9 @@ function buildNav(pageEntries, summary) {
   }));
 }
 
-function buildSummaryNavKey(item, navKeyStack) {
-  const level = Math.max(0, Number(item.level || 0));
-  const parentKey = level > 0 ? navKeyStack[level - 1] : '';
-  const segment = summaryNavSegment(item.key || item.label || '');
-  return parentKey ? `${parentKey}/${segment}` : segment;
-}
-
-function summaryNavSegment(value) {
-  const rel = normalizeRelPath(String(value || ''));
-  const noExt = rel.replace(/\.mq$/i, '');
-  const dir = normalizeRelPath(path.posix.dirname(noExt)).replace(/^\.$/, '');
-  const base = path.posix.basename(noExt);
-  if (!base || base.toLowerCase() === 'index') {
-    return safeName(dir ? path.posix.basename(dir) : 'home');
-  }
-  return safeName(base);
-}
-
 function buildNavFromSummary(pageEntries, summary) {
   const nav = [];
   const pageByRel = new Map();
-  const navKeyStack = [];
 
   for (const page of pageEntries) {
     const rel = normalizeRelPath(page.rel).toLowerCase();
@@ -924,9 +905,7 @@ function buildNavFromSummary(pageEntries, summary) {
 
     if (item.type === 'page') {
       const level = Math.max(0, Number(item.level || 0));
-      const navKey = buildSummaryNavKey(item, navKeyStack);
-      navKeyStack[level] = navKey;
-      navKeyStack.length = level + 1;
+      const navKey = String(item.navKey || item.pathKey || summaryPathKey(item.key)).trim().toLowerCase();
       const page = pageByRel.get(item.key);
       if (page) {
         nav.push({
