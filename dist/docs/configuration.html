@@ -16,8 +16,19 @@
 
   <!-- Navigation Bar (Works with topnav and sidebar) -->
   <nav class="mq-nav">
-    <a class="mq-nav-brand" href="../">Marque</a>
-    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+    <div class="mq-nav-head">
+      <a class="mq-nav-brand" href="../">Marque</a>
+
+      <!-- Search Icon -->
+      <button class="mq-search-toggle" type="button" aria-expanded="false" aria-controls="mq-search" aria-label="Open search" onclick="mqToggleSearch(this)">
+        <svg class="mq-search-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M20 20l-3.5-3.5"></path>
+        </svg>
+        <span class="mq-search-toggle-label">Search</span>
+        <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
+      </button>
+    </div>
     <div class="mq-nav-links">
       <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../"><span class="mq-nav-num">1.</span>Home</a>
 <div class="mq-nav-heading">User Guide</div>
@@ -27,10 +38,42 @@
 <div class="mq-nav-heading">For Developers</div>
 <div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="../migration.html"><span class="mq-nav-num">5.</span>Migration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../migration/mdbook.html"><span class="mq-nav-num">5.1</span>mdbook Guide</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../migration/mkdocs.html"><span class="mq-nav-num">5.2</span>MkDocs Guide</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../migration/obsidian.html"><span class="mq-nav-num">5.3</span>Obsidian Guide</a></div></div>
     </div>
+    <div class="mq-nav-actions">
+      <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+    </div>
   </nav>
 
+  <!-- Search Window -->
+  <div class="mq-search" id="mq-search" hidden aria-hidden="true">
+    <button class="mq-search-backdrop" type="button" aria-label="Close search" onclick="mqCloseSearch()"></button>
+    <section class="mq-search-panel" role="dialog" aria-modal="true" aria-labelledby="mq-search-title">
+      <div class="mq-search-head">
+        <svg class="mq-search-panel-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M20 20l-3.5-3.5"></path>
+        </svg>
+        <label class="mq-search-input-wrap" for="mq-search-input">
+          <span class="mq-search-label" id="mq-search-title">Search this site</span>
+          <input id="mq-search-input" class="mq-search-input" type="search" placeholder="Search pages, headings, and content" autocomplete="off" spellcheck="false">
+        </label>
+        <button class="mq-search-close" type="button" aria-label="Close search" onclick="mqCloseSearch()">
+          <svg class="mq-search-close-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18"></path>
+            <path d="M6 6l12 12"></path>
+          </svg>
+          <span class="mq-search-close-label">Close</span>
+          <span class="mq-search-close-hint" data-search-close-hint aria-hidden="true" hidden></span>
+        </button>
+      </div>
+      <p class="mq-search-meta" id="mq-search-meta">Type to search titles, headings, and page content.</p>
+      <div class="mq-search-results" id="mq-search-results">
+        <div class="mq-search-empty">Search is ready. Try a page title, a section heading, or a phrase from the content.</div>
+      </div>
+    </section>
+  </div>
+
   <!-- main content in which .mq files are injected -->
-  <main class="mq-main" style="--page-width: 100%; --page-max-w: none;">
+  <main class="mq-main" style="--page-width: 100%; --page-max-w: none; --page-margin-left: 0; --page-margin-right: auto; --page-text-align: left;">
     <h1>Configuration</h1>
 
 <div class="mq-divider"></div>
@@ -39,7 +82,7 @@
 <div class="mq-row" style="grid-template-columns: repeat(2, 1fr);"><div class="mq-card primary"><h2><code>marque.toml</code></h2>
 
 <div class="mq-divider"></div>
-<p>Site-wide defaults live here. This is where you set your title, description, default layout, theme, and page width once for the whole site.</p>
+<p>Site-wide defaults live here. This is where you set your title, description, repository link, default layout, theme, page width, and page alignment once for the whole site.</p>
 </div>
 
 <div class="mq-card secondary"><h2>Page frontmatter</h2>
@@ -54,11 +97,13 @@
 
 <div class="mq-divider"></div>
 
-<div class="mq-card"><div class="mq-code-block" data-lang="toml"><div class="mq-code-head"><span class="mq-code-lang">toml</span><button class="mq-code-copy" type="button" aria-label="Copy toml code">Copy</button></div><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = <span class="hljs-string">&quot;Marque&quot;</span>
-<span class="hljs-attr">description</span> = <span class="hljs-string">&quot;Built with Marque&quot;</span>
-<span class="hljs-attr">layout</span> = <span class="hljs-string">&quot;sidebar&quot;</span>
-<span class="hljs-attr">theme</span> = <span class="hljs-string">&quot;comte&quot;</span>
-<span class="hljs-attr">width</span> = <span class="hljs-string">&quot;full&quot;</span></code></pre></div><p>That is enough to define the site&#39;s baseline behavior.</p>
+<div class="mq-card"><div class="mq-code-block" data-lang="toml"><div class="mq-code-head"><span class="mq-code-lang">toml</span><button class="mq-code-copy" type="button" aria-label="Copy toml code">Copy</button></div><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = Marque
+<span class="hljs-attr">description</span> = Built with Marque
+<span class="hljs-attr">repo</span> = https://github.com/Loxed/marque
+<span class="hljs-attr">layout</span> = sidebar
+<span class="hljs-attr">theme</span> = comte
+<span class="hljs-attr">width</span> = full
+<span class="hljs-attr">align</span> = center</code></pre></div><p>That is enough to define the site&#39;s baseline behavior.</p>
 </div>
 <h2>What each setting controls</h2>
 
@@ -67,20 +112,22 @@
 <div class="mq-row" style="grid-template-columns: repeat(3, 1fr);"><div class="mq-card"><h2>Identity</h2>
 
 <div class="mq-divider"></div>
-<p><code>title</code> and <code>description</code> define the site&#39;s default branding and metadata.</p>
+<p><code>title</code>, <code>description</code>, and <code>repo</code> define the site&#39;s default branding, metadata, and footer source link.</p>
 <ul>
 <li><code>title</code>: used in page titles and nav branding</li>
 <li><code>description</code>: fallback meta description for generated pages</li>
+<li><code>repo</code>: optional footer link to the site&#39;s Git repository</li>
 </ul>
 </div>
 
 <div class="mq-card"><h2>Presentation</h2>
 
 <div class="mq-divider"></div>
-<p><code>layout</code> and <code>theme</code> decide how the site looks and where global navigation appears.</p>
+<p><code>layout</code>, <code>theme</code>, and <code>align</code> decide how the site looks and how the main content column is placed.</p>
 <ul>
 <li><code>layout</code>: <code>sidebar</code> or <code>topnav</code></li>
 <li><code>theme</code>: the active CSS theme file</li>
+<li><code>align</code>: <code>left</code>, <code>center</code>, or <code>right</code></li>
 </ul>
 </div>
 
@@ -96,7 +143,7 @@
 <div class="mq-card"><div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Use <code>marque.toml</code> when you want a default that should apply everywhere.</p>
 </div></div>
 
-<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><p>Use frontmatter when a page needs a one-off layout, width, theme, or slug.</p>
+<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><p>Use frontmatter when a page needs a one-off layout, width, align, theme, or slug.</p>
 </div></div>
 
 <div class="mq-step"><div class="mq-step-num" data-step="3"></div><div class="mq-step-body"><p>Use <code>summary.mq</code> when you want to change labels, ordering, and navigation structure.</p>
@@ -139,7 +186,15 @@
 
   <!-- footer at the bottom of every page -->
   <footer class="mq-footer">
-    Built with <a href="https://github.com/Loxed/marque">Marque</a>
+    <span class="mq-footer-built">Built with <a href="https://github.com/Loxed/marque">Marque</a></span>
+    <span class="mq-footer-repo">
+      <a class="mq-footer-repo-link" href="https://github.com/Loxed/marque" aria-label="Open repository">
+        <svg class="mq-footer-repo-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3"></path>
+          <path d="M15 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77 5.44 5.44 0 0 0 3.5 8.5c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        </svg>
+      </a>
+    </span>
   </footer>
 
   <script src="../index.js"></script>

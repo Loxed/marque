@@ -16,8 +16,19 @@
 
   <!-- Navigation Bar (Works with topnav and sidebar) -->
   <nav class="mq-nav">
-    <a class="mq-nav-brand" href="../../">Marque</a>
-    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+    <div class="mq-nav-head">
+      <a class="mq-nav-brand" href="../../">Marque</a>
+
+      <!-- Search Icon -->
+      <button class="mq-search-toggle" type="button" aria-expanded="false" aria-controls="mq-search" aria-label="Open search" onclick="mqToggleSearch(this)">
+        <svg class="mq-search-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M20 20l-3.5-3.5"></path>
+        </svg>
+        <span class="mq-search-toggle-label">Search</span>
+        <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
+      </button>
+    </div>
     <div class="mq-nav-links">
       <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../"><span class="mq-nav-num">1.</span>Home</a>
 <div class="mq-nav-heading">User Guide</div>
@@ -27,10 +38,42 @@
 <div class="mq-nav-heading">For Developers</div>
 <div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link" href="../../migration.html"><span class="mq-nav-num">5.</span>Migration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../../migration/mdbook.html"><span class="mq-nav-num">5.1</span>mdbook Guide</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../../migration/mkdocs.html"><span class="mq-nav-num">5.2</span>MkDocs Guide</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../../migration/obsidian.html"><span class="mq-nav-num">5.3</span>Obsidian Guide</a></div></div>
     </div>
+    <div class="mq-nav-actions">
+      <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+    </div>
   </nav>
 
+  <!-- Search Window -->
+  <div class="mq-search" id="mq-search" hidden aria-hidden="true">
+    <button class="mq-search-backdrop" type="button" aria-label="Close search" onclick="mqCloseSearch()"></button>
+    <section class="mq-search-panel" role="dialog" aria-modal="true" aria-labelledby="mq-search-title">
+      <div class="mq-search-head">
+        <svg class="mq-search-panel-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M20 20l-3.5-3.5"></path>
+        </svg>
+        <label class="mq-search-input-wrap" for="mq-search-input">
+          <span class="mq-search-label" id="mq-search-title">Search this site</span>
+          <input id="mq-search-input" class="mq-search-input" type="search" placeholder="Search pages, headings, and content" autocomplete="off" spellcheck="false">
+        </label>
+        <button class="mq-search-close" type="button" aria-label="Close search" onclick="mqCloseSearch()">
+          <svg class="mq-search-close-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18"></path>
+            <path d="M6 6l12 12"></path>
+          </svg>
+          <span class="mq-search-close-label">Close</span>
+          <span class="mq-search-close-hint" data-search-close-hint aria-hidden="true" hidden></span>
+        </button>
+      </div>
+      <p class="mq-search-meta" id="mq-search-meta">Type to search titles, headings, and page content.</p>
+      <div class="mq-search-results" id="mq-search-results">
+        <div class="mq-search-empty">Search is ready. Try a page title, a section heading, or a phrase from the content.</div>
+      </div>
+    </section>
+  </div>
+
   <!-- main content in which .mq files are injected -->
-  <main class="mq-main" style="--page-width: 100%; --page-max-w: none;">
+  <main class="mq-main" style="--page-width: 100%; --page-max-w: none; --page-margin-left: 0; --page-margin-right: auto; --page-text-align: left;">
     <h1>Frontmatter</h1>
 
 <div class="mq-divider"></div>
@@ -49,20 +92,24 @@
 
 <div class="mq-divider"></div>
 <p>The <code>marque.toml</code> file is where you define your configuration settings that apply to the entire site. This is where you define key parameters such as:</p>
-<div class="mq-code-block" data-lang="toml"><div class="mq-code-head"><span class="mq-code-lang">toml</span><button class="mq-code-copy" type="button" aria-label="Copy toml code">Copy</button></div><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = <span class="hljs-string">&quot;Marque&quot;</span>
-<span class="hljs-attr">description</span> = <span class="hljs-string">&quot;Built with Marque&quot;</span>
-<span class="hljs-attr">layout</span> = <span class="hljs-string">&quot;sidebar&quot;</span>
-<span class="hljs-attr">theme</span> = <span class="hljs-string">&quot;rustique&quot;</span>
-<span class="hljs-attr">width</span> = <span class="hljs-number">82</span></code></pre></div>
+<div class="mq-code-block" data-lang="toml"><div class="mq-code-head"><span class="mq-code-lang">toml</span><button class="mq-code-copy" type="button" aria-label="Copy toml code">Copy</button></div><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = Marque
+<span class="hljs-attr">description</span> = Built with Marque
+<span class="hljs-attr">repo</span> = https://github.com/Loxed/marque
+<span class="hljs-attr">layout</span> = sidebar
+<span class="hljs-attr">theme</span> = rustique
+<span class="hljs-attr">width</span> = <span class="hljs-number">82</span>
+<span class="hljs-attr">align</span> = center</code></pre></div>
 <div class="mq-callout ok"><p><em>These settings apply to the entire site.</em></p>
 </div>
 <p>Here&#39;s what each parameter does:</p>
 <ul>
 <li><code>title</code>: The default title of your site, used as main icon in the navbar and in page titles.</li>
 <li><code>description</code>: A default meta description for your site, used in the <code>&lt;head&gt;</code> of your pages.</li>
+<li><code>repo</code>: An optional Git repository URL shown in the shared footer.</li>
 <li><code>layout</code>: The default navigation <a href="__layouts__"><strong>layout</strong></a> for your pages (<code>topnav</code>/<code>sidebar</code>).</li>
 <li><code>theme</code>: The default <a href="__themes__"><strong>theme</strong></a> for your pages (for example <code>rustique</code> or <code>javarti</code>).</li>
 <li><code>width</code>: The default content width for your pages, which can be a percentage (<code>82</code>, <code>50%</code>) or predefined values like <code>narrow</code> (70%), <code>normal</code> (82%), <code>wide</code> (92%), or <code>full</code> (100%).</li>
+<li><code>align</code>: The default content alignment for your pages (<code>left</code>, <code>center</code>, or <code>right</code>).</li>
 </ul>
 </div>
 <div class="mq-card"><h2>Per-page Overrides (Inline Frontmatter)</h2>
@@ -70,12 +117,12 @@
 <div class="mq-divider"></div>
 <p>Pages can override site-wide defaults by including frontmatter at the top of the <code>.mq</code> file:</p>
 <div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">+++               &lt;--- opening TOML frontmatter fence
-title = &quot;Layouts&quot;     &lt;--- override page title
-layout = &quot;topnav&quot;     &lt;--- override page layout
-theme = &quot;mida&quot;        &lt;--- override page theme
-width = &quot;50%&quot;         &lt;--- override page width
-align = &quot;right&quot;       &lt;--- place the content column on the right
-nav = &quot;new-link&quot;      &lt;--- override output slug
+title = Layouts      &lt;--- override page title
+layout = topnav      &lt;--- override page layout
+theme = mida         &lt;--- override page theme
+width = 50%          &lt;--- override page width
+align = right        &lt;--- place the content column on the right
+nav = new-link       &lt;--- override output slug
 +++               &lt;--- closing fence
 # Layout          &lt;--- page content starts here
 @divider
@@ -93,7 +140,7 @@ nav = &quot;new-link&quot;      &lt;--- override output slug
 <li><code>right</code></li>
 </ul>
 
-<div class="mq-callout info"><p><code>align</code> moves the content column itself. It does not change paragraph text alignment. If <code>width</code> is <code>full</code>, alignment usually has little or no visible effect.</p>
+<div class="mq-callout info"><p><code>align</code> changes how page content is presented. On full-width pages it mainly affects text alignment, and on narrower pages it also changes where the content column sits.</p>
 </div></div></div>
 
 <div class="mq-card"><h2>Try it out!</h2>
@@ -232,7 +279,15 @@ Frontmatter does not define nav ordering.</p>
 
   <!-- footer at the bottom of every page -->
   <footer class="mq-footer">
-    Built with <a href="https://github.com/Loxed/marque">Marque</a>
+    <span class="mq-footer-built">Built with <a href="https://github.com/Loxed/marque">Marque</a></span>
+    <span class="mq-footer-repo">
+      <a class="mq-footer-repo-link" href="https://github.com/Loxed/marque" aria-label="Open repository">
+        <svg class="mq-footer-repo-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3"></path>
+          <path d="M15 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77 5.44 5.44 0 0 0 3.5 8.5c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        </svg>
+      </a>
+    </span>
   </footer>
 
   <script src="../../index.js"></script>

@@ -1,0 +1,271 @@
+[
+  {
+    "title": "Home",
+    "href": "/",
+    "description": "",
+    "headings": [
+      "Marque",
+      "Features",
+      "Markdown-first",
+      "@ directives",
+      "Flexible navigation",
+      "Static output",
+      "Theme & style",
+      "Per-page configuration",
+      "Quick publishing",
+      "Documentation-ready",
+      "Start building",
+      "Explore examples"
+    ],
+    "text": "Marque Marque is an enhanced Markdown to static site compiler. It's designed for creators who want to build documentation, blogs, guides, and knowledge bases effortlessly. Quickstart ➽ Read the docs Marque supports every feature from Markdown, including extra directives to make your website more like a website and less like your Obsidian vault / Notion notes. Features Markdown-first Marque ( .mq ) files support plain Markdown, inline HTML and extra directives when structure matters. @ directives Enhance pages using custom directives such as @container , @row , @card , @callout , <div class=\"mq-spotlight\"></div> , and more. Flexible navigation Elements automatically adapt responsively inside the page you're building. Static output Generate plain HTML files you can host anywhere with no dependencies. Theme & style Keep layout and visual styling separate ( .css ) for easy customisation. Per-page configuration Override theme , layout , and width from frontmatter where needed. Quick publishing Run marque build . to generate deployable static files instantly. Documentation-ready Ideal for product docs, API references, tutorials, and release notes. Start building Install Marque and use the starter template to make your first website. Quickstart ➽ Explore examples Browse nested docs, layout overrides, and advanced features in action. Open layout docs"
+  },
+  {
+    "title": "Quickstart",
+    "href": "/quickstart.html",
+    "description": "",
+    "headings": [
+      "Quickstart",
+      "Requirements",
+      "Installation",
+      "Install from source (recommended)",
+      "Verify installation",
+      "Create and run your site",
+      "Create a project",
+      "Start the dev server",
+      "Edit content",
+      "Build for production"
+    ],
+    "text": "Quickstart Get from zero to a running site in a few minutes. Requirements Before installing Marque, make sure you have: Node.js 18 or newer npm (comes with Node.js) Check your versions: sh Copy node -v # >= v18.0.0 npm -v Installation Install from source (recommended) Install the marque package directly from github sh Copy npm install -g github:Loxed/marque This makes the marque command available globally. Verify installation sh Copy marque -- help If the command runs, you're ready to go. Create and run your site Create a project Scaffold a new site: sh Copy marque new my-site cd my-site Start the dev server Run the local server with live reload: sh Copy marque serve . Then open http://localhost:3000 . Edit content Modify files inside pages/ . Changes are reflected instantly in your browser. Build for production Generate static files: sh Copy marque build . Output is written to dist/ . Windows Users Make sure you use the correct workspace for your CLI tool! If you’re using WSL , clone the project inside the WSL filesystem ( /home/username/... ) If you’re using CMD or PowerShell , keep it on the Windows filesystem. Running the project on the Windows filesystem with WSL ( mnt/c/... ) can cause significant performance issues!"
+  },
+  {
+    "title": "Create",
+    "href": "/create.html",
+    "description": "",
+    "headings": [
+      "Create",
+      "Create a new site",
+      "What you get",
+      "The core files",
+      "marque.toml",
+      "summary.mq",
+      "404.mq",
+      "The working folders",
+      "pages/",
+      "themes/ and layouts/",
+      "static/ and dist/",
+      "What to edit first",
+      "Notes",
+      "Navigation comes from summary.mq",
+      "Frontmatter is optional",
+      "Build output is disposable"
+    ],
+    "text": "Create Once Marque is installed, creating a site is mostly about two things: Creating the starter project Understanding the template's core files and folders Create a new site To create and serve a new Marque site, run: sh Copy marque new my-site cd my-site marque serve . You can also choose a layout and theme up front: sh Copy marque new my-site --layout topnav --theme rustique What you get txt Copy my-site/ ├── pages/ # source content: each `.mq` file becomes an HTML page ├── layouts/ # shared shell plus layout css for nav and page chrome ├── themes/ # theme css files that control visual styling ├── static/ # put assets like images and documents here ├── marque.toml # default configuration for all pages ├── summary.mq # controls navigation labels and order ├── 404.mq # fallback page when a route does not exist yet └── dist/ # generated website The starter is meant to be edited directly. Themes, layouts, directives, and pages all live in the project. The core files Marque projects require 3 core files to function: the default configuration ( marque.toml ), the navigation structure ( summary.mq ), and the fallback page ( 404.mq ). These files are generated for you when you create a new site, and you can edit them to change your site's defaults, navigation, and 404 page. marque.toml Site-wide defaults live here: title, description, repository link, layout, theme, width, and alignment. summary.mq Controls navigation labels, ordering, grouping, and nesting. 404.mq The fallback page when a route does not exist yet. The working folders pages/ This is your source content. Each .mq file becomes an HTML page. mq Copy +++ title = My Page nav = my-page +++ # My Page themes/ and layouts/ Themes control visual styling. Layouts control the shared HTML shell, runtime behavior, and automatic page chrome such as navigation placement. static/ and dist/ Put assets in static/ . Marque copies them as-is. dist/ is generated output from marque build . What to edit first Open marque.toml and set the site title, repo link, layout, theme, and default alignment. Edit summary.mq to define your real navigation. Replace the starter pages in pages/ with your content. Adjust themes/ and layouts/ only when the starter setup is not enough. Notes Navigation comes from summary.mq A page can exist in pages/ without appearing in nav if it is not listed in summary.mq . Frontmatter is optional A page can rely entirely on the defaults in marque.toml , then override only what it needs. Build output is disposable dist/ is generated. Edit source files, not generated HTML. If you already finished Quickstart , this page is the next step: use it to understand the scaffold you are now editing."
+  },
+  {
+    "title": "Docs",
+    "href": "/docs.html",
+    "description": "",
+    "headings": [
+      "Documentation",
+      "Start here",
+      "Configuration",
+      "Reference",
+      "Read by goal",
+      "I want to launch a site",
+      "I want to change defaults",
+      "I want to extend pages",
+      "I want to migrate an existing site",
+      "Documentation paths",
+      "Setup path",
+      "Configuration path",
+      "Authoring path",
+      "Reference index",
+      "CLI Commands",
+      "Configuration",
+      "Themes and layouts",
+      "Directives",
+      "Migration"
+    ],
+    "text": "Documentation Use this page as the map for the rest of the site. Marque stays intentionally small: write source pages in .mq define navigation in summary.mq set defaults in marque.toml build plain static HTML with marque build Start here New to Marque? Follow the setup path first, then come back for reference pages. Quickstart -> Create a site -> Configuration Learn where settings live, how page overrides work, and how themes and layouts fit together. Configuration -> Frontmatter -> Reference Browse CLI commands, directives, layouts, and themes once your site is running. CLI -> Directives -> Read by goal I want to launch a site Start with Quickstart , then use Create Website to understand the scaffold you get from marque new . I want to change defaults Read Configuration , then go deeper with Frontmatter , Layouts , and Themes . I want to extend pages Open Directives for layout primitives, inline syntax, and custom directive registration. I want to migrate an existing site Start with Migration if you're bringing content from mdBook or MkDocs into Marque. Documentation paths Setup path Install Marque and confirm the CLI works. Scaffold a new project with marque new . Run marque serve . and edit pages locally. Configuration path Set site-wide defaults in marque.toml . Override page behavior with frontmatter. Adjust layout, theme, and width page by page when needed. Authoring path Build pages from markdown plus directives. Use summary.mq to control labels and navigation order. Add custom directives or local themes when the starter setup is no longer enough. Reference index CLI Commands Everything the terminal interface can do: new , serve , build , migrate , theme-template , and help . Open CLI docs -> Configuration Site defaults, page overrides, width behavior, and how settings flow through a project. Open configuration docs -> Themes and layouts Visual style lives in themes; automatic page chrome lives in layouts. Open theme docs -> Open layout docs -> Directives Learn the built-ins, inline syntax, and how to register your own components in directives/*.js . Open directive docs -> Migration Move an existing markdown docs project into Marque with the new migration command and review workflow. Open migration guide ->"
+  },
+  {
+    "title": "CLI",
+    "href": "/docs/cli.html",
+    "description": "",
+    "headings": [
+      "CLI",
+      "Command reference",
+      "marque new",
+      "marque serve",
+      "marque build",
+      "marque migrate",
+      "marque theme-template",
+      "marque help",
+      "Typical flow",
+      "Examples",
+      "New docs site",
+      "Alternate port",
+      "Theme scaffold",
+      "Notes",
+      "Output",
+      "Navigation",
+      "Configuration",
+      "Troubleshooting",
+      "Command not found",
+      "Slow watch or file locks on Windows",
+      "A page builds but is missing from nav"
+    ],
+    "text": "CLI Everything you need to run Marque from the terminal. Run commands from your site folder unless the example says otherwise. Command reference marque new Scaffold a new site from the packaged template. sh Copy marque new my-site marque new my-site --layout sidebar --theme comte marque new my-site layout:sidebar theme:rustique Use it when you're starting a project from scratch. marque serve Start the local dev server with rebuilds and live reload. sh Copy marque serve . marque serve . 4000 Use it while writing and iterating locally. marque build Generate production-ready static output into dist/ . sh Copy marque build . marque build ./docs-site marque migrate Import a supported markdown docs project into a fresh Marque site. sh Copy marque migrate ./old-docs marque migrate ./old-book ./new-marque --from mdbook marque migrate ./old-site ./new-marque --from mkdocs Use it when you already have content in mdBook or MkDocs and want to move it over quickly. marque theme-template Generate a theme scaffold from directive output plus a reference theme. sh Copy marque theme-template . marque theme-template . themes/my-theme.css --reference comte Use it when you want a starter theme that already includes selectors for built-in and project directives. marque help Print command help and usage. sh Copy marque help marque -- help Typical flow marque new my-site cd my-site marque serve . marque build . Examples New docs site sh Copy marque new docs-site --layout sidebar --theme comte cd docs-site marque serve . Alternate port sh Copy marque serve . 4000 Then open http://localhost:4000 . Theme scaffold sh Copy marque theme-template . themes/custom.css --reference rustique Notes Output marque build writes generated HTML, CSS, JS, and copied static files to dist/ . Navigation summary.mq controls labels and ordering. The CLI does not infer navigation structure from folder names alone. Configuration Layout, theme, and width defaults come from marque.toml , with per-page overrides in frontmatter. Troubleshooting Command not found Confirm Node.js 18 or newer. Reinstall the package if the global command is missing. Slow watch or file locks on Windows Keep your workflow in one environment. Avoid mixing WSL with files on the Windows-mounted filesystem. A page builds but is missing from nav Check that it exists in pages/ . Add it to summary.mq ."
+  },
+  {
+    "title": "Configuration",
+    "href": "/docs/configuration.html",
+    "description": "",
+    "headings": [
+      "Configuration",
+      "marque.toml",
+      "Page frontmatter",
+      "Minimal site config",
+      "What each setting controls",
+      "Identity",
+      "Presentation",
+      "Content width",
+      "Choose the right place",
+      "Files that work together",
+      "marque.toml",
+      "Frontmatter",
+      "summary.mq",
+      "Continue with the focused pages",
+      "Frontmatter",
+      "Layouts",
+      "Themes"
+    ],
+    "text": "Configuration Marque configuration is split across two places: marque.toml Site-wide defaults live here. This is where you set your title, description, repository link, default layout, theme, page width, and page alignment once for the whole site. Page frontmatter Individual .mq pages can override the defaults they care about without changing the rest of the site. If a page does not define an override, it inherits the value from marque.toml . Minimal site config toml Copy title = Marque description = Built with Marque repo = https://github.com/Loxed/marque layout = sidebar theme = comte width = full align = center That is enough to define the site's baseline behavior. What each setting controls Identity title , description , and repo define the site's default branding, metadata, and footer source link. title : used in page titles and nav branding description : fallback meta description for generated pages repo : optional footer link to the site's Git repository Presentation layout , theme , and align decide how the site looks and how the main content column is placed. layout : sidebar or topnav theme : the active CSS theme file align : left , center , or right Content width width controls the usable width of .mq-main . It can be a number, a percentage, or named presets like narrow , normal , wide , and full . Choose the right place Use marque.toml when you want a default that should apply everywhere. Use frontmatter when a page needs a one-off layout, width, align, theme, or slug. Use summary.mq when you want to change labels, ordering, and navigation structure. Files that work together marque.toml Defines defaults for the whole site. Frontmatter Overrides defaults for one page at a time. summary.mq Controls navigation labels, ordering, grouping, and nesting. Continue with the focused pages Frontmatter See the exact page-level keys, examples, and width override behavior. Open frontmatter docs -> Layouts Compare sidebar and topnav , and see how summary-driven navigation changes between them. Open layout docs -> Themes Learn how theme files work, how to override a page theme, and which built-in themes ship with Marque. Open theme docs ->"
+  },
+  {
+    "title": "Frontmatter",
+    "href": "/docs/configuration/frontmatter.html",
+    "description": "",
+    "headings": [
+      "Frontmatter",
+      "Overview",
+      "Defaults Configuration ( marque.toml )",
+      "Per-page Overrides (Inline Frontmatter)",
+      "Try it out!",
+      "Common mistakes"
+    ],
+    "text": "Frontmatter Overview Frontmatter is the TOML block at the top of an .mq page. It lets you override site-wide defaults for things like theme, layout, content width, content alignment, and page metadata. There are two places where you can define configuration settings in a Marque project: marque.toml at the project's root for site-wide defaults. Frontmatter at the top of each .mq page for per-page overrides. Defaults Configuration ( marque.toml ) The marque.toml file is where you define your configuration settings that apply to the entire site. This is where you define key parameters such as: toml Copy title = Marque description = Built with Marque repo = https://github.com/Loxed/marque layout = sidebar theme = rustique width = 82 align = center These settings apply to the entire site. Here's what each parameter does: title : The default title of your site, used as main icon in the navbar and in page titles. description : A default meta description for your site, used in the <head> of your pages. repo : An optional Git repository URL shown in the shared footer. layout : The default navigation layout for your pages ( topnav / sidebar ). theme : The default theme for your pages (for example rustique or javarti ). width : The default content width for your pages, which can be a percentage ( 82 , 50% ) or predefined values like narrow (70%), normal (82%), wide (92%), or full (100%). align : The default content alignment for your pages ( left , center , or right ). Per-page Overrides (Inline Frontmatter) Pages can override site-wide defaults by including frontmatter at the top of the .mq file: mq Copy +++ <--- opening TOML frontmatter fence title = Layouts <--- override page title layout = topnav <--- override page layout theme = mida <--- override page theme width = 50% <--- override page width align = right <--- place the content column on the right nav = new-link <--- override output slug +++ <--- closing fence # Layout <--- page content starts here @divider rest of content... These settings override default settings and apply only to the page they are defined in. Every parameter defined in a page's frontmatter is optional. A page can work without any frontmatter, in which case it will simply inherit all settings from marque.toml . Missing or invalid parameters in the frontmatter will fall back to the defaults defined in marque.toml . nav overrides the page slug used for the output filename and route. Navigation labels come from summary.mq . align controls where the page content column sits inside the available space: left center right align changes how page content is presented. On full-width pages it mainly affects text alignment, and on narrower pages it also changes where the content column sits. Try it out! Try overriding this page's content width and alignment: narrow normal wide full apply left center right Common mistakes Missing opening or closing +++ fence. Reusing the same nav slug across multiple pages. Renaming nav without updating links and summary entries. summary.mq controls navigation order and labels. Frontmatter does not define nav ordering."
+  },
+  {
+    "title": "Layouts",
+    "href": "/docs/configuration/layouts.html",
+    "description": "",
+    "headings": [
+      "Layout",
+      "sidebar",
+      "topnav",
+      "summary.mq used for these examples",
+      "Shared shell: index.html and index.js",
+      "layouts/index.html",
+      "layouts/index.js",
+      "The important structure",
+      "When to edit it"
+    ],
+    "text": "Layout Layouts behave the same way as themes but have a different purpose. Themes define the global theming of elements in your website, whereas layouts are responsible for laying out what shows up automatically and where it should go. This page forcibly uses the topnav layout, whereas the rest of this website uses the sidebar layout. sidebar The sidebar layout (used on the rest of the site) places the navigation on the left side of the page. The navigation bar displays the website’s title at the top, with the main navigation links listed below it. Section are numbered and divider text is visible. The main page content appears to the right of the sidebar. topnav The topnav layout (used on this page) places the navigation bar at the top of the page. The bar shows the website’s title on the left and the main navigation links on the right. Hovering over the main buttons reveals subsections. Divider text is not used, and the page content appears below the navigation bar. summary.mq used for these examples summary.mq Copy [Home](index.mq) User Guide # only in sidebar [Quick Start ➽](quickstart.mq) [Create Website](create.mq) Reference # only in sidebar [Docs](docs.mq) Shared shell: index.html and index.js The layout/ folder also contains the core HTML shell that layouts share. The index.html file defines the structure of every page, ordering the navigation bar, main content, and footer. The layout CSS files ( sidebar.css and topnav.css ) then style that shared structure differently to create distinct layouts. A small runtime in index.js handles the interactive behavior of the navigation bar, like toggling open on mobile and positioning submenus. layouts/index.html This is the HTML frame around every page. It defines the elements that always exist: the site navigation ( .mq-nav ) the main content area ( .mq-main ) the footer ( .mq-footer ) It also injects the build-time values that Marque generates for each page: {{ layout_css }} : the active layout stylesheet {{ theme_css }} : the active theme stylesheet {{ nav }} : the rendered navigation links {{ content }} : the page body rendered from .mq {{ page_nav }} : previous / next page links {{ document_title }} , {{ site_title }} , {{ description }} layouts/index.js This file is intentionally small. It handles the shared interactive behavior used by layouts: mobile nav toggle open / close submenu positioning near the viewport edge closing nav menus on click, Escape , or resize code block copy button behavior Most layout work still happens in CSS. index.js only supports the interactive pieces. The important structure html Copy < nav class = \"mq-nav\" > < a class = \"mq-nav-brand\" href = \"/\" > {{ site_title }} </ a > < button class = \"mq-nav-toggle\" ... > ☰ </ button > < div class = \"mq-nav-links\" > {{ nav }} </ div > </ nav > < main class = \"mq-main\" {{ page_main_style }}> {{ content }} {{ page_nav }} </ main > This structure is the contract the layout CSS relies on. topnav.css and sidebar.css style the same shell differently. When to edit it Edit layouts/index.html when you want to change what appears on every page, for example: adding a persistent banner or footer section changing where the brand or page navigation renders inserting extra wrappers that every layout should share Edit sidebar.css or topnav.css when the HTML structure is already correct and you only want to change placement, spacing, or responsive behavior. For developers In the Marque repository, layouts live in template/layouts/ and are copied into each new project at marque new <name> . That folder now owns the shared HTML shell ( index.html ), the shared runtime ( index.js ), and the layout-specific CSS files like sidebar.css and topnav.css . When creating new layouts, make sure your CSS matches the classes used in the shared layout shell. `, the shared shell files are copied from `template/layouts/`. This means that if you want to create a new layout, you add a new `.css` file in `template/layouts/` and keep it compatible with the shared `layouts/index.html` structure. --> layout Copy template/ ├── layouts/ │ ├── index.html │ ├── index.js │ ├── sidebar.css │ └── topnav.css └── themes/ └── *.css"
+  },
+  {
+    "title": "Themes",
+    "href": "/docs/configuration/themes.html",
+    "description": "",
+    "headings": [
+      "Themes",
+      "Marathon -style, baby!",
+      "Customise your site's look",
+      "Create your own theme",
+      "Quick flow",
+      "Official themes",
+      "comté.css (default)",
+      "rustique.css",
+      "pycorino.css",
+      "javarti.css",
+      "gouda.css",
+      "elmental.css"
+    ],
+    "text": "Themes Marathon -style, baby! Customise your site's look Marque supports multiple themes and layouts . Themes are stored as .css files in the themes/ directory of your Marque project, and you can have as many as you like. This page uses the mida.css theme to showcase what's possible. Create your own theme The main theme used on your site is defined in the marque.toml file with the theme = ... key. You can change this to any theme you like, and Marque will use it when you run marque serve or marque build . To override a theme on a per-page basis (like this page), add theme = name to the page's frontmatter , and Marque will use that theme instead of the default one. Quick flow Create theme file: add themes/<my-theme.css> . Paste baseline variables and base styles. Activate theme in marque.toml : theme = my-theme . Run marque serve . or marque build . . If themes/my-theme.css exists, Marque uses it. Official themes \"Yes I'm French, how did you guess?\" comté.css (default) Comté is the default theme for Marque. Clean, readable, and responsive, with no holes in its design. rustique.css Rustique is a modern, warm theme for Marque, based on Rust . (Rustique is a French brand of Camembert ) pycorino.css Pycorino is a playful light theme inspired by Python . (Python + Pecorino = Pycorino ??? It's 4am when I'm writing this) javarti.css Javarti is a classic light theme for Marque, influenced by Java . Like Havarti , it's old enough but ages well. gouda.css Gouda is a cool, simple dark theme for Marque, based on Go . Gouda is a simple, pleasant cheese anyone can enjoy. elmental.css Elmental is a bright, paper-like theme for Marque, inspired by Elm . Emmental (not Gruyère !) has holes in it, Elm doesn't. I'm hungry now."
+  },
+  {
+    "title": "Directives",
+    "href": "/docs/directives.html",
+    "description": "",
+    "headings": [
+      "Directives",
+      "The three authoring layers",
+      "Markdown",
+      "Directives",
+      "Inline syntax",
+      "Built-in block directives",
+      "Layout primitives",
+      "Content blocks",
+      "Project directives in the starter",
+      "Inline syntax",
+      "Buttons",
+      "Badges",
+      "Inline divider",
+      "Example page composition",
+      "Welcome",
+      "Project directive examples",
+      "Starter Plan",
+      "Writing your own directives",
+      "Notes"
+    ],
+    "text": "Directives In Marque, anything that starts with @ is part of the directive layer. Directives are how you move from plain markdown into page structure, reusable UI blocks, and project-specific components. The three authoring layers Markdown Use plain markdown for headings, paragraphs, lists, links, blockquotes, and code blocks. Directives Use directives when you want layout primitives like rows, cards, callouts, steps, or themed wrappers. Inline syntax Use button-style links, badges, and inline dividers inside markdown paragraphs when you need lighter UI affordances. Built-in block directives Layout primitives @container : neutral grouping scope @row : horizontal layout container @column : vertical stack inside a row @card : padded content block Content blocks @callout : highlighted note block @stat : value + label pair @step : numbered process item @section / @hero : themed wrappers when your theme styles them Project directives in the starter @dropdown @product-card <span class=\"mq-sparkle\" aria-hidden=\"true\">✶</span> <div class=\"mq-spotlight\"></div> Inline syntax Buttons mq Copy <a href=\"docs.html\" class=\"mq-btn primary\">Read more</a> <a href=\"docs/configuration/themes.html\" class=\"mq-btn\">Open theme docs</a> This renders as button-style links. Badges mq Copy <span class=\"mq-badge accent\">New</span> <span class=\"mq-badge secondary\">Stable</span> Example: New Stable Inline divider mq Copy Before @divider after Example: Before after Example page composition mq Copy @container hero-intro ## Welcome Build the page with markdown and directives. @row features @card Fast setup. @end card @card Plain static output. @end card @end row features @end container hero-intro Welcome Build the page with markdown and directives. Fast setup. Plain static output. Project directive examples mq Copy @dropdown \"What ships in the starter?\" Marque includes a few example project directives. @end dropdown @product-card .featured Starter ## Starter Plan Best for small teams. @end product-card Add some shine @sparkle What ships in the starter? Marque includes a few example project directives. Starter Plan Best for small teams. Add some shine ✶ Writing your own directives Create files in directives/ and register them with defineDirective(...) . js Copy module . exports = ( { defineDirective } ) => { defineDirective ( 'product-card' , { type : 'block' , render : ( { mods, name, children, ctx } ) => { const variant = ctx. escapeAttr (mods[ 0 ] || 'default' ); const title = ctx. escapeAttr (name || '' ); return `<product-card variant=\" ${variant} \" title=\" ${title} \"> ${children} </product-card>` ; }, }); defineDirective ( 'sparkle' , { type : 'inline' , render : () => '<span class=\"mq-sparkle\" aria-hidden=\"true\">✶</span>' , }); }; You do not need to edit the parser core to add project directives. Put them in directives/*.js , register them, and Marque will load them. Notes @container is structural and does not add a wrapper by itself. @row and @column control axis and grouping. @step numbering resets when you start a new container flow. Inline buttons and badges are renderer syntax, not block directives. Hyphenated directive names like product-card are supported."
+  },
+  {
+    "title": "Migration",
+    "href": "/migration.html",
+    "description": "",
+    "headings": [
+      "Migration",
+      "Supported first",
+      "mdBook",
+      "MkDocs",
+      "Not first-pass",
+      "Command",
+      "Auto-detect",
+      "Explicit source",
+      "Choose layout and theme",
+      "What gets migrated",
+      "Content",
+      "Navigation",
+      "Assets",
+      "Internal links",
+      "Site config",
+      "Review page",
+      "What still needs a human pass",
+      "Structure mapping",
+      "mdBook",
+      "MkDocs"
+    ],
+    "text": "Migration Use marque migrate when you already have a markdown-first docs project and want a clean Marque site without rebuilding everything by hand. The first migration pass is intentionally narrow: Marque currently targets the tools that are structurally closest to it. Supported first mdBook book.toml , src/SUMMARY.md , and src/**/*.md map very naturally onto marque.toml , summary.mq , and pages/**/*.mq . MkDocs mkdocs.yml plus docs/**/*.md also translates well, especially when the site uses a normal nav: tree and markdown pages. Not first-pass Tools with heavy framework runtime assumptions, MDX, JSX, plugin APIs, or template languages need a looser migration strategy and are not the first targets. Command Auto-detect sh Copy marque migrate ./old-docs This creates a new site next to the source project at ./old-docs-marque . Explicit source sh Copy marque migrate ./old-book ./new-marque --from mdbook marque migrate ./old-site ./new-marque --from mkdocs Choose layout and theme sh Copy marque migrate ./docs ./docs-marque --from mkdocs --layout sidebar --theme comte What gets migrated Content Markdown pages are copied into pages/ and renamed from .md to .mq . Navigation src/SUMMARY.md from mdBook or nav: from MkDocs becomes summary.mq . Assets Non-markdown files from the source docs tree are copied into static/ with matching relative paths. Internal links Local markdown links are rewritten from .md targets to the matching .mq pages so Marque can resolve them to HTML. Site config The migrated site gets a fresh marque.toml using the imported site title and description when they are available. Review page Marque also creates pages/migration-notes.mq so any skipped metadata or unsupported features are visible inside the new site. What still needs a human pass Review the generated summary.mq and confirm labels, nesting, and ordering. Rebuild the original visual design as a Marque theme or layout instead of expecting source themes to carry over automatically. Check plugins, preprocessors, extra JavaScript, MDX, or framework-specific markup by hand. Open the generated migration-notes.mq page and clear every warning before treating the migration as finished. Structure mapping mdBook txt Copy book.toml -> marque.toml src/SUMMARY.md -> summary.mq src/**/*.md -> pages/**/*.mq src/** assets -> static/** MkDocs txt Copy mkdocs.yml -> marque.toml + summary.mq docs/**/*.md -> pages/**/*.mq docs/** assets -> static/** Migration is meant to get you most of the way there quickly, not to promise a pixel-perfect or plugin-perfect import."
+  },
+  {
+    "title": "Mdbook",
+    "href": "/migration/mdbook.html",
+    "description": "",
+    "headings": [
+      "Mdbook"
+    ],
+    "text": "Mdbook Page created from the dev 404 helper."
+  },
+  {
+    "title": "Not Found",
+    "href": "/404.html",
+    "description": "",
+    "headings": [
+      "404: Page not found",
+      "What happened?",
+      "Fix it now"
+    ],
+    "text": "404: Page not found The route you opened does not have a source page yet. What happened? This usually means one of two things: the page file does not exist yet the route inside summary.mq was changed and a link still points at the old location Fix it now If this route should exist, create the missing page from here and then add it to summary.mq if you want it to show up in navigation. Create this page"
+  }
+]
