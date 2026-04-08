@@ -342,6 +342,130 @@ a.mq-btn.tertiary:hover { filter: brightness(0.92); }
   .mq-row { grid-template-columns: 1fr !important; }
 }
 
+/* responsive normalization */
+:root {
+  --mq-page-gutter: clamp(1rem, 3vw, 2rem);
+  --mq-block-gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+.mq-nav-heading {
+  padding: 0.7rem 0.8rem 0.25rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mq-muted);
+}
+
+.mq-nav-divider {
+  height: 1px;
+  margin: 0.45rem 0;
+  background: var(--mq-nav-border);
+}
+
+.mq-main :where(h1, h2, h3, p, li, blockquote) {
+  overflow-wrap: anywhere;
+}
+
+.mq-main :where(h1, h2, h3, h4, h5, h6)[id] {
+  scroll-margin-top: 5rem;
+}
+
+a.mq-btn {
+  text-align: center;
+  white-space: normal;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.mq-spotlight,
+.mq-hero {
+  padding: clamp(1.4rem, 4vw, 2.2rem) clamp(1rem, 4vw, 1.3rem);
+  margin: 0 0 clamp(1.5rem, 4vw, 2rem);
+}
+
+.mq-row {
+  gap: var(--mq-block-gap, 1.25rem);
+}
+
+.mq-column {
+  gap: var(--mq-block-gap, 1.25rem);
+}
+
+.mq-stat-value {
+  font-size: clamp(2rem, 6vw, 2.6rem);
+}
+
+product-card {
+  min-width: 0;
+}
+
+@container mq-main (max-width: 960px) {
+  .mq-row {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)) !important;
+  }
+
+  .mq-main h1 {
+    margin-bottom: 0.85rem;
+  }
+
+  .mq-card,
+  .mq-callout,
+  .mq-stat,
+  product-card {
+    padding: 1.1rem;
+  }
+
+  .mq-dropdown > summary,
+  .mq-dropdown-content {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@container mq-main (max-width: 640px) {
+  .mq-main h2 {
+    font-size: 1.25rem;
+  }
+
+  .mq-main h3 {
+    font-size: 0.95rem;
+  }
+
+  .mq-card,
+  .mq-callout,
+  .mq-stat,
+  product-card {
+    padding: 1rem;
+  }
+
+  .mq-step {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+
+  .mq-step-num {
+    justify-self: start;
+  }
+}
+
 
 /* Base */
 body {
