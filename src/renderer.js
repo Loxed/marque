@@ -16,7 +16,9 @@ mdRenderer.code = (code, infostring) => {
   const highlighted = highlightCode(String(rawCode || ''), safeLang);
   return `<div class="mq-code-block" data-lang="${safeLang}"><div class="mq-code-head"><span class="mq-code-lang">${safeLang}</span><button class="mq-code-copy" type="button" aria-label="Copy ${safeLang} code">Copy</button></div><pre><code class="hljs language-${safeLang}">${highlighted}</code></pre></div>`;
 };
-marked.setOptions({ breaks: true, gfm: true, renderer: mdRenderer });
+// Keep standard Markdown paragraph flow: single newlines stay soft,
+// while explicit hard breaks still require Markdown hard-break syntax or <br>.
+marked.setOptions({ breaks: false, gfm: true, renderer: mdRenderer });
 
 function render(ast, opts = {}) {
   return renderNodes(ast.children, opts);
