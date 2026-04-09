@@ -2,12 +2,12 @@
 
 [Home](index.mq)
 
-User Guide
+Start Here
 
 [Quick Start](quickstart.mq)
 [Create Website](create.mq)
 
-Reference
+Docs
 
 [Docs](docs.mq)
     [CLI Commands](docs/cli.mq)
@@ -17,9 +17,8 @@ Reference
         [Themes](docs/configuration/themes.mq)
     [Directives](docs/directives.mq)
 
-For Developers
+Migration
 
 [Migration](migration.mq)
-[mdbook Guide](migration/mdbook.mq)
-[MkDocs Guide](migration/mkdocs.mq)
-[Obsidian Guide](migration/obsidian.mq)
+[From mdBook](migration/mdbook.mq)
+[From MkDocs](migration/mkdocs.mq)

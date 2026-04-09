@@ -70,6 +70,13 @@ const CREATE_FROM_404_SNIPPET = `
 })();
 </script>`;
 
+const CREATE_FROM_404_MARKUP = `
+<section class="mq-callout info" id="mq-dev-404-helper">
+	<h2>Dev Helper</h2>
+	<p>Create the missing source page for <code id="mq-create-missing-hint"></code> and reload this route automatically.</p>
+	<p><a href="" class="mq-btn secondary" id="mq-create-missing-page">Create this page</a> <span id="mq-create-missing-status" aria-live="polite"></span></p>
+</section>`;
+
 function createHttpServer({ siteDir, outDir, pagesDir, wsPort, broadcast, build, buildOptions }) {
 	return http.createServer((req, res) => {
 		if (req.method === 'POST' && req.url && req.url.split('?')[0] === '/__marque/create-page') {
@@ -87,6 +94,7 @@ function createHttpServer({ siteDir, outDir, pagesDir, wsPort, broadcast, build,
 			if (fs.existsSync(fallback404)) {
 				let content = fs.readFileSync(fallback404, 'utf8').toString();
 				content = absolutizeFallbackDocumentPaths(content);
+				content = injectBeforeMainEnd(content, CREATE_FROM_404_MARKUP);
 				const reload = RELOAD_SNIPPET.replace('__PORT__', wsPort);
 				const createSnippet = CREATE_FROM_404_SNIPPET.replace('__REQUEST_PATH__', escapeForJs(urlPath));
 				content = injectBeforeBodyEnd(content, `${reload}${createSnippet}`);
@@ -155,6 +163,14 @@ function injectBeforeBodyEnd(html, snippet) {
 		return doc.replace(/<\/body>/i, `${snippet}</body>`);
 	}
 	return `${doc}${snippet}`;
+}
+
+function injectBeforeMainEnd(html, snippet) {
+	const doc = String(html || '');
+	if (/<\/main>/i.test(doc)) {
+		return doc.replace(/<\/main>/i, `${snippet}</main>`);
+	}
+	return injectBeforeBodyEnd(doc, snippet);
 }
 
 function absolutizeFallbackDocumentPaths(html) {

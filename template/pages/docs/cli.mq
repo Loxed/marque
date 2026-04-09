@@ -33,7 +33,7 @@ Run commands from your site folder unless the example says otherwise.
   @card
     ## `marque serve`
     @divider
-    Start the local dev server with rebuilds and live reload.
+    Start the local development server with rebuilds and live reload.
 
     ```sh
     marque serve .
@@ -42,7 +42,9 @@ Run commands from your site folder unless the example says otherwise.
 
     Use it while writing and iterating locally.
   @end card
+@end row
 
+@row
   @card
     ## `marque build`
     @divider
@@ -53,9 +55,7 @@ Run commands from your site folder unless the example says otherwise.
     marque build ./docs-site
     ```
   @end card
-@end row
 
-@row
   @card .accent
     ## `marque migrate`
     @divider
@@ -69,7 +69,9 @@ Run commands from your site folder unless the example says otherwise.
 
     Use it when you already have content in mdBook or MkDocs and want to move it over quickly.
   @end card
+@end row
 
+@row
   @card .secondary
     ## `marque theme-template`
     @divider
@@ -93,30 +95,30 @@ Run commands from your site folder unless the example says otherwise.
     marque --help
     ```
   @end card
-
-  @card
-    ## Typical flow
-    @divider
-
-    @container
-      @step
-      `marque new my-site`
-      @end step
-
-      @step
-      `cd my-site`
-      @end step
-
-      @step
-      `marque serve .`
-      @end step
-
-      @step
-      `marque build .`
-      @end step
-    @end container
-  @end card
 @end row
+
+@card
+  ## Typical flow
+  @divider
+
+  @container
+    @step
+    `marque new my-site`
+    @end step
+
+    @step
+    `cd my-site`
+    @end step
+
+    @step
+    `marque serve .`
+    @end step
+
+    @step
+    `marque build .`
+    @end step
+  @end container
+@end card
 
 ## Examples
 @divider
@@ -143,16 +145,16 @@ Run commands from your site folder unless the example says otherwise.
 
     Then open `http://localhost:4000`.
   @end card
-
-  @card
-    ## Theme scaffold
-    @divider
-
-    ```sh
-    marque theme-template . themes/custom.css --reference rustique
-    ```
-  @end card
 @end row
+
+@card
+  ## Theme scaffold
+  @divider
+
+  ```sh
+  marque theme-template . themes/custom.css --reference rustique
+  ```
+@end card
 
 ## Notes
 @divider
@@ -167,12 +169,12 @@ Run commands from your site folder unless the example says otherwise.
     ## Navigation
     `summary.mq` controls labels and ordering. The CLI does not infer navigation structure from folder names alone.
   @end card
-
-  @card
-    ## Configuration
-    Layout, theme, and width defaults come from `marque.toml`, with per-page overrides in frontmatter.
-  @end card
 @end row
+
+@card
+  ## Configuration
+  Layout, theme, and width defaults come from `marque.toml`, with per-page overrides in frontmatter.
+@end card
 
 ## Troubleshooting
 @divider
@@ -189,10 +191,10 @@ Run commands from your site folder unless the example says otherwise.
     - Keep your workflow in one environment.
     - Avoid mixing WSL with files on the Windows-mounted filesystem.
   @end card
-
-  @card
-    ### A page builds but is missing from nav
-    - Check that it exists in `pages/`.
-    - Add it to `summary.mq`.
-  @end card
 @end row
+
+@card
+  ### A page builds but is missing from navigation
+  - Check that it exists in `pages/`.
+  - Add it to `summary.mq`.
+@end card

@@ -1,0 +1,163 @@
++++
+title = MkDocs
+nav = mkdocs
++++
+
+# MkDocs -> Marque
+@divider
+
+MkDocs is a good fit for migration when the project is still basically "markdown files plus a `nav:` tree".
+
+@callout .info
+The cleaner the `mkdocs.yml`, the cleaner the migration. Standard `docs/` content and a normal nested `nav:` block translate best.
+@end callout
+
+## Run it
+@divider
+
+@row
+  @card .primary
+    ## Auto-detect
+    @divider
+
+    ```sh
+    marque migrate ./my-docs
+    ```
+
+    This creates `./my-docs-marque`.
+  @end card
+
+  @card
+    ## Explicit source
+    @divider
+
+    ```sh
+    marque migrate ./my-docs ./my-docs-marque --from mkdocs
+    ```
+  @end card
+@end row
+
+@card .secondary
+  ## Pick layout and theme
+  @divider
+
+  ```sh
+  marque migrate ./my-docs ./my-docs-marque --from mkdocs --layout sidebar --theme comte
+  ```
+@end card
+
+## What gets imported
+@divider
+
+@row
+  @card
+    ## Config values
+    @divider
+
+    Marque reads the parts of `mkdocs.yml` that map cleanly:
+
+    - `site_name`
+    - `site_description`
+    - `docs_dir`
+    - `nav`
+  @end card
+
+  @card
+    ## Pages and assets
+    @divider
+
+    ```txt
+    docs/**/*.md     -> pages/**/*.mq
+    docs/** assets   -> static/**
+    ```
+
+    If `docs_dir` points somewhere else, Marque uses that directory instead of `docs/`.
+  @end card
+@end row
+
+@card
+  ## Navigation
+  @divider
+  A standard MkDocs `nav:` tree becomes `summary.mq`.
+
+  If there is no usable nav tree, Marque falls back to generating the summary from the file tree and records that in migration notes.
+@end card
+
+## What still needs manual review
+@divider
+
+@row
+  @card .primary
+    ## Theme
+    @divider
+    MkDocs theme settings are noted, but they are not converted automatically into a Marque theme.
+  @end card
+
+  @card
+    ## Extensions and plugins
+    @divider
+    These are called out for manual review when present:
+
+    - `plugins`
+    - `markdown_extensions`
+    - `extra_css`
+    - `extra_javascript`
+    - `hooks`
+  @end card
+@end row
+
+@card .secondary
+  ## Runtime assumptions
+  @divider
+  If the old site depended on Material features, custom JS hooks, or plugin-generated pages, expect a real clean-up pass after the import.
+@end card
+
+## Mental model for the result
+@divider
+
+@row
+  @card
+    ## You keep
+    @divider
+    - most markdown content
+    - the rough navigation structure
+    - copied assets
+    - rewritten local page links
+  @end card
+
+  @card
+    ## You redo
+    @divider
+    - the final visual design
+    - plugin behaviour
+    - special markdown extension behaviour
+    - extra CSS and JavaScript wiring
+  @end card
+@end row
+
+## Suggested clean-up pass
+@divider
+
+@card
+@container
+  @step
+  Run the migration and serve the generated Marque site locally.
+  @end step
+
+  @step
+  Open `summary.mq` and confirm the imported labels and nesting still make sense outside MkDocs.
+  @end step
+
+  @step
+  Read `pages/migration-notes.mq` for any theme, plugin, extension, or navigation warnings.
+  @end step
+
+  @step
+  Rebuild the final polish in Marque themes, layouts, and directives instead of trying to preserve the old MkDocs runtime.
+  @end step
+@end container
+@end card
+
+@callout .warn
+MkDocs migration goes best when the source site is content-first. The more the old site leaned on plugins and theme magic, the more the last 20 per cent becomes your job.
+@end callout

@@ -6,7 +6,7 @@ layout = topnav
 # Layouts
 @divider
 
-Layouts behave the same way as themes but have a different purpose. Themes define the global theming of elements in your website, whereas layouts are responsible for laying out what shows up automatically and where it should go. This page forcibly uses the `topnav` layout, whereas the rest of this website uses the `sidebar` layout.
+Layouts behave a bit like themes, but they solve a different problem. Themes control the site's visual styling, whereas layouts decide what appears automatically and where it sits. This page uses the `topnav` layout on purpose, whereas the rest of this site uses `sidebar`.
 
 @row
 
@@ -14,7 +14,7 @@ Layouts behave the same way as themes but have a different purpose. Themes defin
 		## `sidebar`
 		@divider
 
-		The sidebar layout (used on the rest of the site) places the navigation on the left side of the page. The navigation bar displays the website’s title at the top, with the main navigation links listed below it. Section are numbered and divider text is visible. The main page content appears to the right of the sidebar.
+		The sidebar layout places the navigation on the left-hand side of the page. The site title sits at the top, the main links appear underneath, and section headings are visible. The page content then sits to the right of the sidebar.
 
 		![Sidebar](../../sidebar.png)
 
@@ -24,35 +24,34 @@ Layouts behave the same way as themes but have a different purpose. Themes defin
 		## `topnav`
 		@divider
 
-		The topnav layout (used on this page) places the navigation bar at the top of the page. The bar shows the website’s title on the left and the main navigation links on the right. Hovering over the main buttons reveals subsections. Divider text is not used, and the page content appears below the navigation bar.
+		The topnav layout places the navigation bar at the top of the page. The site title appears on the left and the main links sit on the right. Hovering over the main buttons reveals subsections. Section headings are not shown in the same way, and the page content appears below the navigation bar.
 
 		![Topnav](../../topnav.png)
 	@end card topnav
+@end row
 
+@card 
+	## `summary.mq` used for these examples
+	@divider
 
-	@card 
-		## `summary.mq` used for these examples
-		@divider
+	```summary.mq		
+	[Home](index.mq)
 
-		```summary.mq		
-		[Home](index.mq)
+	Start Here # only shown as a heading in sidebar
 
-		User Guide # only in sidebar
+	[Quick Start](quickstart.mq)
+	[Create Website](create.mq)
 
-		[Quick Start ➽](quickstart.mq)
-		[Create Website](create.mq)
+	Docs # only shown as a heading in sidebar
 
-		Reference # only in sidebar
-
-		[Docs](docs.mq)
-		```
-	@end card
-@end row 
+	[Docs](docs.mq)
+	```
+@end card
 
 ## Shared shell: `index.html` and `index.js`
 @divider
 
-The `layout/` folder also contains the core HTML shell that layouts share. The `index.html` file defines the structure of every page, ordering the navigation bar, main content, and footer. The layout CSS files (`sidebar.css` and `topnav.css`) then style that shared structure differently to create distinct layouts. A small runtime in `index.js` handles the interactive behavior of the navigation bar, like toggling open on mobile and positioning submenus.
+The `layout/` folder also contains the core HTML shell that layouts share. The `index.html` file defines the structure of every page, ordering the navigation bar, main content, and footer. The layout CSS files (`sidebar.css` and `topnav.css`) then style that shared structure differently to create distinct layouts. A small runtime in `index.js` handles the interactive behaviour of the navigation bar, such as toggling it on mobile and positioning submenus.
 
 @row
 	@card .primary
@@ -79,12 +78,12 @@ The `layout/` folder also contains the core HTML shell that layouts share. The `
 		## `layouts/index.js`
 		@divider
 
-		This file is intentionally small. It handles the shared interactive behavior used by layouts:
+		This file is intentionally small. It handles the shared interactive behaviour used by layouts:
 
 		- mobile nav toggle open / close
 		- submenu positioning near the viewport edge
 		- closing nav menus on click, `Escape`, or resize
-		- code block copy button behavior
+		- code block copy button behaviour
 
 		Most layout work still happens in CSS. `index.js` only supports the interactive pieces.
 	@end card
@@ -121,7 +120,7 @@ The `layout/` folder also contains the core HTML shell that layouts share. The `
 		- changing where the brand or page navigation renders
 		- inserting extra wrappers that every layout should share
 
-		Edit `sidebar.css` or `topnav.css` when the HTML structure is already correct and you only want to change placement, spacing, or responsive behavior.
+		Edit `sidebar.css` or `topnav.css` when the HTML structure is already correct and you only want to change placement, spacing, or responsive behaviour.
 	@end card
 @end row
 

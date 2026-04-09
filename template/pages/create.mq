@@ -1,30 +1,30 @@
 +++
-title = Create
+title = Create Website
 nav = create
 +++
 
-# Create
+# Create Website
 @divider
 
-@callout .info
-Once Marque is installed, creating a site is mostly about two things:
-  1. Creating the starter project
-  2. Understanding the template's core files and folders
-@end callout
+When creating your site, it's important to understand the key files and how they work together. This page walks through the basics of setting up a Marque project, including the file structure, key configuration files, and recommended editing order.
+
+## Create a project
+@divider
 
 @row
   @card .primary
-    ## Create a new site
+    ## Create and serve
     @divider
 
-    To create and serve a new Marque site, run:
+    Using the Marque CLI, you can create a new project with a single command. This includes some example content to get you started.
+
     ```sh
     marque new my-site
     cd my-site
     marque serve .
     ```
 
-    You can also choose a [layout](../docs/configuration/layouts.mq) and [theme](../docs/configuration/themes.mq) up front:
+    You can pick a layout and theme upfront if you already know what you want:
 
     ```sh
     marque new my-site --layout topnav --theme rustique
@@ -32,60 +32,71 @@ Once Marque is installed, creating a site is mostly about two things:
   @end card
 
   @card
-    ## What you get
+    ## Project structure
     @divider
+
+      The project has a simple structure. The `my-site/` directory contains your source files, while the `dist/` directory is generated when you build or serve the site.
 
     ```txt
     my-site/
-    ├── pages/        # source content: each `.mq` file becomes an HTML page
-    ├── layouts/      # shared shell plus layout css for nav and page chrome
-    ├── themes/       # theme css files that control visual styling
-    ├── static/       # put assets like images and documents here
-    ├── marque.toml   # default configuration for all pages
-    ├── summary.mq    # controls navigation labels and order
-    ├── 404.mq        # fallback page when a route does not exist yet
-    └── dist/         # generated website
+    ├── directives/   # custom directives, loaded on build and serve
+    ├── layouts/      # HTML shell and layout CSS
+    ├── pages/        # .mq source files
+    ├── static/       # copied as-is to output
+    ├── themes/       # visual styling
+    ├── marque.toml   # site-wide defaults
+    └── summary.mq    # navigation structure
     ```
 
-    The starter is meant to be edited directly. Themes, layouts, directives, and pages all live in the project.
+    `dist/` is generated when you run `marque build` or `marque serve`.
   @end card
 @end row
 
-## The core files
-@divider
+@card
+  ## Key files
+  @divider
 
-@card 
+  @row
 
-Marque projects require 3 core files to function: the default configuration (`marque.toml`), the navigation structure (`summary.mq`), and the fallback page (`404.mq`). These files are generated for you when you create a new site, and you can edit them to change your site's defaults, navigation, and 404 page.
+    @card
+      Marque project require a two key files to function properly:
+    
+      - [`marque.toml`](docs/configuration/frontmatter.mq) defines the default configuration for your site, also known as [frontmatter](docs/configuration/frontmatter.mq).
+      - [`summary.mq`](docs/configuration/summary.mq) defines the order and structure of the navigation menu, as well as the labels for each page.
+    @end card
+    
+    @card
+      The layout of a Marque project is:
 
-@row
-  @card
-    ## `marque.toml`
-    @divider
-    Site-wide defaults live here: title, description, repository link, layout, theme, width, and alignment.
-  @end card
+    @end card
 
-  @card
-    ## `summary.mq`
-    @divider
-    Controls navigation labels, ordering, grouping, and nesting.
-  @end card
+  @end row
 
-  @card
-    ## `404.mq`
-    @divider
-    The fallback page when a route does not exist yet.
-  @end card
-@end row
-
-## The working folders
-@divider
-
+@end card
+<!-- 
 @row
   @card .primary
+    ## `marque.toml`
+    @divider
+    Site-wide defaults: title, description, layout, theme, width, and alignment.
+
+    If it should apply everywhere, set it here.
+  @end card
+
+  @card .secondary
+    ## `summary.mq`
+    @divider
+    Navigation labels, order, grouping, and nesting.
+
+    If it should appear in the menu, it needs an entry here.
+  @end card
+@end row
+
+@row
+  @card
     ## `pages/`
     @divider
-    This is your source content. Each `.mq` file becomes an HTML page.
+    Each `.mq` file becomes a page. Start here.
 
     ```mq
     +++
@@ -97,62 +108,82 @@ Marque projects require 3 core files to function: the default configuration (`ma
     ```
   @end card
 
-  @card .secondary
-    ## `themes/` and `layouts/`
+  @card
+    ## `directives/`, `themes/`, `layouts/`
     @divider
-    Themes control visual styling. Layouts control the shared HTML shell, runtime behavior, and automatic page chrome such as navigation placement.
-  @end card
+    Leave these alone until the content structure is settled.
 
-  @card .tertiary
-    ## `static/` and `dist/`
-    @divider
-    Put assets in `static/`. Marque copies them as-is. `dist/` is generated output from `marque build`.
+    - `directives/`: custom authoring blocks
+    - `themes/`: colours, type, and spacing
+    - `layouts/`: page shell and nav placement
   @end card
 @end row
 
-## What to edit first
+@callout .info
+A page in `pages/` won't appear in the menu unless it has an entry in `summary.mq`.
+@end callout
+
+## Edit in this order
 @divider
 
 @card
 @container
   @step
-  Open `marque.toml` and set the site title, repo link, layout, theme, and default alignment.
+  Set the site title, layout, theme, and alignment in `marque.toml`.
   @end step
 
   @step
-  Edit `summary.mq` to define your real navigation.
+  Update `summary.mq` to match the navigation you actually want.
   @end step
 
   @step
-  Replace the starter pages in `pages/` with your content.
+  Replace or remove the starter pages in `pages/`.
   @end step
 
   @step
-  Adjust `themes/` and `layouts/` only when the starter setup is not enough.
+  Adjust `themes/`, `layouts/`, and `directives/` once the content structure is clear.
   @end step
 @end container
 @end card
 
-## Notes
+## Defaults and overrides
 @divider
 
 @row
   @card
-    ## Navigation comes from `summary.mq`
-    A page can exist in `pages/` without appearing in nav if it is not listed in `summary.mq`.
+    ## Site-wide vs per-page
+    @divider
+    Shared decisions go in `marque.toml`.
+    One-off decisions go in page frontmatter.
   @end card
 
   @card
-    ## Frontmatter is optional
-    A page can rely entirely on the defaults in `marque.toml`, then override only what it needs.
-  @end card
-
-  @card
-    ## Build output is disposable
-    `dist/` is generated. Edit source files, not generated HTML.
+    ## Source vs output
+    @divider
+    Edit everything except `dist/`.
+    Treat `dist/` as disposable — it is regenerated on every build.
   @end card
 @end row
 
-@callout .ok
-If you already finished [Quickstart](/quickstart.html), this page is the next step: use it to understand the scaffold you are now editing.
-@end callout
+## Next steps
+@divider
+
+@row
+  @card .primary
+    ## Configuration
+    @divider
+    Frontmatter, layouts, and themes.
+
+    @[Configuration ->](/docs/configuration.html){.primary}
+    @[Frontmatter ->](/docs/configuration/frontmatter.html)
+  @end card
+
+  @card
+    ## Authoring
+    @divider
+    Directives and custom styling.
+
+    @[Directives ->](/docs/directives.html)
+    @[Themes ->](/docs/configuration/themes.html)
+  @end card
+@end row -->

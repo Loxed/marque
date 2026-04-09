@@ -9,39 +9,67 @@ nav = docs
 Use this page as the map for the rest of the site.
 
 @callout .info
-Marque stays intentionally small:
-- write source pages in `.mq`
-- define navigation in `summary.mq`
-- set defaults in `marque.toml`
-- build plain static HTML with `marque build`
+Marque stays intentionally small on purpose.
+- `pages/` is your source content
+- `summary.mq` is your navigation tree
+- `marque.toml` is your default configuration
+- directives, themes, and layouts are where the custom work starts
 @end callout
 
 @row
-  @card .accent
+  @card .primary
     ## Start here
     @divider
-    New to Marque? Follow the setup path first, then come back for reference pages.
+    If you are new to Marque, do these two pages first and come back once the starter site is running.
 
     @[Quickstart ->](/quickstart.html){.primary}
     @[Create a site ->](/create.html)
   @end card
 
   @card
+    ## CLI
+    @divider
+    Every terminal command in one place: `new`, `serve`, `build`, `migrate`, `theme-template`, and `help`.
+
+    @[Open CLI docs ->](/docs/cli.html)
+  @end card
+
+  @card .secondary
     ## Configuration
     @divider
-    Learn where settings live, how page overrides work, and how themes and layouts fit together.
+    Learn which file owns which decision: `marque.toml`, frontmatter, `summary.mq`, themes, and layouts.
 
-    @[Configuration ->](/docs/configuration.html)
+    @[Open configuration ->](/docs/configuration.html)
     @[Frontmatter ->](/docs/configuration/frontmatter.html)
   @end card
 
-  @card
-    ## Reference
+  @card .tertiary
+    ## Directives
     @divider
-    Browse CLI commands, directives, layouts, and themes once your site is running.
+    This is the authoring layer that makes `.mq` feel like more than plain markdown.
 
-    @[CLI ->](/docs/cli.html)
-    @[Directives ->](/docs/directives.html)
+    @[Open directives ->](/docs/directives.html)
+  @end card
+@end row
+
+@row
+  @card .accent
+    ## Migration
+    @divider
+    Bringing an existing docs project over? Start with the migration overview, then move into the source-specific guide.
+
+    @[Migration overview ->](/migration.html){.primary}
+    @[From mdBook ->](/migration/mdbook.html)
+    @[From MkDocs ->](/migration/mkdocs.html)
+  @end card
+
+  @card
+    ## Themes and layouts
+    @divider
+    Visual style and automatic page chrome are separate on purpose. Theme the site in CSS, then decide where navigation lives with layouts.
+
+    @[Layouts ->](/docs/configuration/layouts.html)
+    @[Themes ->](/docs/configuration/themes.html)
   @end card
 @end row
 
@@ -49,125 +77,112 @@ Marque stays intentionally small:
 @divider
 
 @row
-  @card
-    ## I want to launch a site
-    @divider
-    Start with [Quickstart](/quickstart.html), then use [Create Website](/create.html) to understand the scaffold you get from `marque new`.
-  @end card
-
-  @card
-    ## I want to change defaults
-    @divider
-    Read [Configuration](/docs/configuration.html), then go deeper with [Frontmatter](/docs/configuration/frontmatter.html), [Layouts](/docs/configuration/layouts.html), and [Themes](/docs/configuration/themes.html).
-  @end card
-
-  @card
-    ## I want to extend pages
-    @divider
-    Open [Directives](/docs/directives.html) for layout primitives, inline syntax, and custom directive registration.
-  @end card
-
-  @card
-    ## I want to migrate an existing site
-    @divider
-    Start with [Migration](/docs/migration.html) if you're bringing content from mdBook or MkDocs into Marque.
-  @end card
-@end row
-
-## Documentation paths
-@divider
-
-@row
   @card .primary
-    ## Setup path
+    ## I want to launch a site
     @divider
 
     @container
       @step
-      Install Marque and confirm the CLI works.
+      Finish [Quickstart](/quickstart.html).
       @end step
 
       @step
-      Scaffold a new project with `marque new`.
+      Read [Create Website](/create.html) so the starter folder stops feeling magical.
       @end step
 
       @step
-      Run `marque serve .` and edit pages locally.
+      Use [CLI Commands](/docs/cli.html) as your command reference.
       @end step
     @end container
   @end card
 
   @card .secondary
-    ## Configuration path
+    ## I want to change the site
     @divider
 
     @container
       @step
-      Set site-wide defaults in `marque.toml`.
+      Start at [Configuration](/docs/configuration.html).
       @end step
 
       @step
-      Override page behavior with frontmatter.
+      Go deeper with [Frontmatter](/docs/configuration/frontmatter.html), [Layouts](/docs/configuration/layouts.html), and [Themes](/docs/configuration/themes.html).
       @end step
 
       @step
-      Adjust layout, theme, and width page by page when needed.
-      @end step
-    @end container
-  @end card
-
-  @card .tertiary
-    ## Authoring path
-    @divider
-
-    @container
-      @step
-      Build pages from markdown plus directives.
-      @end step
-
-      @step
-      Use `summary.mq` to control labels and navigation order.
-      @end step
-
-      @step
-      Add custom directives or local themes when the starter setup is no longer enough.
+      Use `summary.mq` when the thing you want to change is the menu, not the page itself.
       @end step
     @end container
   @end card
 @end row
-
-## Reference index
-@divider
 
 @row
-  @card
-    ## CLI Commands
-    Everything the terminal interface can do: `new`, `serve`, `build`, `migrate`, `theme-template`, and `help`.
-    @[Open CLI docs ->](/docs/cli.html){.secondary}
+  @card .tertiary
+    ## I want to author richer pages
+    @divider
+
+    @container
+      @step
+      Use plain markdown for the content that should stay plain.
+      @end step
+
+      @step
+      Use [Directives](/docs/directives.html) for rows, cards, callouts, steps, and project components.
+      @end step
+
+      @step
+      Add project directives in `directives/` when the starter blocks stop being enough.
+      @end step
+    @end container
   @end card
 
   @card
-    ## Configuration
-    Site defaults, page overrides, width behavior, and how settings flow through a project.
-    @[Open configuration docs ->](/docs/configuration.html){.secondary}
-  @end card
+    ## I want to migrate an existing site
+    @divider
 
-  @card
-    ## Themes and layouts
-    Visual style lives in themes; automatic page chrome lives in layouts.
-    @[Open theme docs ->](/docs/configuration/themes.html)
-    @[Open layout docs ->](/docs/configuration/layouts.html)
-  @end card
+    @container
+      @step
+      Start with the [Migration](/migration.html) overview.
+      @end step
 
-  @card
-    ## Directives
-    Learn the built-ins, inline syntax, and how to register your own components in `directives/*.js`.
-    @[Open directive docs ->](/docs/directives.html)
-  @end card
+      @step
+      Choose the [mdBook](/migration/mdbook.html) or [MkDocs](/migration/mkdocs.html) guide.
+      @end step
 
-  @card
-    ## Migration
-    Move an existing markdown docs project into Marque with the new migration command and review workflow.
-    @[Open migration guide ->](/docs/migration.html)
+      @step
+      Treat `migration-notes.mq` as a review list, not a decorative extra.
+      @end step
+    @end container
   @end card
 @end row
+
+## Docs tree
+@divider
+
+@card
+```summary.mq
+[Home](index.mq)
+
+Start Here
+[Quick Start](quickstart.mq)
+[Create Website](create.mq)
+
+Docs
+[Docs](docs.mq)
+[CLI Commands](docs/cli.mq)
+[Configuration](docs/configuration.mq)
+[Frontmatter](docs/configuration/frontmatter.mq)
+[Layouts](docs/configuration/layouts.mq)
+[Themes](docs/configuration/themes.mq)
+[Directives](docs/directives.mq)
+
+Migration
+[Migration](migration.mq)
+[From mdBook](migration/mdbook.mq)
+[From MkDocs](migration/mkdocs.mq)
+```
+@end card
+
+@callout .ok
+If you only want the short version: get the site running, edit `summary.mq`, then learn configuration and directives as soon as you start pushing past the starter template.
+@end callout

@@ -5,6 +5,8 @@ img { max-width: 100%; display: block; }
 body {
   margin: 0;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   --mq-sidebar-width: 280px;
   padding-left: var(--mq-sidebar-width);
 }
@@ -176,6 +178,7 @@ body {
 }
 
 .mq-main {
+  flex: 1 0 auto;
   width: min(var(--page-width, 100%), 100%);
   max-width: var(--page-max-w, var(--max-w, 1000px));
   margin-top: 0;
@@ -297,6 +300,7 @@ body {
 
 .mq-footer {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;

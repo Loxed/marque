@@ -7,25 +7,34 @@ layout = sidebar
 # Configuration
 @divider
 
-Marque configuration is split across two places:
+Marque configuration is mostly about knowing which file owns which decision.
+
+@callout .info
+If you remember one rule, make it this one:
+- `marque.toml` sets defaults
+- frontmatter overrides one page
+- `summary.mq` controls navigation labels, order, and grouping
+@end callout
 
 @row
   @card .primary
     ## `marque.toml`
     @divider
-    Site-wide defaults live here. This is where you set your title, description, repository link, default layout, theme, page width, and page alignment once for the whole site.
+    Site-wide defaults live here. Set your title, description, repo link, default layout, default theme, width, and alignment once.
   @end card
 
   @card .secondary
-    ## Page frontmatter
+    ## Frontmatter
     @divider
     Individual `.mq` pages can override the defaults they care about without changing the rest of the site.
   @end card
 @end row
 
-@callout .info
-If a page does not define an override, it inherits the value from `marque.toml`.
-@end callout
+@card .tertiary
+  ## `summary.mq`
+  @divider
+  Navigation is not configured in frontmatter. This file controls labels, ordering, grouping, and nested sections.
+@end card
 
 ## Minimal site config
 @divider
@@ -41,86 +50,100 @@ width = full
 align = center
 ```
 
-That is enough to define the site's baseline behavior.
+That is enough to define the site's baseline behaviour.
 @end card
 
-## What each setting controls
+## Choose the right file
+@divider
+
+@row
+  @card .primary
+    ## Edit `marque.toml` when...
+    @divider
+    - the change should apply everywhere
+    - you want a default layout or theme
+    - you want the site title, repo, width, or alignment to be shared
+  @end card
+
+  @card .secondary
+    ## Edit frontmatter when...
+    @divider
+    - one page needs a different layout
+    - one page needs a different theme or width
+    - you want to change a page title or output slug
+  @end card
+@end row
+
+@card .tertiary
+  ## Edit `summary.mq` when...
+  @divider
+  - the menu order feels wrong
+  - a page should appear in navigation but does not
+  - you want section headings or a different label than the page title
+@end card
+
+## What the settings actually control
 @divider
 
 @row
   @card
     ## Identity
     @divider
-    `title`, `description`, and `repo` define the site's default branding, metadata, and footer source link.
+    `title`, `description`, and `repo` define the shared branding and metadata.
 
-    - `title`: used in page titles and nav branding
-    - `description`: fallback meta description for generated pages
-    - `repo`: optional footer link to the site's Git repository
+    - `title`: navigation branding and document titles
+    - `description`: fallback page description
+    - `repo`: optional shared footer link
   @end card
 
   @card
     ## Presentation
     @divider
-    `layout`, `theme`, and `align` decide how the site looks and how the main content column is placed.
+    `layout`, `theme`, `width`, and `align` change how the page is framed and how the content column behaves.
 
     - `layout`: `sidebar` or `topnav`
-    - `theme`: the active CSS theme file
+    - `theme`: the active theme CSS file
+    - `width`: `narrow`, `normal`, `wide`, `full`, or a custom size
     - `align`: `left`, `center`, or `right`
-  @end card
-
-  @card
-    ## Content width
-    @divider
-    `width` controls the usable width of `.mq-main`. It can be a number, a percentage, or named presets like `narrow`, `normal`, `wide`, and `full`.
   @end card
 @end row
 
-## Choose the right place
-@divider
-
 @card
-@container
-  @step
-  Use `marque.toml` when you want a default that should apply everywhere.
-  @end step
-
-  @step
-  Use frontmatter when a page needs a one-off layout, width, align, theme, or slug.
-  @end step
-
-  @step
-  Use `summary.mq` when you want to change labels, ordering, and navigation structure.
-  @end step
-@end container
+  ## Routing
+  @divider
+  `nav` in frontmatter changes the output slug for one page. `summary.mq` changes how that page shows up in navigation.
 @end card
 
-## Files that work together
+## Common jobs
 @divider
 
 @row
-  @card
-    ## `marque.toml`
-    Defines defaults for the whole site.
+  @card .primary
+    ## Change the whole site's look
+    @divider
+    Edit `marque.toml` first. If the shared frame is wrong, go to [Layouts](/docs/configuration/layouts.html). If the colours and typography are wrong, go to [Themes](/docs/configuration/themes.html).
   @end card
 
   @card
-    ## Frontmatter
-    Overrides defaults for one page at a time.
-  @end card
-
-  @card
-    ## `summary.mq`
-    Controls navigation labels, ordering, grouping, and nesting.
+    ## Make one page special
+    @divider
+    Use frontmatter when a single page needs a different width, theme, title, layout, or slug.
   @end card
 @end row
 
-## Continue with the focused pages
+@card .secondary
+  ## Fix the menu
+  @divider
+  Do not fight frontmatter for this. Open `summary.mq`, change the labels or order there, then rebuild.
+@end card
+
+## Go deeper
 @divider
 
 @row
   @card .accent
     ## Frontmatter
-    See the exact page-level keys, examples, and width override behavior.
+    Exact page-level keys, examples, slug behaviour, and width overrides.
     @[Open frontmatter docs ->](/docs/configuration/frontmatter.html){.primary}
   @end card
 
@@ -129,10 +152,10 @@ That is enough to define the site's baseline behavior.
     Compare `sidebar` and `topnav`, and see how summary-driven navigation changes between them.
     @[Open layout docs ->](/docs/configuration/layouts.html)
   @end card
-
-  @card
-    ## Themes
-    Learn how theme files work, how to override a page theme, and which built-in themes ship with Marque.
-    @[Open theme docs ->](/docs/configuration/themes.html)
-  @end card
 @end row
+
+@card
+  ## Themes
+  Learn how theme files work, how to override a page theme, and which built-in themes ship with Marque.
+  @[Open theme docs ->](/docs/configuration/themes.html)
+@end card

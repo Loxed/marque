@@ -1,8 +1,157 @@
 +++
-title = Mdbook
+title = mdBook
 nav = mdbook
 +++
 
-# Mdbook
+# mdBook -> Marque
+@divider
 
-Page created from the dev 404 helper.
+This is the cleanest migration path Marque supports right now.
+
+@callout .ok
+`src/SUMMARY.md` and `summary.mq` want almost the same thing, so mdBook projects usually come across with less drama than most docs tools.
+@end callout
+
+## Run it
+@divider
+
+@row
+  @card .primary
+    ## Auto-detect
+    @divider
+
+    ```sh
+    marque migrate ./my-book
+    ```
+
+    This creates `./my-book-marque`.
+  @end card
+
+  @card
+    ## Explicit target
+    @divider
+
+    ```sh
+    marque migrate ./my-book ./my-book-marque --from mdbook
+    ```
+  @end card
+@end row
+
+@card .secondary
+  ## Pick the starter shell
+  @divider
+
+  ```sh
+  marque migrate ./my-book ./my-book-marque --from mdbook --layout sidebar --theme rustique
+  ```
+@end card
+
+## What maps cleanly
+@divider
+
+@row
+  @card
+    ## Config
+    @divider
+
+    ```txt
+    book.toml          -> marque.toml
+    [book].title       -> title
+    [book].description -> description
+    ```
+  @end card
+
+  @card
+    ## Navigation
+    @divider
+
+    ```txt
+    src/SUMMARY.md     -> summary.mq
+    ```
+
+    Imported order and nesting come from the mdBook summary, not from the folder tree alone.
+  @end card
+@end row
+
+@card
+  ## Pages and assets
+  @divider
+
+  ```txt
+  src/**/*.md        -> pages/**/*.mq
+  src/** assets      -> static/**
+  ```
+@end card
+
+## What Marque fixes during import
+@divider
+
+@row
+  @card
+    ## Local links
+    @divider
+    Internal markdown links are rewritten so `.md` targets become the matching Marque pages.
+  @end card
+
+  @card
+    ## Review notes
+    @divider
+    The migrated site includes `pages/migration-notes.mq` with warnings and source-specific notes.
+  @end card
+@end row
+
+@card
+  ## Default shell
+  @divider
+  The new site starts as a normal Marque project with copied layouts, themes, pages, and static assets.
+@end card
+
+## What still needs manual work
+@divider
+
+@row
+  @card .primary
+    ## Preprocessors
+    @divider
+    `preprocessor.*` sections in `book.toml` are not migrated automatically. If the old book relied on generated content, that logic still needs to be rebuilt.
+  @end card
+
+  @card
+    ## Extra CSS and JS
+    @divider
+    `output.html.additional-css` and `output.html.additional-js` are called out in migration notes, but they are not mapped automatically into a Marque theme or layout runtime.
+  @end card
+@end row
+
+@card .secondary
+  ## Theme fidelity
+  @divider
+  Expect content and structure to transfer cleanly. Expect the final look and feel to be a separate pass in themes and layouts.
+@end card
+
+## Suggested clean-up pass
+@divider
+
+@card
+@container
+  @step
+  Run the migration and open the generated site with `marque serve .`.
+  @end step
+
+  @step
+  Compare `src/SUMMARY.md` with the generated `summary.mq`.
+  @end step
+
+  @step
+  Open `pages/migration-notes.mq` and resolve every mdBook-specific note.
+  @end step
+
+  @step
+  Rebuild the final styling in Marque themes and layouts instead of trying to force mdBook output settings to carry across.
+  @end step
+@end container
+@end card
+
+@callout .info
+If your book is mostly markdown chapters plus a normal summary file, this should feel pleasantly boring. That is the ideal outcome.
+@end callout

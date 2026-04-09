@@ -21,10 +21,10 @@ The route you opened does not have a source page yet.
   @end card
 
   @card .secondary
-    ## Fix it now
+    ## Fix it
     @divider
-    If this route should exist, create the missing page from here and then add it to `summary.mq` if you want it to show up in navigation.
+    If this route should exist, add or restore the matching page file, then rebuild the site.
 
-    @[Create this page](){!mq-create-missing-page .secondary}
+    When you're using `marque serve`, missing routes also include a dev helper that can create the page for you.
   @end card
 @end row

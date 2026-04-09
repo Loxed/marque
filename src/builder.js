@@ -152,6 +152,9 @@ function build(siteDir, outDir, options = {}) {
     }
 
     html = rewriteLocalDocumentPaths(html, outName);
+    if (isFallback404Page(outName)) {
+      html = absolutizeFallbackDocumentPaths(html);
+    }
     writeFileWithRetry(outFile, html, softFsErrors);
     searchEntries.push(buildSearchIndexEntry({
       page,
@@ -761,6 +764,37 @@ function rewriteLocalDocumentPaths(html, currentPageHref) {
       return `${head}${toRelativeOutputHref(currentPageHref, href)}${tail}`;
     },
   );
+}
+
+function isFallback404Page(href) {
+  return normalizeRelPath(String(href || '')).toLowerCase() === '404.html';
+}
+
+function absolutizeFallbackDocumentPaths(html) {
+  return String(html || '').replace(
+    /(\b(?:href|src)=["'])([^"']*)(["'])/gi,
+    (_, head, rawHref, tail) => `${head}${toAbsoluteFallbackHref(rawHref)}${tail}`,
+  );
+}
+
+function toAbsoluteFallbackHref(rawHref) {
+  const href = String(rawHref || '').trim();
+  if (!href) return rawHref;
+  if (href.startsWith('/') || href.startsWith('//') || href.startsWith('#')) return href;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(href)) return href;
+
+  const hashIndex = href.indexOf('#');
+  const queryIndex = href.indexOf('?');
+  let splitIndex = -1;
+  if (hashIndex >= 0 && queryIndex >= 0) splitIndex = Math.min(hashIndex, queryIndex);
+  else splitIndex = Math.max(hashIndex, queryIndex);
+
+  const pathPart = splitIndex >= 0 ? href.slice(0, splitIndex) : href;
+  const suffix = splitIndex >= 0 ? href.slice(splitIndex) : '';
+  if (!pathPart || pathPart === '.') return `/${suffix}`;
+
+  const absolutePath = path.posix.normalize(`/${pathPart.replace(/^\.\/+/, '')}`);
+  return `${absolutePath}${suffix}`;
 }
 
 function findConfigKeyLine(configPath, key) {

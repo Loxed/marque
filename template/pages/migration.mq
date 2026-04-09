@@ -6,20 +6,21 @@ nav = migration
 # Migration
 @divider
 
-Use `marque migrate` when you already have a markdown-first docs project and want a clean Marque site without rebuilding everything by hand.
+Use `marque migrate` when you already have a markdown docs project and want the content in Marque without rebuilding the whole thing by hand.
 
 @callout .info
-The first migration pass is intentionally narrow: Marque currently targets the tools that are structurally closest to it.
+Migration is designed to import the content and navigation quickly.
+It is not a promise to carry over every plugin, theme, hook, or runtime behaviour from the old tool.
 @end callout
 
-## Supported first
+## Supported today
 @divider
 
 @row
   @card .primary
     ## `mdBook`
     @divider
-    `book.toml`, `src/SUMMARY.md`, and `src/**/*.md` map very naturally onto `marque.toml`, `summary.mq`, and `pages/**/*.mq`.
+    `book.toml`, `src/SUMMARY.md`, and `src/**/*.md` map naturally onto `marque.toml`, `summary.mq`, and `pages/**/*.mq`.
   @end card
 
   @card .secondary
@@ -27,27 +28,50 @@ The first migration pass is intentionally narrow: Marque currently targets the t
     @divider
     `mkdocs.yml` plus `docs/**/*.md` also translates well, especially when the site uses a normal `nav:` tree and markdown pages.
   @end card
-
-  @card
-    ## Not first-pass
-    @divider
-    Tools with heavy framework runtime assumptions, MDX, JSX, plugin APIs, or template languages need a looser migration strategy and are not the first targets.
-  @end card
 @end row
 
-## Command
+@card
+  ## What not to expect
+  @divider
+  Themes, preprocessors, plugins, extra CSS or JS hooks, and framework-specific markup still need a manual pass after the import.
+@end card
+
+## Fast flow
+@divider
+
+@card
+@container
+  @step
+  Run `marque migrate` against the old project.
+  @end step
+
+  @step
+  Open the generated site and serve it locally.
+  @end step
+
+  @step
+  Read `pages/migration-notes.mq` inside the migrated site.
+  @end step
+
+  @step
+  Clean up navigation, theme, layout, and any tool-specific extras that Marque intentionally does not port automatically.
+  @end step
+@end container
+@end card
+
+## Commands
 @divider
 
 @row
   @card .accent
-    ## Auto-detect
+    ## Auto-detect the source
     @divider
 
     ```sh
     marque migrate ./old-docs
     ```
 
-    This creates a new site next to the source project at `./old-docs-marque`.
+    If you do not pass a target directory, Marque creates one next to the source folder with `-marque` appended.
   @end card
 
   @card
@@ -59,18 +83,20 @@ The first migration pass is intentionally narrow: Marque currently targets the t
     marque migrate ./old-site ./new-marque --from mkdocs
     ```
   @end card
-
-  @card
-    ## Choose layout and theme
-    @divider
-
-    ```sh
-    marque migrate ./docs ./docs-marque --from mkdocs --layout sidebar --theme comte
-    ```
-  @end card
 @end row
 
-## What gets migrated
+@card .secondary
+  ## Pick the starter shell
+  @divider
+
+  ```sh
+  marque migrate ./docs ./docs-marque --from mkdocs --layout sidebar --theme comte
+  ```
+
+  If you omit these flags, the migration starts with `sidebar` and `comte`.
+@end card
+
+## What Marque brings over
 @divider
 
 @row
@@ -85,21 +111,23 @@ The first migration pass is intentionally narrow: Marque currently targets the t
     @divider
     `src/SUMMARY.md` from mdBook or `nav:` from MkDocs becomes `summary.mq`.
   @end card
+@end row
 
+@row
   @card
     ## Assets
     @divider
     Non-markdown files from the source docs tree are copied into `static/` with matching relative paths.
   @end card
-@end row
 
-@row
   @card
     ## Internal links
     @divider
     Local markdown links are rewritten from `.md` targets to the matching `.mq` pages so Marque can resolve them to HTML.
   @end card
+@end row
 
+@row
   @card
     ## Site config
     @divider
@@ -109,11 +137,11 @@ The first migration pass is intentionally narrow: Marque currently targets the t
   @card
     ## Review page
     @divider
-    Marque also creates `pages/migration-notes.mq` so any skipped metadata or unsupported features are visible inside the new site.
+    Marque also creates `pages/migration-notes.mq` so skipped metadata and unsupported features are impossible to miss.
   @end card
 @end row
 
-## What still needs a human pass
+## What still needs you
 @divider
 
 @card
@@ -123,7 +151,7 @@ The first migration pass is intentionally narrow: Marque currently targets the t
   @end step
 
   @step
-  Rebuild the original visual design as a Marque theme or layout instead of expecting source themes to carry over automatically.
+  Rebuild the original visual design as a Marque theme or layout instead of expecting source themes to carry across automatically.
   @end step
 
   @step
@@ -164,6 +192,25 @@ The first migration pass is intentionally narrow: Marque currently targets the t
   @end card
 @end row
 
+## Pick the source-specific guide
+@divider
+
+@row
+  @card .primary
+    ## From `mdBook`
+    `SUMMARY.md`, `book.toml`, and the default mdBook structure map very cleanly into Marque.
+
+    @[Open mdBook guide ->](/migration/mdbook.html){.primary}
+  @end card
+
+  @card .secondary
+    ## From `MkDocs`
+    This path works best when the project uses a normal `docs/` folder plus a standard `nav:` tree in `mkdocs.yml`.
+
+    @[Open MkDocs guide ->](/migration/mkdocs.html)
+  @end card
+@end row
+
 @callout .warn
-Migration is meant to get you most of the way there quickly, not to promise a pixel-perfect or plugin-perfect import.
+The goal is "you are 70 to 90 per cent done and reviewing a real site", not "your old project survived the trip without needing taste or judgement".
 @end callout
