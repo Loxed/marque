@@ -434,13 +434,13 @@ function loadPageTemplate(themeRef, siteDir, layoutName) {
   if (fs.existsSync(themeRef) && fs.statSync(themeRef).isDirectory()) {
     const themeIndexTemplate = path.join(themeRef, 'index.html');
     if (fs.existsSync(themeIndexTemplate)) {
-      return loadTemplateWithPartials(themeIndexTemplate);
+      return loadTextWithPartials(themeIndexTemplate);
     }
 
     // Backward compatibility for older themes.
     const legacyBaseTemplate = path.join(themeRef, 'base.html');
     if (fs.existsSync(legacyBaseTemplate)) {
-      return loadTemplateWithPartials(legacyBaseTemplate);
+      return loadTextWithPartials(legacyBaseTemplate);
     }
   }
 
@@ -459,35 +459,39 @@ function loadPageTemplate(themeRef, siteDir, layoutName) {
 
   const templatePath = candidates.find(p => fs.existsSync(p));
   if (templatePath) {
-    return loadTemplateWithPartials(templatePath);
+    return loadTextWithPartials(templatePath);
   }
 
   throw new Error('No template found. Add layouts/index.html (preferred) or a theme-level index.html/base.html.');
 }
 
-function loadTemplateWithPartials(templatePath, stack = []) {
-  const normalizedPath = path.resolve(templatePath);
+function loadTextWithPartials(filePath, stack = []) {
+  const normalizedPath = path.resolve(filePath);
   if (stack.includes(normalizedPath)) {
     const chain = [...stack, normalizedPath].map(p => path.relative(process.cwd(), p)).join(' -> ');
-    throw new Error(`Template partial include cycle detected: ${chain}`);
+    throw new Error(`Partial include cycle detected: ${chain}`);
   }
 
   const template = fs.readFileSync(normalizedPath, 'utf8');
   const nextStack = [...stack, normalizedPath];
-  return template.replace(/\{\{\s*>\s*([^\s{}]+)\s*\}\}/g, (_, includeRef) => {
-    const includePath = resolveTemplateIncludePath(normalizedPath, includeRef);
-    return loadTemplateWithPartials(includePath, nextStack);
-  });
+  const expand = includeRef => {
+    const includePath = resolvePartialIncludePath(normalizedPath, includeRef);
+    return loadTextWithPartials(includePath, nextStack);
+  };
+
+  return template
+    .replace(/\{\{\s*>\s*([^\s{}]+)\s*\}\}/g, (_, includeRef) => expand(includeRef))
+    .replace(/^[ \t]*\/\/\s*@include\s+([^\s]+)\s*$/gm, (_, includeRef) => expand(includeRef));
 }
 
-function resolveTemplateIncludePath(templatePath, includeRef) {
-  const baseDir = path.dirname(templatePath);
+function resolvePartialIncludePath(filePath, includeRef) {
+  const baseDir = path.dirname(filePath);
   const rawRef = String(includeRef || '').trim();
   const refWithExt = path.extname(rawRef) ? rawRef : `${rawRef}.html`;
   const candidate = path.resolve(baseDir, refWithExt);
 
   if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
-  throw new Error(`Template partial "${rawRef}" not found from ${path.relative(process.cwd(), templatePath)}`);
+  throw new Error(`Partial "${rawRef}" not found from ${path.relative(process.cwd(), filePath)}`);
 }
 
 function loadSharedRuntimeScript(siteDir) {
@@ -502,7 +506,7 @@ function loadSharedRuntimeScript(siteDir) {
 
   const scriptPath = candidates.find(p => fs.existsSync(p));
   if (!scriptPath) return '';
-  return fs.readFileSync(scriptPath, 'utf8');
+  return loadTextWithPartials(scriptPath);
 }
 
 function safeName(name) {
