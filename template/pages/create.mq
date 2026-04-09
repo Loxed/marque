@@ -53,7 +53,7 @@ This page is about understanding the scaffold you now own.
 
     The generated `dist/` folder appears later, once you run `marque build` or `marque serve`.
 
-    Files in `static/` are copied to the site root. From any `.mq` page, link them with paths such as `logo.png`, `images/hero.png`, or `static/logo.png` if you want to be explicit.
+    Files in `static/` are copied to the site root. From any `.mq` page, link them with paths such as `static/logo.png` or `static/images/hero.png`.
   @end card
 @end row
 

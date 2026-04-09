@@ -124,7 +124,7 @@ body {
 }
 
 .mq-nav-summary-group > .mq-nav-group-trigger {
-  cursor: default;
+  cursor: pointer;
 }
 
 .mq-nav .mq-nav-submenu {

@@ -2,19 +2,15 @@
 
 @divider
 
-@callout .info
-The navigation file handles what pages appear in the navigation bar, how they are grouped and ordered.
-@end callout
-
 @row
 
 @card
 ## Navigation File
 @divider
 
-The navigation bar is generated from the `navigation.mq` file in the root of your project. This file contains links to every page in your site. 
+The `navigation.mq` file handles what pages appear in the navigation bar, how they are grouped and ordered. It is located at the root of your project and uses markdown links to point to your `.mq` pages.
 
-It automatically generates submenus based on the path of the linked pages. For example, if you link to `docs/configuration.mq`, Marque will create a "Docs" menu with a "Configuration" submenu.
+Submenus are generated based on the paths of the links; for example, `[Config](docs/configuration.mq)` will create a "Docs" menu with a "Configuration" submenu.
 
 @end card
 
@@ -25,6 +21,7 @@ Here is a sample `navigation.mq` file:
 @row
 
 @card
+
 ```md
 [Home](index.mq)
 
@@ -42,7 +39,7 @@ Migration
 @end card
 
 @card
-![Navigation Preview](nav_preview.png)
+![Navigation Preview](static/nav_preview.png)
 @end card
 
 @end row

@@ -286,17 +286,7 @@ function normalizeStaticAssetHref(pathPart, suffix = '') {
     return `/${normalizedPath.replace(/^static\/+/i, '')}${suffix}`;
   }
 
-  if (rawPath.startsWith('/')) return '';
-  if (rawPath.startsWith('./') || rawPath.startsWith('../')) return '';
-  if (!looksLikeAssetPath(normalizedPath)) return '';
-
-  return `/${normalizedPath}${suffix}`;
-}
-
-function looksLikeAssetPath(value) {
-  const filename = String(value || '').split('/').pop() || '';
-  if (!filename || !filename.includes('.')) return false;
-  return true;
+  return '';
 }
 
 module.exports = { render };

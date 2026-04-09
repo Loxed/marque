@@ -16,7 +16,7 @@ Layouts behave a bit like themes, but they solve a different problem. Themes con
 
 		The sidebar layout places the navigation on the left-hand side of the page. The site title sits at the top, the main links appear underneath, and section headings are visible. The page content then sits to the right of the sidebar.
 
-		![Sidebar](sidebar.png)
+		![Sidebar](static/sidebar.png)
 
 	@end card
 
@@ -26,7 +26,7 @@ Layouts behave a bit like themes, but they solve a different problem. Themes con
 
 		The topnav layout places the navigation bar at the top of the page. The site title appears on the left and the main links sit on the right. Hovering over the main buttons reveals subsections. Section headings are not shown in the same way, and the page content appears below the navigation bar.
 
-		![Topnav](topnav.png)
+		![Topnav](static/topnav.png)
 	@end card topnav
 @end row
 
