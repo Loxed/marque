@@ -7,14 +7,19 @@ const { getDirective } = require('./directives/registry');
 
 // configure marked
 const mdRenderer = new marked.Renderer();
+const defaultTableRenderer = mdRenderer.table;
 mdRenderer.code = (code, infostring) => {
   const isToken = code && typeof code === 'object' && !Array.isArray(code);
   const rawCode = isToken ? readTokenText(code.text ?? code.raw) : code;
   const rawLang = isToken ? readTokenText(code.lang) : infostring;
-  const lang = String(rawLang || '').trim().split(/\s+/)[0] || 'text';
+  const lang = String(rawLang || '').trim().split(/\s+/)[0] || '';
   const safeLang = escapeAttr(lang.toLowerCase());
   const highlighted = highlightCode(String(rawCode || ''), safeLang);
   return `<div class="mq-code-block" data-lang="${safeLang}"><div class="mq-code-head"><span class="mq-code-lang">${safeLang}</span><button class="mq-code-copy" type="button" aria-label="Copy ${safeLang} code">Copy</button></div><pre><code class="hljs language-${safeLang}">${highlighted}</code></pre></div>`;
+};
+mdRenderer.table = function (...args) {
+  const tableHtml = defaultTableRenderer.apply(this, args);
+  return `<div class="mq-table-wrap">${tableHtml}</div>`;
 };
 // Keep standard Markdown paragraph flow: single newlines stay soft,
 // while explicit hard breaks still require Markdown hard-break syntax or <br>.

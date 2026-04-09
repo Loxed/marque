@@ -40,7 +40,7 @@ This page is about understanding the scaffold you now own.
     ## What the starter contains
     @divider
 
-    ```txt
+    ```
     my-site/
     ├── directives/   # project-specific directives loaded on build and serve
     ├── layouts/      # shared HTML shell and layout CSS

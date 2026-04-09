@@ -248,6 +248,59 @@ body {
   border-left: 3px solid var(--mq-primary); padding-left: 1rem; margin: 1rem 0; color: var(--mq-muted); font-style: italic;
 }
 
+.mq-table-wrap {
+  margin: 1.25rem 0 1.5rem;
+  overflow-x: auto;
+  border: 1px solid var(--mq-border);
+  border-radius: calc(var(--mq-radius) + 4px);
+  background: var(--mq-surface);
+}
+
+.mq-main .mq-table-wrap table {
+  width: 100%;
+  min-width: 34rem;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.mq-main .mq-table-wrap thead {
+  background: color-mix(in srgb, var(--mq-surface-alt) 84%, var(--mq-surface));
+}
+
+.mq-main .mq-table-wrap th,
+.mq-main .mq-table-wrap td {
+  padding: 0.78rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--mq-border);
+}
+
+.mq-main .mq-table-wrap th {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mq-text);
+}
+
+.mq-main .mq-table-wrap td {
+  color: var(--mq-muted);
+}
+
+.mq-main .mq-table-wrap tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--mq-surface-alt) 58%, transparent);
+}
+
+.mq-main .mq-table-wrap tbody tr:hover {
+  background: color-mix(in srgb, var(--mq-primary) 6%, var(--mq-surface));
+}
+
+.mq-main .mq-table-wrap tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .mq-main strong {
   font-weight: 500; color: var(--mq-text);
 }
@@ -699,5 +752,9 @@ product-card > :last-child {
 
   .mq-step-num {
     justify-self: start;
+  }
+
+  .mq-main .mq-table-wrap table {
+    min-width: 30rem;
   }
 }
