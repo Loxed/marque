@@ -114,7 +114,7 @@ align = center
   legacy values `default`, `xmb`, and `crossmediabar` resolve to `topnav`.
 - `theme`: global theme name.
 - `width`: global page width occupancy (percentage-based, see below).
-- `align`: default content alignment (`left`, `center`, `right`).
+- `align`: default content column alignment (`left`, `center`, `right`).
 
 ## Frontmatter
 
@@ -136,7 +136,7 @@ align = left
 - `theme`: optional per-page theme override.
 - `layout`: optional per-page layout override.
 - `width`: optional per-page width override.
-- `align`: optional per-page content alignment (`left`, `center`, `right`).
+- `align`: optional per-page content column alignment (`left`, `center`, `right`).
 
 ## Summary Navigation
 

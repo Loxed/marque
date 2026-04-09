@@ -1,9 +1,9 @@
 title = Marque
 description = Built with Marque
 layout = sidebar
-theme = gouda
-width = full
-align = left
+theme = comte
+width = normal
+align = center
 repo = https://github.com/Loxed/marque
 
 # Marque config

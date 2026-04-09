@@ -23,7 +23,7 @@ function build(siteDir, outDir, options = {}) {
   const configuredLayoutName = config.layout || 'topnav';
   const defaultLayoutName = normalizeLayoutName(configuredLayoutName);
   const defaultPageWidth = normalizeWidth(config.width);
-  const defaultContentAlign = normalizeContentAlign(config.align);
+  const defaultPageAlign = normalizeContentAlign(config.align);
   const siteRepo = normalizeRepoValue(config.repo || config.repository || '');
 
   // Refresh packaged + project directives on every build.
@@ -126,7 +126,7 @@ function build(siteDir, outDir, options = {}) {
     const title = fm.title || config.title || 'Marque Site';
     const documentTitle = title ? `${siteTitle} — ${title}` : siteTitle;
     const searchTitle = String(fm.title || page.label || title || path.basename(page.rel, '.mq')).trim();
-    const pageMainStyle = resolveMainStyle(fm, defaultPageWidth, defaultContentAlign);
+    const pageMainStyle = resolveMainStyle(fm, defaultPageWidth, defaultPageAlign);
     let html = applyTemplate(pageTemplate, {
       document_title: documentTitle,
       title,
@@ -1634,10 +1634,10 @@ function writeFileWithRetry(filePath, content, softFsErrors = false) {
   return true;
 }
 
-function resolveMainStyle(fm, defaultPageWidth, defaultContentAlign) {
+function resolveMainStyle(fm, defaultPageWidth, defaultPageAlign) {
   const pageWidth = normalizeWidth(fm.width);
   const width = pageWidth || defaultPageWidth;
-  const align = normalizeContentAlign(fm.align) || defaultContentAlign;
+  const align = normalizeContentAlign(fm.align) || defaultPageAlign;
   const declarations = [];
 
   if (width) {
@@ -1654,10 +1654,6 @@ function resolveMainStyle(fm, defaultPageWidth, defaultContentAlign) {
   } else if (align === 'center') {
     declarations.push(`--page-margin-left: auto`);
     declarations.push(`--page-margin-right: auto`);
-  }
-
-  if (align) {
-    declarations.push(`--page-text-align: ${align}`);
   }
 
   if (!declarations.length) return '';

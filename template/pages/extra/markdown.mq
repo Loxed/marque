@@ -1,0 +1,215 @@
+# Markdown Basic Syntax
+@divider
+
+Here's the [basic syntax of Markdown](https://www.markdownguide.org/basic-syntax/), which you can use in your `.mq` files for content formatting. Marque supports standard Markdown syntax, as well as some extensions for enhanced functionality.
+
+@callout .info
+This keeps the same syntax coverage as the old page, but groups the smaller examples more tightly.
+@end callout
+
+## Headings and paragraphs
+@divider
+
+@row
+@card
+### Headings
+# Heading level 1
+## Heading level 2
+### Heading level 3
+#### Heading level 4
+##### Heading level 5
+###### Heading level 6
+@end card
+
+@card
+### Heading syntax
+```md
+# Heading level 1
+## Heading level 2
+### Heading level 3
+#### Heading level 4
+##### Heading level 5
+###### Heading level 6
+```
+@end card
+@end row
+
+@row
+@card
+### Alternate headings
+Heading level 1
+===============
+
+Heading level 2
+---------------
+@end card
+
+@card
+### Alternate heading syntax
+```md
+Heading level 1
+===============
+
+Heading level 2
+---------------
+```
+@end card
+@end row
+
+@row
+@card
+### Paragraphs
+This is a paragraph.
+
+This is another paragraph.
+@end card
+
+@card
+### Paragraph and line break syntax
+```md
+This is a paragraph.
+
+This is another paragraph.
+
+First line.  
+Second line.
+```
+@end card
+
+@card
+### Line breaks
+First line.  
+Second line.
+@end card
+@end row
+
+## Emphasis and inline syntax
+@divider
+
+@row
+@card .primary
+### Bold, italic, and both
+- `**bold text**` or `__bold text__` -> **bold text**
+- `*italic text*` or `_italic text_` -> *italic text*
+- `***bold and italic***` -> ***bold and italic***
+@end card
+
+@card .secondary
+### Inline code and escaping
+- ``Use `code` like this.`` -> Use `code` like this.
+- `\* Not italic \*` -> \* Not italic \*
+@end card
+@end row
+
+## Blockquotes and lists
+@divider
+
+@row
+@card
+### Blockquotes
+Single-line blockquote syntax can stay inline: ``> This is a blockquote.``
+
+> This is a blockquote.
+
+Nested blockquote syntax:
+```md
+> First level
+>
+> > Second level
+```
+
+> First level
+>
+> > Second level
+@end card
+
+@card
+### Lists
+Ordered list syntax:
+```md
+1. First item
+2. Second item
+3. Third item
+```
+
+1. First item
+2. Second item
+3. Third item
+
+Unordered list syntax:
+```md
+- First item
+- Second item
+- Third item
+```
+
+- First item
+- Second item
+- Third item
+
+Nested list syntax:
+```md
+- Item
+  - Subitem
+```
+
+- Item
+  - Subitem
+@end card
+@end row
+
+## Code, links, media, and rules
+@divider
+
+@row
+@card
+### Code
+Inline code: ``Use `code` like this.``
+
+Use `code` like this.
+
+Code block syntax:
+````md
+```text
+code block
+```
+````
+
+```text
+code block
+```
+@end card
+
+@card
+### Links and images
+Link syntax:
+`[Google](https://www.google.com)` -> [Google](https://www.google.com)
+
+Image syntax:
+```md
+![Alt text](https://placehold.co/600x400)
+```
+
+![Alt text](https://placehold.co/600x400)
+@end card
+
+@card
+### Horizontal rules
+Any of these will render a horizontal rule:
+- `---`
+- `***`
+- `___`
+
+---
+@end card
+@end row
+
+## Best Practices
+@divider
+
+@card
+* Leave blank lines between elements
+* Don't indent paragraphs
+* Use consistent list markers
+* Prefer `*` for emphasis compatibility
+@end card

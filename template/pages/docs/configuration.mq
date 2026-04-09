@@ -104,7 +104,7 @@ That is enough to define the site's baseline behaviour.
     - `layout`: `sidebar` or `topnav`
     - `theme`: the active theme CSS file
     - `width`: `narrow`, `normal`, `wide`, `full`, or a custom size
-    - `align`: `left`, `center`, or `right`
+    - `align`: place the content column `left`, `center`, or `right`
   @end card
 @end row
 
