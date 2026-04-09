@@ -1,0 +1,185 @@
+# Navigation
+
+@divider
+
+@callout .info
+The navigation file handles what pages appear in the navigation bar, how they are grouped and ordered.
+@end callout
+
+@row
+
+@card
+## Navigation File
+@divider
+
+The navigation bar is generated from the `navigation.mq` file in the root of your project. This file contains links to every page in your site. 
+
+It automatically generates submenus based on the path of the linked pages. For example, if you link to `docs/configuration.mq`, Marque will create a "Docs" menu with a "Configuration" submenu.
+
+@end card
+
+@card
+
+Here is a sample `navigation.mq` file:
+
+@row
+
+@card
+```md
+[Home](index.mq)
+
+Start Here
+
+[Quick Start](quickstart.mq)
+[Create Website](create.mq)
+
+Migration
+
+[Migration](migration.mq)
+    [From mdBook](migration/mdbook.mq)
+    [From MkDocs](migration/mkdocs.mq)
+```
+@end card
+
+@card
+![Navigation Preview](nav_preview.png)
+@end card
+
+@end row
+
+@callout .warn
+The indentation in the `navigation.mq` file is not important, but for readability. Marque generates submenus based on the path of the linked pages. So, if you link to `docs/configuration.mq`, Marque will create a "Docs" menu with a "Configuration" submenu, regardless of the indentation in the `navigation.mq` file.
+
+@end row
+
+# Navigation
+@divider
+
+`navigation.mq` controls the menu structure for your site.
+
+@callout .info
+This is the primary filename for the navigation file.
+For backwards compatibility, Marque still accepts `summary.mq` in older projects.
+@end callout
+
+## What it controls
+@divider
+
+@row
+  @card .primary
+    ## Order and labels
+    @divider
+    The links in `navigation.mq` decide which pages appear in navigation, what order they appear in, and which label each page uses in the menu.
+  @end card
+
+  @card .secondary
+    ## Grouping and hierarchy
+    @divider
+    Plain text lines become section headings, and page nesting is derived from page paths such as `docs/configuration/frontmatter.mq`.
+  @end card
+@end row
+
+@card
+  ## Home page
+  @divider
+  The first linked page becomes the site's home route. In most projects that will still be `index.mq`.
+@end card
+
+## Basic example
+@divider
+
+@card
+```navigation.mq
+# Navigation
+
+[Home](index.mq)
+
+Start Here
+[Quick Start](quickstart.mq)
+[Create Website](create.mq)
+
+Docs
+[Docs](docs.mq)
+[Configuration](docs/configuration.mq)
+[Frontmatter](docs/configuration/frontmatter.mq)
+[Layouts](docs/configuration/layouts.mq)
+```
+@end card
+
+@row
+  @card
+    ## Link entries
+    @divider
+    Use markdown links to point at `.mq` pages. The label inside the link becomes the navigation label.
+
+    ```txt
+    [Quick Start](quickstart.mq)
+    [Layouts](docs/configuration/layouts.mq)
+    ```
+  @end card
+
+  @card
+    ## Section headings
+    @divider
+    Plain text lines act as headings. They help structure the sidebar and provide visual separation between groups.
+
+    ```txt
+    Start Here
+    Docs
+    Migration
+    ```
+  @end card
+@end row
+
+## How nesting works
+@divider
+
+@card
+Marque derives nesting from page paths, not from indentation alone.
+
+If a page lives under another page's path, it can appear as a child in navigation:
+
+```txt
+[Configuration](docs/configuration.mq)
+[Frontmatter](docs/configuration/frontmatter.mq)
+[Layouts](docs/configuration/layouts.mq)
+```
+@end card
+
+@callout .ok
+This keeps the navigation file readable. You list the pages in the order you want, and Marque works out the path-based hierarchy.
+@end callout
+
+## Common mistakes
+@divider
+
+@row
+  @card
+    - adding a page under `pages/` and forgetting to add it to `navigation.mq`
+    - changing a page slug and forgetting to update the matching navigation entry
+    - assuming indentation alone controls nesting
+  @end card
+
+  @card
+    - using `nav = ...` in frontmatter and expecting that to set navigation order
+    - pointing at `.html` output files instead of `.mq` source pages
+    - treating `navigation.mq` like a page inside `pages/`
+  @end card
+@end row
+
+## Related pages
+@divider
+
+@row
+  @card .accent
+    ## Frontmatter
+    Learn how page slugs and titles interact with navigation.
+    @[Open frontmatter docs ->](/docs/configuration/frontmatter.html){.primary}
+  @end card
+
+  @card
+    ## Layouts
+    See how the same navigation data is presented differently by `sidebar` and `topnav`.
+    @[Open layout docs ->](/docs/configuration/layouts.html)
+  @end card
+@end row

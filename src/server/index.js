@@ -33,8 +33,12 @@ async function serve(siteDir, outDir, port = 3000) {
 	const layoutsDir = path.resolve(siteDir, 'layouts');
 	const directivesDir = path.resolve(siteDir, 'directives');
 	const configFile = path.resolve(siteDir, 'marque.toml');
-	const summaryFile = path.resolve(siteDir, 'summary.mq');
-	const pagesSummaryFile = path.resolve(pagesDir, 'summary.mq');
+	const navigationFiles = [
+		path.resolve(siteDir, 'navigation.mq'),
+		path.resolve(pagesDir, 'navigation.mq'),
+		path.resolve(siteDir, 'summary.mq'),
+		path.resolve(pagesDir, 'summary.mq'),
+	];
 	let server = null;
 	let wss = null;
 	let watcher = null;
@@ -72,8 +76,7 @@ async function serve(siteDir, outDir, port = 3000) {
 			layoutsDir,
 			directivesDir,
 			configFile,
-			summaryFile,
-			pagesSummaryFile,
+			navigationFiles,
 			outDir,
 			build,
 			broadcast,

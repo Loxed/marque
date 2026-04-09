@@ -185,7 +185,7 @@ function writeMigratedSite({ templateDir, targetDir, project, layout, theme }) {
 
   fs.writeFileSync(path.join(pagesDir, '404.mq'), buildDefault404Page(), 'utf8');
   fs.writeFileSync(path.join(pagesDir, 'migration-notes.mq'), project.notes, 'utf8');
-  fs.writeFileSync(path.join(targetDir, 'summary.mq'), buildSummaryFile(project.summaryLines), 'utf8');
+  fs.writeFileSync(path.join(targetDir, 'navigation.mq'), buildSummaryFile(project.summaryLines), 'utf8');
   fs.writeFileSync(path.join(targetDir, 'marque.toml'), buildMarqueConfig(project, layout, theme), 'utf8');
 }
 
@@ -772,7 +772,7 @@ function buildFallbackSummary(pages, warnings) {
   }
 
   if (!out.length) {
-    warnings.push('No navigation file was found, so summary.mq was generated from the file tree.');
+    warnings.push('No navigation file was found, so navigation.mq was generated from the file tree.');
   }
 
   return appendMigrationNotesLink(out.filter((line, index, arr) => !(line === '' && (!arr[index - 1] || !arr[index + 1]))));
@@ -1120,7 +1120,7 @@ function buildMigrationNotes({ sourceKind, docsRoot, warnings, extraNotes, pageC
     '@divider',
     '',
     '- Open `marque.toml` and choose the final Marque layout and theme.',
-    '- Check `summary.mq` to confirm the imported navigation order and labels.',
+    '- Check `navigation.mq` to confirm the imported navigation order and labels.',
     '- Review any custom CSS, JS, plugins, or preprocessors from the source project.',
     '- Open a few pages with images and internal links to confirm paths still feel right.',
     '',
@@ -1153,7 +1153,7 @@ function buildMigrationNotes({ sourceKind, docsRoot, warnings, extraNotes, pageC
 }
 
 function buildSummaryFile(summaryLines) {
-  const body = ['# Summary', ''];
+  const body = ['# Navigation', ''];
   body.push(...summaryLines);
   body.push('');
   return body.join('\n');
@@ -1186,7 +1186,7 @@ function buildDefault404Page() {
     'The route you opened does not exist in this migrated site yet.',
     '',
     '@callout .warn',
-    'Check `summary.mq` and the imported page paths if this route should exist.',
+    'Check `navigation.mq` and the imported page paths if this route should exist.',
     '@end callout',
     '',
   ].join('\n');

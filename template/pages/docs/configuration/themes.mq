@@ -72,7 +72,7 @@ _"Yes I'm French, how did you guess?"_
 
     [Comté](https://en.wikipedia.org/wiki/Comté) is the default theme for Marque. Clean, readable, and responsive, with no holes in its design.
 
-    ![Comté Theme](../../topnav.png)
+    ![Comté Theme](topnav.png)
   @end card
 
   @card .primary
@@ -80,7 +80,7 @@ _"Yes I'm French, how did you guess?"_
 
     Rustique is a modern, warm theme for Marque, based on [Rust](https://rust-lang.org/). (Rustique is a French brand of [Camembert](https://en.wikipedia.org/wiki/Camembert))
 
-    ![Rustique Theme](../../topnav.png)
+    ![Rustique Theme](topnav.png)
 
   @end card
 
@@ -89,7 +89,7 @@ _"Yes I'm French, how did you guess?"_
 
     Pycorino is a playful light theme inspired by [Python](https://python.org/). (Python + [Pecorino](https://en.wikipedia.org/wiki/Pecorino) = Pycorino ??? It's 4am when I'm writing this)
 
-    ![Pycorino Theme](../../topnav.png)
+    ![Pycorino Theme](topnav.png)
   @end card
 
 @end row
@@ -101,7 +101,7 @@ _"Yes I'm French, how did you guess?"_
 
     Javarti is a classic light theme for Marque, influenced by [Java](https://java.com/). Like [Havarti](https://en.wikipedia.org/wiki/Havarti), it's old enough but ages well.
 
-    ![Javarti Theme](../../topnav.png)
+    ![Javarti Theme](topnav.png)
   @end card
 
   @card .tertiary
@@ -109,7 +109,7 @@ _"Yes I'm French, how did you guess?"_
 
     [Gouda](https://en.wikipedia.org/wiki/Gouda_cheese) is a cool, simple dark theme for Marque, based on [Go](https://go.dev/). Gouda is a simple, pleasant cheese anyone can enjoy.
 
-    ![Gouda Theme](../../topnav.png)
+    ![Gouda Theme](topnav.png)
 
   @end card
 
@@ -118,7 +118,7 @@ _"Yes I'm French, how did you guess?"_
 
     Elmental is a bright, paper-like theme for Marque, inspired by [Elm](https://elm-lang.org/). [Emmental](https://en.wikipedia.org/wiki/Emmental_cheese) (not [Gruyère](https://en.wikipedia.org/wiki/Gruyère)!) has holes in it, Elm doesn't.
 
-    ![Mida Theme](../../topnav.png)
+    ![Mida Theme](topnav.png)
   @end card
 @end row
 

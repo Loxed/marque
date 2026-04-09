@@ -9,7 +9,7 @@ nav = mdbook
 This is the cleanest migration path Marque supports right now.
 
 @callout .ok
-`src/SUMMARY.md` and `summary.mq` want almost the same thing, so mdBook projects usually come across with less drama than most docs tools.
+`src/SUMMARY.md` and `navigation.mq` want almost the same thing, so mdBook projects usually come across with less drama than most docs tools.
 @end callout
 
 ## Run it
@@ -66,7 +66,7 @@ This is the cleanest migration path Marque supports right now.
     @divider
 
     ```txt
-    src/SUMMARY.md     -> summary.mq
+    src/SUMMARY.md     -> navigation.mq
     ```
 
     Imported order and nesting come from the mdBook summary, not from the folder tree alone.
@@ -139,7 +139,7 @@ This is the cleanest migration path Marque supports right now.
   @end step
 
   @step
-  Compare `src/SUMMARY.md` with the generated `summary.mq`.
+  Compare `src/SUMMARY.md` with the generated `navigation.mq`.
   @end step
 
   @step

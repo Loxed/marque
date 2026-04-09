@@ -64,7 +64,7 @@ function renderMarkdown(src, opts = {}) {
   src = expandInlineCustomDirectives(src, opts);
 
   const html = marked.parse(src);
-  return normalizeAnchorHrefs(html, opts);
+  return normalizeDocumentHrefs(html, opts);
 }
 
 function expandInlineCustomDirectives(src, opts = {}) {
@@ -232,21 +232,22 @@ function parseBadgeAttrs(raw) {
   return classes.length ? ` ${classes.join(' ')}` : '';
 }
 
-function normalizeAnchorHrefs(html, opts = {}) {
-  return String(html || '').replace(/(<a\b[^>]*\shref=")([^"]+)(")/gi, (_, head, href, tail) => {
+function normalizeDocumentHrefs(html, opts = {}) {
+  return String(html || '').replace(/(\b(?:href|src)=["'])([^"']+)(["'])/gi, (_, head, href, tail) => {
     return `${head}${resolveHref(href, opts)}${tail}`;
   });
 }
 
 function resolveHref(href, opts = {}) {
+  let resolved = href;
   if (opts && typeof opts.resolveHref === 'function') {
     try {
-      return opts.resolveHref(href);
+      resolved = opts.resolveHref(href);
     } catch (_) {
-      // fall back to default normalization
+      resolved = href;
     }
   }
-  return convertMqHref(href);
+  return convertMqHref(resolved);
 }
 
 function convertMqHref(href) {
@@ -267,8 +268,35 @@ function convertMqHref(href) {
   const pathPart = splitIndex >= 0 ? raw.slice(0, splitIndex) : raw;
   const suffix = splitIndex >= 0 ? raw.slice(splitIndex) : '';
 
-  if (!/\.mq$/i.test(pathPart)) return raw;
+  if (!/\.mq$/i.test(pathPart)) {
+    const assetHref = normalizeStaticAssetHref(pathPart, suffix);
+    return assetHref || raw;
+  }
   return `${pathPart.slice(0, -3)}.html${suffix}`;
+}
+
+function normalizeStaticAssetHref(pathPart, suffix = '') {
+  const rawPath = String(pathPart || '').trim();
+  if (!rawPath) return '';
+
+  const normalizedPath = rawPath.replace(/\\/g, '/').replace(/^\/+/, '').replace(/\/+/g, '/');
+  if (!normalizedPath) return '';
+
+  if (/^static\//i.test(normalizedPath)) {
+    return `/${normalizedPath.replace(/^static\/+/i, '')}${suffix}`;
+  }
+
+  if (rawPath.startsWith('/')) return '';
+  if (rawPath.startsWith('./') || rawPath.startsWith('../')) return '';
+  if (!looksLikeAssetPath(normalizedPath)) return '';
+
+  return `/${normalizedPath}${suffix}`;
+}
+
+function looksLikeAssetPath(value) {
+  const filename = String(value || '').split('/').pop() || '';
+  if (!filename || !filename.includes('.')) return false;
+  return true;
 }
 
 module.exports = { render };

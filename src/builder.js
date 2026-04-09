@@ -516,6 +516,8 @@ function buildPageEntries(pages, pagesDir, config, summary) {
 
 function loadSummary(siteDir, pagesDir) {
   const summaryCandidates = [
+    path.join(siteDir, 'navigation.mq'),
+    path.join(pagesDir, 'navigation.mq'),
     path.join(siteDir, 'summary.mq'),
     path.join(pagesDir, 'summary.mq'),
   ];
@@ -543,7 +545,7 @@ function loadSummary(siteDir, pagesDir) {
       continue;
     }
 
-    // Allow title lines in summary docs, especially in summary.mq.
+    // Allow title lines in navigation docs, especially in navigation.mq.
     if (/^#{1,6}\s+/.test(trimmed)) continue;
 
     const fullLink = trimmed.match(/^(?:[-*+]\s+)?\[([^\]]+)\]\(([^)]+)\)\s*$/);

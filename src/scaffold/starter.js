@@ -54,7 +54,7 @@ function buildStarterFirstPage() {
     '',
     '- Edit this file to make it your own.',
     '- Add more pages under pages/.',
-    '- Update summary.mq to control navigation order.',
+    '- Update navigation.mq to control navigation order.',
     '',
   ].join('\n');
 }

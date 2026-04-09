@@ -11,7 +11,7 @@ Use this page as the map for the rest of the site.
 @callout .info
 Marque stays intentionally small on purpose.
 - `pages/` is your source content
-- `summary.mq` is your navigation tree
+- `navigation.mq` is your navigation tree
 - `marque.toml` is your default configuration
 - directives, themes, and layouts are where the custom work starts
 @end callout
@@ -37,9 +37,10 @@ Marque stays intentionally small on purpose.
   @card .secondary
     ## Configuration
     @divider
-    Learn which file owns which decision: `marque.toml`, frontmatter, `summary.mq`, themes, and layouts.
+    Learn which file owns which decision: `marque.toml`, frontmatter, `navigation.mq`, themes, and layouts.
 
     @[Open configuration ->](/docs/configuration.html)
+    @[Navigation ->](/docs/configuration/navigation.html)
     @[Frontmatter ->](/docs/configuration/frontmatter.html)
   @end card
 
@@ -110,7 +111,7 @@ Marque stays intentionally small on purpose.
       @end step
 
       @step
-      Use `summary.mq` when the thing you want to change is the menu, not the page itself.
+      Use `navigation.mq` when the thing you want to change is the menu, not the page itself.
       @end step
     @end container
   @end card
@@ -160,7 +161,7 @@ Marque stays intentionally small on purpose.
 @divider
 
 @card
-```summary.mq
+```navigation.mq
 [Home](index.mq)
 
 Start Here
@@ -171,6 +172,7 @@ Docs
 [Docs](docs.mq)
 [CLI Commands](docs/cli.mq)
 [Configuration](docs/configuration.mq)
+[Navigation](docs/configuration/navigation.mq)
 [Frontmatter](docs/configuration/frontmatter.mq)
 [Layouts](docs/configuration/layouts.mq)
 [Themes](docs/configuration/themes.mq)
@@ -184,5 +186,5 @@ Migration
 @end card
 
 @callout .ok
-If you only want the short version: get the site running, edit `summary.mq`, then learn configuration and directives as soon as you start pushing past the starter template.
+If you only want the short version: get the site running, edit `navigation.mq`, then learn configuration and directives as soon as you start pushing past the starter template.
 @end callout

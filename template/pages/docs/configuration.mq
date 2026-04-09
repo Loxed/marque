@@ -13,7 +13,7 @@ Marque configuration is mostly about knowing which file owns which decision.
 If you remember one rule, make it this one:
 - `marque.toml` sets defaults
 - frontmatter overrides one page
-- `summary.mq` controls navigation labels, order, and grouping
+- `navigation.mq` controls navigation labels, order, and grouping
 @end callout
 
 @row
@@ -31,7 +31,7 @@ If you remember one rule, make it this one:
 @end row
 
 @card .tertiary
-  ## `summary.mq`
+  ## `navigation.mq`
   @divider
   Navigation is not configured in frontmatter. This file controls labels, ordering, grouping, and nested sections.
 @end card
@@ -75,7 +75,7 @@ That is enough to define the site's baseline behaviour.
 @end row
 
 @card .tertiary
-  ## Edit `summary.mq` when...
+  ## Edit `navigation.mq` when...
   @divider
   - the menu order feels wrong
   - a page should appear in navigation but does not
@@ -111,7 +111,7 @@ That is enough to define the site's baseline behaviour.
 @card
   ## Routing
   @divider
-  `nav` in frontmatter changes the output slug for one page. `summary.mq` changes how that page shows up in navigation.
+  `nav` in frontmatter changes the output slug for one page. `navigation.mq` changes how that page shows up in navigation.
 @end card
 
 ## Common jobs
@@ -134,7 +134,7 @@ That is enough to define the site's baseline behaviour.
 @card .secondary
   ## Fix the menu
   @divider
-  Do not fight frontmatter for this. Open `summary.mq`, change the labels or order there, then rebuild.
+  Do not fight frontmatter for this. Open `navigation.mq`, change the labels or order there, then rebuild.
 @end card
 
 ## Go deeper
@@ -142,20 +142,28 @@ That is enough to define the site's baseline behaviour.
 
 @row
   @card .accent
-    ## Frontmatter
-    Exact page-level keys, examples, slug behaviour, and width overrides.
-    @[Open frontmatter docs ->](/docs/configuration/frontmatter.html){.primary}
+    ## Navigation
+    File format, labels, ordering, headings, and path-based nesting.
+    @[Open navigation docs ->](/docs/configuration/navigation.html){.primary}
   @end card
 
   @card
-    ## Layouts
-    Compare `sidebar` and `topnav`, and see how summary-driven navigation changes between them.
-    @[Open layout docs ->](/docs/configuration/layouts.html)
+    ## Frontmatter
+    Exact page-level keys, examples, slug behaviour, and width overrides.
+    @[Open frontmatter docs ->](/docs/configuration/frontmatter.html)
   @end card
 @end row
 
-@card
-  ## Themes
-  Learn how theme files work, how to override a page theme, and which built-in themes ship with Marque.
-  @[Open theme docs ->](/docs/configuration/themes.html)
-@end card
+@row
+  @card
+    ## Layouts
+    Compare `sidebar` and `topnav`, and see how navigation-driven hierarchy changes between them.
+    @[Open layout docs ->](/docs/configuration/layouts.html)
+  @end card
+
+  @card
+    ## Themes
+    Learn how theme files work, how to override a page theme, and which built-in themes ship with Marque.
+    @[Open theme docs ->](/docs/configuration/themes.html)
+  @end card
+@end row

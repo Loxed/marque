@@ -17,7 +17,7 @@ The route you opened does not have a source page yet.
     This usually means one of two things:
 
     - the page file does not exist yet
-    - the route inside `summary.mq` was changed and a link still points at the old location
+    - the route inside `navigation.mq` was changed and a link still points at the old location
   @end card
 
   @card .secondary

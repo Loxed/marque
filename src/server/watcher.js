@@ -22,8 +22,7 @@ function startFileWatcher({
 	layoutsDir,
 	directivesDir,
 	configFile,
-	summaryFile,
-	pagesSummaryFile,
+	navigationFiles,
 	outDir,
 	build,
 	broadcast,
@@ -56,8 +55,7 @@ function startFileWatcher({
 		return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
 	};
 
-	const summaryFileNorm = normalizePathForCompare(summaryFile);
-	const pagesSummaryFileNorm = normalizePathForCompare(pagesSummaryFile);
+	const navigationFileNorms = new Set((navigationFiles || []).map(normalizePathForCompare));
 	const configFileNorm = normalizePathForCompare(configFile);
 	const outDirAbsNorm = normalizePathForCompare(outDir);
 
@@ -88,7 +86,7 @@ function startFileWatcher({
 				&& (['addDir', 'unlinkDir'].includes(event) || ext === '.js');
 			const isTomlChangeEvent = event === 'change' && absFileNorm === configFileNorm;
 			const isSummaryFileEvent = ['add', 'change', 'unlink'].includes(event)
-				&& (absFileNorm === summaryFileNorm || absFileNorm === pagesSummaryFileNorm);
+				&& navigationFileNorms.has(absFileNorm);
 
 			if (!((inPages && (isMqFileEvent || isPagesDirEvent)) || isThemeEvent || isLayoutEvent || isDirectivesEvent || isTomlChangeEvent || isSummaryFileEvent)) return;
 

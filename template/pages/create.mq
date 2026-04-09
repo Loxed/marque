@@ -6,17 +6,22 @@ nav = create
 # Create Website
 @divider
 
-When creating your site, it's important to understand the key files and how they work together. This page walks through the basics of setting up a Marque project, including the file structure, key configuration files, and recommended editing order.
+This page explains what `marque new` actually gives you and what you should do with it next.
 
-## Create a project
+@callout .info
+[Quickstart](/quickstart.html) gets the site running.
+This page is about understanding the scaffold you now own.
+@end callout
+
+## Scaffold a site
 @divider
 
 @row
   @card .primary
-    ## Create and serve
+    ## Create and run a new site
     @divider
 
-    Using the Marque CLI, you can create a new project with a single command. This includes some example content to get you started.
+    Start with the default starter:
 
     ```sh
     marque new my-site
@@ -24,7 +29,7 @@ When creating your site, it's important to understand the key files and how they
     marque serve .
     ```
 
-    You can pick a layout and theme upfront if you already know what you want:
+    If you already know the shell you want, pick a layout and theme up front:
 
     ```sh
     marque new my-site --layout topnav --theme rustique
@@ -32,63 +37,48 @@ When creating your site, it's important to understand the key files and how they
   @end card
 
   @card
-    ## Project structure
+    ## What the starter contains
     @divider
-
-      The project has a simple structure. The `my-site/` directory contains your source files, while the `dist/` directory is generated when you build or serve the site.
 
     ```txt
     my-site/
-    ├── directives/   # custom directives, loaded on build and serve
-    ├── layouts/      # HTML shell and layout CSS
-    ├── pages/        # .mq source files
-    ├── static/       # copied as-is to output
+    ├── directives/   # project-specific directives loaded on build and serve
+    ├── layouts/      # shared HTML shell and layout CSS
+    ├── pages/        # source pages written in .mq
+    ├── static/       # copied as-is into the generated site
     ├── themes/       # visual styling
     ├── marque.toml   # site-wide defaults
-    └── summary.mq    # navigation structure
+    └── navigation.mq # navigation labels, order, and grouping
     ```
 
-    `dist/` is generated when you run `marque build` or `marque serve`.
+    The generated `dist/` folder appears later, once you run `marque build` or `marque serve`.
+
+    Files in `static/` are copied to the site root. From any `.mq` page, link them with paths such as `logo.png`, `images/hero.png`, or `static/logo.png` if you want to be explicit.
   @end card
 @end row
 
-@card
-  ## Key files
-  @divider
+@callout .ok
+The starter is meant to be edited directly. Replace the example pages, keep what helps, and delete what does not.
+@end callout
 
-  @row
+## Start with these files
+@divider
 
-    @card
-      Marque project require a two key files to function properly:
-    
-      - [`marque.toml`](docs/configuration/frontmatter.mq) defines the default configuration for your site, also known as [frontmatter](docs/configuration/frontmatter.mq).
-      - [`summary.mq`](docs/configuration/summary.mq) defines the order and structure of the navigation menu, as well as the labels for each page.
-    @end card
-    
-    @card
-      The layout of a Marque project is:
-
-    @end card
-
-  @end row
-
-@end card
-<!-- 
 @row
   @card .primary
     ## `marque.toml`
     @divider
-    Site-wide defaults: title, description, layout, theme, width, and alignment.
+    This is where the site-wide defaults live: title, description, repo link, layout, theme, width, and alignment.
 
-    If it should apply everywhere, set it here.
+    It answers the question, "what should happen everywhere unless a page says otherwise?"
   @end card
 
   @card .secondary
-    ## `summary.mq`
+    ## `navigation.mq`
     @divider
-    Navigation labels, order, grouping, and nesting.
+    This file controls navigation labels, ordering, grouping, and nesting.
 
-    If it should appear in the menu, it needs an entry here.
+    It answers the question, "how should the menu actually look?"
   @end card
 @end row
 
@@ -96,7 +86,7 @@ When creating your site, it's important to understand the key files and how they
   @card
     ## `pages/`
     @divider
-    Each `.mq` file becomes a page. Start here.
+    This is your source content. Each `.mq` file becomes a page in the generated site.
 
     ```mq
     +++
@@ -109,31 +99,33 @@ When creating your site, it's important to understand the key files and how they
   @end card
 
   @card
-    ## `directives/`, `themes/`, `layouts/`
+    ## `directives/`, `themes/`, and `layouts/`
     @divider
-    Leave these alone until the content structure is settled.
+    These folders are where the starter stops being generic.
 
-    - `directives/`: custom authoring blocks
-    - `themes/`: colours, type, and spacing
-    - `layouts/`: page shell and nav placement
+    - `directives/`: custom authoring blocks and inline helpers
+    - `themes/`: colours, type, spacing, and component styling
+    - `layouts/`: shared page shell and navigation placement
   @end card
 @end row
 
-@callout .info
-A page in `pages/` won't appear in the menu unless it has an entry in `summary.mq`.
-@end callout
+@card
+  ## `pages/404.mq`
+  @divider
+  This is the fallback page for missing routes. Keep it around, but do not treat it like a configuration file.
+@end card
 
-## Edit in this order
+## What to edit first
 @divider
 
 @card
 @container
   @step
-  Set the site title, layout, theme, and alignment in `marque.toml`.
+  Open `marque.toml` and set the site title, layout, theme, and default alignment.
   @end step
 
   @step
-  Update `summary.mq` to match the navigation you actually want.
+  Edit `navigation.mq` so the navigation reflects the site you actually want to build.
   @end step
 
   @step
@@ -141,49 +133,70 @@ A page in `pages/` won't appear in the menu unless it has an entry in `summary.m
   @end step
 
   @step
-  Adjust `themes/`, `layouts/`, and `directives/` once the content structure is clear.
+  Touch `themes/`, `layouts/`, or `directives/` only once the content structure is clear.
   @end step
 @end container
 @end card
 
-## Defaults and overrides
+## Mental model
 @divider
 
 @row
   @card
-    ## Site-wide vs per-page
+    ## Source vs generated output
     @divider
-    Shared decisions go in `marque.toml`.
-    One-off decisions go in page frontmatter.
+    Edit source files in `pages/`, `themes/`, `layouts/`, `directives/`, `marque.toml`, and `navigation.mq`.
+
+    Treat `dist/` as disposable output.
   @end card
 
   @card
-    ## Source vs output
+    ## Defaults vs overrides
     @divider
-    Edit everything except `dist/`.
-    Treat `dist/` as disposable — it is regenerated on every build.
+    Put shared decisions in `marque.toml`.
+    Put one-off decisions in page frontmatter.
+    Put menu decisions in `navigation.mq`.
   @end card
 @end row
 
-## Next steps
+@row
+  @card
+    ## Pages vs navigation
+    @divider
+    A page can exist in `pages/` without appearing in navigation.
+
+    If it should show up in the menu, it needs an entry in `navigation.mq`.
+  @end card
+
+  @card
+    ## Structure before polish
+    @divider
+    Get the content, routing, and navigation right first.
+
+    Once those feel solid, move on to themes, layouts, and custom directives.
+  @end card
+@end row
+
+## Where to go next
 @divider
 
 @row
   @card .primary
-    ## Configuration
+    ## Learn the config
     @divider
-    Frontmatter, layouts, and themes.
+    Once the scaffold makes sense, the next stop is the configuration docs.
 
-    @[Configuration ->](/docs/configuration.html){.primary}
+    @[Open configuration ->](/docs/configuration.html){.primary}
+    @[Navigation ->](/docs/configuration/navigation.html)
     @[Frontmatter ->](/docs/configuration/frontmatter.html)
   @end card
 
   @card
-    ## Authoring
+    ## Learn the authoring layer
     @divider
-    Directives and custom styling.
+    When markdown stops being enough, move on to directives and themes.
 
     @[Directives ->](/docs/directives.html)
     @[Themes ->](/docs/configuration/themes.html)
   @end card
-@end row -->
+@end row

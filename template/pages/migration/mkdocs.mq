@@ -78,9 +78,9 @@ The cleaner the `mkdocs.yml`, the cleaner the migration. Standard `docs/` conten
 @card
   ## Navigation
   @divider
-  A standard MkDocs `nav:` tree becomes `summary.mq`.
+  A standard MkDocs `nav:` tree becomes `navigation.mq`.
 
-  If there is no usable nav tree, Marque falls back to generating the summary from the file tree and records that in migration notes.
+  If there is no usable nav tree, Marque falls back to generating the navigation file from the file tree and records that in migration notes.
 @end card
 
 ## What still needs manual review
@@ -145,7 +145,7 @@ The cleaner the `mkdocs.yml`, the cleaner the migration. Standard `docs/` conten
   @end step
 
   @step
-  Open `summary.mq` and confirm the imported labels and nesting still make sense outside MkDocs.
+  Open `navigation.mq` and confirm the imported labels and nesting still make sense outside MkDocs.
   @end step
 
   @step

@@ -20,7 +20,7 @@ It is not a promise to carry over every plugin, theme, hook, or runtime behaviou
   @card .primary
     ## `mdBook`
     @divider
-    `book.toml`, `src/SUMMARY.md`, and `src/**/*.md` map naturally onto `marque.toml`, `summary.mq`, and `pages/**/*.mq`.
+    `book.toml`, `src/SUMMARY.md`, and `src/**/*.md` map naturally onto `marque.toml`, `navigation.mq`, and `pages/**/*.mq`.
   @end card
 
   @card .secondary
@@ -109,7 +109,7 @@ It is not a promise to carry over every plugin, theme, hook, or runtime behaviou
   @card
     ## Navigation
     @divider
-    `src/SUMMARY.md` from mdBook or `nav:` from MkDocs becomes `summary.mq`.
+    `src/SUMMARY.md` from mdBook or `nav:` from MkDocs becomes `navigation.mq`.
   @end card
 @end row
 
@@ -147,7 +147,7 @@ It is not a promise to carry over every plugin, theme, hook, or runtime behaviou
 @card
 @container
   @step
-  Review the generated `summary.mq` and confirm labels, nesting, and ordering.
+  Review the generated `navigation.mq` and confirm labels, nesting, and ordering.
   @end step
 
   @step
@@ -174,7 +174,7 @@ It is not a promise to carry over every plugin, theme, hook, or runtime behaviou
 
     ```txt
     book.toml        -> marque.toml
-    src/SUMMARY.md   -> summary.mq
+    src/SUMMARY.md   -> navigation.mq
     src/**/*.md      -> pages/**/*.mq
     src/** assets    -> static/**
     ```
@@ -185,7 +185,7 @@ It is not a promise to carry over every plugin, theme, hook, or runtime behaviou
     @divider
 
     ```txt
-    mkdocs.yml       -> marque.toml + summary.mq
+    mkdocs.yml       -> marque.toml + navigation.mq
     docs/**/*.md     -> pages/**/*.mq
     docs/** assets   -> static/**
     ```

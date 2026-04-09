@@ -167,7 +167,7 @@ Run commands from your site folder unless the example says otherwise.
 
   @card
     ## Navigation
-    `summary.mq` controls labels and ordering. The CLI does not infer navigation structure from folder names alone.
+    `navigation.mq` controls labels and ordering. The CLI does not infer navigation structure from folder names alone.
   @end card
 @end row
 
@@ -196,5 +196,5 @@ Run commands from your site folder unless the example says otherwise.
 @card
   ### A page builds but is missing from navigation
   - Check that it exists in `pages/`.
-  - Add it to `summary.mq`.
+  - Add it to `navigation.mq`.
 @end card
