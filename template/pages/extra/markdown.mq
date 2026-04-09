@@ -1,3 +1,8 @@
++++
+width = normal
+summary = true
++++
+
 # Markdown Basic Syntax
 @divider
 
@@ -20,6 +25,7 @@ This keeps the same syntax coverage as the old page, but groups the smaller exam
 ##### Heading level 5
 ###### Heading level 6
 @end card
+@end row
 
 @card
 ### Heading syntax
@@ -32,7 +38,6 @@ This keeps the same syntax coverage as the old page, but groups the smaller exam
 ###### Heading level 6
 ```
 @end card
-@end row
 
 @row
 @card

@@ -172,12 +172,12 @@ body {
   padding-left: calc(0.7rem + (var(--mq-nav-level, 0) * 0.9rem));
 }
 
-.mq-main,
+.mq-page-shell,
 .mq-footer {
   margin-left: 0;
 }
 
-.mq-main {
+.mq-page-shell {
   flex: 1 0 auto;
   width: min(var(--page-width, 100%), 100%);
   max-width: var(--page-max-w, var(--max-w, 1000px));
@@ -185,9 +185,25 @@ body {
   margin-bottom: 0;
   margin-left: var(--page-margin-left, auto);
   margin-right: var(--page-margin-right, auto);
+}
+
+.mq-page-shell[data-has-summary="true"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(16rem, 24vw, 20rem);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: start;
+}
+
+.mq-main {
+  min-width: 0;
   padding: 3.4rem var(--mq-page-gutter, clamp(1.25rem, 3vw, 2rem));
   container-type: inline-size;
   container-name: mq-main;
+}
+
+.mq-page-summary-slot {
+  min-width: 0;
+  padding-top: 3.4rem;
 }
 
 .mq-main :where(pre, .mq-code-block, .mq-code-block pre, .mq-code-head, .mq-page-nav, table) {

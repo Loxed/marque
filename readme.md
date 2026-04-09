@@ -128,6 +128,7 @@ theme = rustique
 layout = sidebar
 width = 90
 align = left
+summary = true
 +++
 ```
 
@@ -137,6 +138,7 @@ align = left
 - `layout`: optional per-page layout override.
 - `width`: optional per-page width override.
 - `align`: optional per-page content column alignment (`left`, `center`, `right`).
+- `summary`: optional per-page boolean that enables the page summary rail.
 
 ## Summary Navigation
 

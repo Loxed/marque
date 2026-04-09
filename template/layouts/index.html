@@ -68,10 +68,13 @@
   </div>
 
   <!-- main content in which .mq files are injected -->
-  <main class="mq-main"{{ page_main_style }}>
-    {{ content }}
-    {{ page_nav }}
-  </main>
+  <div class="mq-page-shell" id="mq-page-shell"{{ page_summary_attr }}{{ page_main_style }}>
+    <main class="mq-main">
+      {{ content }}
+      {{ page_nav }}
+    </main>
+    <aside class="mq-page-summary-slot" id="mq-page-summary-slot" hidden aria-label="Page summary"></aside>
+  </div>
 
   <!-- footer at the bottom of every page -->
   <footer class="mq-footer">

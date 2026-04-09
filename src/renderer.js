@@ -26,15 +26,28 @@ mdRenderer.table = function (...args) {
 marked.setOptions({ breaks: false, gfm: true, renderer: mdRenderer });
 
 function render(ast, opts = {}) {
-  return renderNodes(ast.children, opts);
+  const nodes = ast && Array.isArray(ast.children) ? ast.children : [];
+  return renderNodes(nodes, opts, { parentNode: ast || null });
 }
 
-function renderNodes(nodes, opts) {
-  return nodes.map(n => renderNode(n, opts)).join('\n');
+function renderNodes(nodes, opts, meta = {}) {
+  const list = Array.isArray(nodes) ? nodes : [];
+  return list.map((n, index) => renderNode(n, opts, {
+    parentNode: meta.parentNode || null,
+    siblings: list,
+    index,
+  })).join('\n');
 }
 
-function renderNode(node, opts) {
-  return renderNodeWithRegistry(node, opts, { renderNodes, renderMarkdown, escapeAttr });
+function renderNode(node, opts, meta = {}) {
+  return renderNodeWithRegistry(node, opts, {
+    renderNodes: (childNodes, childOpts) => renderNodes(childNodes, childOpts, { parentNode: node || null }),
+    renderMarkdown,
+    escapeAttr,
+    siblings: Array.isArray(meta.siblings) ? meta.siblings : [],
+    index: Number.isFinite(meta.index) ? meta.index : -1,
+    parentNode: meta.parentNode || null,
+  });
 }
 
 function renderMarkdown(src, opts = {}) {
@@ -97,10 +110,10 @@ function expandInlineCustomDirectives(src, opts = {}) {
         name: null,
         children: '',
         nodes: [],
-        node: { type: 'directive', tag, inline: true, mods: [], name: null, children: [] },
-        opts,
-        ctx: { renderNodes, renderMarkdown, escapeAttr },
-      });
+      node: { type: 'directive', tag, inline: true, mods: [], name: null, children: [] },
+      opts,
+      ctx: { renderNodes, renderMarkdown, escapeAttr, siblings: [], index: -1, parentNode: null },
+    });
 
       return `${prefix}${html}`;
     });

@@ -127,6 +127,7 @@ function build(siteDir, outDir, options = {}) {
     const documentTitle = title ? `${siteTitle} — ${title}` : siteTitle;
     const searchTitle = String(fm.title || page.label || title || path.basename(page.rel, '.mq')).trim();
     const pageMainStyle = resolveMainStyle(fm, defaultPageWidth, defaultPageAlign);
+    const pageSummaryAttr = normalizeBoolean(fm.summary) ? ' data-page-summary="true"' : '';
     let html = applyTemplate(pageTemplate, {
       document_title: documentTitle,
       title,
@@ -139,6 +140,7 @@ function build(siteDir, outDir, options = {}) {
       layout_css: pageLayout.href,
       theme_css: pageTheme.href,
       page_main_style: pageMainStyle,
+      page_summary_attr: pageSummaryAttr,
       repo: siteRepo,
       footer_repo_hidden: siteRepo ? '' : ' hidden',
     });
@@ -1694,6 +1696,16 @@ function normalizeContentAlign(value) {
 
 function normalizeRepoValue(value) {
   return String(value || '').trim();
+}
+
+function normalizeBoolean(value) {
+  if (value === true || value === false) return value;
+  if (value === undefined || value === null) return false;
+
+  const raw = String(value).trim().toLowerCase();
+  if (raw === 'true' || raw === '1' || raw === 'yes' || raw === 'on') return true;
+  if (raw === 'false' || raw === '0' || raw === 'no' || raw === 'off') return false;
+  return false;
 }
 
 module.exports = { build };

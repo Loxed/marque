@@ -55,6 +55,7 @@ layout = topnav      <--- override page layout
 theme = mida         <--- override page theme
 width = 50%          <--- override page width
 align = right        <--- place the content column on the right
+summary = true       <--- enable the page summary rail
 nav = new-link       <--- override output slug
 +++               <--- closing fence
 # Layout          <--- page content starts here
@@ -79,6 +80,10 @@ Every parameter defined in a page's frontmatter is optional. A page can work wit
 @callout .info
 `align` moves the `.mq-main` page column inside the available space. It does not change the alignment of the text inside that column.
 @end callout
+
+`summary` controls whether the page gets a right-side summary rail:
+- `true`
+- `false`
 @end card
 @end row
 

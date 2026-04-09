@@ -30,10 +30,10 @@ Use directives for structure, reusable UI blocks, and project-specific component
   @end card
 @end row
 
-@card .tertiary
+  @card .tertiary
   ## Inline syntax
   @divider
-  Use button links, badges, inline dividers, and inline project directives when a full block would be overkill.
+  Use button links, badges, inline dividers, inline project directives, and `@toc` when a full block would be overkill.
 @end card
 
 ## How directive syntax works
@@ -136,6 +136,7 @@ Use directives for structure, reusable UI blocks, and project-specific component
 
     - `dropdown`
     - `product-card`
+    - `toc`
     - `sparkle`
     - `spotlight`
   @end card

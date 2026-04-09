@@ -516,6 +516,151 @@ function mqEscapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+function mqInitSummaries() {
+  const slot = document.getElementById('mq-page-summary-slot');
+  const shell = document.getElementById('mq-page-shell');
+  const tocPanels = Array.from(document.querySelectorAll('[data-mq-toc]'));
+  const pageSummaryEnabled = !!(shell && shell.dataset.pageSummary === 'true');
+
+  if (pageSummaryEnabled && slot) {
+    const panel = mqCreateSummaryPanel('Summary', 'page');
+    slot.hidden = false;
+    slot.innerHTML = '';
+    slot.appendChild(panel);
+    if (shell) shell.dataset.hasSummary = 'true';
+    mqBindSummaryPanel(panel);
+  }
+
+  tocPanels.forEach(panel => {
+    const scopedSource = mqFindSummarySource(panel);
+    if (scopedSource) panel._mqSummarySourceEl = scopedSource;
+    mqBindSummaryPanel(panel);
+  });
+}
+
+function mqBindSummaryPanel(panel) {
+  if (!panel || panel.dataset.mqSummaryBound === 'true') return;
+  panel.dataset.mqSummaryBound = 'true';
+  const source = mqResolveSummarySource(panel);
+  mqRenderSummaryPanel(panel, source);
+
+  if (!source || typeof MutationObserver === 'undefined') return;
+
+  let scheduled = false;
+  const observer = new MutationObserver(() => {
+    if (scheduled) return;
+    scheduled = true;
+    window.requestAnimationFrame(() => {
+      scheduled = false;
+      mqRenderSummaryPanel(panel, source);
+    });
+  });
+
+  observer.observe(source, {
+    childList: true,
+    subtree: true,
+    characterData: true,
+  });
+}
+
+function mqCreateSummaryPanel(title, scope) {
+  const panel = document.createElement('aside');
+  panel.className = 'mq-summary-panel';
+  panel.dataset.mqSummaryScope = scope || 'page';
+  panel.innerHTML = `<p class="mq-summary-title">${mqEscapeHtml(title || 'Summary')}</p>`;
+  return panel;
+}
+
+function mqResolveSummarySource(panel) {
+  const scope = String((panel && panel.dataset && panel.dataset.mqSummaryScope) || 'page').toLowerCase();
+  if (scope === 'scoped' || scope === 'local') {
+    return (panel && panel._mqSummarySourceEl) || mqFindSummarySource(panel);
+  }
+  return document.querySelector('.mq-main');
+}
+
+function mqFindSummarySource(panel) {
+  let source = panel ? panel.previousElementSibling : null;
+  while (source) {
+    if (!source.hasAttribute('data-mq-toc')) return source;
+    source = source.previousElementSibling;
+  }
+  return null;
+}
+
+function mqRenderSummaryPanel(panel, source) {
+  if (!panel) return;
+
+  const title = panel.querySelector('.mq-summary-title');
+  const label = title ? title.outerHTML : '<p class="mq-summary-title">Summary</p>';
+  const headings = source ? mqCollectSummaryHeadings(source) : [];
+  const scope = String((panel && panel.dataset && panel.dataset.mqSummaryScope) || 'page').toLowerCase();
+
+  if (!headings.length) {
+    const emptyText = (scope === 'scoped' || scope === 'local')
+      ? 'Add headings in the previous block to populate this summary.'
+      : 'Add headings to the page to populate this summary.';
+    panel.innerHTML = `${label}<p class="mq-summary-empty">${emptyText}</p>`;
+    return;
+  }
+
+  panel.innerHTML = `${label}<ol class="mq-summary-list">${headings.map(mqRenderSummaryHeading).join('')}</ol>`;
+}
+
+function mqCollectSummaryHeadings(source) {
+  const headings = Array.from(source.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+  if (!headings.length) return [];
+
+  const usedIds = new Set(
+    Array.from(document.querySelectorAll('[id]'))
+      .map(el => String(el.id || '').trim())
+      .filter(Boolean)
+  );
+
+  return headings.map((heading, index) => ({
+    level: Number(String(heading.tagName || 'H1').slice(1)) || 1,
+    text: String(heading.textContent || '').replace(/\s+/g, ' ').trim(),
+    id: mqEnsureSummaryHeadingId(heading, usedIds, index),
+  })).filter(item => item.text);
+}
+
+function mqEnsureSummaryHeadingId(heading, usedIds, index) {
+  const existing = String((heading && heading.id) || '').trim();
+  if (existing) {
+    usedIds.add(existing);
+    return existing;
+  }
+
+  const base = mqSlugifySummaryValue(heading && heading.textContent ? heading.textContent : `summary-${index + 1}`);
+  let candidate = base;
+  let suffix = 2;
+
+  while (!candidate || usedIds.has(candidate)) {
+    candidate = `${base || 'section'}-${suffix}`;
+    suffix += 1;
+  }
+
+  heading.id = candidate;
+  usedIds.add(candidate);
+  return candidate;
+}
+
+function mqSlugifySummaryValue(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'section';
+}
+
+function mqRenderSummaryHeading(item) {
+  const level = Number(item && item.level) || 1;
+  const text = mqEscapeHtml(item && item.text ? item.text : '');
+  const href = mqEscapeHtml(item && item.id ? `#${item.id}` : '#');
+  return `<li class="mq-summary-item mq-summary-level-${level}" data-mq-summary-level="${level}"><a class="mq-summary-link" href="${href}">${text}</a></li>`;
+}
+
 function mqIsTypingTarget(target) {
   if (!target) return false;
   if (target.isContentEditable) return true;
@@ -535,6 +680,7 @@ document.addEventListener('DOMContentLoaded', () => {
   mqPositionSubmenus();
   mqInitSearch();
   mqApplySearchShortcutHints();
+  mqInitSummaries();
 });
 
 document.addEventListener('mouseover', e => {
