@@ -144,13 +144,13 @@ That is enough to define the site's baseline behaviour.
   @card .accent
     ## Navigation
     File format, labels, ordering, headings, and path-based nesting.
-    @[Open navigation docs ->](/docs/configuration/navigation.html){.primary}
+    @[Open navigation docs ](/docs/configuration/navigation.html){.primary}
   @end card
 
   @card
     ## Frontmatter
     Exact page-level keys, examples, slug behaviour, and width overrides.
-    @[Open frontmatter docs ->](/docs/configuration/frontmatter.html)
+    @[Open frontmatter docs ](/docs/configuration/frontmatter.html)
   @end card
 @end row
 
@@ -158,12 +158,12 @@ That is enough to define the site's baseline behaviour.
   @card
     ## Layouts
     Compare `sidebar` and `topnav`, and see how navigation-driven hierarchy changes between them.
-    @[Open layout docs ->](/docs/configuration/layouts.html)
+    @[Open layout docs ](/docs/configuration/layouts.html)
   @end card
 
   @card
     ## Themes
     Learn how theme files work, how to override a page theme, and which built-in themes ship with Marque.
-    @[Open theme docs ->](/docs/configuration/themes.html)
+    @[Open theme docs ](/docs/configuration/themes.html)
   @end card
 @end row

@@ -39,6 +39,7 @@ function build(siteDir, outDir, options = {}) {
   // cache theme assets so each theme is loaded and written once per build
   const themeCache = new Map();
   const layoutCache = new Map();
+  const commonAssets = getCommonAssets(siteDir, outDir, softFsErrors);
 
   // keep a legacy alias for templates that still link /theme.css directly
   const defaultAssets = getThemeAssets(defaultThemeName, siteDir, outDir, themeCache, softFsErrors);
@@ -134,6 +135,7 @@ function build(siteDir, outDir, options = {}) {
       page_nav: renderPageNav(pageSequence, outName),
       site_title: siteTitle,
       description: fm.description || config.description || '',
+      common_css: commonAssets.href,
       layout_css: pageLayout.href,
       theme_css: pageTheme.href,
       page_main_style: pageMainStyle,
@@ -141,9 +143,13 @@ function build(siteDir, outDir, options = {}) {
       footer_repo_hidden: siteRepo ? '' : ' hidden',
     });
 
+    if (!/\{\{\s*common_css\s*\}\}/.test(pageTemplate)) {
+      html = ensureStylesheetLink(html, commonAssets.href, [pageLayout.href, pageTheme.href, '/theme.css']);
+    }
+
     // Backward compatibility for templates that don't have layout_css token.
     if (!/\{\{\s*layout_css\s*\}\}/.test(pageTemplate)) {
-      html = html.replace(/<link rel="stylesheet" href="([^"]*theme[^"]*)">/, `<link rel="stylesheet" href="${pageLayout.href}">\n<link rel="stylesheet" href="$1">`);
+      html = ensureStylesheetLink(html, pageLayout.href, [pageTheme.href, '/theme.css']);
     }
 
     // Backward compatibility for templates that hardcode /theme.css.
@@ -249,6 +255,17 @@ function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false)
   return assets;
 }
 
+function getCommonAssets(siteDir, outDir, softFsErrors = false) {
+  const css = loadCommonStyle(siteDir);
+  const cssFile = 'common.css';
+  writeFileWithRetry(path.join(outDir, cssFile), css, softFsErrors);
+
+  return {
+    css,
+    href: `/${cssFile}`,
+  };
+}
+
 function loadThemeStyle(themeDir, siteDir) {
   let themeCss;
 
@@ -265,10 +282,27 @@ function loadThemeStyle(themeDir, siteDir) {
     throw new Error(`Theme style not found in ${themeDir}. Expected <name>.css.`);
   }
 
-  const directiveCss = buildDirectiveStylesCSS(siteDir);
-  if (!directiveCss) return themeCss;
+  return themeCss;
+}
 
-  return `${themeCss}\n\n${directiveCss}\n`;
+function resolveCommonCSSPath(siteDir) {
+  const candidates = [
+    path.join(siteDir, 'common.css'),
+    path.join(siteDir, 'styles', 'common.css'),
+    path.join(__dirname, '..', 'template', 'common.css'),
+  ];
+
+  return candidates.find(candidate => fs.existsSync(candidate)) || null;
+}
+
+function loadCommonStyle(siteDir) {
+  const stylePath = resolveCommonCSSPath(siteDir);
+  const commonCss = stylePath ? fs.readFileSync(stylePath, 'utf8') : '';
+  const directiveCss = buildDirectiveStylesCSS(siteDir);
+  const parts = [String(commonCss || '').trim(), String(directiveCss || '').trim()].filter(Boolean);
+
+  if (!parts.length) return '';
+  return `${parts.join('\n\n')}\n`;
 }
 
 function buildDirectiveStylesCSS(siteDir) {
@@ -1459,6 +1493,28 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+function ensureStylesheetLink(html, href, anchors = []) {
+  if (!href || String(html || '').includes(`href="${href}"`)) return html;
+
+  for (const anchor of anchors) {
+    if (!anchor) continue;
+    const pattern = new RegExp(`(<link rel="stylesheet" href="${escapeRegex(anchor)}">)`);
+    if (pattern.test(html)) {
+      return html.replace(pattern, `<link rel="stylesheet" href="${href}">\n$1`);
+    }
+  }
+
+  if (/<\/head>/i.test(html)) {
+    return html.replace(/<\/head>/i, `<link rel="stylesheet" href="${href}">\n</head>`);
+  }
+
+  return `<link rel="stylesheet" href="${href}">\n${html}`;
+}
+
+function escapeRegex(value) {
+  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function applyTemplate(template, vars) {

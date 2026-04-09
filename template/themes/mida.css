@@ -9,6 +9,23 @@
   --muted: #a8a8a8;
   --accent: #b8ff00;
   --surface2: #0d0d0d;
+  --mq-background: var(--bg);
+  --mq-surface: var(--surface);
+  --mq-surface-alt: var(--surface2);
+  --mq-text: var(--text);
+  --mq-muted: var(--muted);
+  --mq-primary: var(--accent);
+  --mq-secondary: #ffffff;
+  --mq-tertiary: #0d0d0d;
+  --mq-border: var(--border);
+  --mq-font-sans: var(--font-sans);
+  --mq-font-serif: var(--font-sans);
+  --mq-font-mono: var(--font-mono);
+  --mq-radius: 0px;
+  --mq-card-radius: 0px;
+  --mq-card-shadow: none;
+  --mq-table-radius: 0px;
+  --mq-image-radius: 0px;
   --mq-nav-bg: var(--bg);
   --mq-nav-text: var(--text);
   --mq-nav-border: var(--border);
@@ -52,17 +69,23 @@ body {
   background: #000;
 }
 .mq-nav-heading {
+  border-radius: 0;
   font: 800 0.75rem/1 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.15em;
 }
 .mq-nav-brand {
+  font-family: var(--font-sans);
   font-weight: 800;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--accent);
 }
-.mq-nav-links a {
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
+  border-radius: 0;
+  font-family: var(--font-sans);
+  font-weight: 800;
   font-size: 0.75rem;
   text-transform: uppercase;
   color: var(--text);
@@ -86,6 +109,7 @@ body {
 
 /* ========= TYPO ========= */
 .mq-main h1 {
+  font-family: var(--font-sans);
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 800;
   text-transform: uppercase;
@@ -93,12 +117,14 @@ body {
   line-height: 0.9;
 }
 .mq-main h2 {
+  font-family: var(--font-sans);
   font-size: 2rem;
   font-weight: 800;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
 }
 .mq-main h3 {
+  font-family: var(--font-sans);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -132,12 +158,23 @@ body {
 .mq-row {
   display: grid;
   gap: 0;
+  margin: 0;
 }
 
 /* ========= CARDS ========= */
 .mq-card {
   background: var(--surface);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
   padding: 1.5rem;
+}
+.mq-card.primary,
+.mq-card.accent,
+.mq-card.secondary,
+.mq-card.accent2,
+.mq-card.tertiary {
+  border-top: none;
 }
 .mq-card.primary {
   background: var(--accent);
@@ -155,6 +192,13 @@ body {
 .mq-card.primary *,
 .mq-card.secondary * {
   color: #000;
+}
+.mq-card.primary .mq-step-num,
+.mq-card.secondary .mq-step-num {
+  color: var(--accent);
+}
+.mq-step-num {
+  border-radius: 0;
 }
 .mq-card.tertiary * {
   color: var(--text);
@@ -241,14 +285,56 @@ pre,
   width: 200px;
   height: 10px;
   background: var(--pixel-grid);
+  border-radius: 0;
 }
 
 /* ========= CALLOUT ========= */
 .mq-callout {
   border-left: 3px solid var(--accent);
+  border-radius: 0;
   background: #050505;
   padding: 0.8rem 1rem;
   color: var(--muted);
+}
+
+a.mq-btn {
+  border-radius: 0;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 800;
+}
+
+a.mq-btn:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+a.mq-btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+}
+
+a.mq-btn.secondary,
+a.mq-btn.blue {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #000;
+}
+
+a.mq-btn.tertiary {
+  background: #0d0d0d;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.mq-badge {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  text-transform: uppercase;
 }
 
 /* ========= FOOTER ========= */
@@ -326,7 +412,8 @@ img {
 }
 
 .mq-row {
-  gap: var(--mq-block-gap, 1.25rem);
+  gap: 0;
+  margin: 0;
 }
 
 .mq-column {

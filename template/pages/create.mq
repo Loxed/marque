@@ -186,9 +186,9 @@ The starter is meant to be edited directly. Replace the example pages, keep what
     @divider
     Once the scaffold makes sense, the next stop is the configuration docs.
 
-    @[Open configuration ->](/docs/configuration.html){.primary}
-    @[Navigation ->](/docs/configuration/navigation.html)
-    @[Frontmatter ->](/docs/configuration/frontmatter.html)
+    @[Open configuration ](/docs/configuration.html){.primary}
+    @[Navigation ](/docs/configuration/navigation.html)
+    @[Frontmatter ](/docs/configuration/frontmatter.html)
   @end card
 
   @card
@@ -196,7 +196,7 @@ The starter is meant to be edited directly. Replace the example pages, keep what
     @divider
     When markdown stops being enough, move on to directives and themes.
 
-    @[Directives ->](/docs/directives.html)
-    @[Themes ->](/docs/configuration/themes.html)
+    @[Directives ](/docs/directives.html)
+    @[Themes ](/docs/configuration/themes.html)
   @end card
 @end row

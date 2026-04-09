@@ -22,8 +22,8 @@ Marque stays intentionally small on purpose.
     @divider
     If you are new to Marque, do these two pages first and come back once the starter site is running.
 
-    @[Quickstart ->](/quickstart.html){.primary}
-    @[Create a site ->](/create.html)
+    @[Quickstart ](/quickstart.html){.primary}
+    @[Create a site ](/create.html)
   @end card
 
   @card
@@ -31,7 +31,7 @@ Marque stays intentionally small on purpose.
     @divider
     Every terminal command in one place: `new`, `serve`, `build`, `migrate`, `theme-template`, and `help`.
 
-    @[Open CLI docs ->](/docs/cli.html)
+    @[Open CLI docs ](/docs/cli.html)
   @end card
 
   @card .secondary
@@ -39,9 +39,9 @@ Marque stays intentionally small on purpose.
     @divider
     Learn which file owns which decision: `marque.toml`, frontmatter, `navigation.mq`, themes, and layouts.
 
-    @[Open configuration ->](/docs/configuration.html)
-    @[Navigation ->](/docs/configuration/navigation.html)
-    @[Frontmatter ->](/docs/configuration/frontmatter.html)
+    @[Open configuration ](/docs/configuration.html)
+    @[Navigation ](/docs/configuration/navigation.html)
+    @[Frontmatter ](/docs/configuration/frontmatter.html)
   @end card
 
   @card .tertiary
@@ -49,7 +49,7 @@ Marque stays intentionally small on purpose.
     @divider
     This is the authoring layer that makes `.mq` feel like more than plain markdown.
 
-    @[Open directives ->](/docs/directives.html)
+    @[Open directives ](/docs/directives.html)
   @end card
 @end row
 
@@ -59,9 +59,9 @@ Marque stays intentionally small on purpose.
     @divider
     Bringing an existing docs project over? Start with the migration overview, then move into the source-specific guide.
 
-    @[Migration overview ->](/migration.html){.primary}
-    @[From mdBook ->](/migration/mdbook.html)
-    @[From MkDocs ->](/migration/mkdocs.html)
+    @[Migration overview ](/migration.html){.primary}
+    @[From mdBook ](/migration/mdbook.html)
+    @[From MkDocs ](/migration/mkdocs.html)
   @end card
 
   @card
@@ -69,8 +69,8 @@ Marque stays intentionally small on purpose.
     @divider
     Visual style and automatic page chrome are separate on purpose. Theme the site in CSS, then decide where navigation lives with layouts.
 
-    @[Layouts ->](/docs/configuration/layouts.html)
-    @[Themes ->](/docs/configuration/themes.html)
+    @[Layouts ](/docs/configuration/layouts.html)
+    @[Themes ](/docs/configuration/themes.html)
   @end card
 @end row
 

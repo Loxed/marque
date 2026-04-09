@@ -548,22 +548,35 @@ a.mq-btn.secondary:hover {
 }
 
 /* ── Tables ── */
-.mq-main table thead {
+.mq-table-wrap {
+  border-color: #e0e0e0;
+  border-radius: 0;
+  background: #ffffff;
+}
+.mq-main .mq-table-wrap thead {
   background: #f0f0f0;
   color: #293c4b;
-  border-bottom: 2px solid #d8d8d8;
 }
-.mq-main table thead th {
+.mq-main .mq-table-wrap thead th {
   font-weight: 600;
   font-size: 0.9rem;
   text-transform: none;
   letter-spacing: 0;
+  border-bottom-color: #d8d8d8;
+  border-bottom-width: 2px;
 }
-.mq-main table tbody tr:nth-child(even) {
+.mq-main .mq-table-wrap th,
+.mq-main .mq-table-wrap td {
+  border-bottom-color: #e0e0e0;
+}
+.mq-main .mq-table-wrap tbody tr:nth-child(even) {
   background: #f9f9f9;
 }
-.mq-main table {
-  border: 1px solid #e0e0e0;
+.mq-main .mq-table-wrap tbody tr:last-child td {
+  border-bottom: none;
+}
+.mq-main .mq-table-wrap table {
+  border: none;
 }
 
 /* ── Footer — Elm's dark charcoal footer matching nav ── */

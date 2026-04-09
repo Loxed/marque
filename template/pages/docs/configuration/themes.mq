@@ -17,7 +17,7 @@ theme = mida
 @divider
 Marque supports multiple themes and [layouts](../configuration/layouts.mq).
 
-Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) files in the `themes/` directory of your Marque project, and you can have as many as you like. This page uses the `mida.css` theme to showcase what's possible.
+Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) files in the `themes/` directory of your Marque project, and you can have as many as you like. Marque now applies a shared `common.css` fallback automatically, so your theme can focus on tokens and distinctive overrides instead of rebuilding every component from scratch. This page uses the `mida.css` theme to showcase what's possible.
 
 @end card
 @card .secondary
@@ -32,16 +32,18 @@ The main theme used on your site is defined in the `marque.toml` file with the `
 
 ----
 
+
+@card .primary
 ## Quick flow
+@divider
 
-@card
-
+@container
 @step
 Create theme file: add `themes/<my-theme.css>`.
 @end step
 
 @step
-Paste baseline variables and base styles.
+Set your tokens and add whatever overrides make the theme feel distinct.
 @end step
 
 @step
@@ -52,16 +54,18 @@ Activate theme in `marque.toml`: `theme = my-theme`.
 Run `marque serve .` or `marque build .`.
 @end step
 
+@end container
+
 @end card
 
-@callout
-If `themes/my-theme.css` exists, Marque uses it.
-@end callout
 
+@card .tertiary
 ## Official themes
 @divider
 
 _"Yes I'm French, how did you guess?"_
+
+@end card
 
 ----
 

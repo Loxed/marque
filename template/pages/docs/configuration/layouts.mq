@@ -52,10 +52,10 @@ Layouts behave a bit like themes, but they solve a different problem. Themes con
 	```
 @end card
 
-## Shared shell: `index.html` and `index.js`
+## Shared shell: `common.css`, `index.html`, and `index.js`
 @divider
 
-The `layout/` folder also contains the core HTML shell that layouts share. The `index.html` file defines the structure of every page, ordering the navigation bar, main content, and footer. The layout CSS files (`sidebar.css` and `topnav.css`) then style that shared structure differently to create distinct layouts. A small runtime in `index.js` handles the interactive behaviour of the navigation bar, such as toggling it on mobile and positioning submenus.
+The `layouts/` folder still contains the shared HTML shell, but it is no longer the only shared layer. `common.css` provides the site-wide fallback theme and built-in directive styling, `index.html` defines the structure of every page, and the layout CSS files (`sidebar.css` and `topnav.css`) only handle placement and layout-specific behaviour. A small runtime in `index.js` handles the interactive behaviour of the navigation bar, such as toggling it on mobile and positioning submenus.
 
 @row
 	@card .primary
@@ -70,6 +70,7 @@ The `layout/` folder also contains the core HTML shell that layouts share. The `
 
 		It also injects the build-time values that Marque generates for each page:
 
+		- `{{ common_css }}`: the shared fallback stylesheet
 		- `{{ layout_css }}`: the active layout stylesheet
 		- `{{ theme_css }}`: the active theme stylesheet
 		- `{{ nav }}`: the rendered navigation links
@@ -111,7 +112,7 @@ The `layout/` folder also contains the core HTML shell that layouts share. The `
 		</main>
 		```
 
-		This structure is the contract the layout CSS relies on. `topnav.css` and `sidebar.css` style the same shell differently.
+		This structure is the contract the layout CSS relies on. `common.css` styles the shared baseline, then `topnav.css` and `sidebar.css` place that shell differently.
 	@end card
 
 	@card
@@ -132,7 +133,7 @@ The `layout/` folder also contains the core HTML shell that layouts share. The `
 
 	@row
 		@card
-			In the [Marque](https://github.com/Loxed/marque) repository, layouts live in `template/layouts/` and are copied into each new project at `marque new <name>`. That folder now owns the shared HTML shell (`index.html`), the shared runtime (`index.js`), and the layout-specific CSS files like `sidebar.css` and `topnav.css`. When creating new layouts, make sure your CSS matches the classes used in the shared layout shell.
+			In the [Marque](https://github.com/Loxed/marque) repository, the shared fallback theme lives in `template/common.css`, while layouts live in `template/layouts/` and are copied into each new project at `marque new <name>`. That folder owns the shared HTML shell (`index.html`), the shared runtime (`index.js`), and the layout-specific CSS files like `sidebar.css` and `topnav.css`. When creating new layouts, make sure your CSS matches the classes used in the shared layout shell rather than re-implementing theme styles there.
 
 			<!-- When creating a new project with `marque new <name>`, the shared shell files are copied from `template/layouts/`. This means that if you want to create a new layout, you add a new `.css` file in `template/layouts/` and keep it compatible with the shared `layouts/index.html` structure. -->
 		@end card
@@ -140,6 +141,7 @@ The `layout/` folder also contains the core HTML shell that layouts share. The `
 		@card
 			```layout
 			template/
+			├── common.css
 			├── layouts/
 			│   ├── index.html
 			│   ├── index.js
@@ -147,7 +149,7 @@ The `layout/` folder also contains the core HTML shell that layouts share. The `
 			│   └── topnav.css
 			└── themes/
 				└── *.css
-			```
-		@end card
+		```
+	@end card
 	@end row
 @end dropdown
