@@ -13,81 +13,38 @@
 <link rel="stylesheet" href="{{ layout_css }}">
 <link rel="stylesheet" href="{{ theme_css }}">
 </head>
+
 <body>
+  <!-- Header -->
+  {{> partials/header }}
 
-  <!-- Navigation Bar (Works with topnav and sidebar) -->
-  <nav class="mq-nav">
-    <div class="mq-nav-head">
-      <a class="mq-nav-brand" href="/">{{ site_title }}</a>
+  <!-- Search Container -->
+  {{> partials/search }}
 
-      <!-- Search Icon -->
-      <button class="mq-search-toggle" type="button" aria-expanded="false" aria-controls="mq-search" aria-label="Open search" onclick="mqToggleSearch(this)">
-        <svg class="mq-search-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="M20 20l-3.5-3.5"></path>
-        </svg>
-        <span class="mq-search-toggle-label">Search</span>
-        <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
-      </button>
-    </div>
-    <div class="mq-nav-links">
-      {{ nav }}
-    </div>
-    <div class="mq-nav-actions">
-      <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
-    </div>
-  </nav>
-
-  <!-- Search Window -->
-  <div class="mq-search" id="mq-search" hidden aria-hidden="true">
-    <button class="mq-search-backdrop" type="button" aria-label="Close search" onclick="mqCloseSearch()"></button>
-    <section class="mq-search-panel" role="dialog" aria-modal="true" aria-labelledby="mq-search-title">
-      <div class="mq-search-head">
-        <svg class="mq-search-panel-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="M20 20l-3.5-3.5"></path>
-        </svg>
-        <label class="mq-search-input-wrap" for="mq-search-input">
-          <span class="mq-search-label" id="mq-search-title">Search this site</span>
-          <input id="mq-search-input" class="mq-search-input" type="search" placeholder="Search pages, headings, and content" autocomplete="off" spellcheck="false">
-        </label>
-        <button class="mq-search-close" type="button" aria-label="Close search" onclick="mqCloseSearch()">
-          <svg class="mq-search-close-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6L6 18"></path>
-            <path d="M6 6l12 12"></path>
-          </svg>
-          <span class="mq-search-close-label">Close</span>
-          <span class="mq-search-close-hint" data-search-close-hint aria-hidden="true" hidden></span>
-        </button>
-      </div>
-      <p class="mq-search-meta" id="mq-search-meta">Type to search titles, headings, and page content.</p>
-      <div class="mq-search-results" id="mq-search-results">
-        <div class="mq-search-empty">Search is ready. Try a page title, a section heading, or a phrase from the content.</div>
-      </div>
-    </section>
-  </div>
-
-  <!-- main content in which .mq files are injected -->
+  <!-- Main Content -->
   <div class="mq-page-shell" id="mq-page-shell"{{ page_summary_attr }}{{ page_main_style }}>
     <main class="mq-main">
+      <!-- dynamic mq content -->
       {{ content }}
+      <!-- bottom previous/next navigation -->
       {{ page_nav }}
     </main>
-    <aside class="mq-page-summary-slot" id="mq-page-summary-slot" hidden aria-label="Page summary"></aside>
+    <!-- Sidebar summary (optional) -->
+    {{> partials/summary }}
   </div>
-
-  <!-- footer at the bottom of every page -->
+  
+  <!-- Footer -->
   <footer class="mq-footer">
+    <!-- Remove if you wish, keeping it brings visibility to Marque :) -->
     <span class="mq-footer-built">Built with <a href="https://github.com/Loxed/marque">Marque</a></span>
-    <span class="mq-footer-repo"{{ footer_repo_hidden }}>
+    
+    <!-- Repo button (Optional) -->
+    <span class="mq-footer-repo"{{ footer_repo_hidden }}>  
       <a class="mq-footer-repo-link" href="{{ repo }}" aria-label="Open repository">
-        <svg class="mq-footer-repo-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 19c-5 1.5-5-2.5-7-3"></path>
-          <path d="M15 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77 5.44 5.44 0 0 0 3.5 8.5c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-        </svg>
+        {{> partials/icons/github }}
       </a>
     </span>
-  </footer>
+</footer>
 
   <script src="/index.js"></script>
 </body>

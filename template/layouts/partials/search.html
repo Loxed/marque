@@ -1,0 +1,27 @@
+<div class="mq-search" id="mq-search" hidden aria-hidden="true">
+  <button class="mq-search-backdrop" type="button" aria-label="Close search" onclick="mqCloseSearch()"></button>
+  <section class="mq-search-panel" role="dialog" aria-modal="true" aria-labelledby="mq-search-title">
+    <div class="mq-search-head">
+      <svg class="mq-search-panel-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M20 20l-3.5-3.5"></path>
+      </svg>
+      <label class="mq-search-input-wrap" for="mq-search-input">
+        <span class="mq-search-label" id="mq-search-title">Search this site</span>
+        <input id="mq-search-input" class="mq-search-input" type="search" placeholder="Search pages, headings, and content" autocomplete="off" spellcheck="false">
+      </label>
+      <button class="mq-search-close" type="button" aria-label="Close search" onclick="mqCloseSearch()">
+        <svg class="mq-search-close-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18"></path>
+          <path d="M6 6l12 12"></path>
+        </svg>
+        <span class="mq-search-close-label">Close</span>
+        <span class="mq-search-close-hint" data-search-close-hint aria-hidden="true" hidden></span>
+      </button>
+    </div>
+    <p class="mq-search-meta" id="mq-search-meta">Type to search titles, headings, and page content.</p>
+    <div class="mq-search-results" id="mq-search-results">
+      <div class="mq-search-empty">Search is ready. Try a page title, a section heading, or a phrase from the content.</div>
+    </div>
+  </section>
+</div>

@@ -94,14 +94,14 @@ Second line.
 
 @row
 @card .primary
-### Bold, italic, and both
+###* Bold, italic, and both
 - `**bold text**` or `__bold text__` -> **bold text**
 - `*italic text*` or `_italic text_` -> *italic text*
 - `***bold and italic***` -> ***bold and italic***
 @end card
 
 @card .secondary
-### Inline code and escaping
+###* Inline code and escaping
 - ``Use `code` like this.`` -> Use `code` like this.
 - `\* Not italic \*` -> \* Not italic \*
 @end card
@@ -112,7 +112,7 @@ Second line.
 
 @row
 @card
-### Blockquotes
+###* Blockquotes
 Single-line blockquote syntax can stay inline: ``> This is a blockquote.``
 
 > This is a blockquote.
@@ -130,7 +130,7 @@ Nested blockquote syntax:
 @end card
 
 @card
-### Lists
+###* Lists
 Ordered list syntax:
 ```md
 1. First item
@@ -169,7 +169,7 @@ Nested list syntax:
 
 @row
 @card
-### Code
+###* Code
 Inline code: ``Use `code` like this.``
 
 Use `code` like this.
@@ -187,7 +187,7 @@ code block
 @end card
 
 @card
-### Links and images
+###* Links and images
 Link syntax:
 `[Google](https://www.google.com)` -> [Google](https://www.google.com)
 
@@ -200,7 +200,7 @@ Image syntax:
 @end card
 
 @card
-### Horizontal rules
+###* Horizontal rules
 Any of these will render a horizontal rule:
 - `---`
 - `***`

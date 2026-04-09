@@ -30,7 +30,7 @@ module.exports = ({ defineDirective }) => {
     render: ({ nodes, opts, ctx }) => {
       const cols = Math.max(1, (nodes || []).filter(c => c.type === 'directive' && !c.inline).length);
       const inner = ctx.renderNodes(nodes, opts);
-      return `<div class="mq-row" style="grid-template-columns: repeat(${cols}, 1fr);">${inner}</div>`;
+      return `<div class="mq-row" style="grid-template-columns: repeat(${cols}, minmax(0, 1fr));">${inner}</div>`;
     },
   });
 

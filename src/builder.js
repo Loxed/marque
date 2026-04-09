@@ -24,6 +24,7 @@ function build(siteDir, outDir, options = {}) {
   const defaultLayoutName = normalizeLayoutName(configuredLayoutName);
   const defaultPageWidth = normalizeWidth(config.width);
   const defaultPageAlign = normalizeContentAlign(config.align);
+  const defaultPageSummary = normalizeBoolean(config.summary);
   const siteRepo = normalizeRepoValue(config.repo || config.repository || '');
 
   // Refresh packaged + project directives on every build.
@@ -127,7 +128,10 @@ function build(siteDir, outDir, options = {}) {
     const documentTitle = title ? `${siteTitle} — ${title}` : siteTitle;
     const searchTitle = String(fm.title || page.label || title || path.basename(page.rel, '.mq')).trim();
     const pageMainStyle = resolveMainStyle(fm, defaultPageWidth, defaultPageAlign);
-    const pageSummaryAttr = normalizeBoolean(fm.summary) ? ' data-page-summary="true"' : '';
+    const pageSummaryEnabled = Object.prototype.hasOwnProperty.call(fm || {}, 'summary')
+      ? normalizeBoolean(fm.summary)
+      : defaultPageSummary;
+    const pageSummaryAttr = pageSummaryEnabled ? ' data-page-summary="true"' : '';
     let html = applyTemplate(pageTemplate, {
       document_title: documentTitle,
       title,
@@ -430,13 +434,13 @@ function loadPageTemplate(themeRef, siteDir, layoutName) {
   if (fs.existsSync(themeRef) && fs.statSync(themeRef).isDirectory()) {
     const themeIndexTemplate = path.join(themeRef, 'index.html');
     if (fs.existsSync(themeIndexTemplate)) {
-      return fs.readFileSync(themeIndexTemplate, 'utf8');
+      return loadTemplateWithPartials(themeIndexTemplate);
     }
 
     // Backward compatibility for older themes.
     const legacyBaseTemplate = path.join(themeRef, 'base.html');
     if (fs.existsSync(legacyBaseTemplate)) {
-      return fs.readFileSync(legacyBaseTemplate, 'utf8');
+      return loadTemplateWithPartials(legacyBaseTemplate);
     }
   }
 
@@ -455,10 +459,35 @@ function loadPageTemplate(themeRef, siteDir, layoutName) {
 
   const templatePath = candidates.find(p => fs.existsSync(p));
   if (templatePath) {
-    return fs.readFileSync(templatePath, 'utf8');
+    return loadTemplateWithPartials(templatePath);
   }
 
   throw new Error('No template found. Add layouts/index.html (preferred) or a theme-level index.html/base.html.');
+}
+
+function loadTemplateWithPartials(templatePath, stack = []) {
+  const normalizedPath = path.resolve(templatePath);
+  if (stack.includes(normalizedPath)) {
+    const chain = [...stack, normalizedPath].map(p => path.relative(process.cwd(), p)).join(' -> ');
+    throw new Error(`Template partial include cycle detected: ${chain}`);
+  }
+
+  const template = fs.readFileSync(normalizedPath, 'utf8');
+  const nextStack = [...stack, normalizedPath];
+  return template.replace(/\{\{\s*>\s*([^\s{}]+)\s*\}\}/g, (_, includeRef) => {
+    const includePath = resolveTemplateIncludePath(normalizedPath, includeRef);
+    return loadTemplateWithPartials(includePath, nextStack);
+  });
+}
+
+function resolveTemplateIncludePath(templatePath, includeRef) {
+  const baseDir = path.dirname(templatePath);
+  const rawRef = String(includeRef || '').trim();
+  const refWithExt = path.extname(rawRef) ? rawRef : `${rawRef}.html`;
+  const candidate = path.resolve(baseDir, refWithExt);
+
+  if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;
+  throw new Error(`Template partial "${rawRef}" not found from ${path.relative(process.cwd(), templatePath)}`);
 }
 
 function loadSharedRuntimeScript(siteDir) {

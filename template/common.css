@@ -348,10 +348,15 @@ a.mq-btn.tertiary:hover {
   align-items: stretch;
 }
 
+.mq-row > * {
+  min-width: 0;
+}
+
 .mq-column {
   display: grid;
   gap: var(--mq-block-gap, 1.25rem);
   align-content: start;
+  min-width: 0;
 }
 
 .mq-section {
@@ -367,6 +372,7 @@ a.mq-btn.tertiary:hover {
   box-shadow: var(--mq-card-shadow, none);
   padding: 1.5rem;
   height: 100%;
+  min-width: 0;
 }
 
 .mq-card.primary,
@@ -559,6 +565,7 @@ product-card {
   }
 
   .mq-page-summary-slot {
+    order: -1;
     padding-top: 0;
   }
 

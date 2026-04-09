@@ -5,7 +5,7 @@ theme = comte
 width = normal
 align = center
 repo = https://github.com/Loxed/marque
-summary = true
+summary = false
 
 # Marque config
 #
@@ -20,6 +20,10 @@ summary = true
 #   left      -> pin content column to the left
 #   center    -> center content column
 #   right     -> pin content column to the right
+#
+# summary options:
+#   true      -> show the page summary rail by default
+#   false     -> hide it by default unless a page enables it
 #
 # theme options (built-in):
 #   comte, rustique, pycorino, gouda, javarti, elmental, mida

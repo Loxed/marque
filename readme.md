@@ -105,6 +105,7 @@ layout = topnav
 theme = default
 width = 82
 align = center
+summary = false
 ```
 
 - `title`: site title used in templates.
@@ -115,6 +116,7 @@ align = center
 - `theme`: global theme name.
 - `width`: global page width occupancy (percentage-based, see below).
 - `align`: default content column alignment (`left`, `center`, `right`).
+- `summary`: default page summary rail setting for the whole site. Pages can still override it in frontmatter.
 
 ## Frontmatter
 
@@ -138,7 +140,7 @@ summary = true
 - `layout`: optional per-page layout override.
 - `width`: optional per-page width override.
 - `align`: optional per-page content column alignment (`left`, `center`, `right`).
-- `summary`: optional per-page boolean that enables the page summary rail.
+- `summary`: optional per-page boolean that overrides the site default for the page summary rail.
 
 ## Summary Navigation
 

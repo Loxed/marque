@@ -31,6 +31,7 @@ layout = sidebar
 theme = rustique
 width = 82
 align = center
+summary = false
 ```
 @callout .ok
 *These settings apply to the entire site.*
@@ -43,6 +44,7 @@ Here's what each parameter does:
 - `theme`: The default [__theme__](__themes__) for your pages (for example `rustique` or `javarti`).
 - `width`: The default content width for your pages, which can be a percentage (`82`, `50%`) or predefined values like `narrow` (70%), `normal` (82%), `wide` (92%), or `full` (100%).
 - `align`: The default content column alignment for your pages (`left`, `center`, or `right`).
+- `summary`: The default page summary rail setting for your pages (`true` or `false`).
 @end card
 @card per-page
 ## Per-page Overrides (Inline Frontmatter)
@@ -81,7 +83,7 @@ Every parameter defined in a page's frontmatter is optional. A page can work wit
 `align` moves the `.mq-main` page column inside the available space. It does not change the alignment of the text inside that column.
 @end callout
 
-`summary` controls whether the page gets a right-side summary rail:
+`summary` controls whether the page gets a right-side summary rail. In frontmatter it overrides the site default from `marque.toml`:
 - `true`
 - `false`
 @end card

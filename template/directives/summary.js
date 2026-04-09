@@ -5,15 +5,21 @@ module.exports = ({ defineDirective }) => {
     type: 'inline',
     style: `
 .mq-summary-panel {
+  --mq-summary-top: clamp(0.85rem, 2vw, 1.35rem);
   position: sticky;
-  top: clamp(1rem, 2.5vw, 1.5rem);
+  top: calc(env(safe-area-inset-top, 0px) + var(--mq-summary-top));
   border: 1px solid var(--mq-summary-border, var(--mq-border, var(--border, rgba(0, 0, 0, 0.14))));
   border-radius: var(--mq-summary-radius, calc(var(--mq-radius, var(--radius, 8px)) + 2px));
   background: var(--mq-summary-bg, var(--mq-surface-alt, var(--surface2, rgba(0, 0, 0, 0.04))));
   box-shadow: var(--mq-summary-shadow, 0 18px 40px rgba(15, 23, 42, 0.08));
-  padding: 1rem;
+  padding: clamp(0.85rem, 1.6vw, 1rem);
   min-width: 0;
   width: 100%;
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px) - (var(--mq-summary-top) * 2));
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  z-index: 2;
 }
 
 .mq-summary-panel[hidden] {
@@ -22,28 +28,17 @@ module.exports = ({ defineDirective }) => {
 
 .mq-page-summary-slot {
   display: none;
+  min-width: 0;
+  align-self: stretch;
 }
 
 .mq-page-shell[data-has-summary="true"] .mq-page-summary-slot {
   display: block;
 }
 
-.mq-summary-panel > :first-child {
-  margin-top: 0;
-}
-
-.mq-summary-title {
-  margin: 0 0 0.85rem;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--mq-summary-title, var(--mq-muted, var(--muted, inherit)));
-}
-
 .mq-summary-list {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.2rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -56,6 +51,7 @@ module.exports = ({ defineDirective }) => {
 
 .mq-summary-link,
 .mq-summary-fallback {
+  position: relative;
   display: block;
   width: 100%;
   border: 0;
@@ -68,6 +64,20 @@ module.exports = ({ defineDirective }) => {
   transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
+.mq-summary-link::before {
+  content: '';
+  position: absolute;
+  left: 0.08rem;
+  top: 0.32rem;
+  bottom: 0.32rem;
+  width: 0.18rem;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleY(0.45);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
 .mq-summary-link:hover,
 .mq-summary-link:focus-visible {
   background: color-mix(in srgb, var(--mq-primary, var(--accent, currentColor)) 10%, transparent);
@@ -75,9 +85,17 @@ module.exports = ({ defineDirective }) => {
   outline: none;
 }
 
-.mq-summary-item.active > .mq-summary-link {
+.mq-summary-item.active > .mq-summary-link,
+.mq-summary-link[aria-current="location"] {
   background: color-mix(in srgb, var(--mq-primary, var(--accent, currentColor)) 14%, transparent);
   color: var(--mq-primary, var(--accent, currentColor));
+  font-weight: 600;
+}
+
+.mq-summary-item.active > .mq-summary-link::before,
+.mq-summary-link[aria-current="location"]::before {
+  opacity: 0.95;
+  transform: scaleY(1);
 }
 
 .mq-summary-level-1 > :is(.mq-summary-link, .mq-summary-fallback) {
@@ -116,12 +134,12 @@ module.exports = ({ defineDirective }) => {
         ? findScopedSummarySourceNodes(ctx.siblings, ctx.index)
         : findPageSummarySourceNodes(ctx.parentNode, ctx.siblings, ctx.index);
       const items = extractSummaryItems(sourceNodes, ctx, opts);
-      const title = escapeHtml(resolveSummaryTitle(name, mode));
+      const label = escapeHtml(resolveSummaryTitle(name, mode));
       const body = items.length
         ? `<ol class="mq-summary-list">${items.map(renderSummaryItem).join('')}</ol>`
         : `<p class="mq-summary-empty">${escapeHtml(summaryEmptyText(mode))}</p>`;
 
-      return `<aside class="mq-summary-panel" data-mq-toc data-mq-summary-scope="${mode}"><p class="mq-summary-title">${title}</p>${body}</aside>`;
+      return `<aside class="mq-summary-panel" data-mq-toc data-mq-summary-scope="${mode}" role="navigation" aria-label="${label}">${body}</aside>`;
     },
   });
 };

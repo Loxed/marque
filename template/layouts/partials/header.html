@@ -1,0 +1,16 @@
+<nav class="mq-nav">
+  <div class="mq-nav-head">
+    <a class="mq-nav-brand" href="/">{{ site_title }}</a>
+    <button class="mq-search-toggle" type="button" aria-expanded="false" aria-controls="mq-search" aria-label="Open search" onclick="mqToggleSearch(this)">
+      {{> icons/search }}
+      <span class="mq-search-toggle-label">Search</span>
+      <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
+    </button>
+  </div>
+  <div class="mq-nav-links">
+    {{ nav }}
+  </div>
+  <div class="mq-nav-actions">
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+  </div>
+</nav>
