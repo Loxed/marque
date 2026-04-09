@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marque — Layouts</title>
+
+<meta name="description" content="Built with Marque">
+
+<!-- 16x16 and 32x32 PNG favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+<!-- Web manifest for PWA support -->
+<link rel="manifest" href="../../favicon/site.webmanifest">
+
+<!-- Fallback for .ico (optional) -->
+<link rel="icon" href="../../favicon/favicon.ico">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="../../common.css">
+<link rel="stylesheet" href="../../layout-topnav.css">
+<link rel="stylesheet" href="../../theme-comte.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <nav class="mq-nav">
+  <div class="mq-nav-head">
+    <a class="mq-nav-brand" href="../../">Marque</a>
+    <button class="mq-search-toggle" type="button" aria-expanded="false" aria-controls="mq-search" aria-label="Open search" onclick="mqToggleSearch(this)">
+      <svg class="mq-search-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"></circle>
+    <path d="M20 20l-3.5-3.5"></path>
+</svg>
+
+      <span class="mq-search-toggle-label">Search</span>
+      <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
+    </button>
+  </div>
+  <div class="mq-nav-links">
+    <a class="mq-nav-link mq-nav-level-0" style="--mq-nav-level:0;" href="../../">Home</a>
+<a class="mq-nav-link mq-nav-level-0" style="--mq-nav-level:0;" href="../../quickstart.html">Quick Start</a>
+<a class="mq-nav-link mq-nav-level-0" style="--mq-nav-level:0;" href="../../create.html">Create Website</a>
+<div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link active" href="../../docs.html">Docs</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../cli.html"><span class="mq-nav-num">1.</span>CLI Commands</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../configuration.html"><span class="mq-nav-num">2.</span>Configuration</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="nav.html"><span class="mq-nav-num">2.1</span>Navigation</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="frontmatter.html"><span class="mq-nav-num">2.2</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link active" style="--mq-nav-level:1;" href="layouts.html"><span class="mq-nav-num">2.3</span>Layouts</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="themes.html"><span class="mq-nav-num">2.4</span>Themes</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../directives.html"><span class="mq-nav-num">3.</span>Directives</a></div></div>
+<div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link" href="../../migration.html">Migration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../migration/mdbook.html"><span class="mq-nav-num">1.</span>From mdBook</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../../migration/mkdocs.html"><span class="mq-nav-num">2.</span>From MkDocs</a></div></div>
+<a class="mq-nav-link mq-nav-level-0" style="--mq-nav-level:0;" href="../../tables.html">Tables</a>
+<a class="mq-nav-link mq-nav-level-0" style="--mq-nav-level:0;" href="../../extra/markdown.html">Markdown Syntax</a>
+  </div>
+  <div class="mq-nav-actions">
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+  </div>
+</nav>
+
+
+  <!-- Search Container -->
+  <div class="mq-search" id="mq-search" hidden aria-hidden="true">
+  <button class="mq-search-backdrop" type="button" aria-label="Close search" onclick="mqCloseSearch()"></button>
+  <section class="mq-search-panel" role="dialog" aria-modal="true" aria-labelledby="mq-search-title">
+    <div class="mq-search-head">
+      <svg class="mq-search-panel-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M20 20l-3.5-3.5"></path>
+      </svg>
+      <label class="mq-search-input-wrap" for="mq-search-input">
+        <span class="mq-search-label" id="mq-search-title">Search this site</span>
+        <input id="mq-search-input" class="mq-search-input" type="search" placeholder="Search pages, headings, and content" autocomplete="off" spellcheck="false">
+      </label>
+      <button class="mq-search-close" type="button" aria-label="Close search" onclick="mqCloseSearch()">
+        <svg class="mq-search-close-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18"></path>
+          <path d="M6 6l12 12"></path>
+        </svg>
+        <span class="mq-search-close-label">Close</span>
+        <span class="mq-search-close-hint" data-search-close-hint aria-hidden="true" hidden></span>
+      </button>
+    </div>
+    <p class="mq-search-meta" id="mq-search-meta">Type to search titles, headings, and page content.</p>
+    <div class="mq-search-results" id="mq-search-results">
+      <div class="mq-search-empty">Search is ready. Try a page title, a section heading, or a phrase from the content.</div>
+    </div>
+  </section>
+</div>
+
+
+  <!-- Main Content -->
+  <div class="mq-page-shell" id="mq-page-shell" style="--page-width: 82%; --page-max-w: none; --page-margin-left: auto; --page-margin-right: auto;">
+    <main class="mq-main">
+      <!-- dynamic mq content -->
+      <h1>Layouts</h1>
+<div class="mq-divider"></div>
+<p>Layouts behave a bit like themes, but they solve a different problem. Themes control the site&#39;s visual styling, whereas layouts decide what appears automatically and where it sits. This page uses the <code>topnav</code> layout on purpose, whereas the rest of this site uses <code>sidebar</code>.</p>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="mq-card"><h2><code>sidebar</code></h2>
+<div class="mq-divider"></div>
+<p>The sidebar layout places the navigation on the left-hand side of the page. The site title sits at the top, the main links appear underneath, and section headings are visible. The page content then sits to the right of the sidebar.</p>
+<p><img src="../../sidebar.png" alt="Sidebar"></p>
+</div>
+
+<div class="mq-card"><h2><code>topnav</code></h2>
+<div class="mq-divider"></div>
+<p>The topnav layout places the navigation bar at the top of the page. The site title appears on the left and the main links sit on the right. Hovering over the main buttons reveals subsections. Section headings are not shown in the same way, and the page content appears below the navigation bar.</p>
+<p><img src="../../topnav.png" alt="Topnav"></p>
+</div></div>
+
+<div class="mq-callout info"><p>When in doubt, consider the type of site you&#39;re building. If you have a large number of pages (e.g., a documentation site) and want to properly order content, the sidebar layout is a good choice. If you have fewer pages (e.g., a portfolio), want to maximise horizontal space or simply want a classic website feel, the topnav layout may be a better fit.</p>
+</div>
+
+<div class="mq-card"><h2><code>navigation.mq</code> used for these examples</h2>
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="navigation.mq"><div class="mq-code-head"><span class="mq-code-lang">navigation.mq</span><button class="mq-code-copy" type="button" aria-label="Copy navigation.mq code">Copy</button></div><pre><code class="hljs language-navigation.mq">[<span class="hljs-string">Home</span>](<span class="hljs-link">index.mq</span>)
+
+Start Here # only shown as a heading in sidebar
+
+[<span class="hljs-string">Quick Start</span>](<span class="hljs-link">quickstart.mq</span>)
+[<span class="hljs-string">Create Website</span>](<span class="hljs-link">create.mq</span>)
+
+Docs # only shown as a heading in sidebar
+
+[<span class="hljs-string">Docs</span>](<span class="hljs-link">docs.mq</span>)</code></pre></div></div>
+<h2>Shared shell: <code>common.css</code>, <code>index.html</code>, and <code>index.js</code></h2>
+<div class="mq-divider"></div>
+<p>The <code>layouts/</code> folder still contains the shared HTML shell, but it is no longer the only shared layer. <code>common.css</code> provides the site-wide fallback theme and built-in directive styling, <code>index.html</code> defines the structure of every page, and the layout CSS files (<code>sidebar.css</code> and <code>topnav.css</code>) only handle placement and layout-specific behaviour. A small runtime in <code>index.js</code> handles the interactive behaviour of the navigation bar, such as toggling it on mobile and positioning submenus.</p>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card primary"><h2><code>layouts/index.html</code></h2>
+<div class="mq-divider"></div>
+<p>This is the HTML frame around every page. It defines the elements that always exist:</p>
+<ul>
+<li>the site navigation (<code>.mq-nav</code>)</li>
+<li>the main content area (<code>.mq-main</code>)</li>
+<li>the footer (<code>.mq-footer</code>)</li>
+</ul>
+<p>It also injects the build-time values that Marque generates for each page:</p>
+<ul>
+<li><code>{{ common_css }}</code>: the shared fallback stylesheet</li>
+<li><code>{{ layout_css }}</code>: the active layout stylesheet</li>
+<li><code>{{ theme_css }}</code>: the active theme stylesheet</li>
+<li><code>{{ nav }}</code>: the rendered navigation links</li>
+<li><code>{{ content }}</code>: the page body rendered from <code>.mq</code></li>
+<li><code>{{ page_nav }}</code>: previous / next page links</li>
+<li><code>{{ document_title }}</code>, <code>{{ site_title }}</code>, <code>{{ description }}</code></li>
+</ul>
+</div>
+
+<div class="mq-card"><h2><code>layouts/index.js</code></h2>
+<div class="mq-divider"></div>
+<p>This file is intentionally small. It handles the shared interactive behaviour used by layouts:</p>
+<ul>
+<li>mobile nav toggle open / close</li>
+<li>submenu positioning near the viewport edge</li>
+<li>closing nav menus on click, <code>Escape</code>, or resize</li>
+<li>code block copy button behaviour</li>
+</ul>
+<p>Most layout work still happens in CSS. <code>index.js</code> only supports the interactive pieces.</p>
+</div></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><h2>The important structure</h2>
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="html"><div class="mq-code-head"><span class="mq-code-lang">html</span><button class="mq-code-copy" type="button" aria-label="Copy html code">Copy</button></div><pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">nav</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mq-nav&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mq-nav-brand&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/&quot;</span>&gt;</span>{{ site_title }}<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mq-nav-toggle&quot;</span> <span class="hljs-attr">...</span>&gt;</span>☰<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mq-nav-links&quot;</span>&gt;</span>{{ nav }}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">main</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;mq-main&quot;</span>{{ <span class="hljs-attr">page_main_style</span> }}&gt;</span>
+  {{ content }}
+  {{ page_nav }}
+<span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span></code></pre></div><p>This structure is the contract the layout CSS relies on. <code>common.css</code> styles the shared baseline, then <code>topnav.css</code> and <code>sidebar.css</code> place that shell differently.</p>
+</div>
+
+<div class="mq-card"><h2>When to edit it</h2>
+<div class="mq-divider"></div>
+<p>Edit <code>layouts/index.html</code> when you want to change what appears on every page, for example:</p>
+<ul>
+<li>adding a persistent banner or footer section</li>
+<li>changing where the brand or page navigation renders</li>
+<li>inserting extra wrappers that every layout should share</li>
+</ul>
+<p>Edit <code>sidebar.css</code> or <code>topnav.css</code> when the HTML structure is already correct and you only want to change placement, spacing, or responsive behaviour.</p>
+</div></div>
+
+<details class="mq-dropdown"><summary>For developers</summary><div class="mq-dropdown-content">
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><p>In the <a href="https://github.com/Loxed/marque">Marque</a> repository, the shared fallback theme lives in <code>template/common.css</code>, while layouts live in <code>template/layouts/</code> and are copied into each new project at <code>marque new &lt;name&gt;</code>. That folder owns the shared HTML shell (<code>index.html</code>), the shared runtime (<code>index.js</code>), and the layout-specific CSS files like <code>sidebar.css</code> and <code>topnav.css</code>. When creating new layouts, make sure your CSS matches the classes used in the shared layout shell rather than re-implementing theme styles there.</p>
+<!-- When creating a new project with `marque new <name>`, the shared shell files are copied from `template/layouts/`. This means that if you want to create a new layout, you add a new `.css` file in `template/layouts/` and keep it compatible with the shared `layouts/index.html` structure. --></div>
+
+<div class="mq-card"><div class="mq-code-block" data-lang=""><div class="mq-code-head"><span class="mq-code-lang"></span><button class="mq-code-copy" type="button" aria-label="Copy  code">Copy</button></div><pre><code class="hljs language-">```layout
+template/
+├── common.css
+├── layouts/
+│   ├── index.html
+│   ├── index.js
+│   ├── sidebar.css
+│   └── topnav.css
+└── themes/
+	└── *.css</code></pre></div><div class="mq-code-block" data-lang=""><div class="mq-code-head"><span class="mq-code-lang"></span><button class="mq-code-copy" type="button" aria-label="Copy  code">Copy</button></div><pre><code class="hljs language-"></code></pre></div></div></div></div></details>
+      <!-- bottom previous/next navigation -->
+      <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="frontmatter.html" aria-label="Previous page: Frontmatter"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Frontmatter</span></a><a class="mq-page-nav-link mq-page-nav-next" href="themes.html" aria-label="Next page: Themes"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Themes ↪</span></a></nav>
+    </main>
+    <!-- Sidebar summary (optional) -->
+    <aside class="mq-page-summary-slot" id="mq-page-summary-slot" hidden aria-label="Page summary"></aside>
+
+  </div>
+  
+  <!-- Footer -->
+  <footer class="mq-footer">
+    <!-- Remove if you wish, keeping it brings visibility to Marque :) -->
+    <span class="mq-footer-built">Built with <a href="https://github.com/Loxed/marque">Marque</a></span>
+    
+    <!-- Repo button (Optional) -->
+    <span class="mq-footer-repo">  
+      <a class="mq-footer-repo-link" href="https://github.com/Loxed/marque" aria-label="Open repository">
+        <svg class="mq-footer-repo-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 19c-5 1.5-5-2.5-7-3"></path>
+  <path d="M15 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77 5.44 5.44 0 0 0 3.5 8.5c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+
+      </a>
+    </span>
+</footer>
+
+  <script src="../../index.js"></script>
+</body>
+</html>

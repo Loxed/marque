@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marque — Migration</title>
+
+<meta name="description" content="Built with Marque">
+
+<!-- 16x16 and 32x32 PNG favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+
+<!-- Web manifest for PWA support -->
+<link rel="manifest" href="favicon/site.webmanifest">
+
+<!-- Fallback for .ico (optional) -->
+<link rel="icon" href="favicon/favicon.ico">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="layout-sidebar.css">
+<link rel="stylesheet" href="theme-comte.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <nav class="mq-nav">
+  <div class="mq-nav-head">
+    <a class="mq-nav-brand" href="./">Marque</a>
+    <button class="mq-search-toggle" type="button" aria-expanded="false" aria-controls="mq-search" aria-label="Open search" onclick="mqToggleSearch(this)">
+      <svg class="mq-search-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"></circle>
+    <path d="M20 20l-3.5-3.5"></path>
+</svg>
+
+      <span class="mq-search-toggle-label">Search</span>
+      <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
+    </button>
+  </div>
+  <div class="mq-nav-links">
+    <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="./"><span class="mq-nav-num">1.</span>Home</a>
+<div class="mq-nav-heading">Start Here</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="quickstart.html"><span class="mq-nav-num">2.</span>Quick Start</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="create.html"><span class="mq-nav-num">3.</span>Create Website</a>
+<div class="mq-nav-heading">Docs</div>
+<div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="docs.html"><span class="mq-nav-num">4.</span>Docs</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="docs/cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="docs/configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="docs/configuration/nav.html"><span class="mq-nav-num">4.2.1</span>Navigation</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="docs/configuration/frontmatter.html"><span class="mq-nav-num">4.2.2</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="docs/configuration/layouts.html"><span class="mq-nav-num">4.2.3</span>Layouts</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="docs/configuration/themes.html"><span class="mq-nav-num">4.2.4</span>Themes</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="docs/directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
+<div class="mq-nav-heading">Migration</div>
+<div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-0 mq-nav-numbered-link active" style="--mq-nav-level:0;" href="migration.html"><span class="mq-nav-num">5.</span>Migration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="migration/mdbook.html"><span class="mq-nav-num">5.1</span>From mdBook</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="migration/mkdocs.html"><span class="mq-nav-num">5.2</span>From MkDocs</a></div></div>
+<div class="mq-nav-heading">Extra</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="tables.html"><span class="mq-nav-num">6.</span>Tables</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="extra/markdown.html"><span class="mq-nav-num">7.</span>Markdown Syntax</a>
+  </div>
+  <div class="mq-nav-actions">
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+  </div>
+</nav>
+
+
+  <!-- Search Container -->
+  <div class="mq-search" id="mq-search" hidden aria-hidden="true">
+  <button class="mq-search-backdrop" type="button" aria-label="Close search" onclick="mqCloseSearch()"></button>
+  <section class="mq-search-panel" role="dialog" aria-modal="true" aria-labelledby="mq-search-title">
+    <div class="mq-search-head">
+      <svg class="mq-search-panel-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M20 20l-3.5-3.5"></path>
+      </svg>
+      <label class="mq-search-input-wrap" for="mq-search-input">
+        <span class="mq-search-label" id="mq-search-title">Search this site</span>
+        <input id="mq-search-input" class="mq-search-input" type="search" placeholder="Search pages, headings, and content" autocomplete="off" spellcheck="false">
+      </label>
+      <button class="mq-search-close" type="button" aria-label="Close search" onclick="mqCloseSearch()">
+        <svg class="mq-search-close-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18"></path>
+          <path d="M6 6l12 12"></path>
+        </svg>
+        <span class="mq-search-close-label">Close</span>
+        <span class="mq-search-close-hint" data-search-close-hint aria-hidden="true" hidden></span>
+      </button>
+    </div>
+    <p class="mq-search-meta" id="mq-search-meta">Type to search titles, headings, and page content.</p>
+    <div class="mq-search-results" id="mq-search-results">
+      <div class="mq-search-empty">Search is ready. Try a page title, a section heading, or a phrase from the content.</div>
+    </div>
+  </section>
+</div>
+
+
+  <!-- Main Content -->
+  <div class="mq-page-shell" id="mq-page-shell" style="--page-width: 82%; --page-max-w: none; --page-margin-left: auto; --page-margin-right: auto;">
+    <main class="mq-main">
+      <!-- dynamic mq content -->
+      <h1>Migration</h1>
+<div class="mq-divider"></div>
+<p>Use <code>marque migrate</code> when you already have a markdown docs project and want the content in Marque without rebuilding the whole thing by hand.</p>
+
+<div class="mq-callout info"><p>Migration is designed to import the content and navigation quickly.
+It is not a promise to carry over every plugin, theme, hook, or runtime behaviour from the old tool.</p>
+</div>
+<h2>Supported today</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card primary"><h2><code>mdBook</code></h2>
+<div class="mq-divider"></div>
+<p><code>book.toml</code>, <code>src/SUMMARY.md</code>, and <code>src/**/*.md</code> map naturally onto <code>marque.toml</code>, <code>navigation.mq</code>, and <code>pages/**/*.mq</code>.</p>
+</div>
+
+<div class="mq-card secondary"><h2><code>MkDocs</code></h2>
+<div class="mq-divider"></div>
+<p><code>mkdocs.yml</code> plus <code>docs/**/*.md</code> also translates well, especially when the site uses a normal <code>nav:</code> tree and markdown pages.</p>
+</div></div>
+
+<div class="mq-card"><h2>What not to expect</h2>
+<div class="mq-divider"></div>
+<p>Themes, preprocessors, plugins, extra CSS or JS hooks, and framework-specific markup still need a manual pass after the import.</p>
+</div>
+<h2>Fast flow</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-card"><div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Run <code>marque migrate</code> against the old project.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><p>Open the generated site and serve it locally.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="3"></div><div class="mq-step-body"><p>Read <code>pages/migration-notes.mq</code> inside the migrated site.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="4"></div><div class="mq-step-body"><p>Clean up navigation, theme, layout, and any tool-specific extras that Marque intentionally does not port automatically.</p>
+</div></div></div>
+<h2>Commands</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card accent"><h2>Auto-detect the source</h2>
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque migrate ./old-docs</code></pre></div><p>If you do not pass a target directory, Marque creates one next to the source folder with <code>-marque</code> appended.</p>
+</div>
+
+<div class="mq-card"><h2>Explicit source</h2>
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque migrate ./old-book ./new-marque --from mdbook
+marque migrate ./old-site ./new-marque --from mkdocs</code></pre></div></div></div>
+
+<div class="mq-card secondary"><h2>Pick the starter shell</h2>
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="sh"><div class="mq-code-head"><span class="mq-code-lang">sh</span><button class="mq-code-copy" type="button" aria-label="Copy sh code">Copy</button></div><pre><code class="hljs language-sh">marque migrate ./docs ./docs-marque --from mkdocs --layout sidebar --theme comte</code></pre></div><p>If you omit these flags, the migration starts with <code>sidebar</code> and <code>comte</code>.</p>
+</div>
+<h2>What Marque brings over</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><h2>Content</h2>
+<div class="mq-divider"></div>
+<p>Markdown pages are copied into <code>pages/</code> and renamed from <code>.md</code> to <code>.mq</code>.</p>
+</div>
+
+<div class="mq-card"><h2>Navigation</h2>
+<div class="mq-divider"></div>
+<p><code>src/SUMMARY.md</code> from mdBook or <code>nav:</code> from MkDocs becomes <code>navigation.mq</code>.</p>
+</div></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><h2>Assets</h2>
+<div class="mq-divider"></div>
+<p>Non-markdown files from the source docs tree are copied into <code>static/</code> with matching relative paths.</p>
+</div>
+
+<div class="mq-card"><h2>Internal links</h2>
+<div class="mq-divider"></div>
+<p>Local markdown links are rewritten from <code>.md</code> targets to the matching <code>.mq</code> pages so Marque can resolve them to HTML.</p>
+</div></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><h2>Site config</h2>
+<div class="mq-divider"></div>
+<p>The migrated site gets a fresh <code>marque.toml</code> using the imported site title and description when they are available.</p>
+</div>
+
+<div class="mq-card"><h2>Review page</h2>
+<div class="mq-divider"></div>
+<p>Marque also creates <code>pages/migration-notes.mq</code> so skipped metadata and unsupported features are impossible to miss.</p>
+</div></div>
+<h2>What still needs you</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-card"><div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Review the generated <code>navigation.mq</code> and confirm labels, nesting, and ordering.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><p>Rebuild the original visual design as a Marque theme or layout instead of expecting source themes to carry across automatically.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="3"></div><div class="mq-step-body"><p>Check plugins, preprocessors, extra JavaScript, MDX, or framework-specific markup by hand.</p>
+</div></div>
+
+<div class="mq-step"><div class="mq-step-num" data-step="4"></div><div class="mq-step-body"><p>Open the generated <code>migration-notes.mq</code> page and clear every warning before treating the migration as finished.</p>
+</div></div></div>
+<h2>Structure mapping</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><h2>mdBook</h2>
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="txt"><div class="mq-code-head"><span class="mq-code-lang">txt</span><button class="mq-code-copy" type="button" aria-label="Copy txt code">Copy</button></div><pre><code class="hljs language-txt">book.toml        -&gt; marque.toml
+src/SUMMARY.md   -&gt; navigation.mq
+src/**/*.md      -&gt; pages/**/*.mq
+src/** assets    -&gt; static/**</code></pre></div></div>
+
+<div class="mq-card"><h2>MkDocs</h2>
+<div class="mq-divider"></div>
+<div class="mq-code-block" data-lang="txt"><div class="mq-code-head"><span class="mq-code-lang">txt</span><button class="mq-code-copy" type="button" aria-label="Copy txt code">Copy</button></div><pre><code class="hljs language-txt">mkdocs.yml       -&gt; marque.toml + navigation.mq
+docs/**/*.md     -&gt; pages/**/*.mq
+docs/** assets   -&gt; static/**</code></pre></div></div></div>
+<h2>Pick the source-specific guide</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card primary"><h2>From <code>mdBook</code></h2><p><code>SUMMARY.md</code>, <code>book.toml</code>, and the default mdBook structure map very cleanly into Marque.</p>
+<p><a href="migration/mdbook.html" class="mq-btn primary">Open mdBook guide </a></p>
+</div>
+
+<div class="mq-card secondary"><h2>From <code>MkDocs</code></h2><p>This path works best when the project uses a normal <code>docs/</code> folder plus a standard <code>nav:</code> tree in <code>mkdocs.yml</code>.</p>
+<p><a href="migration/mkdocs.html" class="mq-btn">Open MkDocs guide </a></p>
+</div></div>
+
+<div class="mq-callout warn"><p>The goal is &quot;you are 70 to 90 per cent done and reviewing a real site&quot;, not &quot;your old project survived the trip without needing taste or judgement&quot;.</p>
+</div>
+      <!-- bottom previous/next navigation -->
+      <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="docs/directives.html" aria-label="Previous page: Directives"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Directives</span></a><a class="mq-page-nav-link mq-page-nav-next" href="migration/mdbook.html" aria-label="Next page: From mdBook"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">From mdBook ↪</span></a></nav>
+    </main>
+    <!-- Sidebar summary (optional) -->
+    <aside class="mq-page-summary-slot" id="mq-page-summary-slot" hidden aria-label="Page summary"></aside>
+
+  </div>
+  
+  <!-- Footer -->
+  <footer class="mq-footer">
+    <!-- Remove if you wish, keeping it brings visibility to Marque :) -->
+    <span class="mq-footer-built">Built with <a href="https://github.com/Loxed/marque">Marque</a></span>
+    
+    <!-- Repo button (Optional) -->
+    <span class="mq-footer-repo">  
+      <a class="mq-footer-repo-link" href="https://github.com/Loxed/marque" aria-label="Open repository">
+        <svg class="mq-footer-repo-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 19c-5 1.5-5-2.5-7-3"></path>
+  <path d="M15 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77 5.44 5.44 0 0 0 3.5 8.5c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+
+      </a>
+    </span>
+</footer>
+
+  <script src="index.js"></script>
+</body>
+</html>
