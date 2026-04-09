@@ -7,8 +7,18 @@
 <title>{{ document_title }}</title>
 
 <meta name="description" content="{{ description }}">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
 
+<!-- 16x16 and 32x32 PNG favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+
+<!-- Web manifest for PWA support -->
+<link rel="manifest" href="/favicon/site.webmanifest">
+
+<!-- Fallback for .ico (optional) -->
+<link rel="icon" href="/favicon/favicon.ico">
+
+<!-- Stylesheets -->
 <link rel="stylesheet" href="{{ common_css }}">
 <link rel="stylesheet" href="{{ layout_css }}">
 <link rel="stylesheet" href="{{ theme_css }}">
