@@ -17,18 +17,17 @@ This keeps the same syntax coverage as the old page, but groups the smaller exam
 
 @row
 @card
-### Headings
-# Heading level 1
-## Heading level 2
-### Heading level 3
-#### Heading level 4
-##### Heading level 5
-###### Heading level 6
+###* Headings
+#* Heading level 1
+##* Heading level 2
+###* Heading level 3
+####* Heading level 4
+#####* Heading level 5
+######* Heading level 6
 @end card
-@end row
 
 @card
-### Heading syntax
+###* Heading syntax
 ```md
 # Heading level 1
 ## Heading level 2
@@ -39,18 +38,20 @@ This keeps the same syntax coverage as the old page, but groups the smaller exam
 ```
 @end card
 
+@end row
+
 @row
 @card
-### Alternate headings
+###* Alternate headings
 Heading level 1
-===============
+===============*
 
 Heading level 2
----------------
+---------------*
 @end card
 
 @card
-### Alternate heading syntax
+###* Alternate heading syntax
 ```md
 Heading level 1
 ===============
@@ -63,14 +64,14 @@ Heading level 2
 
 @row
 @card
-### Paragraphs
+###* Paragraphs
 This is a paragraph.
 
 This is another paragraph.
 @end card
 
 @card
-### Paragraph and line break syntax
+###* Paragraph and line break syntax
 ```md
 This is a paragraph.
 
@@ -82,7 +83,7 @@ Second line.
 @end card
 
 @card
-### Line breaks
+###* Line breaks
 First line.  
 Second line.
 @end card

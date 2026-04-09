@@ -608,7 +608,8 @@ function mqRenderSummaryPanel(panel, source) {
 }
 
 function mqCollectSummaryHeadings(source) {
-  const headings = Array.from(source.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+  const headings = Array.from(source.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+    .filter(heading => !heading.hasAttribute('data-mq-toc-hidden'));
   if (!headings.length) return [];
 
   const usedIds = new Set(

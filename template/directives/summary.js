@@ -158,7 +158,7 @@ function findScopedSummarySourceNodes(siblings, index) {
   for (let i = index - 1; i >= 0; i -= 1) {
     const candidate = siblings[i];
     if (!candidate) continue;
-    if (candidate.type === 'directive' && String(candidate.tag || '').toLowerCase() === 'summary') continue;
+    if (candidate.type === 'directive' && String(candidate.tag || '').toLowerCase() === 'toc') continue;
     if (candidate.type === 'markdown' && !String(candidate.content || '').trim()) continue;
     if (candidate.type === 'directive' || candidate.type === 'markdown') return [candidate];
   }
@@ -174,7 +174,7 @@ function findPageSummarySourceNodes(parentNode, siblings, index) {
   return list.filter((candidate, candidateIndex) => {
     if (!candidate) return false;
     if (Number.isFinite(index) && candidateIndex === index) return false;
-    if (candidate.type === 'directive' && String(candidate.tag || '').toLowerCase() === 'summary') return false;
+    if (candidate.type === 'directive' && String(candidate.tag || '').toLowerCase() === 'toc') return false;
     if (candidate.type === 'markdown' && !String(candidate.content || '').trim()) return false;
     return candidate.type === 'directive' || candidate.type === 'markdown';
   });
@@ -182,13 +182,15 @@ function findPageSummarySourceNodes(parentNode, siblings, index) {
 
 function extractSummaryItems(sourceNodes, ctx, opts) {
   const html = ctx.renderNodes(Array.isArray(sourceNodes) ? sourceNodes : [], { ...(opts || {}) });
-  const pattern = /<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1>/gi;
+  const pattern = /<h([1-6])\b([^>]*)>([\s\S]*?)<\/h\1>/gi;
   const items = [];
   let match;
 
   while ((match = pattern.exec(String(html || '')))) {
     const level = Number(match[1]) || 1;
-    const text = normalizeText(decodeHtmlEntities(stripHtmlTags(match[2])));
+    const attrs = String(match[2] || '');
+    if (/\bdata-mq-toc-hidden(?:\s*=\s*["']?true["']?)?/i.test(attrs)) continue;
+    const text = normalizeText(decodeHtmlEntities(stripHtmlTags(match[3])));
     if (!text) continue;
     items.push({ level, text });
   }

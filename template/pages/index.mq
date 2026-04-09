@@ -1,7 +1,8 @@
 +++
 title = Home
 nav = index
-width = full
+width = 
+summary = true
 +++
 
 # Marque

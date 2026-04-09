@@ -280,6 +280,7 @@ pre,
 .mq-spotlight {
   height: 3em;
   background: var(--bar-gradient);
+  border: 5px;
 }
 .mq-divider {
   width: 200px;

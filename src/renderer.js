@@ -8,6 +8,7 @@ const { getDirective } = require('./directives/registry');
 // configure marked
 const mdRenderer = new marked.Renderer();
 const defaultTableRenderer = mdRenderer.table;
+const MQ_TOC_HIDDEN_COMMENT = '<!--mq-toc-hidden-->';
 mdRenderer.code = (code, infostring) => {
   const isToken = code && typeof code === 'object' && !Array.isArray(code);
   const rawCode = isToken ? readTokenText(code.text ?? code.raw) : code;
@@ -20,6 +21,13 @@ mdRenderer.code = (code, infostring) => {
 mdRenderer.table = function (...args) {
   const tableHtml = defaultTableRenderer.apply(this, args);
   return `<div class="mq-table-wrap">${tableHtml}</div>`;
+};
+mdRenderer.heading = function (token) {
+  const depth = Number(token && token.depth) || 1;
+  const hiddenFromToc = headingStartsWithHiddenSummaryMarker(token);
+  const tokens = hiddenFromToc ? stripHiddenSummaryMarkerTokens(token.tokens) : token.tokens;
+  const attrs = hiddenFromToc ? ' data-mq-toc-hidden="true"' : '';
+  return `<h${depth}${attrs}>${this.parser.parseInline(tokens || [])}</h${depth}>`;
 };
 // Keep standard Markdown paragraph flow: single newlines stay soft,
 // while explicit hard breaks still require Markdown hard-break syntax or <br>.
@@ -52,6 +60,7 @@ function renderNode(node, opts, meta = {}) {
 
 function renderMarkdown(src, opts = {}) {
   src = dedentMarkdown(src);
+  src = markSummaryHiddenHeadings(src);
   src = expandInlineDivider(src);
 
   // Preferred inline badge syntax: @badge "Text" {.class .other}
@@ -143,6 +152,53 @@ function expandInlineDivider(src) {
   return lines.join('\n');
 }
 
+function markSummaryHiddenHeadings(src) {
+  const lines = String(src || '').split('\n');
+  let fence = null;
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    const nextLine = i + 1 < lines.length ? lines[i + 1] : '';
+
+    const nextFence = updateMarkdownFenceState(trimmed, fence);
+    const inFence = !!fence;
+    const opensFence = !fence && !!nextFence;
+
+    if (!inFence && !opensFence) {
+      const atxMatch = line.match(/^([ \t]{0,3})(#{1,6})\*\s+(.*)$/);
+      if (atxMatch) {
+        lines[i] = `${atxMatch[1]}${atxMatch[2]} ${MQ_TOC_HIDDEN_COMMENT}${atxMatch[3]}`;
+        continue;
+      }
+
+      const setextMatch = nextLine.match(/^([ \t]{0,3})(=+|-+)\*\s*$/);
+      if (setextMatch && trimmed) {
+        const lineMatch = line.match(/^([ \t]*)(.*)$/);
+        const atxIndent = String(lineMatch[1] || '').slice(0, 3);
+        const atxDepth = setextMatch[2][0] === '=' ? '#' : '##';
+        lines[i] = `${atxIndent}${atxDepth} ${MQ_TOC_HIDDEN_COMMENT}${lineMatch[2]}`;
+        lines[i + 1] = '';
+        continue;
+      }
+    }
+
+    fence = nextFence;
+  }
+
+  return lines.join('\n');
+}
+
+function updateMarkdownFenceState(trimmed, fence) {
+  const match = String(trimmed || '').match(/^(`{3,}|~{3,})/);
+  if (!match) return fence;
+
+  const marker = match[1];
+  if (!fence) return marker;
+  if (marker[0] === fence[0] && marker.length >= fence.length) return null;
+  return fence;
+}
+
 function dedentMarkdown(src) {
   const lines = String(src || '').split('\n');
   let minIndent = Infinity;
@@ -161,6 +217,19 @@ function dedentMarkdown(src) {
     const indent = match ? match[0].length : 0;
     return indent >= minIndent ? line.slice(minIndent) : line;
   }).join('\n');
+}
+
+function headingStartsWithHiddenSummaryMarker(token) {
+  const tokens = token && Array.isArray(token.tokens) ? token.tokens : [];
+  const first = tokens[0];
+  return !!(first && first.type === 'html' && String(first.text || first.raw || '').trim() === MQ_TOC_HIDDEN_COMMENT);
+}
+
+function stripHiddenSummaryMarkerTokens(tokens) {
+  const list = Array.isArray(tokens) ? tokens : [];
+  if (!list.length) return list;
+  if (!headingStartsWithHiddenSummaryMarker({ tokens: list })) return list;
+  return list.slice(1);
 }
 
 function escapeAttr(value) {

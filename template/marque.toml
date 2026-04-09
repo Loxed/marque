@@ -5,6 +5,7 @@ theme = comte
 width = normal
 align = center
 repo = https://github.com/Loxed/marque
+summary = true
 
 # Marque config
 #

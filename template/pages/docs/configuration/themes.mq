@@ -2,6 +2,8 @@
 title = Themes
 nav = themes
 theme = mida
+summary = true
+
 +++
 
 # Themes 
@@ -31,7 +33,6 @@ The main theme used on your site is defined in the `marque.toml` file with the `
 @end row
 
 ----
-
 
 @card .primary
 ## Quick flow
@@ -66,8 +67,6 @@ Run `marque serve .` or `marque build .`.
 _"Yes I'm French, how did you guess?"_
 
 @end card
-
-----
 
 @row classes
 
