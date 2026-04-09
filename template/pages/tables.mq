@@ -1,0 +1,14 @@
++++
+title = "Tables"
+nav = "tables"
++++
+
+# Tables
+
+Here is a table:
+
+| Theme  | Link         |   |   |   |
+|--------|--------------|---|---|---|
+| Comte  | comte.css    |   |   |   |
+| Python | pycorino.css |   |   |   |
+|        |              |   |   |   |

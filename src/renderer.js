@@ -180,7 +180,7 @@ function readTokenText(value) {
 
 function highlightCode(source, lang) {
   const code = String(source || '');
-  const language = String(lang || '').toLowerCase();
+  const language = resolveHighlightLanguage(lang);
   if (!language || language === 'text') return escapeHtml(code);
 
   if (!hljs.getLanguage(language)) return escapeHtml(code);
@@ -190,6 +190,13 @@ function highlightCode(source, lang) {
   } catch (_) {
     return escapeHtml(code);
   }
+}
+
+function resolveHighlightLanguage(lang) {
+  const raw = String(lang || '').trim().toLowerCase();
+  if (!raw) return 'text';
+  if (raw === 'mq' || raw.endsWith('.mq')) return 'markdown';
+  return raw;
 }
 
 function parseButtonAttrs(raw) {

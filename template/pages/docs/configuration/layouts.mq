@@ -30,6 +30,10 @@ Layouts behave a bit like themes, but they solve a different problem. Themes con
 	@end card topnav
 @end row
 
+@callout .info
+	☝️🤓 When in doubt, consider the type of site you're building. If you have a large number of pages and want to properly order content, the sidebar layout is a good choice. If you have fewer pages, want to maximise horizontal space or simply want a classic website feel, the topnav layout may be a better fit.
+@end callout
+
 @card 
 	## `navigation.mq` used for these examples
 	@divider

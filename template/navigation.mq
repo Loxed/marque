@@ -23,3 +23,7 @@ Migration
 [Migration](migration.mq)
     [From mdBook](migration/mdbook.mq)
     [From MkDocs](migration/mkdocs.mq)
+
+Extra
+
+[Tables](tables.mq)

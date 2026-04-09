@@ -1250,7 +1250,7 @@ function renderSidebarLinkTrees(nodes, current, topCounter, depth = 0, parentNum
     const childHtml = renderSidebarLinkTrees(node.children, current, topCounter, depth + 1, number);
     const childActive = node.children.some(child => isSidebarNodeActive(child, current));
     const groupActive = (isActive || childActive) ? ' active' : '';
-    parts.push(`<div class="mq-nav-group mq-nav-summary-group${groupActive}"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-numbered-link${activeClass}" href="${hrefToSitePath(item.href)}">${numSpan}${escapeHtml(item.label)}</a><div class="mq-nav-submenu">${childHtml}</div></div>`);
+    parts.push(`<div class="mq-nav-group mq-nav-summary-group${groupActive}"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-${depth} mq-nav-numbered-link${activeClass}" style="--mq-nav-level:${depth};" href="${hrefToSitePath(item.href)}">${numSpan}${escapeHtml(item.label)}</a><div class="mq-nav-submenu">${childHtml}</div></div>`);
   }
 
   return parts.join('');
