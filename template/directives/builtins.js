@@ -8,10 +8,7 @@ module.exports = ({ defineDirective }) => {
 
   defineDirective('container', {
     type: 'block',
-    render: ({ nodes, opts, ctx }) => {
-      // Container resets the step counter for its children.
-      return ctx.renderNodes(nodes, { ...(opts || {}), _stepCounter: 1 });
-    },
+    render: ({ children }) => children,
   });
 
   defineDirective('row', {
@@ -27,10 +24,9 @@ module.exports = ({ defineDirective }) => {
         }));
       }
     },
-    render: ({ nodes, opts, ctx }) => {
+    render: ({ nodes, children }) => {
       const cols = Math.max(1, (nodes || []).filter(c => c.type === 'directive' && !c.inline).length);
-      const inner = ctx.renderNodes(nodes, opts);
-      return `<div class="mq-row" style="grid-template-columns: repeat(${cols}, minmax(0, 1fr));">${inner}</div>`;
+      return `<div class="mq-row" style="grid-template-columns: repeat(${cols}, minmax(0, 1fr));">${children}</div>`;
     },
   });
 

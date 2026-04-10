@@ -127,7 +127,7 @@ The core built-ins live in `template/directives/builtins.js`.
 ## Layout and structure
 @divider
 
-- `@container`: structural wrapper that does not emit its own element and resets step numbering for its children
+- `@container`: structural wrapper that does not emit its own element
 - `@row`: responsive grid based on the number of block directive children
 - `@column`: vertical stack inside a row
 - `@section`: section wrapper with `.mods` mapped to CSS classes
@@ -170,7 +170,7 @@ Those checks come from the directive definition itself, not from a hard-coded pa
 - `@step`: automatic numbering
 - `@step 4`: force this step to show `4`
 - `@step *`: show `*` instead of a number
-- `@step reset:1`: reset the sequence when used inside a container flow
+- `@step reset:1`: reset the sequence in the current scope
 @end card
 @end row
 
@@ -246,12 +246,15 @@ The starter site also ships with example project directives in `template/directi
 @card
 ## `@dropdown`
 @divider
-- `type`: block
-- `path`: `directives/dropdown.js`
-- `description`: collapsible block that can be toggled open and closed. Starts in `closed` state by default.
-- `param`: `.open`/`.expanded`/`.default-open` create the dropdown in the open state
-- `param`: `.disable-cache` disables the caching behaviour
-- `note`: the `@dropdown` directive has built-in caching, and remembers its open/closed state
+
+| parameter | description |
+| --- | --- |
+| type | block directive |
+| path | `directives/dropdown.js` |
+| description | collapsible block that can be toggled open and closed. Starts in `closed` state by default. |
+| `.open` | create the dropdown in the open state |
+| `.disable-cache` | disables the caching behaviour |
+| note | the `@dropdown` directive has built-in caching, and remembers its open/closed state |
 
 ```mq
 @dropdown .open "Open by default"
@@ -260,6 +263,10 @@ You can see me!
 
 @dropdown "Closed by default"
 Hello!
+@end dropdown
+
+@dropdown .open .disable-cache "Close me!"
+Close me and refresh the page. I won't remember that you closed me. You can't get rid of me that easily!
 @end dropdown
 ```
 @end card
@@ -274,6 +281,10 @@ Use `marque serve .`
 
 @dropdown "Closed by default"
 Hello!
+@end dropdown
+
+@dropdown .open .disable-cache "Close me!"
+Close me and refresh the page. I won't remember that you closed me. You can't get rid of me that easily!
 @end dropdown
 
 @divider
@@ -422,7 +433,7 @@ Most directives are small. If all you need is "wrap these children and style the
 @row
 @card
 - `@container` is structural and does not emit its own wrapper element.
-- `@step` numbering works best inside container flow because that is where the counter is managed.
+- Each block scope keeps its own `@step` sequence, so steps inside a card, row, or other block count independently from surrounding steps.
 - `@row` expects block directive children like `@card` or `@column`.
 @end card
 

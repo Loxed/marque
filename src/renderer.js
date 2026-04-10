@@ -40,7 +40,8 @@ function render(ast, opts = {}) {
 
 function renderNodes(nodes, opts, meta = {}) {
   const list = Array.isArray(nodes) ? nodes : [];
-  return list.map((n, index) => renderNode(n, opts, {
+  const scopedOpts = createRenderScopeOptions(opts);
+  return list.map((n, index) => renderNode(n, scopedOpts, {
     parentNode: meta.parentNode || null,
     siblings: list,
     index,
@@ -166,6 +167,17 @@ function updateMarkdownFenceState(trimmed, fence) {
   if (!fence) return marker;
   if (marker[0] === fence[0] && marker.length >= fence.length) return null;
   return fence;
+}
+
+function createRenderScopeOptions(opts) {
+  const base = opts && typeof opts === 'object' ? { ...opts } : {};
+  const explicitStart = Number(base._mqStepScopeStart);
+  const start = Number.isFinite(explicitStart) && explicitStart > 0 ? explicitStart : 1;
+
+  delete base._stepCounter;
+  delete base._mqStepScopeStart;
+  base._stepCounter = start;
+  return base;
 }
 
 function replaceMarkdownOutsideCode(src, transform) {
