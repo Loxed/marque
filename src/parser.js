@@ -57,9 +57,9 @@ function tokenize(lines) {
     }
 
     // @tag [.mod .mod ...] [name]
-    // mods = .word tokens
+    // mods = .token tokens (supports hyphenated modifiers like .default-open)
     // name = trailing bare token OR quoted text (quoted can include spaces)
-    const openM = trimmed.match(/^@([\w-]+)((?:\s+\.\w+)*)(?:\s+(?:"([^"]*)"|'([^']*)'|([^.\s]\S*)))?$/);
+    const openM = trimmed.match(/^@([\w-]+)((?:\s+\.[\w-]+)*)(?:\s+(?:"([^"]*)"|'([^']*)'|([^.\s]\S*)))?$/);
     if (openM) {
       const tag  = openM[1];
       const mods = (openM[2] || '').trim().split(/\s+/).filter(Boolean).map(m => m.slice(1));

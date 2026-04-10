@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marque — Directives</title>
+
+<meta name="description" content="Built with Marque">
+
+<!-- 16x16 and 32x32 PNG favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+
+<!-- Web manifest for PWA support -->
+<link rel="manifest" href="../favicon/site.webmanifest">
+
+<!-- Fallback for .ico (optional) -->
+<link rel="icon" href="../favicon/favicon.ico">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="../common.css">
+<link rel="stylesheet" href="../layout-sidebar.css">
+<link rel="stylesheet" href="../theme-comte.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <nav class="mq-nav">
+  <div class="mq-nav-head">
+    <a class="mq-nav-brand" href="../">Marque</a>
+    <button class="mq-search-toggle" type="button" aria-expanded="false" aria-controls="mq-search" aria-label="Open search" onclick="mqToggleSearch(this)">
+      <svg class="mq-search-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"></circle>
+    <path d="M20 20l-3.5-3.5"></path>
+</svg>
+
+      <span class="mq-search-toggle-label">Search</span>
+      <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
+    </button>
+  </div>
+  <div class="mq-nav-links">
+    <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../"><span class="mq-nav-num">1.</span>Home</a>
+<div class="mq-nav-heading">Start Here</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../quickstart.html"><span class="mq-nav-num">2.</span>Quickstart</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../create.html"><span class="mq-nav-num">3.</span>Project Architecture</a>
+<div class="mq-nav-heading">Docs</div>
+<div class="mq-nav-group mq-nav-summary-group active"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../docs.html"><span class="mq-nav-num">4.</span>Documentation</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="configuration/nav.html"><span class="mq-nav-num">4.2.1</span>Navigation</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="configuration/frontmatter.html"><span class="mq-nav-num">4.2.2</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="configuration/layouts.html"><span class="mq-nav-num">4.2.3</span>Layouts</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="configuration/themes.html"><span class="mq-nav-num">4.2.4</span>Themes</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link active" style="--mq-nav-level:1;" href="directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
+<div class="mq-nav-heading">Migration</div>
+<div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../migration.html"><span class="mq-nav-num">5.</span>Migration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../migration/mdbook.html"><span class="mq-nav-num">5.1</span>mdBook to Marque</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../migration/mkdocs.html"><span class="mq-nav-num">5.2</span>MkDocs to Marque</a></div></div>
+<div class="mq-nav-heading">Extra</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../extra/markdown.html"><span class="mq-nav-num">6.</span>Markdown Syntax</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../extra/faq.html"><span class="mq-nav-num">7.</span>FAQ</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../extra/author.html"><span class="mq-nav-num">8.</span>Author</a>
+  </div>
+  <div class="mq-nav-actions">
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+  </div>
+</nav>
+
+
+  <!-- Search Container -->
+  <div class="mq-search" id="mq-search" hidden aria-hidden="true">
+  <button class="mq-search-backdrop" type="button" aria-label="Close search" onclick="mqCloseSearch()"></button>
+  <section class="mq-search-panel" role="dialog" aria-modal="true" aria-labelledby="mq-search-title">
+    <div class="mq-search-head">
+      <svg class="mq-search-panel-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M20 20l-3.5-3.5"></path>
+      </svg>
+      <label class="mq-search-input-wrap" for="mq-search-input">
+        <span class="mq-search-label" id="mq-search-title">Search this site</span>
+        <input id="mq-search-input" class="mq-search-input" type="search" placeholder="Search pages, headings, and content" autocomplete="off" spellcheck="false">
+      </label>
+      <button class="mq-search-close" type="button" aria-label="Close search" onclick="mqCloseSearch()">
+        <svg class="mq-search-close-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18"></path>
+          <path d="M6 6l12 12"></path>
+        </svg>
+        <span class="mq-search-close-label">Close</span>
+        <span class="mq-search-close-hint" data-search-close-hint aria-hidden="true" hidden></span>
+      </button>
+    </div>
+    <p class="mq-search-meta" id="mq-search-meta">Type to search titles, headings, and page content.</p>
+    <div class="mq-search-results" id="mq-search-results">
+      <div class="mq-search-empty">Search is ready. Try a page title, a section heading, or a phrase from the content.</div>
+    </div>
+  </section>
+</div>
+
+
+  <!-- Main Content -->
+  <div class="mq-page-shell" id="mq-page-shell" data-page-summary="true" style="--page-width: 100%; --page-max-w: none; --page-margin-left: auto; --page-margin-right: auto;">
+    <main class="mq-main">
+      <!-- dynamic mq content -->
+      <h1>Directives</h1>
+<div class="mq-divider"></div>
+<p>Directives are what makes Marque unique. They allow you to create custom elements, layouts and interactive components using simple markdown syntax.</p>
+
+<details class="mq-dropdown" data-mq-dropdown-id="dropdown-6-1" open><summary>What is a directive?</summary><div class="mq-dropdown-content"><h2 data-mq-toc-hidden="true">What is a directive?</h2>
+<div class="mq-divider"></div>
+<p>A directive is a custom syntax element Marque recognises and transforms into HTML. They&#39;re the building blocks of Marque <code>.mq</code> pages, and allow you to create elements that aren&#39;t possible with markdown alone.</p>
+<h2 data-mq-toc-hidden="true">Why directives?</h2>
+<div class="mq-divider"></div>
+<p>Markdown is a great format for writing content, but has its limitations when it comes to layout and structure. Marque&#39;s directives are designed to be a middle ground: they provide easy to use syntax in markdown that can generate complex HTML structures, without the need to write raw HTML.</p>
+<h2 data-mq-toc-hidden="true">How do I use directives?</h2>
+<div class="mq-divider"></div>
+<p>Directives use the <code>@</code> symbol followed by the directive&#39;s name. For example: <code>@sparkle</code> creates: <span class="mq-sparkle" aria-hidden="true">✶</span>.</p>
+<p>There are two types of directives: block directives and inline directives. Block directives create a scoped block of content that has a beginning and closing tag. Inline directives are self-closing and can be used within a line of text.</p>
+</div></details>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><h2 data-mq-toc-hidden="true">Block directives</h2>
+<div class="mq-divider"></div>
+<p>Block directives have an opening tag that starts with <code>@name</code> and a closing tag that ends with <code>@end name</code>. The content between these tags is the directive&#39;s children, which can be other directives or markdown content.</p>
+<div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@card &lt;- opening tag of the block directive
+  ## Title
+  I&#x27;m inside a card directive, which is a block directive.
+@end card &lt;- closing tag of the block directive</code></pre></div>
+<div class="mq-card"><h2 data-mq-toc-hidden="true">Title</h2><p>I&#39;m inside a card directive, which is a block directive.</p>
+</div>
+</div>
+
+<div class="mq-card"><h2 data-mq-toc-hidden="true">Inline directives</h2>
+<div class="mq-divider"></div>
+<p>Inline directives do not require a closing tag and can be used within a line of text. They are useful for adding small elements or styling within a line of markdown content.</p>
+<div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@card
+  ## Title @sparkle &lt;- this is an inline directive
+  @divider  &lt;-- another inline directive
+  There&#x27;s now a divider between the title and me! 
+@end card</code></pre></div>
+<div class="mq-card"><h2 data-mq-toc-hidden="true">Title <span class="mq-sparkle" aria-hidden="true">✶</span></h2>
+<div class="mq-divider"></div>
+<p>There&#39;s now a divider between the title and me! </p>
+</div></div>
+</div>
+
+<div class="mq-callout info"><h3 data-mq-toc-hidden="true">Use the summary on the right to quickly navigate to the directive you want to learn about, or keep reading for a full list of built-in directives.</h3></div>
+<h1>Block directives</h1>
+<div class="mq-divider"></div>
+
+<div class="mq-card primary"><h2><code>@callout</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>block directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/builtins.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>colored block used to highlight information</td>
+</tr>
+<tr>
+<td><code>.info</code></td>
+<td>blue informational (default)</td>
+</tr>
+<tr>
+<td><code>.warn</code></td>
+<td>yellow warning</td>
+</tr>
+<tr>
+<td><code>.danger</code></td>
+<td>red danger</td>
+</tr>
+<tr>
+<td><code>.ok</code></td>
+<td>green success</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@callout .warn
+Watch out for this.
+@end callout</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2>
+<div class="mq-callout warn"><p>Watch out for this.</p>
+</div></div></div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@card</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>block directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/builtins.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>standard content container with a border and padding</td>
+</tr>
+<tr>
+<td><code>.left</code></td>
+<td>left-align content (default)</td>
+</tr>
+<tr>
+<td><code>.center</code></td>
+<td>center-align content</td>
+</tr>
+<tr>
+<td><code>.right</code></td>
+<td>right-align content</td>
+</tr>
+<tr>
+<td><code>.primary</code></td>
+<td>primary color variant</td>
+</tr>
+<tr>
+<td><code>.secondary</code></td>
+<td>secondary color variant</td>
+</tr>
+<tr>
+<td><code>.tertiary</code></td>
+<td>tertiary color variant</td>
+</tr>
+<tr>
+<td><code>.dark</code></td>
+<td>dark mode variant</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@card .dark
+<span class="hljs-section">## Spooky</span>
+Join the dark side.
+@end card
+
+@card .center .tertiary
+<span class="hljs-section">## Centered title</span>
+Content goes here.
+@end card</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2>
+<div class="mq-card dark"><h2 data-mq-toc-hidden="true">Spooky</h2><p>Join the dark side.</p>
+</div>
+
+<div class="mq-card tertiary" style="text-align: center"><h2 data-mq-toc-hidden="true">Centered title</h2><p>Content goes here.</p>
+</div>
+</div></div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@dropdown</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>block directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/dropdown.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>collapsible block that can be toggled open and closed. Starts in <code>closed</code> state by default.</td>
+</tr>
+<tr>
+<td><code>.open</code> <code>.expanded</code> <code>.default-open</code></td>
+<td>create the dropdown in the open state</td>
+</tr>
+<tr>
+<td><code>.disable-cache</code></td>
+<td>disables the caching behaviour</td>
+</tr>
+<tr>
+<td>note</td>
+<td>the <code>@dropdown</code> directive has built-in caching, and remembers its open/closed state</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@dropdown .open &quot;Open by default&quot;
+You can see me!
+@end dropdown
+@dropdown &quot;Closed by default&quot;
+And now you see me!
+@end dropdown
+@dropdown .open .disable-cache &quot;Close me!&quot;
+Close me and refresh the page. I won&#x27;t remember that you closed me. You can&#x27;t get rid of me that easily!
+@end dropdown</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2>
+<details class="mq-dropdown" data-mq-dropdown-id="dropdown-191-1" open><summary>Open by default</summary><div class="mq-dropdown-content"><p>You can see me!</p>
+</div></details>
+<details class="mq-dropdown" data-mq-dropdown-id="dropdown-194-1"><summary>Closed by default</summary><div class="mq-dropdown-content"><p>And now you see me!</p>
+</div></details>
+<details class="mq-dropdown" data-mq-dropdown-id="dropdown-197-1" data-mq-dropdown-cache="disabled" open><summary>Close me!</summary><div class="mq-dropdown-content"><p>Close me and refresh the page. I won&#39;t remember that you closed me. You can&#39;t get rid of me &gt;:)</p>
+</div></details></div></div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@hero</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>block directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/builtins.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>prominent <code>&lt;section&gt;</code> wrapper, modifiers are mapped to CSS classes</td>
+</tr>
+<tr>
+<td><code>.center</code></td>
+<td>center-align content</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@hero .center
+<span class="hljs-section"># Big statement!!!</span>
+A short supporting line.
+@end hero</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2>
+<section class="mq-hero center"><h1 data-mq-toc-hidden="true">Big statement!!!</h1><p>A short supporting line.</p>
+</section></div></div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@product-card</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>block directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/product-card.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>renders a <code>&lt;product-card&gt;</code> custom element</td>
+</tr>
+<tr>
+<td><code>.featured</code></td>
+<td>applies featured border styling via the <code>variant</code> attribute</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>becomes the <code>title</code> attribute on the element</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@product-card .featured Starter
+<span class="hljs-section">## Fast setup</span>
+Copy the starter and change the theme later.
+@end product-card</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2>
+<product-card variant="featured" title="Starter"><h2 data-mq-toc-hidden="true">Fast setup</h2><p>Copy the starter and change the theme later.</p>
+</product-card></div></div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@row</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>block directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/builtins.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>responsive grid whose columns are sized by the number of block directive children</td>
+</tr>
+<tr>
+<td>note</td>
+<td>warns at build time if it has no block directive children</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@row
+  @card
+<span class="hljs-code">    🡸 I&#x27;m on the left!
+  @end card
+  @card .right
+    I&#x27;m on the right. 🡺
+  @end card
+@end row</span></code></pre></div></div>
+
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><p>🡸 I&#39;m on the left!</p>
+</div>
+<div class="mq-card" style="text-align: right"><p>I&#39;m on the right. 🡺</p>
+</div></div>
+<p><em>Politics in a nutshell</em></p>
+
+<div class="mq-callout warn"><p>The content in a row is responsive, so on smaller screen the columns may stack vertically instead of horizontally.</p>
+</div>
+</div>
+</div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@section</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>block directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/builtins.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>renders a <code>&lt;section&gt;</code> wrapper, modifiers are mapped to CSS classes</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@section .highlight
+<span class="hljs-section">## Welcome</span>
+Content inside a section.
+@end section</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2>
+<section class="mq-section highlight"><h2 data-mq-toc-hidden="true">Welcome</h2><p>Content inside a section.</p>
+</section></div></div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@stat</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>block directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/builtins.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>value and label pair, extracted from the first <code>##</code> and <code>p</code> in the rendered children</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@stat
+<span class="hljs-section">## 99%</span>
+Uptime last month.
+@end stat</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2>
+<div class="mq-stat"><div class="mq-stat-value">99%</div><div class="mq-stat-label">Uptime last month.</div></div></div></div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@step</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>block directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/builtins.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>numbered process item, auto-increments within its scope</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>force this step to display a specific number</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>show <code>*</code> instead of a number</td>
+</tr>
+<tr>
+<td><code>reset:n</code></td>
+<td>reset the counter to <code>n</code> at this point</td>
+</tr>
+<tr>
+<td>note</td>
+<td>each block scope keeps its own step sequence</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@step
+Install dependencies.
+@end step
+@step
+Run the dev server.
+@end step
+@step *
+Optional: configure your theme.
+@end step</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2>
+<div class="mq-step"><div class="mq-step-num" data-step="1"></div><div class="mq-step-body"><p>Install dependencies.</p>
+</div></div>
+<div class="mq-step"><div class="mq-step-num" data-step="2"></div><div class="mq-step-body"><p>Run the dev server.</p>
+</div></div>
+<div class="mq-step"><div class="mq-step-num" data-step="*"></div><div class="mq-step-body"><p>Optional: configure your theme.</p>
+</div></div></div></div></div>
+<h1>Inline directives</h1>
+<div class="mq-divider"></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@divider</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>inline directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/builtins.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>renders a horizontal divider line</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq"><span class="hljs-section">## Section title</span>
+@divider
+Content below the divider.</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2><h2 data-mq-toc-hidden="true">Section title</h2>
+<div class="mq-divider"></div>
+<p>Content below the divider.</p>
+</div></div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@sparkle</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>inline directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/sparkle.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>animated decorative star rendered in the primary colour</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">Inline sparkle looks like this @sparkle and keeps flowing with the text.</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2><p>Inline sparkle looks like this <span class="mq-sparkle" aria-hidden="true">✶</span> and keeps flowing with the text.</p>
+</div></div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@spotlight</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>inline directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/spotlight.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>decorative spotlight block</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card secondary"><h2 data-mq-toc-hidden="true">Usage</h2><div class="mq-code-block" data-lang="mq"><div class="mq-code-head"><span class="mq-code-lang">mq</span><button class="mq-code-copy" type="button" aria-label="Copy mq code">Copy</button></div><pre><code class="hljs language-mq">@spotlight</code></pre></div></div>
+<div class="mq-card tertiary"><h2 data-mq-toc-hidden="true">Preview</h2>
+<div class="mq-spotlight"></div></div></div></div>
+<hr>
+
+      <!-- bottom previous/next navigation -->
+      <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="configuration/themes.html" aria-label="Previous page: Themes"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ Themes</span></a><a class="mq-page-nav-link mq-page-nav-next" href="../migration.html" aria-label="Next page: Migration"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">Migration ↪</span></a></nav>
+    </main>
+    <!-- Sidebar summary (optional) -->
+    <aside class="mq-page-summary-slot" id="mq-page-summary-slot" hidden aria-label="Page summary"></aside>
+
+  </div>
+  
+  <!-- Footer -->
+  <footer class="mq-footer">
+    <!-- Remove if you wish, keeping it brings visibility to Marque :) -->
+    <span class="mq-footer-built">Built with <a href="https://github.com/Loxed/marque">Marque</a></span>
+    
+    <!-- Repo button (Optional) -->
+    <span class="mq-footer-repo">  
+      <a class="mq-footer-repo-link" href="https://github.com/Loxed/marque" aria-label="Open repository">
+        <svg class="mq-footer-repo-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 19c-5 1.5-5-2.5-7-3"></path>
+  <path d="M15 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77 5.44 5.44 0 0 0 3.5 8.5c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+
+      </a>
+    </span>
+</footer>
+
+  <script src="../index.js"></script>
+</body>
+</html>

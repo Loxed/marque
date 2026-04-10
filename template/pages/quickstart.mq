@@ -15,15 +15,17 @@ Create your first Marque site in minutes.
       ## Requirements
       @divider
 
+      You will be installing Marque in your terminal ([What's a terminal?](extra/terminal.mq)). 
+      
       Before installing Marque, make sure you have:
 
-      - [Node.js 24](https://nodejs.org/en/download) or newer
+      - [Node.js 20.19+](https://nodejs.org/en/download) or newer
       - npm (comes with Node.js)
 
       Check your versions:
 
       ```sh
-        node -v # >= v24.0.0
+        node -v # >= v20.19.0
         npm -v
       ```
       @end step
@@ -60,8 +62,8 @@ Create your first Marque site in minutes.
       @divider
     @end step
 
-    @container
-      @step 
+    
+    @step 1
       ## Create a new site
       Go to the directory where you want to create your site and run:
 
@@ -69,9 +71,9 @@ Create your first Marque site in minutes.
       marque new my-site
       cd my-site # change into the new site's directory
       ```
-      @end step
+    @end step
 
-      @step
+    @step
       ## Start the dev server
       Run the local server with live reload:
 
@@ -80,15 +82,15 @@ Create your first Marque site in minutes.
       ```
 
       Then open http://localhost:3000.
-      @end step
+    @end step
 
-      @step
+    @step
       ## Edit content
       Modify files inside `pages/`.
       Changes are reflected instantly in your browser.
-      @end step
+    @end step
 
-      @step
+    @step
       ## Build for production
       Generate static files:
 
@@ -97,8 +99,7 @@ Create your first Marque site in minutes.
       ```
 
       Output is written to `dist/`.
-      @end step
-    @end container
+    @end step
   @end card create
 @end row
 

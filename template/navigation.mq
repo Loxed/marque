@@ -17,8 +17,6 @@ Docs
         [Layouts](docs/configuration/layouts.mq)
         [Themes](docs/configuration/themes.mq)
     [Directives](docs/directives.mq)
-        [Block directives](docs/directives/block.mq)
-        [Inline directives](docs/directives/inline.mq)
 
 Migration
 

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marque — Terminal</title>
+
+<meta name="description" content="Built with Marque">
+
+<!-- 16x16 and 32x32 PNG favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+
+<!-- Web manifest for PWA support -->
+<link rel="manifest" href="../favicon/site.webmanifest">
+
+<!-- Fallback for .ico (optional) -->
+<link rel="icon" href="../favicon/favicon.ico">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="../common.css">
+<link rel="stylesheet" href="../layout-sidebar.css">
+<link rel="stylesheet" href="../theme-comte.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <nav class="mq-nav">
+  <div class="mq-nav-head">
+    <a class="mq-nav-brand" href="../">Marque</a>
+    <button class="mq-search-toggle" type="button" aria-expanded="false" aria-controls="mq-search" aria-label="Open search" onclick="mqToggleSearch(this)">
+      <svg class="mq-search-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"></circle>
+    <path d="M20 20l-3.5-3.5"></path>
+</svg>
+
+      <span class="mq-search-toggle-label">Search</span>
+      <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
+    </button>
+  </div>
+  <div class="mq-nav-links">
+    <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../"><span class="mq-nav-num">1.</span>Home</a>
+<div class="mq-nav-heading">Start Here</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../quickstart.html"><span class="mq-nav-num">2.</span>Quickstart</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../create.html"><span class="mq-nav-num">3.</span>Project Architecture</a>
+<div class="mq-nav-heading">Docs</div>
+<div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../docs.html"><span class="mq-nav-num">4.</span>Documentation</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../docs/cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../docs/configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="../docs/configuration/nav.html"><span class="mq-nav-num">4.2.1</span>Navigation</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="../docs/configuration/frontmatter.html"><span class="mq-nav-num">4.2.2</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="../docs/configuration/layouts.html"><span class="mq-nav-num">4.2.3</span>Layouts</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="../docs/configuration/themes.html"><span class="mq-nav-num">4.2.4</span>Themes</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../docs/directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
+<div class="mq-nav-heading">Migration</div>
+<div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../migration.html"><span class="mq-nav-num">5.</span>Migration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../migration/mdbook.html"><span class="mq-nav-num">5.1</span>mdBook to Marque</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../migration/mkdocs.html"><span class="mq-nav-num">5.2</span>MkDocs to Marque</a></div></div>
+<div class="mq-nav-heading">Extra</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="markdown.html"><span class="mq-nav-num">6.</span>Markdown Syntax</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="faq.html"><span class="mq-nav-num">7.</span>FAQ</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="author.html"><span class="mq-nav-num">8.</span>Author</a>
+  </div>
+  <div class="mq-nav-actions">
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+  </div>
+</nav>
+
+
+  <!-- Search Container -->
+  <div class="mq-search" id="mq-search" hidden aria-hidden="true">
+  <button class="mq-search-backdrop" type="button" aria-label="Close search" onclick="mqCloseSearch()"></button>
+  <section class="mq-search-panel" role="dialog" aria-modal="true" aria-labelledby="mq-search-title">
+    <div class="mq-search-head">
+      <svg class="mq-search-panel-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M20 20l-3.5-3.5"></path>
+      </svg>
+      <label class="mq-search-input-wrap" for="mq-search-input">
+        <span class="mq-search-label" id="mq-search-title">Search this site</span>
+        <input id="mq-search-input" class="mq-search-input" type="search" placeholder="Search pages, headings, and content" autocomplete="off" spellcheck="false">
+      </label>
+      <button class="mq-search-close" type="button" aria-label="Close search" onclick="mqCloseSearch()">
+        <svg class="mq-search-close-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18"></path>
+          <path d="M6 6l12 12"></path>
+        </svg>
+        <span class="mq-search-close-label">Close</span>
+        <span class="mq-search-close-hint" data-search-close-hint aria-hidden="true" hidden></span>
+      </button>
+    </div>
+    <p class="mq-search-meta" id="mq-search-meta">Type to search titles, headings, and page content.</p>
+    <div class="mq-search-results" id="mq-search-results">
+      <div class="mq-search-empty">Search is ready. Try a page title, a section heading, or a phrase from the content.</div>
+    </div>
+  </section>
+</div>
+
+
+  <!-- Main Content -->
+  <div class="mq-page-shell" id="mq-page-shell" style="--page-width: 50%; --page-max-w: none; --page-margin-left: auto; --page-margin-right: auto;">
+    <main class="mq-main">
+      <!-- dynamic mq content -->
+      <h1>What&#39;s a terminal?</h1><p><a href="../quickstart.html" class="mq-btn">Back to Quickstart</a></p>
+<p>If you clicked on this link, you probably have no idea what a terminal is (or you&#39;re just curious). Don&#39;t worry it&#39;s not as scary as it sounds!</p>
+<p>A terminal is a text-based interface that interacts with your computer&#39;s operating system. You can type commands into the terminal to perform various tasks such as navigating files, running programs and installing software. </p>
+<p>When you use a tool that runs in a browser or an app on your phone, you&#39;re using what&#39;s called a &quot;graphical user interface&quot; (GUI). A terminal is a &quot;command-line interface&quot; (CLI) that allows you to interact with your computer using text <strong>commands</strong> instead of clicking on <strong>graphical</strong> buttons and icons.</p>
+<p>Here&#39;s how to open a terminal on your operating system:</p>
+
+<div class="mq-card"><h2>Windows</h2>
+<div class="mq-divider"></div>
+<p>Windows has two built-in terminal applications: Command Prompt (<code>cmd.exe</code>) and PowerShell. You can open either of these by searching for &quot;Command Prompt&quot; or &quot;PowerShell&quot; in the Start menu.</p>
+<p>For the best experience, you should probably <strong>use PowerShell</strong>, but either will work to install Marque and get started.</p>
+
+<details class="mq-dropdown" data-mq-dropdown-id="dropdown-20-1" data-mq-dropdown-cache="disabled"><summary>What about WSL? (Advanced)</summary><div class="mq-dropdown-content"><p>Advanced users may also use the Windows Subsystem for Linux (WSL) to run a Linux terminal on Windows. If you do use Marque through WSL, make sure to keep your project files within the WSL filesystem (e.g. <code>/home/username/my-site</code>) rather than the Windows filesystem (e.g. <code>C:\Users\username\my-site</code>) for better performance.</p>
+</div></details>
+<p><a href="https://learn.microsoft.com/powershell/scripting/windows-powershell/starting-windows-powershell?view=powershell-7.6" class="mq-btn secondary">How to open PowerShell</a></p>
+</div>
+<hr>
+
+<div class="mq-card"><h2>macOS</h2>
+<div class="mq-divider"></div>
+<p>macOS has a different terminal application called &quot;Terminal&quot;. You can find it in the <code>Applications &gt; Utilities</code> folder, or by searching for &quot;Terminal&quot; using Spotlight Search. </p>
+<p><a href="https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac" class="mq-btn primary">How to open or quit terminal</a></p>
+</div>
+<hr>
+
+<div class="mq-card"><h2>Linux</h2>
+<div class="mq-divider"></div>
+<h3 data-mq-toc-hidden="true">If you&#39;re a Linux user why are you here?</h3><p>Depending on your distro, you may have different terminal applications installed by default. Common names are &quot;Terminal&quot;, &quot;Konsole&quot;, &quot;xterm&quot;, or &quot;GNOME Terminal&quot;. Why am I explaining this to a Linux user? You should know how to open a terminal! <strong><span style="font-size:1.2em; font-weight:bold;">Shame on you!</span></strong></p>
+</div>
+<p><a href="../quickstart.html" class="mq-btn">Back to Quickstart</a></p>
+
+      <!-- bottom previous/next navigation -->
+      
+    </main>
+    <!-- Sidebar summary (optional) -->
+    <aside class="mq-page-summary-slot" id="mq-page-summary-slot" hidden aria-label="Page summary"></aside>
+
+  </div>
+  
+  <!-- Footer -->
+  <footer class="mq-footer">
+    <!-- Remove if you wish, keeping it brings visibility to Marque :) -->
+    <span class="mq-footer-built">Built with <a href="https://github.com/Loxed/marque">Marque</a></span>
+    
+    <!-- Repo button (Optional) -->
+    <span class="mq-footer-repo">  
+      <a class="mq-footer-repo-link" href="https://github.com/Loxed/marque" aria-label="Open repository">
+        <svg class="mq-footer-repo-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M9 19c-5 1.5-5-2.5-7-3"></path>
+  <path d="M15 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77 5.44 5.44 0 0 0 3.5 8.5c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+
+      </a>
+    </span>
+</footer>
+
+  <script src="../index.js"></script>
+</body>
+</html>

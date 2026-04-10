@@ -57,8 +57,15 @@ module.exports = ({ defineDirective }) => {
   defineDirective('card', {
     type: 'block',
     render: ({ mods, children }) => {
-      const cls = mods.length ? ` ${mods.join(' ')}` : '';
-      return `<div class="mq-card${cls}">${children}</div>`;
+      const ALIGNMENTS = new Set(['left', 'center', 'right']);
+
+      const alignMod = mods.find(m => ALIGNMENTS.has(m));
+      const otherMods = mods.filter(m => !ALIGNMENTS.has(m));
+
+      const cls = otherMods.length ? ` ${otherMods.join(' ')}` : '';
+      const alignStyle = alignMod ? ` style="text-align: ${alignMod}"` : '';
+
+      return `<div class="mq-card${cls}"${alignStyle}>${children}</div>`;
     },
   });
 

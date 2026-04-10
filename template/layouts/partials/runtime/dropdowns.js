@@ -9,6 +9,11 @@ function mqInitDropdownPersistence() {
     if (!dropdownId) return;
 
     dropdown.dataset.mqDropdownId = dropdownId;
+    if (mqDropdownCacheDisabled(dropdown)) {
+      mqClearDropdownState(dropdownId);
+      return;
+    }
+
     mqRestoreDropdownState(dropdown, dropdownId);
 
     if (mqDropdownToggleHandlers.has(dropdown)) return;
@@ -46,9 +51,20 @@ function mqReadDropdownState(dropdownId) {
   return null;
 }
 
+function mqClearDropdownState(dropdownId) {
+  mqSafeLocalStorage((storage) => {
+    storage.removeItem(mqDropdownStorageKey(dropdownId));
+  });
+}
+
 function mqDropdownStorageKey(dropdownId) {
   const path = window.location && window.location.pathname ? window.location.pathname : '/';
   return `mq:dropdown:${path}:${dropdownId}`;
+}
+
+function mqDropdownCacheDisabled(dropdown) {
+  const value = String((dropdown && dropdown.dataset && dropdown.dataset.mqDropdownCache) || '').trim().toLowerCase();
+  return value === 'disabled' || value === 'off' || value === 'false';
 }
 
 function mqResolveDropdownPersistenceId(dropdown, index) {
