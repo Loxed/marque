@@ -23,11 +23,7 @@ Markdown is a great format for writing content, but has its limitations when it 
 ##* How do I use directives?
 @divider
 
-Directives use the `@` symbol followed by the directive's name. For example: `@sparkle` creates a @sparkle inside the text.
-
-
-
-<!-- TODO: Make it so that inline directives can be showcased and dont directly render html! -->
+Directives use the `@` symbol followed by the directive's name. For example: `@sparkle` creates: @sparkle.
 
 There are two types of directives: block directives and inline directives. Block directives create a scoped block of content that has a beginning and closing tag. Inline directives are self-closing and can be used within a line of text.
 @end dropdown

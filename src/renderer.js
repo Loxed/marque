@@ -64,29 +64,29 @@ function renderMarkdown(src, opts = {}) {
   src = expandInlineDivider(src);
 
   // Preferred inline badge syntax: @badge "Text" {.class .other}
-  src = src.replace(/@badge\s+(?:"([^"]+)"|'([^']+)')\s*(\{[^}]*\})?/g,
+  src = replaceMarkdownOutsideCode(src, (text) => text.replace(/@badge\s+(?:"([^"]+)"|'([^']+)')\s*(\{[^}]*\})?/g,
     (_, dblLabel, sglLabel, attrsRaw) => {
       const label = dblLabel || sglLabel || '';
       const className = parseBadgeAttrs(attrsRaw);
       return `<span class="mq-badge${className}">${label}</span>`;
     }
-  );
+  ));
 
   // Legacy inline badge syntax (@badge[...] and :badge[...])
-  src = src.replace(/(?:@badge|:badge)\[([^\]]+)\](\{\.([a-z]+)\})?/g,
+  src = replaceMarkdownOutsideCode(src, (text) => text.replace(/(?:@badge|:badge)\[([^\]]+)\](\{\.([a-z]+)\})?/g,
     (_, label, __, cls) => `<span class="mq-badge${cls ? ' ' + cls : ''}">${label}</span>`
-  );
+  ));
 
   // Explicit button syntax: @[text](url){!id .cls .other}
-  src = src.replace(/@\[([^\]]+)\]\(([^)]*)\)(?:\{([^}]*)\})?/g,
-    (_, text, url, attrsRaw) => {
+  src = replaceMarkdownOutsideCode(src, (text) => text.replace(/@\[([^\]]+)\]\(([^)]*)\)(?:\{([^}]*)\})?/g,
+    (_, label, url, attrsRaw) => {
       const attrs = parseButtonAttrs(attrsRaw);
       const extraClasses = attrs.className;
       const idAttr = attrs.id ? ` id="${escapeAttr(attrs.id)}"` : '';
       const safeHref = resolveHref(url, opts);
-      return `<a href="${safeHref}" class="mq-btn${extraClasses}"${idAttr}>${text}</a>`;
+      return `<a href="${safeHref}" class="mq-btn${extraClasses}"${idAttr}>${label}</a>`;
     }
-  );
+  ));
 
   src = expandInlineCustomDirectives(src, opts);
 
@@ -95,61 +95,30 @@ function renderMarkdown(src, opts = {}) {
 }
 
 function expandInlineCustomDirectives(src, opts = {}) {
-  const lines = String(src || '').split('\n');
-  let inFence = false;
+  return replaceMarkdownOutsideCode(src, (text) => text.replace(/(^|[^\w-])@([a-z][\w-]*)\b/gi, (match, prefix, rawTag) => {
+    const tag = String(rawTag || '').toLowerCase();
+    const def = getDirective(tag);
+    if (!def || def.type !== 'inline') return match;
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const trimmed = line.trim();
-
-    if (/^```/.test(trimmed)) {
-      inFence = !inFence;
-      continue;
-    }
-    if (inFence) continue;
-
-    lines[i] = line.replace(/(^|[^\w-])@([a-z][\w-]*)\b/gi, (match, prefix, rawTag) => {
-      const tag = String(rawTag || '').toLowerCase();
-      const def = getDirective(tag);
-      if (!def || def.type !== 'inline') return match;
-
-      const html = def.render({
-        tag,
-        mods: [],
-        name: null,
-        children: '',
-        nodes: [],
+    const html = def.render({
+      tag,
+      mods: [],
+      name: null,
+      children: '',
+      nodes: [],
       node: { type: 'directive', tag, inline: true, mods: [], name: null, children: [] },
       opts,
       ctx: { renderNodes, renderMarkdown, escapeAttr, siblings: [], index: -1, parentNode: null },
     });
 
-      return `${prefix}${html}`;
-    });
-  }
-
-  return lines.join('\n');
+    return `${prefix}${html}`;
+  }));
 }
 
 function expandInlineDivider(src) {
-  const lines = String(src || '').split('\n');
-  let inFence = false;
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const trimmed = line.trim();
-    if (/^```/.test(trimmed)) {
-      inFence = !inFence;
-      continue;
-    }
-    if (inFence) continue;
-
-    lines[i] = line.replace(/(^|[^\w])@divider(?=$|[^\w])/g, (_, prefix) => {
-      return `${prefix}<span class="mq-divider-inline" aria-hidden="true" style="display:inline-block;vertical-align:middle;width:1.8rem;height:2px;margin:0 .35rem;background:var(--mq-primary,currentColor);opacity:.75;border-radius:2px;"></span>`;
-    });
-  }
-
-  return lines.join('\n');
+  return replaceMarkdownOutsideCode(src, (text) => text.replace(/(^|[^\w])@divider(?=$|[^\w])/g, (_, prefix) => {
+    return `${prefix}<span class="mq-divider-inline" aria-hidden="true" style="display:inline-block;vertical-align:middle;width:1.8rem;height:2px;margin:0 .35rem;background:var(--mq-primary,currentColor);opacity:.75;border-radius:2px;"></span>`;
+  }));
 }
 
 function markSummaryHiddenHeadings(src) {
@@ -197,6 +166,112 @@ function updateMarkdownFenceState(trimmed, fence) {
   if (!fence) return marker;
   if (marker[0] === fence[0] && marker.length >= fence.length) return null;
   return fence;
+}
+
+function replaceMarkdownOutsideCode(src, transform) {
+  const lines = String(src || '').split('\n');
+  let fence = null;
+  let codeSpanTicks = 0;
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    const nextFence = updateMarkdownFenceState(trimmed, fence);
+    const inFence = !!fence;
+    const opensFence = !fence && !!nextFence;
+
+    if (inFence || opensFence) {
+      fence = nextFence;
+      continue;
+    }
+
+    const result = replaceLineOutsideInlineCode(line, transform, codeSpanTicks);
+    lines[i] = result.line;
+    codeSpanTicks = result.codeSpanTicks;
+    fence = nextFence;
+  }
+
+  return lines.join('\n');
+}
+
+function replaceLineOutsideInlineCode(line, transform, codeSpanTicks = 0) {
+  const text = String(line || '');
+  let output = '';
+  let plain = '';
+  let index = 0;
+  let activeTicks = Number.isInteger(codeSpanTicks) && codeSpanTicks > 0 ? codeSpanTicks : 0;
+
+  while (index < text.length) {
+    if (activeTicks > 0) {
+      const closeIndex = findMatchingBacktickFence(text, index, activeTicks);
+      if (closeIndex === -1) {
+        output += text.slice(index);
+        index = text.length;
+        break;
+      }
+
+      output += text.slice(index, closeIndex + activeTicks);
+      index = closeIndex + activeTicks;
+      activeTicks = 0;
+      continue;
+    }
+
+    const opener = findNextCodeSpanFence(text, index);
+    if (!opener) {
+      plain += text.slice(index);
+      index = text.length;
+      break;
+    }
+
+    plain += text.slice(index, opener.index);
+    if (plain) output += transform(plain);
+    plain = '';
+
+    const closeIndex = findMatchingBacktickFence(text, opener.index + opener.length, opener.length);
+    if (closeIndex === -1) {
+      output += text.slice(opener.index);
+      activeTicks = opener.length;
+      index = text.length;
+      break;
+    }
+
+    output += text.slice(opener.index, closeIndex + opener.length);
+    index = closeIndex + opener.length;
+  }
+
+  if (plain) output += transform(plain);
+  return { line: output, codeSpanTicks: activeTicks };
+}
+
+function findNextCodeSpanFence(text, startIndex) {
+  for (let i = startIndex; i < text.length; i += 1) {
+    if (text[i] !== '`') continue;
+    if (isEscapedBacktick(text, i)) continue;
+    return { index: i, length: countConsecutiveBackticks(text, i) };
+  }
+  return null;
+}
+
+function findMatchingBacktickFence(text, startIndex, tickCount) {
+  for (let i = startIndex; i < text.length; i += 1) {
+    if (text[i] !== '`') continue;
+    const runLength = countConsecutiveBackticks(text, i);
+    if (runLength === tickCount) return i;
+    i += runLength - 1;
+  }
+  return -1;
+}
+
+function countConsecutiveBackticks(text, startIndex) {
+  let count = 0;
+  for (let i = startIndex; i < text.length && text[i] === '`'; i += 1) count += 1;
+  return count;
+}
+
+function isEscapedBacktick(text, index) {
+  let slashCount = 0;
+  for (let i = index - 1; i >= 0 && text[i] === '\\'; i -= 1) slashCount += 1;
+  return slashCount % 2 === 1;
 }
 
 function dedentMarkdown(src) {
