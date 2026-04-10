@@ -2,6 +2,7 @@
 title = Directives
 nav = directives
 summary = true
+width = full
 +++
 
 # Directives
@@ -64,6 +65,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien augue.
 
 @card
 
+<!-- TODO: List every block directive and their different params / usage -->
+
 ## Inline directives
 @divider
 
@@ -96,221 +99,302 @@ Inline directives do not required a closing tag, can be used within a line of te
 
 @end row
 
+<!-- TODO: List every inline directive and their different params / usage -->
 
 
 
-<!-- ## The authoring stack
+@card
+## Modifiers and labels
 @divider
 
-@row
-  @card .primary
-    ## Markdown
-    @divider
-    Use plain markdown for headings, paragraphs, lists, links, blockquotes, and code blocks.
-  @end card
+Modifiers are the `.tokens` after the directive name. Some directives also use the trailing label.
 
-  @card .secondary
-    ## Directives
-    @divider
-    Use directives when you want rows, cards, callouts, steps, wrappers, or custom components.
-  @end card
-@end row
-
-  @card .tertiary
-  ## Inline syntax
-  @divider
-  Use button links, badges, inline dividers, inline project directives, and `@toc` when a full block would be overkill.
+- `@callout .warn`
+- `@dropdown .open "Windows Users"`
+- `@product-card .featured Starter`
+- `@step 4`
+- `@step reset:1`
 @end card
 
-## How directive syntax works
-@divider
-
-@row
-  @card .primary
-    ## Block directives
-    @divider
-    Block directives open with `@name` and close with `@end name`.
-
-    ```mq
-    @card .primary
-      ## Title
-      Body copy.
-    @end card
-    ```
-  @end card
-
-  @card .secondary
-    ## Modifiers and labels
-    @divider
-    Modifiers are the `.tokens` after the directive name. Some directives also accept a trailing label.
-
-    - `@callout .warn`
-    - `@product-card .featured Starter`
-    - `@dropdown "Windows Users"`
-  @end card
-@end row
-
-@card .tertiary
-  ## Inline directives
-  @divider
-  Inline directives do not need a closing tag. The built-in divider and the starter's decorative inline directives fall into this group.
-@end card
 
 ## Built-in directives
 @divider
 
+The core built-ins live in `template/directives/builtins.js`.
+
 @row
-  @card
-    ## Layout and flow
-    @divider
+@card
+## Layout and structure
+@divider
 
-    - `@container`: neutral grouping scope that resets step numbering
-    - `@row`: responsive grid based on the number of block children
-    - `@column`: vertical stack inside a row
-  @end card
+- `@container`: structural wrapper that does not emit its own element and resets step numbering for its children
+- `@row`: responsive grid based on the number of block directive children
+- `@column`: vertical stack inside a row
+- `@section`: section wrapper with `.mods` mapped to CSS classes
+- `@hero`: prominent section wrapper with `.mods` mapped to CSS classes
+- `@card`: padded surface block with `.mods` mapped to CSS classes
+@end card
 
-  @card
-    ## Wrappers and surfaces
-    @divider
+@card
+## Content and flow
+@divider
 
-    - `@section`: themed section wrapper
-    - `@hero`: prominent section wrapper
-    - `@card`: padded content block
-  @end card
+- `@callout [.variant]`: note block, defaulting to `info`
+- `@stat`: value plus label pair extracted from the rendered children
+- `@step [number|*|reset:n]`: numbered process item with optional manual control
+- `@divider`: the only built-in inline directive, rendered as a divider line
+
+`@callout` knows these built-in variants: `info`, `warn`, `danger`, `ok`, `primary`, `secondary`, `tertiary`.
+@end card
 @end row
 
 @row
-  @card
-    ## Content blocks
-    @divider
+@card
+## Diagnostics
+@divider
 
-    - `@callout`: highlighted note block
-    - `@stat`: value + label pair
-    - `@step`: numbered process item
-  @end card
+Some built-ins also validate their input:
 
-  @card
-    ## Callout variants
-    @divider
-    `@callout` supports these built-in variants:
+- `@row` warns if it has no block directive children
+- `@callout` warns if you use an unknown variant
 
-    - `info`
-    - `warn`
-    - `danger`
-    - `ok`
-    - `primary`
-    - `secondary`
-    - `tertiary`
-  @end card
+Those checks come from the directive definition itself, not from a hard-coded parser rule.
+@end card
+
+@card
+## Step notes
+@divider
+
+`@step` supports a few useful forms:
+
+- `@step`: automatic numbering
+- `@step 4`: force this step to show `4`
+- `@step *`: show `*` instead of a number
+- `@step reset:1`: reset the sequence when used inside a container flow
+@end card
 @end row
 
-@row
-  @card
-    ## Inline affordances
-    @divider
-    Marque also supports lighter syntax in normal markdown:
-
-    - button-style links for CTA-like links inside paragraphs
-    - badges for short labels and status tags
-    - inline dividers inside running text
-  @end card
-
-  @card
-    ## Starter project examples
-    @divider
-    The starter also ships with example project directives:
-
-    - `dropdown`
-    - `product-card`
-    - `toc`
-    - `sparkle`
-    - `spotlight`
-  @end card
-@end row
-
-## Example composition
+## Built-in composition
 @divider
 
 @row
-  @card
-    ```mq
-    @container
-      @callout .info
-      Directives are just HTML generators with friendlier authoring syntax.
-      @end callout
+@card
+```mq
+@container
+  @callout .info
+  Directives are just HTML generators with friendlier authoring syntax.
+  @end callout
 
-      @row
-        @card
-          ## Cards
-          Great for grouped content.
-        @end card
+  @row
+    @card
+      ## Cards
+      Great for grouped content.
+    @end card
 
-        @card
-          ## Layout
-          `@row` turns sibling blocks into a grid.
-        @end card
-      @end row
+    @card
+      ## Layout
+      `@row` turns sibling blocks into a grid.
+    @end card
+  @end row
 
-      @step
-      Write the source.
-      @end step
+  @step
+  Write the source.
+  @end step
 
-      @step
-      Let Marque render the HTML.
-      @end step
-    @end container
-    ```
-  @end card
+  @step
+  Let Marque render the HTML.
+  @end step
+@end container
+```
+@end card
 
-  @card
-    @container
-      @callout .info
-      Directives are just HTML generators with friendlier authoring syntax.
-      @end callout
+@card
+@container
+  @callout .info
+  Directives are just HTML generators with friendlier authoring syntax.
+  @end callout
 
-      @row
-        @card
-          ## Cards
-          Great for grouped content.
-        @end card
+  @row
+    @card
+      ## Cards
+      Great for grouped content.
+    @end card
 
-        @card
-          ## Layout
-          `@row` turns sibling blocks into a grid.
-        @end card
-      @end row
+    @card
+      ## Layout
+      `@row` turns sibling blocks into a grid.
+    @end card
+  @end row
 
-      @step
-      Write the source.
-      @end step
+  @step
+  Write the source.
+  @end step
 
-      @step
-      Let Marque render the HTML.
-      @end step
-    @end container
-  @end card
+  @step
+  Let Marque render the HTML.
+  @end step
+@end container
+@end card
 @end row
 
-## Custom directives
+## Starter project directives
+@divider
+
+The starter site also ships with example project directives in `template/directives/`. These are normal directives loaded from files, not parser special cases, so you can replace or delete them freely.
+
+@row
+@card
+## `@dropdown`
+@divider
+- `type`: block
+- `path`: `directives/dropdown.js`
+- `description`: collapsible block that can be toggled open and closed. Starts in `closed` state by default.
+- `param`: `.open`/`.expanded`/`.default-open` create the dropdown in the open state
+- `param`: `.disable-cache` disables the caching behaviour
+- `note`: the `@dropdown` directive has built-in caching, and remembers its open/closed state
+
+```mq
+@dropdown .open "Open by default"
+You can see me!
+@end dropdown
+
+@dropdown "Closed by default"
+Hello!
+@end dropdown
+```
+@end card
+
+@card
+##* Preview
+@divider
+
+@dropdown .open "Open by default"
+Use `marque serve .`
+@end dropdown
+
+@dropdown "Closed by default"
+Hello!
+@end dropdown
+
+@divider
+
+@callout .info
+Try opening the "Closed by default" dropdown and refreshing the page. It will remember that you opened it and remain open.
+@end card
+@end row
+
+@row
+@card
+## `@product-card`
+@divider
+
+- block directive rendered as a `<product-card>` element
+- the first modifier becomes the `variant` attribute
+- the trailing label becomes the `title` attribute
+
+```mq
+@product-card .featured Starter
+## Fast setup
+Copy the starter and change the theme later.
+@end product-card
+```
+@end card
+
+@card
+##* Preview
+@divider
+
+@product-card .featured Starter
+## Fast setup
+Copy the starter and change the theme later.
+@end product-card
+@end card
+@end row
+
+@row
+@card
+## `@toc`
+@divider
+
+`summary.js` registers the `@toc` directive.
+
+- `@toc` or `@toc .page` summarizes the current page
+- `@toc .scoped` or `@toc .local` summarizes the previous block only
+- `@toc .global` is an alias for page mode
+- an optional label changes the panel title
+
+```mq
+@card
+  ## Scoped summary demo
+  ### Install
+  ### Theme
+@end card
+
+@toc .scoped "Summary"
+```
+@end card
+
+@card
+##* Preview
+@divider
+
+@card
+## Scoped summary demo
+### Install
+Add headings to the previous block.
+### Theme
+`@toc .scoped` only reads that block.
+@end card
+
+@toc .scoped "Summary"
+@end card
+@end row
+
+@row
+@card
+## Decorative starters
+@divider
+
+The starter also ships with two tiny decorative directives:
+
+- `@sparkle`: inline animated star
+- `@spotlight`: decorative spotlight block
+
+These are examples of how small a directive can be.
+@end card
+
+@card
+##* Preview
+@divider
+
+Inline sparkle looks like this @sparkle and the spotlight below is rendered by `@spotlight`.
+
+@spotlight
+@end card
+@end row
+
+## Writing your own
 @divider
 
 @row
-  @card .primary
-    ## Where they live
-    @divider
-    Put project directives in `directives/**/*.js`.
+@card .primary
+## Where they live
+@divider
 
-    Marque reloads them on each build and on `marque serve`, so you do not need to patch the parser core to add your own components.
-  @end card
+Put project directives in `directives/**/*.js` in your site.
 
-  @card
-    ## What a directive can define
-    @divider
-    - `type`: `block` or `inline`
-    - `render(...)`: returns HTML
-    - `validate(...)`: optional diagnostics
-    - `style`: optional CSS chunk injected into the generated theme CSS
-  @end card
+Marque reloads them on build and during `marque serve`, so you do not need to patch the parser core to add your own components.
+@end card
+
+@card
+## What a directive can define
+@divider
+
+- `type`: `block` or `inline`
+- `render(...)`: returns HTML
+- `validate(...)`: optional diagnostics
+- `style`: optional CSS chunk injected into generated CSS
+@end card
 @end row
 
 @card
@@ -318,51 +402,33 @@ Inline directives do not required a closing tag, can be used within a line of te
 module.exports = ({ defineDirective }) => {
   defineDirective('product-card', {
     type: 'block',
-    style: `
-product-card {
-  display: block;
-  border: 1px solid var(--mq-border);
-  padding: 1rem;
-}
-`,
     render: ({ mods, name, children, ctx }) => {
       const variant = ctx.escapeAttr(mods[0] || 'default');
       const title = ctx.escapeAttr(name || '');
       return `<product-card variant="${variant}" title="${title}">${children}</product-card>`;
     },
   });
-
-  defineDirective('sparkle', {
-    type: 'inline',
-    render: () => '<span class="mq-sparkle" aria-hidden="true">✶</span>',
-  });
 };
 ```
 @end card
 
 @callout .ok
-Custom directives can be tiny. If all you need is "wrap the children in an element and style it", that is already enough.
+Most directives are small. If all you need is "wrap these children and style them", that is already enough for a useful custom directive.
 @end callout
 
 ## Notes worth knowing
 @divider
 
 @row
-  @card
-    - `@container` is structural. It does not emit its own wrapper element.
-    - `@step` numbering resets inside a new container flow.
-    - `@step 4`, `@step *`, and `@step reset:1` are valid when you need manual control.
-  @end card
-
-  @card
-    - `@row` expects block directive children like `@card` or `@column`.
-    - `@callout` warns on unknown variants.
-    - Hyphenated names like `product-card` are supported.
-  @end card
-@end row
+@card
+- `@container` is structural and does not emit its own wrapper element.
+- `@step` numbering works best inside container flow because that is where the counter is managed.
+- `@row` expects block directive children like `@card` or `@column`.
+@end card
 
 @card
-  - Buttons and badges are authoring syntax, not block directives.
-  - Directive styles can ship with the directive itself through `style`.
-  - The starter directives are examples, not sacred. Delete or replace them freely.
-@end card -->
+- Buttons and badges are lightweight authoring syntax, not directive registry entries.
+- Hyphenated names like `product-card` are supported.
+- The starter directives are examples, not sacred. Replace them whenever your project needs something different.
+@end card
+@end row

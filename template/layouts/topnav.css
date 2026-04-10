@@ -666,6 +666,16 @@ body.mq-search-open {
 }
 
 @media (max-width: 900px) {
+  .mq-page-shell[data-has-summary="true"] {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .mq-page-summary-slot {
+    order: -1;
+    padding-top: 0;
+  }
+
   .mq-nav {
     padding: 0.75rem var(--mq-page-gutter, 1rem);
     height: 56px;

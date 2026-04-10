@@ -127,6 +127,13 @@ module.exports = ({ defineDirective }) => {
   color: var(--mq-summary-empty, var(--mq-muted, var(--muted, inherit)));
   font-size: 0.95rem;
 }
+
+@media (max-width: 900px) {
+  .mq-summary-panel,
+  .mq-page-summary-slot {
+    display: none !important;
+  }
+}
 `,
     render: ({ mods, name, opts, ctx }) => {
       const mode = resolveSummaryMode(mods, name);

@@ -567,15 +567,6 @@ product-card {
 }
 
 @container mq-main (max-width: 960px) {
-  .mq-page-shell[data-has-summary="true"] {
-    grid-template-columns: 1fr;
-  }
-
-  .mq-page-summary-slot {
-    order: -1;
-    padding-top: 0;
-  }
-
   .mq-row {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)) !important;
   }

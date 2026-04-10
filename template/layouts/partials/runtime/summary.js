@@ -303,15 +303,21 @@ function mqApplySummaryActiveState(tracker, activeId) {
 }
 
 function mqKeepSummaryLinkInView(link, panel) {
-  if (!link || !panel || panel.scrollHeight <= panel.clientHeight + 2) return;
+  if (!link || !panel) return;
+
+  const canScrollY = panel.scrollHeight > panel.clientHeight + 2;
+  const canScrollX = panel.scrollWidth > panel.clientWidth + 2;
+  if (!canScrollY && !canScrollX) return;
 
   const panelRect = panel.getBoundingClientRect();
   const linkRect = link.getBoundingClientRect();
   const padding = 14;
   const above = linkRect.top < (panelRect.top + padding);
   const below = linkRect.bottom > (panelRect.bottom - padding);
+  const left = linkRect.left < (panelRect.left + padding);
+  const right = linkRect.right > (panelRect.right - padding);
 
-  if (above || below) {
+  if (above || below || left || right) {
     link.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 }
