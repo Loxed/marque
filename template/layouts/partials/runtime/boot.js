@@ -10,6 +10,7 @@ function mqHandleDomReady() {
   mqPositionSubmenus();
   mqInitSearch();
   mqApplySearchShortcutHints();
+  mqInitDropdownPersistence();
   mqInitSummaries();
 }
 

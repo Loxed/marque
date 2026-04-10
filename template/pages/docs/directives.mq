@@ -9,7 +9,7 @@ summary = true
 
 Directives are the part of Marque that turns a markdown document into a proper page.
 
-@dropdown "What is a directive?"
+@dropdown .open "What is a directive?"
 ##* What is a directive?
 @divider
 

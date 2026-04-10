@@ -50,10 +50,14 @@ module.exports = ({ defineDirective }) => {
   margin-bottom: 0;
 }
 `,
-    render: ({ mods, name, children, ctx }) => {
+    render: ({ mods, name, children, node, ctx }) => {
       const title = ctx.escapeAttr(name || 'More details');
+      // .open opens dropdown by default
       const isOpen = (mods || []).some(m => /^(open|expanded|default-open)$/i.test(String(m || '')));
-      return `<details class="mq-dropdown"${isOpen ? ' open' : ''}><summary>${title}</summary><div class="mq-dropdown-content">${children}</div></details>`;
+      const startLine = Number(node && node.loc && node.loc.start_line) || 0;
+      const startCol = Number(node && node.loc && node.loc.start_col) || 0;
+      const dropdownId = `dropdown-${startLine}-${startCol}`;
+      return `<details class="mq-dropdown" data-mq-dropdown-id="${ctx.escapeAttr(dropdownId)}"${isOpen ? ' open' : ''}><summary>${title}</summary><div class="mq-dropdown-content">${children}</div></details>`;
     },
   });
 };
