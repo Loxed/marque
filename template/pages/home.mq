@@ -9,9 +9,9 @@ width =
 _**Marque**_ is an enhanced **_Markdown to static_** site compiler.
 It's designed for creators who want to build documentation, blogs, guides, and knowledge bases effortlessly.
 
-@[Quickstart ➽ ](/quickstart.mq){.primary} @[Read the docs](/docs.html)
+@[Quickstart ➽](/quickstart.mq){.primary} @[Read the docs](/docs.html)
 @callout .info
-Marque supports every feature from Markdown, including extra directives to make your website more like a website and less like your Obsidian vault / Notion notes.
+Marque supports every feature from Markdown, including extra directives to make your website more like a website and less like your Obsidian/Notion notes.
 @end callout
 
 ## Features
@@ -25,12 +25,12 @@ Marque supports every feature from Markdown, including extra directives to make 
 
 	@card
 		## @ directives
-		Enhance pages using custom [directives](docs/directives.mq) such as `@container`, `@row`, `@card`, `@callout`, `@spotlight`, and more.
+		Enhance pages using custom [directives](docs/directives.mq) such as `@row`, `@card`, `@callout` and more.
 	@end card
 
 	@card
 		## Flexible navigation
-		Elements automatically adapt responsively inside the page you're building.
+		Elements automatically adapt responsively to any screen size and device.
 	@end card
 @end row features
 
@@ -46,36 +46,31 @@ Marque supports every feature from Markdown, including extra directives to make 
 	@end card
 
 	@card
-		## Per-page configuration
-		Override `theme`, `layout`, and `width` from frontmatter where needed.
+		## Configuration
+		Apply settings to every page or override them on a per-page basis using [frontmatter](docs/configuration/frontmatter.mq).
 	@end card
 
 	@card
-		## Quick publishing
-		Run `marque build .` to generate deployable static files instantly.
-	@end card
-
-	@card
-		## Documentation-ready
-		Ideal for product docs, API references, tutorials, and release notes.
+		## Extensible
+		Marque is open source and built to be extended. Create your own directives, themes, and layouts.
 	@end card
 @end row temp
 
 @row links
 	@card .primary
-		## Start building
+		## Getting started
     @divider
-		Install Marque and use the starter template to make your first website.
+		Install Marque and create your first website in 5 minutes.
 
-		@[Quickstart ➽ ](/quickstart.mq){.primary}
+		@[Quickstart ➽](/quickstart.mq){.primary}
 	@end card
 
 	@card .secondary
-		## Explore examples
+		## Migration
   		@divider
-		Browse nested docs, layout overrides, and advanced features in action.
+		Easily migrate your existing mdBook or MkDocs project to Marque. 
 		
-		@[Open layout docs](/docs/configuration/layouts.html){.secondary}
+		@[Open migration guide](/migration.mq)
 	@end card
 @end row links
 @end section

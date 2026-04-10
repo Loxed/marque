@@ -5,9 +5,9 @@
 Start Here
 
 [Quick Start](quickstart.mq)
-[Create Website](create.mq)
+[Project Architecture](architecture.mq)
 
-Docs
+Documentation
 
 [Docs](docs.mq)
     [CLI Commands](docs/cli.mq)
@@ -21,9 +21,11 @@ Docs
 Migration
 
 [Migration](migration.mq)
-    [From mdBook](migration/mdbook.mq)
-    [From MkDocs](migration/mkdocs.mq)
+    [mdBook to Marque](migration/mdbook.mq)
+    [MkDocs to Marque](migration/mkdocs.mq)
 
 Extra
-[Tables](tables.mq)
+
 [Markdown Syntax](extra/markdown.mq)
+[FAQ](extra/faq.mq)
+[Author](extra/author.mq)

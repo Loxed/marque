@@ -6,7 +6,7 @@ nav = quickstart
 # Quickstart
 @divider
 
-Get from zero to a running site in a few minutes.
+Create your first Marque site in minutes.
 
 @row
   @column
@@ -17,15 +17,16 @@ Get from zero to a running site in a few minutes.
 
       Before installing Marque, make sure you have:
 
-      - [Node.js 18](https://nodejs.org/en/download) or newer
+      - [Node.js 24](https://nodejs.org/en/download) or newer
       - npm (comes with Node.js)
 
       Check your versions:
 
       ```sh
-        node -v # >= v18.0.0
+        node -v # >= v24.0.0
         npm -v
       ```
+      @end step
     @end card reqs
 
     @card install
@@ -35,7 +36,7 @@ Get from zero to a running site in a few minutes.
 
       ### Install from source (recommended)
 
-      Install the `marque` package directly from github
+      Install the `marque` package directly from GitHub:
 
       ```sh
         npm install -g github:Loxed/marque
@@ -49,6 +50,7 @@ Get from zero to a running site in a few minutes.
       marque --help
       ```
       If the command runs, you're ready to go.
+      @end step
     @end card install
   @end column
 
@@ -60,12 +62,12 @@ Get from zero to a running site in a few minutes.
 
     @container
       @step 
-      ## Create a project
-      Scaffold a new site:
+      ## Create a new site
+      Go to the directory where you want to create your site and run:
 
       ```sh
       marque new my-site
-      cd my-site
+      cd my-site # change into the new site's directory
       ```
       @end step
 

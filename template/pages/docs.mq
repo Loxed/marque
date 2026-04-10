@@ -5,186 +5,106 @@ nav = docs
 
 # Documentation
 @divider
-
-Use this page as the map for the rest of the site.
-
-@callout .info
-Marque stays intentionally small on purpose.
-- `pages/` is your source content
-- `navigation.mq` is your navigation tree
-- `marque.toml` is your default configuration
-- directives, themes, and layouts are where the custom work starts
-@end callout
+This is the documentation for Marque. It is organized by goal, so you can jump to the section that best fits your needs.
 
 @row
   @card .primary
-    ## Start here
+    ## Command Line Interface
     @divider
-    If you are new to Marque, do these two pages first and come back once the starter site is running.
+    Learn about the different commands that Marque provides and how to use them.
 
-    @[Quickstart ](/quickstart.html){.primary}
-    @[Create a site ](/create.html)
-  @end card
-
-  @card
-    ## CLI
-    @divider
-    Every terminal command in one place: `new`, `serve`, `build`, `migrate`, `theme-template`, and `help`.
-
-    @[Open CLI docs ](/docs/cli.html)
+    @[CLI Commands ➽](/docs/cli.mq){.primary}
   @end card
 
   @card .secondary
     ## Configuration
     @divider
-    Learn which file owns which decision: `marque.toml`, frontmatter, `navigation.mq`, themes, and layouts.
+    Learn how to configure your site, from the default settings to navigation, layouts and themes.
 
-    @[Open configuration ](/docs/configuration.html)
-    @[Navigation ](/docs/configuration/navigation.html)
-    @[Frontmatter ](/docs/configuration/frontmatter.html)
+    @[Open configuration ➽](/docs/configuration.mq){.secondary}
   @end card
 
   @card .tertiary
     ## Directives
     @divider
-    This is the authoring layer that makes `.mq` feel like more than plain markdown.
+    Learn all about the custom `.mq` file, the extra syntax it supports, and custom Marque directives.
 
-    @[Open directives ](/docs/directives.html)
+    @[Open directives ➽](/docs/directives.mq){.tertiary}
   @end card
 @end row
 
-@row
-  @card .accent
-    ## Migration
-    @divider
-    Bringing an existing docs project over? Start with the migration overview, then move into the source-specific guide.
-
-    @[Migration overview ](/migration.html){.primary}
-    @[From mdBook ](/migration/mdbook.html)
-    @[From MkDocs ](/migration/mkdocs.html)
-  @end card
-
-  @card
-    ## Themes and layouts
-    @divider
-    Visual style and automatic page chrome are separate on purpose. Theme the site in CSS, then decide where navigation lives with layouts.
-
-    @[Layouts ](/docs/configuration/layouts.html)
-    @[Themes ](/docs/configuration/themes.html)
-  @end card
-@end row
-
-## Read by goal
+## Don't know where to start?
 @divider
 
 @row
-  @card .primary
-    ## I want to launch a site
+  @card
+    ## I want to launch my site
     @divider
 
     @container
       @step
-      Finish [Quickstart](/quickstart.html).
+      Finish [Quickstart](/quickstart.mq).
       @end step
 
       @step
-      Read [Create Website](/create.html) so the starter folder stops feeling magical.
+      Read [Create Website](/create.mq) so the starter folder stops feeling magical.
       @end step
 
       @step
-      Use [CLI Commands](/docs/cli.html) as your command reference.
+      Use [CLI Commands](/docs/cli.mq) as your command reference.
       @end step
     @end container
   @end card
 
-  @card .secondary
-    ## I want to change the site
+  @card
+    ## I want to @sparkle customise @sparkle my site
     @divider
 
     @container
       @step
-      Start at [Configuration](/docs/configuration.html).
+      Start at [Configuration](/docs/configuration.mq).
       @end step
 
       @step
-      Go deeper with [Frontmatter](/docs/configuration/frontmatter.html), [Layouts](/docs/configuration/layouts.html), and [Themes](/docs/configuration/themes.html).
+      Go deeper with [Frontmatter](/docs/configuration/frontmatter.mq), [Layouts](/docs/configuration/layouts.mq), and [Themes](/docs/configuration/themes.mq).
       @end step
 
       @step
-      Use `navigation.mq` when the thing you want to change is the menu, not the page itself.
+      Use [Navigation](/docs/configuration/nav.mq) when the thing you want to change is the menu, not the page itself.
       @end step
     @end container
   @end card
 @end row
 
 @row
-  @card .tertiary
-    ## I want to author richer pages
+  @card
+    ## I want to make nice pages
     @divider
 
     @container
       @step
-      Use plain markdown for the content that should stay plain.
+      Use [plain markdown](extra/markdown.mq) for the content that should stay plain.
       @end step
 
       @step
-      Use [Directives](/docs/directives.html) for rows, cards, callouts, steps, and project components.
-      @end step
-
-      @step
-      Add project directives in `directives/` when the starter blocks stop being enough.
+      Learn about [directives](/docs/directives.mq) to enhance the structure and style of your content.
       @end step
     @end container
   @end card
 
-  @card
+  @card .muted
     ## I want to migrate an existing site
     @divider
 
     @container
       @step
-      Start with the [Migration](/migration.html) overview.
+      Start with the [Migration](/migration.mq) overview.
       @end step
 
       @step
-      Choose the [mdBook](/migration/mdbook.html) or [MkDocs](/migration/mkdocs.html) guide.
+      Choose the [mdBook](/migration/mdbook.mq) or [MkDocs](/migration/mkdocs.mq) guide.
       @end step
 
-      @step
-      Treat `migration-notes.mq` as a review list, not a decorative extra.
-      @end step
     @end container
   @end card
 @end row
-
-## Docs tree
-@divider
-
-@card
-```navigation.mq
-[Home](index.mq)
-
-Start Here
-[Quick Start](quickstart.mq)
-[Create Website](create.mq)
-
-Docs
-[Docs](docs.mq)
-[CLI Commands](docs/cli.mq)
-[Configuration](docs/configuration.mq)
-[Navigation](docs/configuration/navigation.mq)
-[Frontmatter](docs/configuration/frontmatter.mq)
-[Layouts](docs/configuration/layouts.mq)
-[Themes](docs/configuration/themes.mq)
-[Directives](docs/directives.mq)
-
-Migration
-[Migration](migration.mq)
-[From mdBook](migration/mdbook.mq)
-[From MkDocs](migration/mkdocs.mq)
-```
-@end card
-
-@callout .ok
-If you only want the short version: get the site running, edit `navigation.mq`, then learn configuration and directives as soon as you start pushing past the starter template.
-@end callout
