@@ -16,6 +16,7 @@ Docs
         [Frontmatter](docs/configuration/frontmatter.mq)
         [Layouts](docs/configuration/layouts.mq)
         [Themes](docs/configuration/themes.mq)
+        [Summary](docs/configuration/summary.mq)
     [Directives](docs/directives.mq)
 
 Migration
