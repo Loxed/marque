@@ -1,6 +1,7 @@
 +++
 title = Directives
 nav = directives
+summary = true
 +++
 
 # Directives
@@ -8,12 +9,65 @@ nav = directives
 
 Directives are the part of Marque that turns a markdown document into a proper page.
 
-@callout .info
-Use markdown for content.
-Use directives for structure, reusable UI blocks, and project-specific components.
-@end callout
+@dropdown "What is a directive?"
+##* What is a directive?
+@divider
 
-## The authoring stack
+A directive is a custom syntax element Marque recognises and transforms into HTML. They're the building blocks of Marque `.mq` pages, and allow you to create elements that aren't possible with markdown alone.
+
+##* Why directives?
+@divider
+
+Markdown is a great format for writing content, but has its limitations when it comes to layout and structure. Markdown usually supports inline HTML, but that can get messy and is still limited in terms of arranging content on the page. Marque's directives are designed to be a middle ground: the provide easy to use syntax in markdown that can generate complex HTML structures, without the need to write raw HTML.  
+
+##* How do I use directives?
+@divider
+
+Directives use the `@` symbol followed by the directive's name. For example: `@sparkle` creates a @sparkle inside the text.
+
+
+
+<!-- TODO: Make it so that inline directives can be showcased and dont directly render html! -->
+
+There are two types of directives: block directives and inline directives. Block directives create a scoped block of content that has a beginning and closing tag. Inline directives are self-closing and can be used within a line of text.
+@end dropdown
+
+@row
+
+@card
+
+## Block directives
+@divider
+
+Block directives have an opening tag that starts with `@name` and a closing tag that ends with `@end name`. The content between these tags is the directive's children, which can be other directives or markdown content. For example:
+
+```mq
+@card
+
+  ## Title
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien augue.
+@end card
+```
+@end card
+
+@card
+##* Preview
+@divider
+
+@card
+##* Title
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien augue.
+@end card
+
+Hello
+
+@end card
+@end row
+
+
+
+
+<!-- ## The authoring stack
 @divider
 
 @row
@@ -279,4 +333,4 @@ Custom directives can be tiny. If all you need is "wrap the children in an eleme
   - Buttons and badges are authoring syntax, not block directives.
   - Directive styles can ship with the directive itself through `style`.
   - The starter directives are examples, not sacred. Delete or replace them freely.
-@end card
+@end card -->
