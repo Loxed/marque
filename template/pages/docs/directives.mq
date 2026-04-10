@@ -446,6 +446,46 @@ Optional: configure your theme.
 # Inline directives
 @divider
 
+@card .primary
+## `@button`
+##* `@[label](url)`
+@callout .info
+Buttons don't use the `@button` directive; they are written using the markdown link syntax: `@[label](url)`
+@end callout
+@divider
+
+| parameter | description |
+| --- | --- |
+| type | special inline syntax |
+| path | `src/renderer.js` |
+| description | renders a styled link button as `<a class="mq-btn">...</a>` |
+| `label` | visible button text inside `[...]` |
+| `url` | link target inside `(...)` |
+| `.primary` `.secondary` `.tertiary` | built-in button variant classes |
+| `.class` | optional extra CSS classes inside `{...}` |
+| `!id` | optional id attribute inside `{...}` |
+
+@row
+@card .secondary
+##* Usage
+
+```mq
+@[Quickstart](/quickstart.mq){.primary} @[Read the docs](/docs.mq)
+@[Open migration guide](/migration.mq){!migration-link .secondary}
+[Normal link](/)
+```
+@end card
+@card .tertiary
+##* Preview
+
+@[Quickstart](/quickstart.mq){.primary} @[Read the docs](/docs.mq)
+@[Open migration guide](/migration.mq){!migration-link .secondary}
+
+[Normal link](/)
+@end card
+@end row
+@end card
+
 ----
 @card .primary
 ## `@divider`

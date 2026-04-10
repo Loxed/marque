@@ -29,9 +29,9 @@ mdRenderer.heading = function (token) {
   const attrs = hiddenFromToc ? ' data-mq-toc-hidden="true"' : '';
   return `<h${depth}${attrs}>${this.parser.parseInline(tokens || [])}</h${depth}>`;
 };
-// Keep standard Markdown paragraph flow: single newlines stay soft,
-// while explicit hard breaks still require Markdown hard-break syntax or <br>.
-marked.setOptions({ breaks: false, gfm: true, renderer: mdRenderer });
+// Marque treats a single newline inside a paragraph as an explicit line break,
+// while blank lines still split content into separate paragraphs.
+marked.setOptions({ breaks: true, gfm: true, renderer: mdRenderer });
 
 function render(ast, opts = {}) {
   const nodes = ast && Array.isArray(ast.children) ? ast.children : [];

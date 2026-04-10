@@ -8,10 +8,6 @@ summary = true
 
 Here's the [basic syntax of Markdown](https://www.markdownguide.org/basic-syntax/), which you can use in your `.mq` files for content formatting. Marque supports standard Markdown syntax, as well as some extensions for enhanced functionality.
 
-@callout .info
-This keeps the same syntax coverage as the old page, but groups the smaller examples more tightly.
-@end callout
-
 ## Headings and paragraphs
 @divider
 
@@ -63,11 +59,16 @@ Heading level 2
 @end row
 
 @row
+
 @card
 ###* Paragraphs
 This is a paragraph.
 
 This is another paragraph.
+
+First line.
+Second line.
+
 @end card
 
 @card
@@ -77,16 +78,11 @@ This is a paragraph.
 
 This is another paragraph.
 
-First line.  
+First line.
 Second line.
 ```
 @end card
 
-@card
-###* Line breaks
-First line.  
-Second line.
-@end card
 @end row
 
 ## Emphasis and inline syntax
