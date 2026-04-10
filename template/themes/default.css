@@ -183,7 +183,6 @@ body {
   border-radius: var(--mq-card-radius);
   box-shadow: var(--mq-card-shadow);
   padding: 1.5rem;
-  height: 100%;
 }
 
 .mq-card.primary,

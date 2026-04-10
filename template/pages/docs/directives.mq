@@ -50,14 +50,50 @@ Block directives have an opening tag that starts with `@name` and a closing tag 
 ##* Preview
 @divider
 
+This is what the code to the left generates:
 @card
 ##* Title
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien augue.
 @end card
 
-Hello
+@end card
+
+@end row
+
+@row
+
+@card
+
+## Inline directives
+@divider
+
+Inline directives do not required a closing tag, can be used within a line of text. Just calling `@name` will generate the directive's output.
+
+```mq
+@card
+  
+  ## Title
+  @divider    <--- this is an inline directive
+  There's now a divider between the title and me! @sparkle
+@end card
+```
+@end card
+
+@card
+  ##* Preview
+  @divider
+
+    This card now contains two inline directives:
+
+    @card
+      
+      ##* Title
+      @divider
+      There's now a divider between the title and me! @sparkle
+    @end card
 
 @end card
+
 @end row
 
 

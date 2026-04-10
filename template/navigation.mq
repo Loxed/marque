@@ -7,9 +7,9 @@ Start Here
 [Quickstart](quickstart.mq)
 [Project Architecture](architecture.mq)
 
-Documentation
+Docs
 
-[Docs](docs.mq)
+[Documentation](docs.mq)
     [CLI Commands](docs/cli.mq)
     [Configuration](docs/configuration.mq)
         [Navigation](docs/configuration/nav.mq)
@@ -17,6 +17,8 @@ Documentation
         [Layouts](docs/configuration/layouts.mq)
         [Themes](docs/configuration/themes.mq)
     [Directives](docs/directives.mq)
+        [Block directives](docs/directives/block.mq)
+        [Inline directives](docs/directives/inline.mq)
 
 Migration
 
