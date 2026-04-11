@@ -9,7 +9,7 @@ module.exports = ({ defineDirective }) => {
   defineDirective('container', {
     type: 'block',
     render: ({ children }) => {
-    return `<div>${children}</div>`;
+      return `<div>${children}</div>`;
     }
   });
 
@@ -65,9 +65,25 @@ module.exports = ({ defineDirective }) => {
       const otherMods = mods.filter(m => !ALIGNMENTS.has(m));
 
       const cls = otherMods.length ? ` ${otherMods.join(' ')}` : '';
-      const alignStyle = alignMod ? ` style="text-align: ${alignMod}"` : '';
 
-      return `<div class="mq-card${cls}"${alignStyle}>${children}</div>`;
+      // Build inline style: text-align + divider margin custom properties so
+      // @divider inside the card inherits the correct margin-inline values.
+      // center  → divider is horizontally centered (both margins auto)
+      // right   → divider is pushed to the right (start margin auto, end stays 0)
+      // left    → explicit left-pin (both margins 0, same as the divider default)
+      const DIVIDER_VARS = {
+        center: '--mq-divider-ms:auto;--mq-divider-me:auto',
+        right:  '--mq-divider-ms:auto;--mq-divider-me:0',
+        left:   '--mq-divider-ms:0;--mq-divider-me:0',
+      };
+
+      const parts = [];
+      if (alignMod) parts.push(`text-align:${alignMod}`);
+      if (alignMod && DIVIDER_VARS[alignMod]) parts.push(DIVIDER_VARS[alignMod]);
+
+      const styleAttr = parts.length ? ` style="${parts.join(';')}"` : '';
+
+      return `<div class="mq-card${cls}"${styleAttr}>${children}</div>`;
     },
   });
 

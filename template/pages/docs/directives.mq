@@ -546,7 +546,7 @@ Content below the divider.
 @demo
 In Marque, press @kbd Ctrl+K to open the search menu.
 
-Mac users use @kbd .mac "Cmd+Shift+4" to take a screenshot.
+Mac users use @kbd .mac Ctrl+Shift+3 to take a full page screenshot and @kbd .mac "Cmd+Shift+4" to capture a specific portion of the screen.
 
 For some reason @kbd .win "Ctrl+Alt+Shift+Win+L" opens LinkedIn on Windows. Don't ask me why. 
 @end demo
