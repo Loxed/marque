@@ -40,7 +40,7 @@ const path = require('path');
  *     nodes    : ASTNode[]       - raw child AST nodes (if you need to re-render with custom opts)
  *     node     : ASTNode         - the full AST node
  *     opts     : object          - renderer options
- *     ctx      : object          - { renderNodes, renderMarkdown, escapeAttr }
+ *     ctx      : object          - { renderNodes, renderMarkdown, escapeAttr, escapeHtml }
  *   }
  */
 
@@ -85,7 +85,7 @@ function bootstrapBuiltins() {
 /**
  * Register a directive.
  * @param {string} name
- * @param {{ type: 'block'|'inline', render: Function, validate?: Function, style?: string|Function }} def
+ * @param {{ type: 'block'|'inline', render: Function, validate?: Function, style?: string|Function, script?: string|Function }} def
  */
 function defineDirective(name, def) {
   if (!name || typeof name !== 'string') {
@@ -100,7 +100,10 @@ function defineDirective(name, def) {
   if (def.style !== undefined && def.style !== null && typeof def.style !== 'string' && typeof def.style !== 'function') {
     throw new Error('defineDirective: style must be a string or function when provided');
   }
-  _registry.set(name.toLowerCase(), { validate: null, style: null, ...def });
+  if (def.script !== undefined && def.script !== null && typeof def.script !== 'string' && typeof def.script !== 'function') {
+    throw new Error('defineDirective: script must be a string or function when provided');
+  }
+  _registry.set(name.toLowerCase(), { validate: null, style: null, script: null, ...def });
 }
 
 /** Look up a directive definition by name. Returns null if not found. */
@@ -155,6 +158,34 @@ function collectDirectiveStyles() {
   return styles;
 }
 
+/**
+ * Resolve optional JS snippets provided by directives.
+ * The returned list contains only non-empty script chunks.
+ */
+function collectDirectiveScripts() {
+  ensureBootstrapped();
+
+  const scripts = [];
+  for (const [name, def] of _registry.entries()) {
+    if (!def || def.script === null || def.script === undefined) continue;
+
+    const rawScript = typeof def.script === 'function'
+      ? def.script({ name, type: def.type })
+      : def.script;
+
+    if (rawScript === null || rawScript === undefined) continue;
+    if (typeof rawScript !== 'string') {
+      throw new Error(`defineDirective: script for '@${name}' must resolve to a string`);
+    }
+
+    const js = rawScript.trim();
+    if (!js) continue;
+    scripts.push({ name, js });
+  }
+
+  return scripts;
+}
+
 module.exports = {
   defineDirective,
   getDirective,
@@ -162,6 +193,7 @@ module.exports = {
   isBlock,
   listDirectives,
   collectDirectiveStyles,
+  collectDirectiveScripts,
   resetDirectives,
   bootstrapBuiltins,
 };

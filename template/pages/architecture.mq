@@ -6,6 +6,8 @@ nav = architecture
 # Architecture
 @divider
 
+@toc
+
 When you run `marque new`, you get a template for a static site. This page explains how to use it and get started modiying it.
 
 @callout .info

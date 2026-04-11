@@ -329,6 +329,50 @@ Profit ???
 
 ----
 @card .primary
+## `@tab`
+@divider
+
+| parameter | description |
+| --- | --- |
+| type | block directive |
+| path | `directives/tab.js` |
+| description | a labelled tab panel; consecutive `@tab` blocks are automatically grouped into a tab strip |
+| `label` | visible tab button text written after the directive name |
+
+@demo
+@tab Windows
+Install via **winget**:
+
+```
+winget install marque
+```
+@end tab
+
+@tab macOS
+Install via **Homebrew**:
+
+```
+brew install marque
+```
+@end tab
+
+@tab Linux
+Install via **npm**:
+
+```
+npm install -g marque
+```
+@end tab
+@end demo
+
+@callout .info
+Tabs work inside any parent directive: `@card`, `@section`, bare page, etc. Groups are broken automatically by any non-`@tab` element in-between them.
+@end callout
+@end card
+
+
+----
+@card .primary
 ## `@actions`
 @divider
 
@@ -407,6 +451,35 @@ Reference every Marque command in one place.
 @divider
 
 @card .primary
+## `@badge`
+@divider
+
+| parameter | description |
+| --- | --- |
+| type | inline directive |
+| path | `directives/badge.js` |
+| description | small pill label rendered inline within text or headings |
+| `label` | badge text written after the directive name |
+| `.info` | blue (default) |
+| `.ok` | green |
+| `.warn` | yellow |
+| `.danger` | red |
+| `.primary` `.secondary` `.tertiary` | theme colour variants |
+
+@demo
+
+Marque @badge "v1.0" is out now!
+
+@badge .info "New" @badge .ok "Stable" @badge .warn "Deprecated" @badge .danger "Breaking changes"
+
+@badge .primary "Content"
+@badge Under the badge
+
+@end demo
+@end card
+----
+
+@card .primary
 ## `@button`
 @callout .info
 Buttons don't use the `@button` directive; they are written using the markdown link syntax: `@[label](url)`
@@ -452,6 +525,35 @@ Buttons don't use the `@button` directive; they are written using the markdown l
 @divider
 Content below the divider.
 @end demo
+@end card
+
+----
+@card .primary
+## `@kbd`
+@divider
+
+| parameter | description |
+| --- | --- |
+| type | inline directive |
+| path | `directives/kbd.js` |
+| description | renders keyboard shortcut key caps, with automatic platform-aware symbol swapping |
+| `keys` | key combo written after the directive name, separated by `+` |
+| `.mac` | always render using Mac symbols (`Ctrl/Cmd` → `⌘`, `Alt/Option` → `⌥`) |
+| `.win` | always render using Windows labels, regardless of platform |
+| note | on mobile devices, key caps are replaced with inline code styling |
+| aliases | `Ctrl` / `Cmd` / `Command` are treated as the same primary shortcut key, and `Alt` / `Option` are treated as the same alternate key |
+
+@demo
+In Marque, press @kbd Ctrl+K to open the search menu.
+
+Mac users use @kbd .mac "Cmd+Shift+4" to take a screenshot.
+
+For some reason @kbd .win "Ctrl+Alt+Shift+Win+L" opens LinkedIn on Windows. Don't ask me why. 
+@end demo
+
+@callout .info
+You can write either `Ctrl` or `Cmd` for the primary shortcut key, and either `Alt` or `Option` for the alternate key. Marque normalizes them and still applies the same automatic OS swap (`⌘`, `⌥`, `⇧`) plus `.mac` / `.win` overrides.
+@end callout
 @end card
 
 ----

@@ -4,10 +4,9 @@ nav = "terminal"
 width = 50
 +++
 
-
+@card
 # What's a terminal? 
-@[Back to Quickstart](../quickstart.mq)
-
+@divider
 If you clicked on this link, you probably have no idea what a terminal is (or you're just curious). Don't worry it's not as scary as it sounds!
 
 A terminal is a text-based interface that interacts with your computer's operating system. You can type commands into the terminal to perform various tasks such as navigating files, running programs and installing software. 
@@ -16,7 +15,7 @@ When you use a tool that runs in a browser or an app on your phone, you're using
 
 Here's how to open a terminal on your operating system:
 
-@card
+@tab "Windows"
 ## Windows
 @divider
 
@@ -29,11 +28,9 @@ Advanced users may also use the Windows Subsystem for Linux (WSL) to run a Linux
 @end dropdown
 
 @[How to open PowerShell](https://learn.microsoft.com/powershell/scripting/windows-powershell/starting-windows-powershell?view=powershell-7.6){.secondary}
-@end card
+@end tab
 
-----
-
-@card
+@tab "macOS"
 ## macOS
 @divider
 
@@ -41,15 +38,17 @@ macOS has a different terminal application called "Terminal". You can find it in
 
 @[How to open Terminal](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac){.primary}
 
-@end card
-----
-@card
+@end tab
+
+@tab "Linux"
 ## Linux
 @divider
 
 ###* If you're a Linux user why are you here?
 
 Depending on your distro, you may have different terminal applications installed by default. Common names are "Terminal", "Konsole", "xterm", or "GNOME Terminal". Why am I explaining this to a Linux user? You should know how to open a terminal! **<span style="font-size:1.2em; font-weight:bold;">Shame on you!</span>**
+@end tab
+
 @end card
 
 @[Back to Quickstart](../quickstart.mq)

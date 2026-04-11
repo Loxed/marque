@@ -56,6 +56,13 @@ function tokenize(lines) {
       continue;
     }
 
+    // Keep full-line badge syntax on the markdown path so
+    // `@badge .ok "Text"` and `@badge "Text" {.ok}` normalize identically.
+    if (looksLikeInlineBadgeMarkdown(trimmed)) {
+      tokens.push({ type: 'text', line: raw, lineNo });
+      continue;
+    }
+
     // @tag [.mod .mod ...] [name]
     // mods = .token tokens (supports hyphenated modifiers like .default-open)
     // name = trailing bare token OR quoted text (quoted can include spaces)
@@ -79,6 +86,13 @@ function tokenize(lines) {
   }
 
   return tokens;
+}
+
+function looksLikeInlineBadgeMarkdown(line) {
+  const text = String(line || '').trim();
+  if (!text.startsWith('@badge')) return false;
+
+  return /^@badge(?:\s+((?:\.[\w-]+\s*)+))?\s+(?:"([^"]+)"|'([^']+)'|([^\s{}]+))(?:\s+\{[^}]*\})?$/.test(text);
 }
 
 // ── AST builder ────────────────────────────────────────────────────────────

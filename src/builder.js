@@ -5,7 +5,7 @@ const { parse, extractFrontmatter } = require('./parser');
 const { render } = require('./renderer');
 const { DiagnosticLevel, createDiagnostic, createDiagnosticError } = require('./diagnostics');
 const { collectDirectiveDiagnostics } = require('./directive-diagnostics');
-const { collectDirectiveStyles } = require('./directives/registry');
+const { collectDirectiveStyles, collectDirectiveScripts } = require('./directives/registry');
 const { loadProjectDirectives } = require('./directives/project-loader');
 const { printDiagnostic } = require('./utils/errors');
 const { parseFlatToml } = require('./utils/toml');
@@ -65,8 +65,12 @@ function build(siteDir, outDir, options = {}) {
   writeFileWithRetry(path.join(outDir, 'layout.css'), defaultLayout.css, softFsErrors);
 
   const sharedRuntimeScript = loadSharedRuntimeScript(siteDir);
-  if (typeof sharedRuntimeScript === 'string' && sharedRuntimeScript.trim()) {
-    writeFileWithRetry(path.join(outDir, 'index.js'), sharedRuntimeScript, softFsErrors);
+  const directiveRuntimeScript = buildDirectiveRuntimeScript();
+  const runtimeParts = [sharedRuntimeScript, directiveRuntimeScript]
+    .map(part => String(part || '').trim())
+    .filter(Boolean);
+  if (runtimeParts.length) {
+    writeFileWithRetry(path.join(outDir, 'index.js'), `${runtimeParts.join('\n\n')}\n`, softFsErrors);
   }
 
   // find all .mq files
@@ -325,6 +329,22 @@ function buildDirectiveStylesCSS(siteDir) {
     out.push(`/* directive-style: @${def.name} */`);
     out.push(css);
     out.push(`/* end directive-style: @${def.name} */`);
+  }
+
+  return out.join('\n');
+}
+
+function buildDirectiveRuntimeScript() {
+  const scriptDefs = collectDirectiveScripts();
+  if (!scriptDefs.length) return '';
+
+  const out = [];
+  for (const def of scriptDefs) {
+    const js = String(def.js || '').trim();
+    if (!js) continue;
+    out.push(`/* directive-script: @${def.name} */`);
+    out.push(js);
+    out.push(`/* end directive-script: @${def.name} */`);
   }
 
   return out.join('\n');

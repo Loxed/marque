@@ -53,6 +53,7 @@ function renderNode(node, opts, meta = {}) {
     renderNodes: (childNodes, childOpts) => renderNodes(childNodes, childOpts, { parentNode: node || null }),
     renderMarkdown,
     escapeAttr,
+    escapeHtml,
     siblings: Array.isArray(meta.siblings) ? meta.siblings : [],
     index: Number.isFinite(meta.index) ? meta.index : -1,
     parentNode: meta.parentNode || null,
@@ -65,17 +66,44 @@ function renderMarkdown(src, opts = {}) {
   src = expandInlineDivider(src);
 
   // Preferred inline badge syntax: @badge "Text" {.class .other}
-  src = replaceMarkdownOutsideCode(src, (text) => text.replace(/@badge\s+(?:"([^"]+)"|'([^']+)')\s*(\{[^}]*\})?/g,
+  src = replaceMarkdownOutsideCode(src, (text) => text.replace(/@badge\s+(?:"([^"]+)"|'([^']+)')(?:\s*(\{[^}]*\}))?/g,
     (_, dblLabel, sglLabel, attrsRaw) => {
       const label = dblLabel || sglLabel || '';
-      const className = parseBadgeAttrs(attrsRaw);
-      return `<span class="mq-badge${className}">${label}</span>`;
+      return renderInlineBadge(label, parseBadgeModifiers(attrsRaw), opts);
+    }
+  ));
+
+  // Directive-style inline badge syntax: @badge .ok Stable / @badge .ok "Stable"
+  src = replaceMarkdownOutsideCode(src, (text) => text.replace(/@badge(?:\s+((?:\.[\w-]+\s*)+))?\s+(?:"([^"]+)"|'([^']+)'|([^\s{}]+))/g,
+    (_, modsRaw, dblLabel, sglLabel, bareLabel) => {
+      const label = dblLabel || sglLabel || bareLabel || '';
+      return renderInlineBadge(label, parseBadgeModifiers(modsRaw), opts);
     }
   ));
 
   // Legacy inline badge syntax (@badge[...] and :badge[...])
   src = replaceMarkdownOutsideCode(src, (text) => text.replace(/(?:@badge|:badge)\[([^\]]+)\](\{\.([a-z]+)\})?/g,
-    (_, label, __, cls) => `<span class="mq-badge${cls ? ' ' + cls : ''}">${label}</span>`
+    (_, label, __, cls) => renderInlineBadge(label, cls ? [cls] : [], opts)
+  ));
+
+  // Inline keyboard shortcut syntax:
+  // @kbd "Ctrl+S" {.mac}
+  src = replaceMarkdownOutsideCode(src, (text) => text.replace(/@kbd(?:\s+((?:\.[\w-]+\s*)+))?\s+(?:"([^"]+)"|'([^']+)')(?:\s*(\{[^}]*\}))?/g,
+    (_, modsRaw, dblLabel, sglLabel, attrsRaw) => {
+      const label = dblLabel || sglLabel || '';
+      const mods = mergeDirectiveModifiers(parseDirectiveModifiers(modsRaw), parseDirectiveModifiers(attrsRaw));
+      return renderInlineKbd(label, mods, opts);
+    }
+  ));
+
+  // @kbd Ctrl+K
+  // @kbd .mac Ctrl+Shift+P
+  src = replaceMarkdownOutsideCode(src, (text) => text.replace(/@kbd(?:\s+((?:\.[\w-]+\s*)+))?\s+([^\s{}]+?)(?:\s*(\{[^}]*\}))?([.,;:!?)]?)(?=\s|$)/g,
+    (_, modsRaw, bareLabel, attrsRaw, trailingPunctuation) => {
+      const label = bareLabel || '';
+      const mods = mergeDirectiveModifiers(parseDirectiveModifiers(modsRaw), parseDirectiveModifiers(attrsRaw));
+      return `${renderInlineKbd(label, mods, opts)}${trailingPunctuation || ''}`;
+    }
   ));
 
   // Explicit button syntax: @[text](url){!id .cls .other}
@@ -98,22 +126,48 @@ function renderMarkdown(src, opts = {}) {
 function expandInlineCustomDirectives(src, opts = {}) {
   return replaceMarkdownOutsideCode(src, (text) => text.replace(/(^|[^\w-])@([a-z][\w-]*)\b/gi, (match, prefix, rawTag) => {
     const tag = String(rawTag || '').toLowerCase();
-    const def = getDirective(tag);
-    if (!def || def.type !== 'inline') return match;
+    if (tag === 'badge') return match;
 
-    const html = def.render({
-      tag,
-      mods: [],
-      name: null,
-      children: '',
-      nodes: [],
-      node: { type: 'directive', tag, inline: true, mods: [], name: null, children: [] },
-      opts,
-      ctx: { renderNodes, renderMarkdown, escapeAttr, siblings: [], index: -1, parentNode: null },
-    });
+    const html = renderInlineDirective(tag, { mods: [], name: null }, opts);
+    if (!html) return match;
 
     return `${prefix}${html}`;
   }));
+}
+
+function renderInlineBadge(label, mods = [], opts = {}) {
+  const html = renderInlineDirective('badge', { mods, name: label }, opts);
+  if (html) return html;
+
+  const classes = Array.isArray(mods) && mods.length ? ` ${mods.join(' ')}` : '';
+  return `<span class="mq-badge${classes}">${escapeHtml(label)}</span>`;
+}
+
+function renderInlineKbd(label, mods = [], opts = {}) {
+  const html = renderInlineDirective('kbd', { mods, name: label }, opts);
+  if (html) return html;
+
+  return `<kbd>${escapeHtml(label)}</kbd>`;
+}
+
+function renderInlineDirective(tag, { mods = [], name = null } = {}, opts = {}) {
+  const normalizedTag = String(tag || '').toLowerCase();
+  const def = getDirective(normalizedTag);
+  if (!def || def.type !== 'inline') return '';
+
+  const normalizedMods = Array.isArray(mods) ? mods.filter(Boolean).map(mod => String(mod)) : [];
+  const normalizedName = name === null || name === undefined ? null : String(name);
+
+  return def.render({
+    tag: normalizedTag,
+    mods: normalizedMods,
+    name: normalizedName,
+    children: '',
+    nodes: [],
+    node: { type: 'directive', tag: normalizedTag, inline: true, mods: normalizedMods, name: normalizedName, children: [] },
+    opts,
+    ctx: { renderNodes, renderMarkdown, escapeAttr, escapeHtml, siblings: [], index: -1, parentNode: null },
+  });
 }
 
 function expandInlineDivider(src) {
@@ -398,8 +452,17 @@ function parseButtonAttrs(raw) {
 }
 
 function parseBadgeAttrs(raw) {
+  const classes = parseDirectiveModifiers(raw);
+  return classes.length ? ` ${classes.join(' ')}` : '';
+}
+
+function parseBadgeModifiers(raw) {
+  return parseDirectiveModifiers(raw);
+}
+
+function parseDirectiveModifiers(raw) {
   const text = String(raw || '').trim();
-  if (!text) return '';
+  if (!text) return [];
 
   const tokens = text.replace(/^\{/, '').replace(/\}$/, '').trim().split(/\s+/).filter(Boolean);
   const classes = [];
@@ -410,7 +473,23 @@ function parseBadgeAttrs(raw) {
     }
   }
 
-  return classes.length ? ` ${classes.join(' ')}` : '';
+  return classes;
+}
+
+function mergeDirectiveModifiers(...lists) {
+  const seen = new Set();
+  const merged = [];
+
+  for (const list of lists) {
+    for (const item of Array.isArray(list) ? list : []) {
+      const mod = String(item || '').trim();
+      if (!mod || seen.has(mod)) continue;
+      seen.add(mod);
+      merged.push(mod);
+    }
+  }
+
+  return merged;
 }
 
 function normalizeDocumentHrefs(html, opts = {}) {
