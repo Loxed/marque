@@ -1,89 +1,43 @@
 +++
 title = Summary
-nav = "summary
+nav = summary
 summary = true
 +++
-
 # Summary
 @divider
-
 The summary provides an overview of your page's content and structure. When enabled, it shows on the right side of the page and allows users to quickly navigate to different sections. Elements shown in the summary are markdown headings (H1-H6).
-
 @card
+The summary is enabled or disabled in the frontmatter of your `.mq` file using the `summary` property. More on that in the [__frontmatter documentation__](__frontmatter.mq__).
 
-The summary is enabled or disabled in the frontmatter of your `.mq` file using the `summary` property. More on that in the [frontmatter documentation](frontmatter.mq).
-
-
-@row
-@card
-```mq
-#H1
-## H2
-### H3
-#### H4
-##### H5
-###### H6
-```
-@end card
-@card
+@demo
 # H1
 ## H2
 ### H3
 #### H4
 ##### H5
 ###### H6
+@end demo
 @end card
-@end row
-
-@end card
-
 @callout .info
-The summary swtiches from one section to the next based on the scroll position of the page. More specifically, when scroll a heading past the middle of the screen, the summary will switch to the next section. When you reach the end of the page, the summary will switch to the last section regardless of the scroll position. A dotted line appears to show the cutoff point on this page to showcase this behaviour.
+The summary switches from one section to the next based on the scroll position of the page. More specifically, when scrolling a heading past the middle of the screen, the summary will switch to the next section. When you reach the end of the page, the summary will switch to the last section regardless of the scroll position. A dotted line appears to show the cutoff point on this page to showcase this behaviour.
 @end callout
-
 ## Hiding headings from the summary
 @divider
-
 @card
-If you want to use a heading without it appearing in the suxmmary, you can add a `*` symbol before it:
+If you want to use a heading without it appearing in the summary, you can add a `*` symbol before it:
 
-@row
-@card
-```mq
+@demo
 #* This heading will not appear in the summary
-```
-@end card
-
-@card
-#* This heading will not appear in the summary
-@end card
-@end row
+@end demo
 
 You can also use the `*` syntax with alternate heading styles:
 
-
-@row
-
-@card
-```mq
+@demo
 Heading level 1
 ===============*
-
 Heading level 2
 ---------------*
-```
+@end demo
 @end card
-
-@card
-
-Heading level 1
-===============*
-
-Heading level 2
----------------*
-@end card
-@end row
-
 <!-- Cutoff indicator -->
 <div style="position:fixed;top:50%;left:20%;width:60%;height:0;border-top:2px dashed #aaa;z-index:9999;pointer-events:none;"></div>
-

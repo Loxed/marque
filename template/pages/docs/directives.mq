@@ -3,6 +3,7 @@ title = Directives
 nav = directives
 summary = true
 width = full
+<!-- theme = mida -->
 +++
 
 # Directives
@@ -36,17 +37,12 @@ There are two types of directives: block directives and inline directives. Block
 
     Block directives have an opening tag that starts with `@name` and a closing tag that ends with `@end name`. The content between these tags is the directive's children, which can be other directives or markdown content.
 
-    ```mq
-    @card <- opening tag of the block directive
-      ## Title
-      I'm inside a card directive, which is a block directive.
-    @end card <- closing tag of the block directive
-    ```
-
-    @card
+    @demo .code
+    @card 
       ##* Title
       I'm inside a card directive, which is a block directive.
     @end card
+    @end demo
 
   @end card
 
@@ -56,19 +52,13 @@ There are two types of directives: block directives and inline directives. Block
 
     Inline directives do not require a closing tag and can be used within a line of text. They are useful for adding small elements or styling within a line of markdown content.
 
-    ```mq
-    @card
-      ## Title @sparkle <- this is an inline directive
-      @divider  <-- another inline directive
+    @demo .code
+      ##* Here's an inline directive: @sparkle
+      @divider 
+      
       There's now a divider between the title and me! 
-    @end card
-    ```
+    @end demo
 
-    @card
-      ##* Title @sparkle
-      @divider
-      There's now a divider between the title and me! 
-    @end card
   @end card
 
 @end row
@@ -93,24 +83,26 @@ There are two types of directives: block directives and inline directives. Block
 | `.warn` | yellow warning |
 | `.danger` | red danger |
 | `.ok` | green success |
-@row
-@card .secondary
-##* Usage
 
-```mq
-@callout .warn
-Watch out for this.
+@demo
+
+@callout
+You can get the blue callout by using the `.info` modifier or leaving it empty.
 @end callout
-```
-@end card
-@card .tertiary
-##* Preview
 
 @callout .warn
 Watch out for this.
 @end callout
-@end card
-@end row
+
+@callout .danger
+This is dangerous!
+@end callout
+
+@callout .ok
+Luigi time!
+@end callout
+
+@end demo
 @end card
 
 ----
@@ -130,25 +122,8 @@ Watch out for this.
 | `.secondary` | secondary color variant |
 | `.tertiary` | tertiary color variant |
 | `.dark` | dark mode variant |
-@row
-@card .secondary
-##* Usage
 
-```mq
-@card .dark
-## Spooky
-Join the dark side.
-@end card
-
-@card .center .tertiary
-## Centered title
-Content goes here.
-@end card
-```
-@end card
-@card .tertiary
-##* Preview
-
+@demo
 @card .dark
 ##* Spooky
 Join the dark side.
@@ -158,10 +133,33 @@ Join the dark side.
 ##* Centered title
 Content goes here.
 @end card
+@end demo
+@end card
 
+----
+@card .primary
+## `@demo`
+@divider
+
+| parameter | description |
+| --- | --- |
+| type | block directive |
+| path | `directives/demo.js` |
+| description | shows a live preview with a toggleable syntax pane |
+| `"label"` | optional caption shown in the demo header |
+| `.code` | open the code tab by default |
+
+@demo .code
+@demo .code "Demo title"
+@card .secondary
+##* Recursion is fun!
+@divider
+Switch between preview and syntax.
 @end card
-@end row
+@end demo
+@end demo
 @end card
+
 ----
 @card .primary
 ## `@dropdown`
@@ -174,38 +172,21 @@ Content goes here.
 | description | collapsible block that can be toggled open and closed. Starts in `closed` state by default. |
 | `.open` `.expanded` `.default-open` | create the dropdown in the open state |
 | `.disable-cache` | disables the caching behaviour |
-| note | the `@dropdown` directive has built-in caching, and remembers its open/closed state |
+| note | the `@dropdown` directive has built-in caching, and remembers its open/closed state, unless disabled |
 
-@row
-@card .secondary
-##* Usage
-
-```mq
+@demo
 @dropdown .open "Open by default"
 You can see me!
 @end dropdown
-@dropdown "Closed by default"
-And now you see me!
-@end dropdown
-@dropdown .open .disable-cache "Close me!"
-Close me and refresh the page. I won't remember that you closed me. You can't get rid of me that easily!
-@end dropdown
-```
-@end card
-@card .tertiary
-##* Preview
 
-@dropdown .open "Open by default"
-You can see me!
-@end dropdown
 @dropdown "Closed by default"
 And now you see me!
 @end dropdown
+
 @dropdown .open .disable-cache "Close me!"
 Close me and refresh the page. I won't remember that you closed me. You can't get rid of me >:)
 @end dropdown
-@end card
-@end row
+@end demo
 @end card
 
 ----
@@ -219,26 +200,13 @@ Close me and refresh the page. I won't remember that you closed me. You can't ge
 | path | `directives/builtins.js` |
 | description | prominent `<section>` wrapper, modifiers are mapped to CSS classes |
 | `.center` | center-align content |
-@row
-@card .secondary
-##* Usage
 
-```mq
+@demo
 @hero .center
-# Big statement!!!
-A short supporting line.
+#* I'm a Hero!!!
+And I'm a Robin?
 @end hero
-```
-@end card
-@card .tertiary
-##* Preview
-
-@hero .center
-#* Big statement!!!
-A short supporting line.
-@end hero
-@end card
-@end row
+@end demo
 @end card
 
 ----
@@ -254,26 +222,12 @@ A short supporting line.
 | `.featured` | applies featured border styling via the `variant` attribute |
 | `label` | becomes the `title` attribute on the element |
 
-@row
-@card .secondary
-##* Usage
-
-```mq
-@product-card .featured Starter
-## Fast setup
-Copy the starter and change the theme later.
-@end product-card
-```
-@end card
-@card .tertiary
-##* Preview
-
+@demo
 @product-card .featured Starter
 ##* Fast setup
 Copy the starter and change the theme later.
 @end product-card
-@end card
-@end row
+@end demo
 @end card
 
 ----
@@ -288,11 +242,7 @@ Copy the starter and change the theme later.
 | description | responsive grid whose columns are sized by the number of block directive children |
 | note | warns at build time if it has no block directive children |
 
-@row
-@card .secondary
-##* Usage
-
-```mq
+@demo
 @row
   @card
     🡸 I'm on the left!
@@ -301,34 +251,12 @@ Copy the starter and change the theme later.
     I'm on the right. 🡺
   @end card
 @end row
-```
-@end card
+@end demo
 
-
-@card .tertiary
-##* Preview
-
-
-@row
-  @card
-    🡸 I'm on the left!
-  @end card
-  @card .right
-    I'm on the right. 🡺
-  @end card
-@end row
-
-_Politics in a nutshell_
 @callout .warn
-The content in a row is responsive, so on smaller screen the columns may stack vertically instead of horizontally.
+The content in a row is responsive, so on smaller screens the columns may stack vertically instead of horizontally.
 @end callout
-
 @end card
-
-@end row
-@end card
-
-
 
 ----
 @card .primary
@@ -341,26 +269,12 @@ The content in a row is responsive, so on smaller screen the columns may stack v
 | path | `directives/builtins.js` |
 | description | renders a `<section>` wrapper, modifiers are mapped to CSS classes |
 
-@row
-@card .secondary
-##* Usage
-
-```mq
-@section .highlight
-## Welcome
-Content inside a section.
-@end section
-```
-@end card
-@card .tertiary
-##* Preview
-
+@demo
 @section .highlight
 ##* Welcome
 Content inside a section.
 @end section
-@end card
-@end row
+@end demo
 @end card
 
 ----
@@ -374,26 +288,12 @@ Content inside a section.
 | path | `directives/builtins.js` |
 | description | value and label pair, extracted from the first `##` and `p` in the rendered children |
 
-@row
-@card .secondary
-##* Usage
-
-```mq
+@demo
 @stat
-## 99%
-Uptime last month.
+## 87%
+Of statistics are made up on the spot.
 @end stat
-```
-@end card
-@card .tertiary
-##* Preview
-
-@stat
-## 99%
-Uptime last month.
-@end stat
-@end card
-@end row
+@end demo
 @end card
 
 ----
@@ -411,36 +311,96 @@ Uptime last month.
 | `reset:n` | reset the counter to `n` at this point |
 | note | each block scope keeps its own step sequence |
 
-@row
-@card .secondary
-##* Usage
-
-```mq
+@demo
 @step
-Install dependencies.
+Go to the Marque repo on GitHub.
+@[Open Marque GitHub](https://github.com/Loxed/marque){.primary}
 @end step
-@step
-Run the dev server.
-@end step
-@step *
-Optional: configure your theme.
-@end step
-```
-@end card
-@card .tertiary
-##* Preview
 
 @step
-Install dependencies.
+Star the repo. @sparkle
 @end step
-@step
-Run the dev server.
-@end step
+
 @step *
-Optional: configure your theme.
+Profit ???
 @end step
+@end demo
 @end card
-@end row
+
+----
+@card .primary
+## `@actions`
+@divider
+
+@callout .info
+See [`@button`](#button) for how to create buttons using Marque.
+@end callout
+
+| parameter | description |
+| --- | --- |
+| type | block directive |
+| path | `directives/actions.js` |
+| description | responsive flex group for buttons or other compact actions |
+| `.center` | center the actions horizontally |
+| `.right` | align the actions to the right |
+| `.stack` | stack actions vertically |
+
+@demo
+@actions .center
+@[Quickstart](/quickstart.mq){.primary}
+@[Read the docs](/docs.mq)
+@end actions
+@end demo
+@end card
+
+----
+@card .primary
+## `@filetree`
+@divider
+
+| parameter | description |
+| --- | --- |
+| type | block directive |
+| path | `directives/filetree.js` |
+| description | renders a code-themed directory tree from simple text lines |
+| syntax | write the root on the first line, then use `-`, `--`, `---` for each nesting level |
+
+@demo
+@filetree "Structure"
+my-site/
+- folder/
+- file.mq
+@end filetree
+
+@filetree "Nested example"
+temp/
+- subtemp/
+-- subsubfile
+@end filetree
+@end demo
+@end card
+
+----
+@card .primary
+## `@link-card`
+@divider
+
+| parameter | description |
+| --- | --- |
+| type | block directive |
+| path | `directives/link-card.js` |
+| description | turns a card into one big clickable link |
+| `target` | page path or URL written after the directive name |
+| `.primary` `.secondary` `.tertiary` | optional card tone modifiers |
+| note | avoid placing other links or buttons inside a link-card |
+
+@demo
+@link-card .primary /docs/cli.mq
+##* CLI Commands
+@divider
+Reference every Marque command in one place.
+@end link-card
+@end demo
 @end card
 
 # Inline directives
@@ -448,10 +408,10 @@ Optional: configure your theme.
 
 @card .primary
 ## `@button`
-##* `@[label](url)`
 @callout .info
 Buttons don't use the `@button` directive; they are written using the markdown link syntax: `@[label](url)`
 @end callout
+##* `@[label](url)`
 @divider
 
 | parameter | description |
@@ -463,27 +423,17 @@ Buttons don't use the `@button` directive; they are written using the markdown l
 | `url` | link target inside `(...)` |
 | `.primary` `.secondary` `.tertiary` | built-in button variant classes |
 | `.class` | optional extra CSS classes inside `{...}` |
-| `!id` | optional id attribute inside `{...}` |
 
-@row
-@card .secondary
-##* Usage
-
-```mq
+@demo
 @[Quickstart](/quickstart.mq){.primary} @[Read the docs](/docs.mq)
-@[Open migration guide](/migration.mq){!migration-link .secondary}
-[Normal link](/)
-```
-@end card
-@card .tertiary
-##* Preview
+@[Open migration guide](/migration.mq){.secondary}
 
-@[Quickstart](/quickstart.mq){.primary} @[Read the docs](/docs.mq)
-@[Open migration guide](/migration.mq){!migration-link .secondary}
-
+@actions .center
 [Normal link](/)
-@end card
-@end row
+@[Action button](#){.tertiary}
+@[Another action](#)
+@end actions
+@end demo
 @end card
 
 ----
@@ -497,24 +447,11 @@ Buttons don't use the `@button` directive; they are written using the markdown l
 | path | `directives/builtins.js` |
 | description | renders a horizontal divider line |
 
-@row
-@card .secondary
-##* Usage
-
-```mq
-## Section title
-@divider
-Content below the divider.
-```
-@end card
-@card .tertiary
-##* Preview
-
+@demo
 ##* Section title
 @divider
 Content below the divider.
-@end card
-@end row
+@end demo
 @end card
 
 ----
@@ -528,20 +465,9 @@ Content below the divider.
 | path | `directives/sparkle.js` |
 | description | animated decorative star rendered in the primary colour |
 
-@row
-@card .secondary
-##* Usage
-
-```mq
+@demo
 Inline sparkle looks like this @sparkle and keeps flowing with the text.
-```
-@end card
-@card .tertiary
-##* Preview
-
-Inline sparkle looks like this @sparkle and keeps flowing with the text.
-@end card
-@end row
+@end demo
 @end card
 
 ----
@@ -549,26 +475,19 @@ Inline sparkle looks like this @sparkle and keeps flowing with the text.
 ## `@spotlight`
 @divider
 
+@callout .warn
+Spotlight is a directive purely meant for the [mida theme](configuration/themes.mq) and works using that theme only. It will not make sense to use it outside of that context. Switch this page's theme to `mida` to see it in action!
+@end callout 
+
 | parameter | description |
 | --- | --- |
 | type | inline directive |
 | path | `directives/spotlight.js` |
-| description | decorative spotlight block |
+| description | decorative block |
 
-@row
-@card .secondary
-##* Usage
-
-```mq
+@demo
 @spotlight
-```
-@end card
-@card .tertiary
-##* Preview
-
-@spotlight
-@end card
-@end row
+@end demo
 @end card
 
 ----

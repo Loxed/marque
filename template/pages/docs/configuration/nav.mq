@@ -15,7 +15,7 @@ Here is a sample `navigation.mq`:
   @row
     @card
       ```mq
-      # Navigation    <- This does not show up in the menu
+      # Navigation    <- Headings do not show up in the navigation menu
       
       [Home](index.mq)
       
@@ -50,29 +50,3 @@ Here is a sample `navigation.mq`:
     @end card
   @end row
 @end row
-
-@card
-## Common mistakes
-@divider
-
-@row
-  @card
-    @step
-    adding a page under `pages/` and forgetting to add it to `navigation.mq` renders the page inaccessible
-    @end step
-    @step
-    changing a page [slug](/docs/configuration/frontmatter#slug) and forgetting to update the matching navigation entry
-    @end step
-    @step
-    assuming indentation alone controls nesting
-    @end step
-  @end card
-
-  @card
-    - using `nav = ...` in frontmatter and expecting that to set navigation order
-    - pointing at `.html` output files instead of `.mq` source pages
-    - treating `navigation.mq` like a page inside `pages/`
-  @end card
-@end row
-
-@end card

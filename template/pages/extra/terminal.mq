@@ -39,7 +39,7 @@ Advanced users may also use the Windows Subsystem for Linux (WSL) to run a Linux
 
 macOS has a different terminal application called "Terminal". You can find it in the `Applications > Utilities` folder, or by searching for "Terminal" using Spotlight Search. 
 
-@[How to open or quit terminal](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac){.primary}
+@[How to open Terminal](https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac){.primary}
 
 @end card
 ----

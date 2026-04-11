@@ -9,7 +9,11 @@ width =
 _**Marque**_ is an enhanced **_Markdown to static_** site compiler.
 It's designed for creators who want to build documentation, blogs, guides, and knowledge bases effortlessly.
 
-@[Quickstart ➽](/quickstart.mq){.primary} @[Read the docs](/docs.html)
+@actions
+@[Quickstart ➽](/quickstart.mq){.primary}
+@[Read the docs](/docs.html)
+@end actions
+
 @callout .info
 Marque supports every feature from Markdown, including extra directives to make your website more like a website and less like your Obsidian/Notion notes.
 @end callout
@@ -57,21 +61,15 @@ Marque supports every feature from Markdown, including extra directives to make 
 @end row temp
 
 @row links
-	@card .primary
+	@link-card .primary /quickstart.mq
 		## Getting started
-    @divider
 		Install Marque and create your first website in 5 minutes.
+	@end link-card
 
-		@[Quickstart ➽](/quickstart.mq){.primary}
-	@end card
-
-	@card .secondary
+	@link-card .secondary /migration.mq
 		## Migration
-  		@divider
-		Easily migrate your existing mdBook or MkDocs project to Marque. 
-		
-		@[Open migration guide](/migration.mq)
-	@end card
+		Easily migrate your existing mdBook or MkDocs project to Marque.
+	@end link-card
 @end row links
 @end section
 

@@ -8,29 +8,20 @@ nav = docs
 This is the documentation for Marque. It is organized by goal, so you can jump to the section that best fits your needs.
 
 @row
-  @card .primary
+  @link-card .primary /docs/cli.mq
     ## Command Line Interface
-    @divider
     Learn about the different commands that Marque provides and how to use them.
+  @end link-card
 
-    @[CLI Commands ➽](/docs/cli.mq){.primary}
-  @end card
-
-  @card .secondary
+  @link-card .secondary /docs/configuration.mq
     ## Configuration
-    @divider
     Learn how to configure your site, from the default settings to navigation, layouts and themes.
+  @end link-card
 
-    @[Open configuration ➽](/docs/configuration.mq){.secondary}
-  @end card
-
-  @card .tertiary
+  @link-card .tertiary /docs/directives.mq
     ## Directives
-    @divider
     Learn all about the custom `.mq` file, the extra syntax it supports, and custom Marque directives.
-
-    @[Open directives ➽](/docs/directives.mq){.tertiary}
-  @end card
+  @end link-card
 @end row
 
 ## Don't know where to start?

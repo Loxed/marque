@@ -128,11 +128,11 @@ function consumeBlock(tokens, start, end, openTag) {
     if (tok.type === 'close') {
       if (openTag && tok.tag === openTag) {
         flushText();
-        return { nodes, next: i + 1 };
+        return { nodes, next: i + 1, closeToken: tok };
       }
       if (!openTag) { i++; continue; }     // stray close at root — skip
       flushText();
-      return { nodes, next: i };           // belongs to an outer block
+      return { nodes, next: i, closeToken: null };           // belongs to an outer block
     }
 
     // ── Open token ──────────────────────────────────────────────────────
@@ -164,7 +164,7 @@ function consumeBlock(tokens, start, end, openTag) {
         mods    : tok.mods,
         name    : tok.name,
         children: inner.nodes,
-        loc     : locFromToken(tok),
+        loc     : locFromTokens(tok, inner.closeToken),
       });
       continue;
     }
@@ -182,7 +182,7 @@ function consumeBlock(tokens, start, end, openTag) {
   }
 
   flushText();
-  return { nodes, next: i };
+  return { nodes, next: i, closeToken: null };
 }
 
 function dedentLines(lines) {
@@ -207,6 +207,18 @@ function locFromToken(tok) {
     start_col : (tok && tok.col)    || 1,
     end_line  : (tok && tok.lineNo) || 1,
     end_col   : (tok && tok.endCol) || ((tok && tok.col) || 1),
+  };
+}
+
+function locFromTokens(startTok, endTok) {
+  const start = locFromToken(startTok);
+  if (!endTok) return start;
+
+  return {
+    start_line: start.start_line,
+    start_col : start.start_col,
+    end_line  : (endTok && endTok.lineNo) || start.end_line,
+    end_col   : (endTok && endTok.endCol) || start.end_col,
   };
 }
 

@@ -41,12 +41,12 @@ Layouts behave a bit like themes, but they solve a different problem. Themes con
 	```navigation.mq		
 	[Home](index.mq)
 
-	Start Here # only shown as a heading in sidebar
+	User Guide
 
 	[Quick Start](quickstart.mq)
 	[Create Website](create.mq)
 
-	Docs # only shown as a heading in sidebar
+	Reference
 
 	[Docs](docs.mq)
 	```

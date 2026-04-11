@@ -8,7 +8,9 @@ module.exports = ({ defineDirective }) => {
 
   defineDirective('container', {
     type: 'block',
-    render: ({ children }) => children,
+    render: ({ children }) => {
+    return `<div>${children}</div>`;
+    }
   });
 
   defineDirective('row', {

@@ -196,19 +196,15 @@ It is not a promise to carry over every plugin, theme, hook, or runtime behaviou
 @divider
 
 @row
-  @card .primary
+  @link-card .primary /migration/mdbook.mq
     ## From `mdBook`
     `SUMMARY.md`, `book.toml`, and the default mdBook structure map very cleanly into Marque.
+  @end link-card
 
-    @[Open mdBook guide ](/migration/mdbook.html){.primary}
-  @end card
-
-  @card .secondary
+  @link-card .secondary /migration/mkdocs.mq
     ## From `MkDocs`
     This path works best when the project uses a normal `docs/` folder plus a standard `nav:` tree in `mkdocs.yml`.
-
-    @[Open MkDocs guide ](/migration/mkdocs.html)
-  @end card
+  @end link-card
 @end row
 
 @callout .warn

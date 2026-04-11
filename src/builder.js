@@ -116,7 +116,10 @@ function build(siteDir, outDir, options = {}) {
     }
 
     const resolveHref = createPageHrefResolver(pageEntries, page.rel);
-    const content = render(ast, { resolveHref });
+    const content = render(ast, {
+      resolveHref,
+      _mqSourceLines: String(body || '').split('\n'),
+    });
 
     const outFile = path.join(outDir, outName);
     const pageTemplate = loadPageTemplate(pageTheme.source, siteDir, pageLayoutName);
