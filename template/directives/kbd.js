@@ -37,55 +37,6 @@ module.exports = ({ defineDirective }) => {
         }));
       }
     },
-    style: `
-.mq-kbd {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25em;
-  vertical-align: middle;
-}
-
-.mq-kbd kbd {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 1.6em;
-  padding: 0.15em 0.45em;
-  font-family: var(--mq-font-mono, ui-monospace, monospace);
-  font-size: 0.78em;
-  font-weight: 600;
-  line-height: 1.4;
-  color: var(--mq-text);
-  background: var(--mq-surface);
-  border: 1px solid var(--mq-border);
-  border-bottom-width: 2px;
-  border-radius: calc(var(--mq-radius, 6px) * 0.6);
-  box-shadow: 0 1px 0 var(--mq-border);
-  white-space: nowrap;
-}
-
-.mq-kbd-sep {
-  font-size: 0.75em;
-  opacity: 0.45;
-  user-select: none;
-}
-
-/* Mobile fallback — looks like inline code */
-.mq-mobile .mq-kbd kbd {
-  min-width: unset;
-  padding: 0.1em 0.35em;
-  border-bottom-width: 1px;
-  box-shadow: none;
-  background: var(--mq-code-bg, #1e1c18);
-  color: var(--mq-code-text, #e8e4dc);
-  border-color: var(--mq-code-border, var(--mq-border));
-  font-weight: 500;
-}
-
-.mq-mobile .mq-kbd-sep {
-  opacity: 0.6;
-}
-`,
     script: `
 (function () {
   var MAC_MAP = { ctrl: '⌘', alt: '⌥', shift: '⇧', meta: '⌘', win: '⌘' };

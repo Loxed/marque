@@ -6,6 +6,7 @@ You write content quickly, keep structure explicit, and ship plain static HTML/C
 
 Architecture and module roles are documented in `ARCHITECTURE.md`.
 Directive extension workflow is documented in `DIRECTIVES_DEV.md`.
+Theme authoring workflow and the copy-paste LLM prompt live in `THEMING.md`.
 
 ## Why Marque
 
@@ -57,6 +58,8 @@ marque new   <dir> [layout:<name>] [theme:<name>]    scaffold a new site
 marque serve <dir>    dev server with live reload (default port 3000)
 marque build <dir>    compile site to dist/
 marque migrate <src> [target] [--from mdbook|mkdocs] import a supported docs site
+marque theme new [site-dir] <name>                  create a token-first theme
+marque theme template [site-dir] [out-file]         advanced theme scaffold
 ```
 
 `<dir>` defaults to `.`.
@@ -85,7 +88,7 @@ my-site/
 ├── directives/    # custom or overridden directive definitions
 ├── pages/         # .mq source pages
 ├── layouts/       # shared shell + layout CSS copied at scaffold
-├── themes/        # theme CSS files copied at scaffold
+├── themes/        # custom/current themes at root; legacy built-ins in legacy/
 ├── static/        # copied as-is to dist/
 ├── marque.toml    # site config
 └── dist/          # generated output
@@ -102,7 +105,7 @@ title = My Site
 description = Built with Marque
 repo = https://github.com/you/my-site
 layout = topnav
-theme = default
+theme = comte
 width = 82
 align = center
 summary = false
@@ -238,11 +241,25 @@ Themes live in `themes/` and use flat files:
 
 - `<name>.css` (required)
 
+Bundled showcase and backwards-compatible built-ins now live in `themes/legacy/`:
+
+- `legacy/<name>.css`
+
 Layouts own the shared page shell and layout behavior:
 
 - `index.html` (shared HTML shell)
 - `index.js` (shared runtime helpers)
 - `<name>.css` (layout-specific structure and responsive framing)
+
+`common.css` owns the shared component baseline. Themes should stay token-first and only add a few intentional overrides. Legacy built-ins still resolve by bare name for compatibility, but the canonical path is `legacy/<name>`.
+
+Create a new theme with:
+
+```sh
+marque theme new my-theme
+```
+
+For the full theme workflow, ownership rules, and an LLM-ready prompt, see `THEMING.md`.
 
 Themes are plain CSS files. Recommended pattern:
 
@@ -350,16 +367,34 @@ Layout resolution order:
 1. `site/layouts/<layout>.css`
 2. `marque-pkg/layouts/<layout>.css`
 
-Built-in themes in this repo include:
+Current built-in themes in this repo include:
 
-- `default`
+- `comte` (default)
+- `gouda`
+- `pycorino`
 - `rustique`
-- `Pycorino`
+
+Legacy/showcase themes live under `themes/legacy/`:
+
+- `legacy/default`
+- `legacy/destiny`
+- `legacy/elmental`
+- `legacy/gruyere`
+- `legacy/javarti`
+- `legacy/mida`
+- `legacy/pycorino`
+- `legacy/rustique`
 
 ## Create a Custom Theme
 
 ```sh
-cp /path/to/marque-pkg/template/themes/default.css themes/my-theme.css
+marque theme new my-theme
+```
+
+For an advanced scaffold that includes selector placeholders based on directive output:
+
+```sh
+marque theme template . themes/my-theme.css --reference comte
 ```
 
 Optional custom shell:

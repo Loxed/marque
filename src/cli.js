@@ -6,7 +6,7 @@ const fs = require('fs');
 const { build } = require('./builder');
 const { serve } = require('./server');
 const { scaffold, parseNewArgs } = require('./scaffold');
-const { writeThemeTemplate } = require('./theme-generator');
+const { writeThemeStarter, writeThemeTemplate } = require('./theme-generator');
 const { migrateSite } = require('./migrate');
 const { printBuildError } = require('./utils/errors');
 
@@ -21,8 +21,20 @@ marque, a .mq site compiler
   marque new [site-dir] [layout:name] [theme:name]
   marque migrate [source-dir] [target-dir] [--from mdbook|mkdocs]
   marque migrate [source-dir] [target-dir] [--layout name] [--theme name]
+  marque theme new [site-dir] <theme-name> [--reference name] [--force]
+  marque theme template [site-dir] [out-file] [--reference name]
   marque theme-template [site-dir] [out-file] [--reference name]
   marque help                                     show this message
+`;
+
+const themeHelp = `
+marque theme
+
+  marque theme new [site-dir] <theme-name> [--reference name] [--force]
+      create a token-first theme file in themes/<theme-name>.css
+
+  marque theme template [site-dir] [out-file] [--reference name]
+      advanced scaffold based on directive selectors plus a reference theme
 `;
 
 switch (cmd) {
@@ -37,6 +49,9 @@ switch (cmd) {
     break;
   case 'migrate':
     runMigrate(args);
+    break;
+  case 'theme':
+    runTheme(args);
     break;
   case 'theme-template':
     runThemeTemplate(args);
@@ -126,6 +141,43 @@ function runThemeTemplate(rawArgs) {
   }
 }
 
+function runTheme(rawArgs) {
+  const subcmd = String(rawArgs[0] || '').trim().toLowerCase();
+  const rest = rawArgs.slice(1);
+
+  if (subcmd === 'new') {
+    runThemeNew(rest);
+    return;
+  }
+
+  if (subcmd === 'template') {
+    runThemeTemplate(rest);
+    return;
+  }
+
+  console.log(themeHelp);
+}
+
+function runThemeNew(rawArgs) {
+  try {
+    const parsed = parseThemeNewArgs(rawArgs);
+    const siteDir = path.resolve(parsed.siteDir || '.');
+    const result = writeThemeStarter({
+      siteDir,
+      themeName: parsed.themeName,
+      referenceTheme: parsed.referenceTheme,
+      force: parsed.force,
+    });
+
+    console.log(`\nmarque: theme starter written -> ${result.outputFile}`);
+    console.log(`reference theme: ${result.referenceThemePath}`);
+    console.log(`activate with: theme = ${result.themeName}\n`);
+  } catch (err) {
+    console.error(`\nTheme create error: ${String((err && err.message) || err || 'Unknown error')}\n`);
+    process.exit(1);
+  }
+}
+
 function runMigrate(rawArgs) {
   const parsed = parseMigrateArgs(rawArgs);
   const sourceDir = path.resolve(parsed.sourceDir || '.');
@@ -186,6 +238,44 @@ function parseThemeTemplateArgs(argv) {
     siteDir: positional[0] || '.',
     outputFile: positional[1] || null,
     referenceTheme: opts.referenceTheme,
+  };
+}
+
+function parseThemeNewArgs(argv) {
+  const opts = {
+    referenceTheme: 'comte',
+    force: false,
+  };
+  const positional = [];
+
+  for (let i = 0; i < argv.length; i += 1) {
+    const token = argv[i];
+    if (token === '--reference' && i + 1 < argv.length) {
+      opts.referenceTheme = argv[i + 1];
+      i += 1;
+      continue;
+    }
+    if (token.startsWith('--reference=')) {
+      opts.referenceTheme = token.slice('--reference='.length);
+      continue;
+    }
+    if (token === '--force') {
+      opts.force = true;
+      continue;
+    }
+    positional.push(token);
+  }
+
+  if (!positional.length) {
+    throw new Error('Theme name is required. Try: marque theme new my-theme');
+  }
+
+  const hasExplicitSiteDir = positional.length >= 2;
+  return {
+    siteDir: hasExplicitSiteDir ? positional[0] : '.',
+    themeName: hasExplicitSiteDir ? positional[1] : positional[0],
+    referenceTheme: opts.referenceTheme,
+    force: opts.force,
   };
 }
 

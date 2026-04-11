@@ -45,7 +45,7 @@ Here's what each parameter does:
 | `description` | metadata description for your site, used in the `<head>` of your pages.                                                                     |
 | `repo`        | optional Git repository URL shown in the footer.                                                                                            |
 | `layout`      | navigation [layout](__layouts__) for your pages (`topnav`/`sidebar`).                                                                   |
-| `theme`       | [theme](__themes__) for your pages (e.g., `rustique` or `javarti`).                                                                     |
+| `theme`       | [theme](__themes__) for your pages (e.g., `comte`, `rustique`, or `legacy/mida`).                                                      |
 | `width`       | content width for your pages, can be a percentage (`82`, `50%`) or predefined: `narrow` (70%), `normal` (82%), `wide` (92%), `full` (100%). |
 | `align`       | content alignment for your pages (`left`, `center`, or `right`).                                                                            |
 | `summary`     | page summary rail setting for your pages (`true` or `false`).                                                                               |
@@ -59,7 +59,7 @@ Pages can override site-wide defaults by including frontmatter at the top of the
 +++               <--- opening TOML frontmatter fence
 title = Layouts      <--- override page title
 layout = topnav      <--- override page layout
-theme = mida         <--- override page theme
+theme = legacy/mida  <--- override page theme
 width = 50%          <--- override page width
 align = right        <--- place the content column on the right
 summary = true       <--- enable the page summary rail

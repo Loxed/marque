@@ -3,7 +3,7 @@ title = Directives
 nav = directives
 summary = true
 width = full
-<!-- theme = mida -->
+<!-- theme = legacy/mida -->
 +++
 
 # Directives

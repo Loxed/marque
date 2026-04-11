@@ -1,0 +1,325 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root {
+  /* === Pycorino Palette === */
+  --mq-primary:             #3776AB;
+  --mq-secondary:           #FFDF76;
+  --mq-tertiary:            #5BA05C;
+
+  --mq-background:          #ffffff;
+  --mq-surface:             #f5f8fc;
+  --mq-surface-alt:         #eaf0f8;
+
+  --mq-text:                #1a2332;
+  --mq-muted:               #4a5a70;
+  --mq-border:              #c4d4e8;
+
+  /* Link override — yellow on white is unreadable */
+  --mq-link:                #1e5f9e;
+
+  --mq-nav-bg:              #2b5f8e;
+  --mq-nav-active-bg:       #FFDF76;
+  --mq-nav-active-text:     #1a2332;
+
+  --mq-code-bg:             #1e2d42;
+  --mq-code-text:           #e8f0fa;
+  --mq-code-border:         #3776AB;
+
+  --mq-callout-info-bg:     #ddeeff;
+  --mq-callout-info-border: #3776AB;
+  --mq-callout-info-text:   #1a3a5c;
+
+  --mq-callout-warn-bg:     #fffbdc;
+  --mq-callout-warn-border: #e6b800;
+  --mq-callout-warn-text:   #4a3800;
+
+  --mq-callout-danger-bg:   #fdecea;
+  --mq-callout-danger-border: #d9534f;
+  --mq-callout-danger-text: #5c1a18;
+
+  --mq-callout-ok-bg:       #e6f4e8;
+  --mq-callout-ok-border:   #5BA05C;
+  --mq-callout-ok-text:     #1a3d1b;
+
+  --mq-radius:              6px;
+  --mq-max-width:           860px;
+
+  --mq-font-sans:           'Nunito', 'Trebuchet MS', Tahoma, sans-serif;
+  --mq-font-serif:          Georgia, 'Times New Roman', serif;
+  --mq-font-mono:           'Source Code Pro', 'Courier New', monospace;
+
+  /* === Compatibility aliases === */
+  --bg:          var(--mq-background);
+  --surface:     var(--mq-surface);
+  --surface2:    var(--mq-surface-alt);
+  --text:        var(--mq-text);
+  --muted:       var(--mq-muted);
+  --accent:      var(--mq-primary);
+  --accent2:     var(--mq-secondary);
+  --border:      var(--mq-border);
+  --radius:      var(--mq-radius);
+  --max-w:       var(--mq-max-width);
+  --font-sans:   var(--mq-font-sans);
+  --font-serif:  var(--mq-font-serif);
+  --font-mono:   var(--mq-font-mono);
+}
+
+/* ── Body ─────────────────────────────────────────────────────── */
+body {
+  background-color: var(--mq-background);
+  background-image:
+    linear-gradient(175deg,
+      #dce9f5 0%,
+      #edf3fb 18%,
+      #ffffff 45%);
+  background-attachment: fixed;
+  font-family: var(--mq-font-sans);
+  color: var(--mq-text);
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+/* ── Links — override common.css which falls back to --mq-secondary ─ */
+.mq-main a {
+  color: var(--mq-link, #1e5f9e);
+  text-decoration: none;
+  border-bottom: 1px solid #FFDF76;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.mq-main a:hover {
+  color: var(--mq-tertiary  );
+  border-bottom-color: #e6b800;
+  text-decoration: none;
+}
+
+/* Prose text — override common.css gray with richer muted */
+.mq-main p,
+.mq-main ul,
+.mq-main ol {
+  color: var(--mq-muted);
+}
+
+/* ── Navigation ───────────────────────────────────────────────── */
+.mq-nav {
+  background:
+    linear-gradient(180deg,
+      #1e4d7a 0%,
+      #2e6da4 55%,
+      #3776AB 100%);
+  box-shadow:
+    0 2px 0 #FFDF76,
+    0 4px 12px rgba(30, 60, 100, 0.28),
+    inset 0 1px 0 rgba(255,255,255,0.14);
+  border-bottom: none;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.mq-nav a,
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
+  color: #d6eaf8;
+  border-color: transparent;
+  transition: color 0.15s, text-shadow 0.15s;
+}
+
+.mq-nav-links a:hover,
+.mq-nav-group > .mq-nav-group-trigger:hover {
+  color: var(--mq-secondary);
+  text-shadow: 0 0 8px rgba(255, 223, 118, 0.45);
+  border-color: transparent;
+}
+
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
+  color: var(--mq-nav-active-text);
+  background: linear-gradient(180deg, var(--mq-nav-active-bg), #e6b800);
+  border-color: transparent;
+}
+
+.mq-nav-brand {
+  color: #ffffff;
+  font-family: var(--mq-font-sans);
+  font-weight: 600;
+}
+
+/* ── Headings ─────────────────────────────────────────────────── */
+.mq-main h1 {
+  font-family: var(--mq-font-sans);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  background: linear-gradient(100deg, #1e4d7a 10%, #3776AB 60%, #5ba0d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,0.9));
+}
+
+.mq-main h2 {
+  font-family: var(--mq-font-sans);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--mq-primary);
+  /* border-bottom: 2px solid var(--mq-secondary); */
+  padding-bottom: 0.25em;
+}
+
+.mq-main h3 {
+  color: var(--mq-text);
+  font-weight: 700;
+}
+
+.mq-divider {
+    background-color: var(--mq-secondary);
+    width: 20%;
+    height: 5px;
+}
+
+/* ── Cards ────────────────────────────────────────────────────── */
+.mq-card {
+  background: var(--mq-surface);
+  border: 1px solid var(--mq-border);
+  border-radius: var(--mq-radius);
+  box-shadow:
+    inset 0 2px 6px rgba(55, 118, 171, 0.08),
+    inset 0 -1px 2px rgba(255,255,255,0.8),
+    0 2px 8px rgba(30, 60, 100, 0.08);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+/* Dark card: ensure legible text */
+.mq-card.dark p {
+  color: rgba(235, 245, 255, 0.75);
+}
+
+/* ── Code blocks ──────────────────────────────────────────────── */
+.mq-code-block,
+.mq-main pre {
+  background:
+    linear-gradient(160deg,
+      #162536 0%,
+      #1e2d42 50%,
+      #1a2a40 100%);
+  border: 1px solid var(--mq-code-border);
+  border-radius: 0px;
+  color: var(--mq-code-text);
+    box-shadow:
+    inset 20px 10px 15px rgba(0, 0, 0, 0.3),   /* top-left */
+    inset -20px 10px 15px rgba(0, 0, 0, 0.3),  /* top-right */
+    inset 20px -10px 15px rgba(0, 0, 0, 0.3),  /* bottom-left */
+    inset -20px -10px 15px rgba(0, 0, 0, 0.3); /* bottom-right */
+  font-family: var(--mq-font-mono);
+  font-size: 0.85rem;
+}
+
+/* Inline code — keep readable on light bg */
+.mq-main code {
+  background: var(--mq-surface-alt);
+  color: #1e4d7a;
+  border-radius: 0px;
+}
+
+.mq-code-head {
+    border-radius: 0px;
+}
+
+/* ── Summary panel & page nav ─────────────────────────────────── */
+.mq-summary-panel {
+  background:
+    linear-gradient(160deg, #eaf2fb 0%, #f5f8fc 100%);
+  border: 1px solid var(--mq-border);
+  border-left: 3px solid var(--mq-primary);
+  border-radius: var(--mq-radius);
+  box-shadow:
+    inset 0 2px 6px rgba(55, 118, 171, 0.07),
+    inset 0 -1px 3px rgba(255,255,255,0.75);
+  font-size: 0.875rem;
+}
+
+/* Summary links on light bg — must be readable */
+.mq-summary-link {
+  color: var(--mq-text);
+}
+
+.mq-summary-link:hover,
+.mq-summary-link:focus-visible {
+  background: color-mix(in srgb, var(--mq-primary) 10%, transparent);
+  color: var(--mq-primary);
+}
+
+.mq-summary-item.active > .mq-summary-link,
+.mq-summary-link[aria-current="location"] {
+  background: color-mix(in srgb, var(--mq-primary) 14%, transparent);
+  color: var(--mq-primary);
+}
+
+.mq-page-nav-link {
+  background:
+    linear-gradient(135deg, #f0f6fc 0%, #e4eff9 100%);
+  border: 1px solid var(--mq-border);
+  border-radius: var(--mq-radius);
+  color: var(--mq-primary);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow:
+    inset 0 1px 3px rgba(255,255,255,0.9),
+    inset 0 -1px 3px rgba(55, 118, 171, 0.1),
+    0 2px 6px rgba(30, 60, 100, 0.08);
+  transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.mq-page-nav-link:hover {
+  background: linear-gradient(135deg, #FFDF76 0%, #ffd44d 100%);
+  color: var(--mq-text);
+  border-color: #e6b800;
+  box-shadow:
+    inset 0 1px 4px rgba(255,255,255,0.7),
+    inset 0 -2px 4px rgba(180, 130, 0, 0.15),
+    0 4px 12px rgba(200, 160, 0, 0.2);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.mq-nav-heading {
+    color: white;
+}
+
+/* ── Buttons — secondary/yellow needs dark text ───────────────── */
+
+a.mq-btn {
+    border-radius: 6px;
+}
+
+a.mq-btn.primary:hover {
+    color: var(--mq-secondary);
+}
+
+
+a.mq-btn.secondary {
+    color:var(--mq-primary);
+}
+
+a.mq-btn.tertiary:hover {
+    color: var(--mq-secondary);
+}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+.mq-footer {
+  border-top-color: var(--mq-border);
+}
+
+.mq-footer a {
+  color: var(--mq-primary);
+}
+
+/* Search */
+
+.mq-search-toggle {
+    background-color: white;
+}
+
+
+mark {
+    background-color: var(--mq-secondary);
+}

@@ -1,7 +1,7 @@
 title = Marque
 description = Built with Marque
 layout = sidebar
-theme = comte
+theme = pycorino
 width = normal
 align = center
 repo = https://github.com/Loxed/marque
@@ -26,4 +26,7 @@ summary = false
 #   false     -> hide it by default unless a page enables it
 #
 # theme options (built-in):
-#   comte, rustique, pycorino, gouda, javarti, elmental, mida
+#   comte, gouda, pycorino, rustique
+#   legacy/default, legacy/destiny, legacy/elmental
+#   legacy/gruyere, legacy/javarti, legacy/mida
+#   legacy/pycorino, legacy/rustique

@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadProjectDirectives } = require('./directives/project-loader');
 const { listDirectives, getDirective } = require('./directives/registry');
+const { resolveThemePath } = require('./utils/themes');
 
 const SAMPLE_MOD_SETS = [
   [],
@@ -85,6 +86,42 @@ function writeThemeTemplate({ siteDir = '.', outputFile, referenceTheme = 'comte
   };
 }
 
+function writeThemeStarter({ siteDir = '.', themeName, referenceTheme = 'comte', force = false } = {}) {
+  const result = generateThemeStarter({ siteDir, themeName, referenceTheme });
+  if (!force && fs.existsSync(result.outputFile)) {
+    throw new Error(`Theme file already exists: ${result.outputFile}`);
+  }
+
+  fs.mkdirSync(path.dirname(result.outputFile), { recursive: true });
+  fs.writeFileSync(result.outputFile, result.css, 'utf8');
+  return result;
+}
+
+function generateThemeStarter({ siteDir = '.', themeName, referenceTheme = 'comte' } = {}) {
+  const resolvedSiteDir = path.resolve(siteDir);
+  const normalizedThemeName = normalizeThemeStarterName(themeName);
+  const referenceThemePath = resolveReferenceThemePath(referenceTheme, resolvedSiteDir);
+  const referenceSource = fs.readFileSync(referenceThemePath, 'utf8');
+  const referenceBlocks = parseCssBlocks(referenceSource);
+  const imports = referenceBlocks.filter(block => block.type === 'import');
+  const rootBlock = referenceBlocks.find(block => block.type === 'block' && block.header.trim() === ':root');
+  const rootEntries = rootBlock ? parseRootDeclarations(rootBlock.body) : [];
+  const css = renderThemeStarter({
+    themeName: normalizedThemeName,
+    referenceTheme,
+    referenceThemePath,
+    imports,
+    rootEntries,
+  });
+
+  return {
+    css,
+    themeName: normalizedThemeName,
+    referenceThemePath,
+    outputFile: path.join(resolvedSiteDir, 'themes', `${normalizedThemeName}.css`),
+  };
+}
+
 function generateThemeTemplate({ siteDir = '.', referenceTheme = 'comte' } = {}) {
   const resolvedSiteDir = path.resolve(siteDir);
   const referenceThemePath = resolveReferenceThemePath(referenceTheme, resolvedSiteDir);
@@ -133,29 +170,25 @@ function resolveReferenceThemePath(referenceTheme, siteDir) {
   if (!raw) {
     throw new Error('Reference theme name cannot be empty');
   }
+  return resolveThemePath(raw, [
+    path.resolve(siteDir, 'themes'),
+    path.resolve(__dirname, '..', 'template', 'themes'),
+    path.resolve(__dirname, '..', 'themes'),
+  ], { defaultName: 'comte' });
+}
 
-  const directCandidates = [
-    path.resolve(siteDir, raw),
-    path.resolve(raw),
-  ];
+function normalizeThemeStarterName(themeName) {
+  const raw = path.basename(String(themeName || '').trim()).replace(/\.css$/i, '');
+  const normalized = raw
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 
-  for (const candidate of directCandidates) {
-    if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
-      return candidate;
-    }
+  if (!normalized) {
+    throw new Error('Theme name cannot be empty. Use letters, numbers, dashes, or underscores.');
   }
 
-  const cssName = /\.css$/i.test(raw) ? raw : `${raw}.css`;
-  const namedCandidates = [
-    path.resolve(siteDir, 'themes', cssName),
-    path.resolve(__dirname, '..', 'template', 'themes', cssName),
-  ];
-
-  for (const candidate of namedCandidates) {
-    if (fs.existsSync(candidate)) return candidate;
-  }
-
-  throw new Error(`Reference theme "${referenceTheme}" not found`);
+  return normalized;
 }
 
 function analyzeDirectives(siteDir) {
@@ -366,6 +399,64 @@ function renderThemeTemplate({
   sections.push(directiveSections.join('\n\n'));
 
   return sections.filter(Boolean).join('\n\n') + '\n';
+}
+
+function renderThemeStarter({
+  themeName,
+  referenceTheme,
+  referenceThemePath,
+  imports,
+  rootEntries,
+}) {
+  const sections = [[
+    `/* marque theme starter */`,
+    `/* theme: ${themeName} */`,
+    `/* reference theme: ${referenceTheme} */`,
+    `/* reference file: ${referenceThemePath} */`,
+    `/* common.css owns the shared component baseline. */`,
+    `/* Start by changing tokens, then add a few distinctive overrides below. */`,
+  ].join('\n')];
+
+  if (imports.length) {
+    sections.push(renderImportsSection(imports));
+  }
+
+  if (rootEntries.length) {
+    sections.push(renderRootSection(rootEntries));
+  }
+
+  sections.push([
+    '/* Distinctive Overrides */',
+    '/* Keep this file focused: tokens first, a handful of opinionated selectors second. */',
+    '',
+    'body {',
+    '  /* Example: background-image: radial-gradient(circle at top, color-mix(in srgb, var(--mq-primary) 12%, transparent), transparent 55%); */',
+    '}',
+    '',
+    '.mq-nav {',
+    '  /* Example: add blur, tint, or stronger borders here. */',
+    '}',
+    '',
+    '.mq-main :is(h1, h2) {',
+    '  /* Example: swap typography, casing, or spacing. */',
+    '}',
+    '',
+    '.mq-card {',
+    '  /* Example: push surfaces, shadows, or radius in a clear direction. */',
+    '}',
+    '',
+    '.mq-code-block,',
+    '.mq-main pre {',
+    '  /* Example: make code blocks feel like part of the theme, not a default panel. */',
+    '}',
+    '',
+    '.mq-summary-panel,',
+    '.mq-page-nav-link {',
+    '  /* Example: tune supporting chrome so the theme feels consistent end to end. */',
+    '}',
+  ].join('\n'));
+
+  return sections.join('\n\n') + '\n';
 }
 
 function renderImportsSection(imports) {
@@ -742,5 +833,7 @@ function escapeAttr(value) {
 
 module.exports = {
   generateThemeTemplate,
+  generateThemeStarter,
   writeThemeTemplate,
+  writeThemeStarter,
 };

@@ -9,6 +9,7 @@ const { collectDirectiveStyles, collectDirectiveScripts } = require('./directive
 const { loadProjectDirectives } = require('./directives/project-loader');
 const { printDiagnostic } = require('./utils/errors');
 const { parseFlatToml } = require('./utils/toml');
+const { resolveThemePath } = require('./utils/themes');
 
 function build(siteDir, outDir, options = {}) {
   const cleanDist = options.cleanDist !== false;
@@ -19,7 +20,7 @@ function build(siteDir, outDir, options = {}) {
   const diagnosticPrintOptions = options.diagnosticPrintOptions || undefined;
   const configPath = path.join(siteDir, 'marque.toml');
   const config = loadConfig(configPath);
-  const defaultThemeName = config.theme || 'default';
+  const defaultThemeName = config.theme || 'comte';
   const configuredLayoutName = config.layout || 'topnav';
   const defaultLayoutName = normalizeLayoutName(configuredLayoutName);
   const defaultPageWidth = normalizeWidth(config.width);
@@ -227,30 +228,18 @@ function loadConfig(configPath) {
 }
 
 function resolveTheme(theme, siteDir) {
-  const name = String(theme || 'default').trim();
+  const name = String(theme || 'comte').trim();
   const builtinTemplateThemesDir = path.join(__dirname, '..', 'template', 'themes');
   const legacyBuiltinThemesDir = path.join(__dirname, '..', 'themes');
-
-  const searchRoots = [
+  return resolveThemePath(name, [
     path.join(siteDir, 'themes'),
     builtinTemplateThemesDir,
     legacyBuiltinThemesDir,
-  ];
-
-  for (const root of searchRoots) {
-    const flatCss = path.join(root, `${name}.css`);
-    if (fs.existsSync(flatCss)) return flatCss;
-
-    // Backward compatibility for legacy themes/<name>/theme.css.
-    const legacyDir = path.join(root, name);
-    if (fs.existsSync(legacyDir)) return legacyDir;
-  }
-
-  throw new Error(`Theme "${name}" not found`);
+  ], { defaultName: 'comte' });
 }
 
 function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false) {
-  const key = themeName || 'default';
+  const key = themeName || 'comte';
   if (cache.has(key)) return cache.get(key);
 
   const themeRef = resolveTheme(key, siteDir);

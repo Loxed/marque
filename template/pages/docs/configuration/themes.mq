@@ -1,7 +1,7 @@
 +++
 title = Themes
 nav = themes
-theme = mida
+theme = legacy/mida
 +++
 
 # Themes 
@@ -17,7 +17,7 @@ theme = mida
 @divider
 Marque supports multiple themes and [layouts](../configuration/layouts.mq).
 
-Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) files in the `themes/` directory of your Marque project, and you can have as many as you like. Marque now applies a shared `common.css` fallback automatically, so your theme can focus on tokens and distinctive overrides instead of rebuilding every component from scratch. This page uses the `mida.css` theme to showcase what's possible.
+Themes are stored as [`.css`](https://developer.mozilla.org/en-US/docs/Web/CSS) files in the `themes/` directory of your Marque project, and you can have as many as you like. Marque now applies a shared `common.css` fallback automatically, so your theme can focus on tokens and distinctive overrides instead of rebuilding every component from scratch. This page uses the bundled `legacy/mida.css` theme to showcase what's possible.
 
 @end card
 @card .secondary
@@ -38,7 +38,7 @@ The main theme used on your site is defined in the `marque.toml` file with the `
 
 @container
 @step
-Create theme file: add `themes/<my-theme.css>`.
+Run `marque theme new my-theme`.
 @end step
 
 @step
@@ -57,9 +57,50 @@ Run `marque serve .` or `marque build .`.
 
 @end card
 
+@card
+## Advanced scaffold
+@divider
+
+If you want a larger starting point based on an existing theme, use the advanced generator instead:
+
+```sh
+marque theme template . themes/my-theme.css --reference legacy/rustique
+```
+
+That path is useful when you want selector placeholders and a heavier scaffold. The normal recommendation is still `marque theme new`.
+@end card
+
+@card
+## Folder layout
+@divider
+
+Use the root of `themes/` for new work:
+
+```text
+themes/
+  my-theme.css
+  comte.css
+  gouda.css
+  rustique.css
+  pycorino.css
+  legacy/
+    mida.css
+    ...
+```
+
+Legacy built-ins still resolve by bare name for compatibility, but the canonical reference is `legacy/<name>`.
+@end card
+
+@card
+## Legacy built-ins
+@divider
+
+Older showcase themes live in `themes/legacy/`, including `legacy/default`, `legacy/destiny`, `legacy/elmental`, `legacy/gruyere`, `legacy/javarti`, `legacy/mida`, plus the older full-size variants of `legacy/rustique` and `legacy/pycorino`.
+@end card
+
 
 @card .tertiary
-## Official themes
+## Bundled themes
 @divider
 
 _"Yes I'm French, how did you guess?"_
@@ -71,7 +112,7 @@ _"Yes I'm French, how did you guess?"_
   @card .secondary
     ## comté.css `(default)`
 
-    [Comté](https://en.wikipedia.org/wiki/Comté) is the default theme for Marque. Clean, readable, and responsive, with no holes in its design.
+    [Comté](https://en.wikipedia.org/wiki/Comté) is the default theme for Marque. It is the modern token-first base theme and lives at `themes/comte.css`.
 
     ![Comté Theme](static/topnav.png)
   @end card
@@ -98,7 +139,7 @@ _"Yes I'm French, how did you guess?"_
 @row
 
   @card .primary
-    ## javarti.css
+    ## legacy/javarti.css
 
     Javarti is a classic light theme for Marque, influenced by [Java](https://java.com/). Like [Havarti](https://en.wikipedia.org/wiki/Havarti), it's old enough but ages well.
 
@@ -115,7 +156,7 @@ _"Yes I'm French, how did you guess?"_
   @end card
 
   @card .secondary
-    ## elmental.css
+    ## legacy/elmental.css
 
     Elmental is a bright, paper-like theme for Marque, inspired by [Elm](https://elm-lang.org/). [Emmental](https://en.wikipedia.org/wiki/Emmental_cheese) (not [Gruyère](https://en.wikipedia.org/wiki/Gruyère)!) has holes in it, Elm doesn't.
 

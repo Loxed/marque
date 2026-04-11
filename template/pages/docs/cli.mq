@@ -73,16 +73,16 @@ Run commands from your site folder unless the example says otherwise.
 
 @row
   @card .secondary
-    ## `marque theme-template`
+    ## `marque theme new`
     @divider
-    Generate a theme scaffold from directive output plus a reference theme.
+    Create a token-first theme file in `themes/`.
 
     ```sh
-    marque theme-template .
-    marque theme-template . themes/my-theme.css --reference comte
+    marque theme new my-theme
+    marque theme new my-theme --reference rustique
     ```
 
-    Use it when you want a starter theme that already includes selectors for built-in and project directives.
+    Use it when you want the normal custom-theme starting point.
   @end card
 
   @card
@@ -148,12 +148,14 @@ Run commands from your site folder unless the example says otherwise.
 @end row
 
 @card
-  ## Theme scaffold
+  ## Advanced theme scaffold
   @divider
 
   ```sh
-  marque theme-template . themes/custom.css --reference rustique
+  marque theme template . themes/custom.css --reference legacy/rustique
   ```
+
+  Use the advanced scaffold when you want a larger starting point based on directive selectors and an existing reference theme. Bare legacy names still work, but `legacy/<name>` is the canonical path.
 @end card
 
 ## Notes

@@ -12,7 +12,7 @@ function applyScaffoldDefaults({ targetDir, layout, theme }) {
   let content = fs.readFileSync(configPath, 'utf8');
   content = content.replace(/\r\n?/g, '\n');
   content = replaceOrAppend(content, /^\s*layout\s*=\s*.+$/m, `layout = ${layout}`, 'layout = sidebar');
-  content = replaceOrAppend(content, /^\s*theme\s*=\s*.+$/m, `theme = ${theme}`, 'theme = default');
+  content = replaceOrAppend(content, /^\s*theme\s*=\s*.+$/m, `theme = ${theme}`, 'theme = comte');
   content = removeMatchingLine(content, /^\s*repo\s*=\s*.+$/m);
   fs.writeFileSync(configPath, content, 'utf8');
 }

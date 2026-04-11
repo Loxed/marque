@@ -50,7 +50,7 @@ This page explains the structure and how it works.
     - layouts/ # contains the site's commonly shared architecture
     - pages/ # source pages written in .mq
     - static/ # static assets like images, fonts, and icons
-    - themes/ # visual styling for the site, in CSS
+    - themes/ # custom themes at the root, legacy built-ins under legacy/
     - common.css # fallback styles for the site
     - marque.toml # default settings for the site
     - navigation.mq # navigation labels, order, and grouping
@@ -79,7 +79,7 @@ The `navigation.mq` file defines the structure and order of the site's pages. It
 
 ### `common.css`
 
-`common.css` is a global stylesheet that applies to the entire site. It contains styling for every markdown component, directives and elements that appear in the content. You should not edit this file directly, as it is the fallback for all themes, located in the `themes/` folder. Instead, create a new theme or modify an existing one and override styles there. You can find out more about this in the [themes documentation](docs/configuration/themes.mq).
+`common.css` is the shared visual baseline for the site. It contains the default styling for markdown elements, built-in directives, shared chrome such as search and page navigation, and the pieces every theme builds on top of. You usually should not edit this file directly when making a custom look. Instead, create a new theme in `themes/` and override what you need there. You can find out more about this in the [themes documentation](docs/configuration/themes.mq).
 
 @end card
 
@@ -100,7 +100,7 @@ The pages folder is the most important folder in the project. This is where you 
 
 ### `themes/`
 
-The themes folder contains custom themes applicable to your site. A theme is a `.css` file that contains styling overriding the `common.css` file, to apply custom fonts, colors, and shapes to elements of your site. Find out more about this in the [themes documentation](docs/configuration/themes.mq).
+The themes folder contains your site's visual styling. New custom themes live at the root of `themes/` as small token-first CSS files, while bundled legacy themes live in `themes/legacy/`. A theme is a `.css` file that layers on top of `common.css` to apply custom fonts, colors, and shapes to elements of your site. Find out more about this in the [themes documentation](docs/configuration/themes.mq).
 
 ### `layouts/`
 
