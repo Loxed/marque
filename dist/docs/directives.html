@@ -30,10 +30,7 @@
   <div class="mq-nav-head">
     <a class="mq-nav-brand" href="../">Marque</a>
     <button class="mq-search-toggle" type="button" aria-expanded="false" aria-controls="mq-search" aria-label="Open search" onclick="mqToggleSearch(this)">
-      <svg class="mq-search-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="11" cy="11" r="7"></circle>
-    <path d="M20 20l-3.5-3.5"></path>
-</svg>
+      <?xml version="1.0" encoding="UTF-8"?><svg width="16px" height="16px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M17 17L21 21" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3 11C3 15.4183 6.58172 19 11 19C13.213 19 15.2161 18.1015 16.6644 16.6493C18.1077 15.2022 19 13.2053 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
 
       <span class="mq-search-toggle-label">Search</span>
       <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
@@ -605,6 +602,68 @@ Profit ???
 @end step</code></pre></div></div></div>
 <hr>
 
+<div class="mq-card primary"><h2><code>@tab</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>block directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/tab.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>a labelled tab panel; consecutive <code>@tab</code> blocks are automatically grouped into a tab strip</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>visible tab button text written after the directive name</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-334-1" id="mq-demo-334-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-334-1" id="mq-demo-334-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-334-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-334-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><div class="mq-tab-item" data-label="Windows"><p>Install via <strong>winget</strong>:</p>
+<div class="mq-code-block" data-lang=""><div class="mq-code-head"><span class="mq-code-lang"></span><button class="mq-code-copy" type="button" aria-label="Copy  code">Copy</button></div><pre><code class="hljs language-">winget install marque</code></pre></div></div>
+
+<div class="mq-tab-item" data-label="macOS"><p>Install via <strong>Homebrew</strong>:</p>
+<div class="mq-code-block" data-lang=""><div class="mq-code-head"><span class="mq-code-lang"></span><button class="mq-code-copy" type="button" aria-label="Copy  code">Copy</button></div><pre><code class="hljs language-">brew install marque</code></pre></div></div>
+
+<div class="mq-tab-item" data-label="Linux"><p>Install via <strong>npm</strong>:</p>
+<div class="mq-code-block" data-lang=""><div class="mq-code-head"><span class="mq-code-lang"></span><button class="mq-code-copy" type="button" aria-label="Copy  code">Copy</button></div><pre><code class="hljs language-">npm install -g marque</code></pre></div></div></div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">@tab Windows
+Install via **winget**:
+
+```
+winget install marque
+```
+@end tab
+
+@tab macOS
+Install via **Homebrew**:
+
+```
+brew install marque
+```
+@end tab
+
+@tab Linux
+Install via **npm**:
+
+```
+npm install -g marque
+```
+@end tab</code></pre></div></div>
+
+<div class="mq-callout info"><p>Tabs work inside any parent directive: <code>@card</code>, <code>@section</code>, bare page, etc. Groups are broken automatically by any non-<code>@tab</code> element in-between them.</p>
+</div></div>
+<hr>
+
 <div class="mq-card primary"><h2><code>@actions</code></h2>
 <div class="mq-divider"></div>
 
@@ -643,7 +702,7 @@ Profit ???
 </tr>
 </tbody></table>
 </div>
-<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-340-1" id="mq-demo-340-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-340-1" id="mq-demo-340-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-340-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-340-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><div class="mq-actions center"><a href="../quickstart.html" class="mq-btn primary">Quickstart</a><a href="../docs.html" class="mq-btn">Read the docs</a></div></div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">@actions .center
+<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-384-1" id="mq-demo-384-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-384-1" id="mq-demo-384-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-384-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-384-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><div class="mq-actions center"><a href="../quickstart.html" class="mq-btn primary">Quickstart</a><a href="../docs.html" class="mq-btn">Read the docs</a></div></div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">@actions .center
 @[Quickstart](/quickstart.mq){.primary}
 @[Read the docs](/docs.mq)
 @end actions</code></pre></div></div></div>
@@ -676,7 +735,7 @@ Profit ???
 </tr>
 </tbody></table>
 </div>
-<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-360-1" id="mq-demo-360-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-360-1" id="mq-demo-360-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-360-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-360-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><div class="mq-code-block mq-filetree" data-lang="tree"><div class="mq-code-head"><span class="mq-code-lang"><span class="mq-filetree-caption">Structure</span></span></div><div class="mq-filetree-body"><ul class="mq-filetree-list mq-filetree-root-list"><li class="mq-filetree-item mq-filetree-folder mq-filetree-root mq-filetree-last"><div class="mq-filetree-entry"><span class="mq-filetree-marker" aria-hidden="true"></span><span class="mq-filetree-name">my-site/</span></div><ul class="mq-filetree-list"><li class="mq-filetree-item mq-filetree-folder"><div class="mq-filetree-entry"><span class="mq-filetree-marker" aria-hidden="true"></span><span class="mq-filetree-name">folder/</span></div></li><li class="mq-filetree-item mq-filetree-file mq-filetree-last"><div class="mq-filetree-entry"><span class="mq-filetree-marker" aria-hidden="true"></span><span class="mq-filetree-name">file.mq</span></div></li></ul></li></ul></div></div>
+<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-404-1" id="mq-demo-404-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-404-1" id="mq-demo-404-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-404-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-404-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><div class="mq-code-block mq-filetree" data-lang="tree"><div class="mq-code-head"><span class="mq-code-lang"><span class="mq-filetree-caption">Structure</span></span></div><div class="mq-filetree-body"><ul class="mq-filetree-list mq-filetree-root-list"><li class="mq-filetree-item mq-filetree-folder mq-filetree-root mq-filetree-last"><div class="mq-filetree-entry"><span class="mq-filetree-marker" aria-hidden="true"></span><span class="mq-filetree-name">my-site/</span></div><ul class="mq-filetree-list"><li class="mq-filetree-item mq-filetree-folder"><div class="mq-filetree-entry"><span class="mq-filetree-marker" aria-hidden="true"></span><span class="mq-filetree-name">folder/</span></div></li><li class="mq-filetree-item mq-filetree-file mq-filetree-last"><div class="mq-filetree-entry"><span class="mq-filetree-marker" aria-hidden="true"></span><span class="mq-filetree-name">file.mq</span></div></li></ul></li></ul></div></div>
 
 <div class="mq-code-block mq-filetree" data-lang="tree"><div class="mq-code-head"><span class="mq-code-lang"><span class="mq-filetree-caption">Nested example</span></span></div><div class="mq-filetree-body"><ul class="mq-filetree-list mq-filetree-root-list"><li class="mq-filetree-item mq-filetree-folder mq-filetree-root mq-filetree-last"><div class="mq-filetree-entry"><span class="mq-filetree-marker" aria-hidden="true"></span><span class="mq-filetree-name">temp/</span></div><ul class="mq-filetree-list"><li class="mq-filetree-item mq-filetree-folder mq-filetree-last"><div class="mq-filetree-entry"><span class="mq-filetree-marker" aria-hidden="true"></span><span class="mq-filetree-name">subtemp/</span></div><ul class="mq-filetree-list"><li class="mq-filetree-item mq-filetree-file mq-filetree-last"><div class="mq-filetree-entry"><span class="mq-filetree-marker" aria-hidden="true"></span><span class="mq-filetree-name">subsubfile</span></div></li></ul></li></ul></li></ul></div></div></div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">@filetree &quot;Structure&quot;
 my-site/
@@ -726,7 +785,7 @@ temp/
 </tr>
 </tbody></table>
 </div>
-<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-389-1" id="mq-demo-389-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-389-1" id="mq-demo-389-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-389-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-389-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><a href="cli.html" class="mq-card mq-link-card primary"><div class="mq-link-card-body"><h2 data-mq-toc-hidden="true">CLI Commands</h2>
+<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-433-1" id="mq-demo-433-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-433-1" id="mq-demo-433-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-433-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-433-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><a href="cli.html" class="mq-card mq-link-card primary"><div class="mq-link-card-body"><h2 data-mq-toc-hidden="true">CLI Commands</h2>
 <div class="mq-divider"></div>
 <p>Reference every Marque command in one place.</p>
 </div><div class="mq-link-card-arrow" aria-hidden="true">Open ➽</div></a></div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">@link-card .primary /docs/cli.mq
@@ -736,6 +795,64 @@ Reference every Marque command in one place.
 @end link-card</code></pre></div></div></div>
 <h1>Inline directives</h1>
 <div class="mq-divider"></div>
+
+<div class="mq-card primary"><h2><code>@badge</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>inline directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/badge.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>small pill label rendered inline within text or headings</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>badge text written after the directive name</td>
+</tr>
+<tr>
+<td><code>.info</code></td>
+<td>blue (default)</td>
+</tr>
+<tr>
+<td><code>.ok</code></td>
+<td>green</td>
+</tr>
+<tr>
+<td><code>.warn</code></td>
+<td>yellow</td>
+</tr>
+<tr>
+<td><code>.danger</code></td>
+<td>red</td>
+</tr>
+<tr>
+<td><code>.primary</code> <code>.secondary</code> <code>.tertiary</code></td>
+<td>theme colour variants</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-461-1" id="mq-demo-461-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-461-1" id="mq-demo-461-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-461-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-461-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><p>Marque <span class="mq-badge">v1.0</span> is out now!</p>
+<p><span class="mq-badge info">New</span> <span class="mq-badge ok">Stable</span> <span class="mq-badge warn">Deprecated</span> <span class="mq-badge danger">Breaking changes</span></p>
+<p><span class="mq-badge primary">Content</span><br><span class="mq-badge">Under</span> the badge</p>
+</div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">Marque @badge &quot;v1.0&quot; is out now!
+
+@badge .info &quot;New&quot; @badge .ok &quot;Stable&quot; @badge .warn &quot;Deprecated&quot; @badge .danger &quot;Breaking changes&quot;
+
+@badge .primary &quot;Content&quot;
+@badge Under the badge</code></pre></div></div></div>
+<hr>
 
 <div class="mq-card primary"><h2><code>@button</code></h2>
 <div class="mq-callout info"><p>Buttons don&#39;t use the <code>@button</code> directive; they are written using the markdown link syntax: <code>@[label](url)</code></p>
@@ -779,7 +896,7 @@ Reference every Marque command in one place.
 </tr>
 </tbody></table>
 </div>
-<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-419-1" id="mq-demo-419-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-419-1" id="mq-demo-419-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-419-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-419-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><p><a href="../quickstart.html" class="mq-btn primary">Quickstart</a> <a href="../docs.html" class="mq-btn">Read the docs</a><br><a href="../migration.html" class="mq-btn secondary">Open migration guide</a></p>
+<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-492-1" id="mq-demo-492-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-492-1" id="mq-demo-492-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-492-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-492-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><p><a href="../quickstart.html" class="mq-btn primary">Quickstart</a> <a href="../docs.html" class="mq-btn">Read the docs</a><br><a href="../migration.html" class="mq-btn secondary">Open migration guide</a></p>
 
 <div class="mq-actions center"><a href="../">Normal link</a><a href="#" class="mq-btn tertiary">Action button</a><a href="#" class="mq-btn">Another action</a></div></div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">@[Quickstart](/quickstart.mq){.primary} @[Read the docs](/docs.mq)
 @[Open migration guide](/migration.mq){.secondary}
@@ -814,12 +931,68 @@ Reference every Marque command in one place.
 </tr>
 </tbody></table>
 </div>
-<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-442-1" id="mq-demo-442-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-442-1" id="mq-demo-442-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-442-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-442-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><h2 data-mq-toc-hidden="true">Section title</h2>
+<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-515-1" id="mq-demo-515-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-515-1" id="mq-demo-515-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-515-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-515-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><h2 data-mq-toc-hidden="true">Section title</h2>
 <div class="mq-divider"></div>
 <p>Content below the divider.</p>
 </div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">##* Section title
 @divider
 Content below the divider.</code></pre></div></div></div>
+<hr>
+
+<div class="mq-card primary"><h2><code>@kbd</code></h2>
+<div class="mq-divider"></div>
+<div class="mq-table-wrap"><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>type</td>
+<td>inline directive</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>directives/kbd.js</code></td>
+</tr>
+<tr>
+<td>description</td>
+<td>renders keyboard shortcut key caps, with automatic platform-aware symbol swapping</td>
+</tr>
+<tr>
+<td><code>keys</code></td>
+<td>key combo written after the directive name, separated by <code>+</code></td>
+</tr>
+<tr>
+<td><code>.mac</code></td>
+<td>always render using Mac symbols (<code>Ctrl/Cmd</code> → <code>⌘</code>, <code>Alt/Option</code> → <code>⌥</code>)</td>
+</tr>
+<tr>
+<td><code>.win</code></td>
+<td>always render using Windows labels, regardless of platform</td>
+</tr>
+<tr>
+<td>note</td>
+<td>on mobile devices, key caps are replaced with inline code styling</td>
+</tr>
+<tr>
+<td>aliases</td>
+<td><code>Ctrl</code> / <code>Cmd</code> / <code>Command</code> are treated as the same primary shortcut key, and <code>Alt</code> / <code>Option</code> are treated as the same alternate key</td>
+</tr>
+</tbody></table>
+</div>
+<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-538-1" id="mq-demo-538-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-538-1" id="mq-demo-538-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-538-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-538-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><p>In Marque, press <span class="mq-kbd"><kbd data-key="ctrl">Ctrl</kbd><span class="mq-kbd-sep" aria-hidden="true">+</span><kbd>K</kbd></span> to open the search menu.</p>
+<p>Mac users use <span class="mq-kbd" data-kbd-platform="mac"><kbd>⌘</kbd><span class="mq-kbd-sep" aria-hidden="true">+</span><kbd>⇧</kbd><span class="mq-kbd-sep" aria-hidden="true">+</span><kbd>4</kbd></span> to take a screenshot.</p>
+<p>For some reason <span class="mq-kbd" data-kbd-platform="win"><kbd>Ctrl</kbd><span class="mq-kbd-sep" aria-hidden="true">+</span><kbd>Alt</kbd><span class="mq-kbd-sep" aria-hidden="true">+</span><kbd>Shift</kbd><span class="mq-kbd-sep" aria-hidden="true">+</span><kbd>Win</kbd><span class="mq-kbd-sep" aria-hidden="true">+</span><kbd>L</kbd></span> opens LinkedIn on Windows. Don&#39;t ask me why. </p>
+</div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">In Marque, press @kbd Ctrl+K to open the search menu.
+
+Mac users use @kbd .mac &quot;Cmd+Shift+4&quot; to take a screenshot.
+
+For some reason @kbd .win &quot;Ctrl+Alt+Shift+Win+L&quot; opens LinkedIn on Windows. Don&#39;t ask me why.</code></pre></div></div>
+
+<div class="mq-callout info"><p>You can write either <code>Ctrl</code> or <code>Cmd</code> for the primary shortcut key, and either <code>Alt</code> or <code>Option</code> for the alternate key. Marque normalizes them and still applies the same automatic OS swap (<code>⌘</code>, <code>⌥</code>, <code>⇧</code>) plus <code>.mac</code> / <code>.win</code> overrides.</p>
+</div></div>
 <hr>
 
 <div class="mq-card primary"><h2><code>@sparkle</code></h2>
@@ -845,7 +1018,7 @@ Content below the divider.</code></pre></div></div></div>
 </tr>
 </tbody></table>
 </div>
-<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-460-1" id="mq-demo-460-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-460-1" id="mq-demo-460-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-460-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-460-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><p>Inline sparkle looks like this <span class="mq-sparkle" aria-hidden="true">✶</span> and keeps flowing with the text.</p>
+<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-562-1" id="mq-demo-562-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-562-1" id="mq-demo-562-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-562-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-562-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><p>Inline sparkle looks like this <span class="mq-sparkle" aria-hidden="true">✶</span> and keeps flowing with the text.</p>
 </div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">Inline sparkle looks like this @sparkle and keeps flowing with the text.</code></pre></div></div></div>
 <hr>
 
@@ -875,7 +1048,7 @@ Content below the divider.</code></pre></div></div></div>
 </tr>
 </tbody></table>
 </div>
-<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-480-1" id="mq-demo-480-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-480-1" id="mq-demo-480-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-480-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-480-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><div class="mq-spotlight"></div></div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">@spotlight</code></pre></div></div></div>
+<div class="mq-code-block mq-demo" data-lang="mq"><input class="mq-demo-toggle mq-demo-toggle-preview" type="radio" name="mq-demo-582-1" id="mq-demo-582-1-preview" checked><input class="mq-demo-toggle mq-demo-toggle-code" type="radio" name="mq-demo-582-1" id="mq-demo-582-1-code"><div class="mq-code-head mq-demo-head"><div class="mq-demo-tabs"><label class="mq-demo-tab mq-demo-tab-preview" for="mq-demo-582-1-preview">Preview</label><label class="mq-demo-tab mq-demo-tab-code" for="mq-demo-582-1-code">Syntax</label></div><button class="mq-code-copy mq-demo-copy" type="button" aria-label="Copy mq code">Copy</button></div><div class="mq-demo-panel mq-demo-panel-preview"><div class="mq-spotlight"></div></div><div class="mq-demo-panel mq-demo-panel-code"><pre><code class="hljs language-mq">@spotlight</code></pre></div></div></div>
 <hr>
 
       <!-- bottom previous/next navigation -->
@@ -889,16 +1062,12 @@ Content below the divider.</code></pre></div></div></div>
   <!-- Footer -->
   <footer class="mq-footer">
     <!-- Remove if you wish, keeping it brings visibility to Marque :) -->
-    <span class="mq-footer-built">Built with <a href="https://github.com/Loxed/marque">Marque</a></span>
+    <span class="mq-footer-built">Built with <a href="https://getmarque.pages.dev">Marque</a></span>
     
     <!-- Repo button (Optional) -->
     <span class="mq-footer-repo">  
       <a class="mq-footer-repo-link" href="https://github.com/Loxed/marque" aria-label="Open repository">
-        <svg class="mq-footer-repo-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9 19c-5 1.5-5-2.5-7-3"></path>
-  <path d="M15 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77 5.44 5.44 0 0 0 3.5 8.5c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-</svg>
-
+        <?xml version="1.0" encoding="UTF-8"?><svg width="16px" height="16px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M16 22.0268V19.1568C16.0375 18.68 15.9731 18.2006 15.811 17.7506C15.6489 17.3006 15.3929 16.8902 15.06 16.5468C18.2 16.1968 21.5 15.0068 21.5 9.54679C21.4997 8.15062 20.9627 6.80799 20 5.79679C20.4558 4.5753 20.4236 3.22514 19.91 2.02679C19.91 2.02679 18.73 1.67679 16 3.50679C13.708 2.88561 11.292 2.88561 8.99999 3.50679C6.26999 1.67679 5.08999 2.02679 5.08999 2.02679C4.57636 3.22514 4.54413 4.5753 4.99999 5.79679C4.03011 6.81549 3.49251 8.17026 3.49999 9.57679C3.49999 14.9968 6.79998 16.1868 9.93998 16.5768C9.61098 16.9168 9.35725 17.3222 9.19529 17.7667C9.03334 18.2112 8.96679 18.6849 8.99999 19.1568V22.0268" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9 20.0267C6 20.9999 3.5 20.0267 2 17.0267" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </a>
     </span>
 </footer>
