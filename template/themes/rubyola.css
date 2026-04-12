@@ -1,0 +1,886 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+KR:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,200..700,0,0&display=swap');
+
+/* ============================================================
+   RUBYOLA v4 — warm cave dark theme
+   ruby-lang.org DNA: gold borders, pill shapes, extralight
+   display weight, generous radius, gold→ruby hover transitions.
+   Enhanced: code blocks, tabs, demo, kbd, filetree, steps,
+   badges, dropdowns, search, tables, page nav, stats, footer.
+   depends on: common.css
+   ============================================================ */
+
+:root {
+  --mq-primary:   #e62923;
+  --mq-secondary: #b8211c;
+  --mq-tertiary:  #CEB372;
+
+  --mq-background:  #1a1714;
+  --mq-surface:     #252220;
+  --mq-surface-alt: #2f2c2a;
+
+  --ruby-gold-150: #F1EEE4;
+  --ruby-gold-400: #E2D1AA;
+  --ruby-gold-500: #D8C28E;
+  --ruby-gold-600: #CEB372;
+
+  --mq-text:   #e8e4dc;
+  --mq-muted:  #9a9188;
+  --mq-border: rgba(255, 255, 255, 0.08);
+
+  --mq-nav-bg:          var(--mq-surface);
+  --mq-nav-active-bg:   rgba(230, 41, 35, 0.12);
+  --mq-nav-active-text: #e62923;
+
+  /* Code — near-black warm cave, readable gold text */
+  --mq-code-bg:          #100e0c;
+  --mq-code-text:        #e8e4dc;
+  --mq-code-border:      rgba(206, 179, 114, 0.15);
+  --mq-code-head-bg:     #1c1915;
+  --mq-code-head-text:   var(--ruby-gold-500);
+  --mq-code-copy-bg:     rgba(206, 179, 114, 0.08);
+  --mq-code-copy-border: rgba(206, 179, 114, 0.25);
+
+  --mq-callout-info-bg:       rgba(59, 130, 246, 0.1);
+  --mq-callout-info-border:   #3b82f6;
+  --mq-callout-info-text:     #93c5fd;
+
+  --mq-callout-warn-bg:       rgba(206, 179, 114, 0.1);
+  --mq-callout-warn-border:   #CEB372;
+  --mq-callout-warn-text:     #e8d4a0;
+
+  --mq-callout-danger-bg:     rgba(230, 41, 35, 0.1);
+  --mq-callout-danger-border: #e62923;
+  --mq-callout-danger-text:   #f5a9a7;
+
+  --mq-callout-ok-bg:         rgba(34, 197, 94, 0.08);
+  --mq-callout-ok-border:     #22c55e;
+  --mq-callout-ok-text:       #86efac;
+
+  --mq-radius:    12px;
+  --mq-max-width: 860px;
+
+  --mq-font-sans:  'Plus Jakarta Sans',
+                   'Noto Sans JP',
+                   'Noto Sans KR',
+                   'Noto Sans SC',
+                   'Noto Sans TC',
+                   system-ui,
+                   -apple-system,
+                   BlinkMacSystemFont,
+                   sans-serif;
+
+  --mq-font-serif: 'Plus Jakarta Sans',
+                   'Noto Sans JP',
+                   'Noto Sans KR',
+                   'Noto Sans SC',
+                   'Noto Sans TC',
+                   system-ui,
+                   -apple-system,
+                   BlinkMacSystemFont,
+                   sans-serif;
+
+  --mq-font-mono:  'IBM Plex Mono',
+                   ui-monospace,
+                   'SFMono-Regular',
+                   Menlo,
+                   Monaco,
+                   Consolas,
+                   monospace;
+
+  --bg:         var(--mq-background);
+  --surface:    var(--mq-surface);
+  --surface2:   var(--mq-surface-alt);
+  --text:       var(--mq-text);
+  --muted:      var(--mq-muted);
+  --accent:     var(--mq-primary);
+  --accent2:    var(--mq-secondary);
+  --border:     var(--mq-border);
+  --radius:     var(--mq-radius);
+  --max-w:      var(--mq-max-width);
+  --font-sans:  var(--mq-font-sans);
+  --font-serif: var(--mq-font-serif);
+  --font-mono:  var(--mq-font-mono);
+}
+
+/* ============================================================
+   BODY — cave gradient warmth
+   ============================================================ */
+
+body {
+  background-color: var(--mq-background);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% 0%,   rgba(50, 30, 18, 0.6) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(28, 16, 8,  0.5) 0%, transparent 65%);
+  color: var(--mq-text);
+  font-family: var(--mq-font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   NAV — near-black bar, ruby active underline, go.dev flat
+   ============================================================ */
+
+.mq-nav {
+  background-color: #1a1714;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.mq-nav-links a,
+.mq-nav-links .mq-nav-group > .mq-nav-group-trigger {
+  color: var(--mq-muted) !important;
+  padding: 0.55rem 0.75rem;
+  margin: 0;
+  background: none !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.mq-nav-links a:hover,
+.mq-nav-links .mq-nav-group > .mq-nav-group-trigger:hover {
+  color: var(--mq-text) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: transparent !important;
+}
+
+.mq-nav-links a.active,
+.mq-nav-links .mq-nav-group > .mq-nav-group-trigger.active,
+.mq-nav [aria-current="page"] {
+  color: var(--mq-primary) !important;
+  background: var(--mq-nav-active-bg) !important;
+  border: 0 !important;
+  border-bottom: 2px solid var(--mq-primary) !important;
+  border-radius: 0 !important;
+}
+
+.mq-nav .mq-nav-group-trigger {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+}
+
+.mq-nav .mq-nav-group-trigger::after {
+  font-size: 0.72em;
+  opacity: 0.5;
+  transition: transform 0.15s ease;
+}
+
+.mq-nav .mq-nav-group-trigger[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+.mq-nav .mq-nav-submenu {
+  border-radius: 0;
+  border-top: 2px solid var(--mq-primary);
+  background: var(--mq-surface);
+}
+
+.mq-nav .mq-nav-submenu a,
+.mq-nav .mq-nav-submenu .mq-nav-link {
+  border-radius: 0;
+  border: 0;
+}
+
+/* Nav heading labels */
+.mq-nav-heading {
+  color: var(--ruby-gold-600);
+  letter-spacing: 0.1em;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   h1: extralight gold — matches ruby-lang.org display titles
+   h2: gold underline accent instead of plain border
+   h3: slightly muted, smaller weight
+   ============================================================ */
+
+.mq-main h1 {
+  font-weight: 800;
+  font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+  color: var(--ruby-gold-600);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+.mq-main h2 {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--mq-text);
+  letter-spacing: -0.01em;
+  border-bottom: 1px solid rgba(206, 179, 114, 0.2);
+  padding-bottom: 0.35rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.mq-main h3 {
+  font-weight: 200;
+  color: var(--mq-text);
+  font-size: 0.95rem;
+}
+
+/* Links: gold, underline on hover */
+.mq-main a {
+  color: var(--ruby-gold-500);
+}
+
+.mq-main a:hover {
+  color: var(--mq-primary);
+  text-decoration: underline;
+}
+
+/* Strong: full text color, semibold */
+.mq-main strong {
+  font-weight: 600;
+  color: var(--mq-text);
+}
+
+/* HR: gold tinted */
+.mq-main hr {
+  border-top-color: rgba(206, 179, 114, 0.18);
+}
+
+/* ============================================================
+   DIVIDER — gold line.svg equivalent
+   ============================================================ */
+
+.mq-divider {
+  width: 3rem;
+  height: 2px;
+  border-radius: 0;
+  background: linear-gradient(90deg, var(--ruby-gold-600), rgba(206, 179, 114, 0.3));
+  margin: 0.75rem 0 1rem;
+}
+
+/* ============================================================
+   CARDS
+   Gold-tinted border, large radius, ruby hover glow
+   ============================================================ */
+
+.mq-card {
+  background-color: var(--mq-surface);
+  border: 1px solid rgba(226, 209, 170, 0.18);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mq-card:hover {
+  border-color: rgba(230, 41, 35, 0.35);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(230, 41, 35, 0.08);
+}
+
+.mq-card.primary {
+  border-top: 3px solid var(--mq-primary);
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.mq-card.secondary {
+  border-top: 3px solid var(--ruby-gold-600);
+}
+
+.mq-card.tertiary {
+  border-top: 3px solid var(--ruby-gold-400);
+}
+
+/* Dark card: near-black, gem-like */
+.mq-card.dark {
+  background: #100e0c;
+  border-color: rgba(206, 179, 114, 0.15);
+}
+
+.mq-card.dark h2,
+.mq-card.dark h3 {
+  color: var(--ruby-gold-400);
+}
+
+/* ============================================================
+   CALLOUTS — rounded, all variants get consistent radius
+   ============================================================ */
+
+.mq-callout {
+  border-radius: 12px;
+  padding: 0.9rem 1.15rem;
+}
+
+/* ============================================================
+   BLOCKQUOTES — ruby-lang testimonial style
+   gold border + rounded-3xl + giant leading quote glyph
+   ============================================================ */
+
+.mq-main blockquote {
+  border-left: none;
+  border: 1px solid rgba(206, 179, 114, 0.3);
+  border-radius: 24px;
+  padding: 1.5rem 1.75rem 1.5rem 2rem;
+  margin: 1.5rem 0;
+  color: var(--mq-muted);
+  font-style: normal;
+  position: relative;
+  background: color-mix(in srgb, var(--ruby-gold-600) 4%, var(--mq-surface));
+}
+
+.mq-main blockquote::before {
+  content: '\201C';
+  position: absolute;
+  top: -0.75rem;
+  left: -0.4rem;
+  font-family: var(--mq-font-sans);
+  font-weight: 500;
+  font-size: 5rem;
+  line-height: 1;
+  color: rgba(206, 179, 114, 0.4);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ============================================================
+   CODE — the biggest upgrade
+   ruby-lang.org code panels: warm near-black bg, gold lang label,
+   thin gold border, generous line-height, IBM Plex Mono
+   ============================================================ */
+
+/* Inline code: gold tinted pill */
+.mq-main :not(pre) > code {
+  background-color: rgba(206, 179, 114, 0.1);
+  color: var(--ruby-gold-500);
+  border: 1px solid rgba(206, 179, 114, 0.2);
+  border-radius: 5px;
+  font-family: var(--mq-font-mono);
+  font-size: 0.82em;
+  padding: 0.12em 0.45em;
+}
+
+/* Code block wrapper */
+.mq-code-block {
+  border-radius: 14px;
+  border: 1px solid var(--mq-code-border);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Code head: gold lang label + gold copy button */
+.mq-code-head {
+  background: var(--mq-code-head-bg);
+  border-bottom: 1px solid rgba(206, 179, 114, 0.12);
+  border-radius: 14px 14px 0 0;
+  padding: 0.5rem 0.85rem;
+  border: none;
+}
+
+.mq-code-lang {
+  color: var(--ruby-gold-600);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mq-code-copy {
+  background: var(--mq-code-copy-bg);
+  border: 1px solid var(--mq-code-copy-border);
+  border-radius: 9999px; /* pill — ruby-lang.org button style */
+  color: var(--ruby-gold-500);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.18rem 0.7rem;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.mq-code-copy:hover {
+  background: rgba(230, 41, 35, 0.15);
+  color: var(--mq-text);
+  border-color: rgba(230, 41, 35, 0.3);
+}
+
+/* Pre block itself */
+.mq-main pre,
+.mq-code-block pre {
+  background: var(--mq-code-bg);
+  color: var(--mq-code-text);
+  border: none;
+  border-radius: 0;
+  font-family: var(--mq-font-mono);
+  font-size: 0.83rem;
+  line-height: 1.75;
+  padding: 1.1rem 1.25rem;
+  margin: 0;
+}
+
+/* Syntax highlight tuning for warm cave — override hljs defaults */
+.hljs { color: #d4cfc6; }
+.hljs-comment, .hljs-quote { color: #6a655c; font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-built_in, .hljs-name {
+  color: #eb544f;  /* ruby-500 — keywords in ruby red */
+}
+.hljs-string, .hljs-title, .hljs-symbol, .hljs-addition {
+  color: #a8c77a;  /* muted green for strings */
+}
+.hljs-number, .hljs-literal, .hljs-attribute, .hljs-variable {
+  color: var(--ruby-gold-500);  /* gold for numbers/vars */
+}
+.hljs-meta, .hljs-doctag, .hljs-type {
+  color: #7ab8d4;  /* cool blue for types */
+}
+
+/* ============================================================
+   DEMO DIRECTIVE — preview/syntax tabs
+   Make preview pane match cave surface, not white
+   ============================================================ */
+
+.mq-demo-panel-preview {
+  background: var(--mq-surface-alt);
+  border-top: 1px solid rgba(206, 179, 114, 0.1);
+}
+
+.mq-demo-panel {
+  border: none;
+}
+
+.mq-demo-tab {
+  color: var(--mq-muted);
+  border-color: transparent;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.mq-demo-tab:hover {
+  color: var(--mq-text);
+}
+
+/* Active demo tab: gold-tinted pill */
+.mq-demo-toggle-preview:checked ~ .mq-demo-head .mq-demo-tab-preview,
+.mq-demo-toggle-code:checked ~ .mq-demo-head .mq-demo-tab-code {
+  background: rgba(206, 179, 114, 0.12);
+  border-color: rgba(206, 179, 114, 0.3);
+  color: var(--ruby-gold-500);
+}
+
+.mq-demo-caption {
+  color: var(--ruby-gold-600);
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   TABS DIRECTIVE — dark bar, ruby active underline
+   ============================================================ */
+
+.mq-tabs {
+  border: 1px solid rgba(206, 179, 114, 0.15);
+  border-radius: 14px;
+  overflow: clip;
+}
+
+.mq-tabs-bar {
+  background: var(--mq-code-head-bg);
+  border-bottom: 1px solid rgba(206, 179, 114, 0.12);
+}
+
+.mq-tabs-btn {
+  color: var(--mq-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  padding: 0.6rem 1.1rem;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.mq-tabs-btn:hover {
+  color: var(--ruby-gold-400);
+  opacity: 1;
+}
+
+.mq-tabs-btn[aria-selected="true"] {
+  color: var(--ruby-gold-500);
+  border-bottom-color: var(--ruby-gold-600);
+  opacity: 1;
+}
+
+.mq-tab-panel {
+  background: var(--mq-surface);
+}
+
+/* ============================================================
+   DROPDOWN DIRECTIVE — cave surface, gold trigger arrow
+   ============================================================ */
+
+.mq-dropdown {
+  background: var(--mq-surface);
+  border: 1px solid rgba(206, 179, 114, 0.15);
+  border-radius: 12px;
+}
+
+.mq-dropdown > summary {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--mq-text);
+  padding: 0.85rem 1rem;
+  transition: color 0.15s ease;
+}
+
+.mq-dropdown > summary:hover {
+  color: var(--ruby-gold-400);
+}
+
+.mq-dropdown > summary::before {
+  content: '▸';
+  color: var(--ruby-gold-600);
+  margin-right: 0.55rem;
+}
+
+.mq-dropdown[open] > summary {
+  color: var(--ruby-gold-400);
+}
+
+.mq-dropdown-content {
+  border-top: 1px solid rgba(206, 179, 114, 0.12);
+  background: color-mix(in srgb, var(--ruby-gold-600) 3%, var(--mq-surface));
+  padding: 1rem 1.1rem 1.1rem;
+}
+
+/* ============================================================
+   STEP DIRECTIVE — ruby-red numbered circles
+   ============================================================ */
+
+.mq-step-num {
+  background: rgba(230, 41, 35, 0.15);
+  color: var(--mq-primary);
+  border: 1px solid rgba(230, 41, 35, 0.3);
+  font-weight: 700;
+  font-size: 0.7rem;
+}
+
+/* ============================================================
+   BADGES — pill shape, on-brand palettes
+   ============================================================ */
+
+.mq-badge {
+  border-radius: 9999px;
+  font-size: 0.68em;
+  letter-spacing: 0.07em;
+  padding: 0.2em 0.65em;
+}
+
+.mq-badge.primary,
+.mq-badge.accent {
+  background: rgba(230, 41, 35, 0.15);
+  color: #f07f7b;
+  border-color: rgba(230, 41, 35, 0.3);
+}
+
+.mq-badge.warn {
+  background: rgba(206, 179, 114, 0.12);
+  color: var(--ruby-gold-500);
+  border-color: rgba(206, 179, 114, 0.3);
+}
+
+/* ============================================================
+   KBD — warm cave keycap look
+   ============================================================ */
+
+.mq-kbd kbd {
+  background: var(--mq-surface-alt);
+  color: var(--ruby-gold-400);
+  border: 1px solid rgba(206, 179, 114, 0.25);
+  border-bottom: 2px solid rgba(206, 179, 114, 0.4);
+  border-radius: 5px;
+  box-shadow: 0 2px 0 rgba(206, 179, 114, 0.2);
+  font-weight: 600;
+  font-size: 0.75em;
+}
+
+/* ============================================================
+   FILETREE — cave code panel, gold folder names
+   ============================================================ */
+
+.mq-filetree-body {
+  background: var(--mq-code-bg);
+  border: none;
+  border-radius: 0 0 14px 14px;
+}
+
+.mq-filetree-folder > .mq-filetree-entry > .mq-filetree-name,
+.mq-filetree-root  > .mq-filetree-entry > .mq-filetree-name {
+  color: var(--ruby-gold-500);
+}
+
+.mq-filetree-file > .mq-filetree-entry > .mq-filetree-name {
+  color: #c8c0b4;
+}
+
+.mq-filetree-folder > .mq-filetree-entry > .mq-filetree-marker {
+  background: var(--ruby-gold-600);
+}
+
+/* ============================================================
+   TABLES — gold-tinted header, zebra rows on warm surface
+   ============================================================ */
+
+.mq-main .mq-table-wrap {
+  border: 1px solid rgba(206, 179, 114, 0.15);
+  border-radius: 14px;
+  background: var(--mq-surface);
+}
+
+.mq-main .mq-table-wrap thead {
+  background: color-mix(in srgb, var(--ruby-gold-600) 8%, var(--mq-surface));
+}
+
+.mq-main .mq-table-wrap th {
+  color: var(--ruby-gold-500);
+  letter-spacing: 0.09em;
+  font-size: 0.73rem;
+}
+
+.mq-main .mq-table-wrap td {
+  color: var(--mq-muted);
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.mq-main .mq-table-wrap tbody tr:nth-child(even) {
+  background: rgba(206, 179, 114, 0.03);
+}
+
+.mq-main .mq-table-wrap tbody tr:hover {
+  background: rgba(230, 41, 35, 0.05);
+}
+
+/* ============================================================
+   STAT — extralight gold numerals, ruby-lang.org tracking
+   ============================================================ */
+
+.mq-stat {
+  background: var(--mq-surface);
+  border: 1px solid rgba(206, 179, 114, 0.18);
+  border-radius: 14px;
+}
+
+.mq-stat-value {
+  font-weight: 200;
+  color: var(--ruby-gold-400);
+  letter-spacing: 0.1em;
+}
+
+.mq-stat-label {
+  color: var(--mq-muted);
+  letter-spacing: 0.09em;
+}
+
+/* ============================================================
+   BUTTONS — pill shape, gold secondary, ruby primary
+   ============================================================ */
+
+a.mq-btn {
+  border-radius: 9999px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  font-size: 0.82rem;
+}
+
+a.mq-btn.primary {
+  background: var(--mq-primary);
+  border-color: var(--mq-primary);
+  color: #fff;
+}
+
+a.mq-btn.secondary {
+  background: var(--ruby-gold-500);
+  border-color: var(--ruby-gold-500);
+  color: #1c1917;
+}
+
+a.mq-btn.secondary:hover {
+  background: var(--mq-primary);
+  border-color: var(--mq-primary);
+  color: #fff;
+  filter: none;
+}
+
+a.mq-btn:not(.primary):not(.secondary):not(.tertiary) {
+  border-color: rgba(206, 179, 114, 0.25);
+  color: var(--mq-muted);
+}
+
+a.mq-btn:not(.primary):not(.secondary):not(.tertiary):hover {
+  background: rgba(206, 179, 114, 0.08);
+  border-color: rgba(206, 179, 114, 0.4);
+  color: var(--ruby-gold-400);
+}
+
+/* ============================================================
+   SPOTLIGHT / HERO — gold left border, cave alt surface
+   ============================================================ */
+
+.mq-spotlight,
+.mq-hero {
+  background: var(--mq-surface-alt);
+  border: 1px solid rgba(226, 209, 170, 0.12);
+  border-left: 4px solid var(--ruby-gold-600);
+  border-radius: var(--mq-radius);
+}
+
+/* ============================================================
+   SUMMARY PANEL (TOC sidebar)
+   ============================================================ */
+
+.mq-summary-panel {
+  background-color: var(--mq-surface);
+  border: 1px solid rgba(226, 209, 170, 0.13);
+  border-radius: var(--mq-radius);
+  font-size: 0.81rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.mq-summary-link:hover,
+.mq-summary-link:focus-visible {
+  background: rgba(230, 41, 35, 0.1) !important;
+  color: var(--mq-primary) !important;
+}
+
+.mq-summary-item.active > .mq-summary-link,
+.mq-summary-link[aria-current="location"] {
+  background: rgba(230, 41, 35, 0.14) !important;
+  color: var(--mq-primary) !important;
+  font-weight: 700;
+}
+
+.mq-summary-item.active > .mq-summary-link::before,
+.mq-summary-link[aria-current="location"]::before {
+  background: var(--mq-primary);
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* ============================================================
+   PAGE NAV (prev/next) — cave surface, gold border, ruby hover
+   ============================================================ */
+
+.mq-page-nav {
+  border-top-color: rgba(206, 179, 114, 0.15);
+}
+
+.mq-page-nav-link {
+  font-family: var(--mq-font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid rgba(226, 209, 170, 0.18);
+  border-radius: 12px;
+  color: var(--mq-muted);
+  background-color: var(--mq-surface);
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.mq-page-nav-link:hover {
+  border-color: var(--mq-primary);
+  color: var(--mq-primary);
+  background: rgba(230, 41, 35, 0.05);
+}
+
+.mq-page-nav-kicker {
+  color: var(--ruby-gold-600);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+}
+
+/* ============================================================
+   SEARCH — cave surface, gold accents
+   ============================================================ */
+
+.mq-search-panel {
+  background: var(--mq-surface);
+  border: 1px solid rgba(206, 179, 114, 0.2);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(206, 179, 114, 0.1);
+}
+
+.mq-search-head {
+  border-bottom-color: rgba(206, 179, 114, 0.12);
+}
+
+.mq-search-label {
+  color: var(--ruby-gold-600);
+}
+
+.mq-search-meta {
+  border-bottom-color: rgba(206, 179, 114, 0.1);
+  color: var(--mq-muted);
+}
+
+.mq-search-result:hover,
+.mq-search-result.active {
+  background: rgba(230, 41, 35, 0.07);
+  border-color: rgba(230, 41, 35, 0.25);
+}
+
+.mq-search mark {
+  background: rgba(206, 179, 114, 0.3);
+  color: var(--ruby-gold-400);
+  border-radius: 3px;
+}
+
+.mq-search-close {
+  border-color: rgba(206, 179, 114, 0.2);
+  background: rgba(206, 179, 114, 0.07);
+}
+
+/* ============================================================
+   LINK CARD — ruby hover lift
+   ============================================================ */
+
+a.mq-link-card:hover {
+  border-color: rgba(230, 41, 35, 0.35);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+}
+
+.mq-link-card-arrow {
+  color: var(--ruby-gold-600);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.mq-footer {
+  border-top-color: rgba(206, 179, 114, 0.12);
+  color: var(--mq-muted);
+}
+
+.mq-footer a {
+  color: var(--ruby-gold-600);
+}
+
+.mq-footer a:hover {
+  color: var(--mq-primary);
+}
+
+/* ============================================================
+   IMAGES — gold tinted border
+   ============================================================ */
+
+img {
+  border-color: rgba(206, 179, 114, 0.15);
+}
+
+.mq-search-toggle svg,
+.mq-footer-repo-link svg,
+.mq-nav-toggle {
+  filter: invert(1);
+}
+

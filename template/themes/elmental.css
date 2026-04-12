@@ -1,0 +1,455 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --mq-primary:              #1293D8;
+  --mq-secondary:            #C75025;
+  --mq-tertiary:             #2D9E6B;
+
+  --mq-background:           #ffffff;
+  --mq-surface:              #f9fbfd;
+  --mq-surface-alt:          #eef7fd;
+
+  --mq-text:                 #000E16;
+  --mq-muted:                #4a6878;
+  --mq-border:               #cdcdcd;
+
+  --mq-nav-bg:               var(--mq-surface);
+  --mq-nav-active-bg:        transparent;
+  --mq-nav-active-text:      #ffffff;
+
+  --mq-code-bg:              #ffffff;
+  --mq-code-text:            #000E16;
+  --mq-code-border:          #cccccc;
+
+  --mq-callout-info-bg:      #eef7fd;
+  --mq-callout-info-border:  #1293D8;
+  --mq-callout-info-text:    #003a52;
+
+  --mq-callout-warn-bg:      #fff9f0;
+  --mq-callout-warn-border:  #d9820a;
+  --mq-callout-warn-text:    #4a2e00;
+
+  --mq-callout-danger-bg:    #fdf1ec;
+  --mq-callout-danger-border:#C75025;
+  --mq-callout-danger-text:  #4a1200;
+
+  --mq-callout-ok-bg:        #edfbf4;
+  --mq-callout-ok-border:    #2D9E6B;
+  --mq-callout-ok-text:      #003d1f;
+
+  --mq-radius:               0px;
+  --mq-max-width:            860px;
+
+  --mq-font-sans:  'IBM Plex Sans', system-ui, sans-serif;
+  --mq-font-serif: 'IBM Plex Sans', serif;
+  --mq-font-mono:  'IBM Plex Mono', 'Source Code Pro', monospace;
+
+  --bg:         var(--mq-background);
+  --surface:    var(--mq-surface);
+  --surface2:   var(--mq-surface-alt);
+  --text:       var(--mq-text);
+  --muted:      var(--mq-muted);
+  --accent:     var(--mq-primary);
+  --accent2:    var(--mq-secondary);
+  --border:     var(--mq-border);
+  --radius:     var(--mq-radius);
+  --max-w:      var(--mq-max-width);
+  --font-sans:  var(--mq-font-sans);
+  --font-serif: var(--mq-font-serif);
+  --font-mono:  var(--mq-font-mono);
+}
+
+/* ── Body ─────────────────────────────────────────────── */
+
+body {
+  font-family: var(--mq-font-sans);
+  background: var(--mq-background);
+  color: var(--mq-text);
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+/* ── Top nav bar ─────────────────────────────────────────
+   Elm blue bar. Brand is white + weight 400 (not bold —
+   elm uses font-weight: normal on everything).
+   Links and triggers are identical, no chrome.           */
+
+.mq-nav {
+  background: #1293D8 !important;
+  border-bottom: none !important;
+  font-family: var(--mq-font-sans);
+  font-size: 0.9rem;
+}
+
+.mq-nav-brand,
+.mq-nav-brand a,
+.mq-nav-brand span {
+  color: #ffffff !important;
+  font-family: var(--mq-font-mono) !important;
+  font-weight: 500 !important;
+  font-size: 1rem !important;
+  letter-spacing: 0.02em;
+  text-decoration: none !important;
+}
+
+.mq-nav-heading {
+  color: #ffffff;
+  font-family: var(--mq-font-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  padding: 0.5em 0.75em 0.25em;
+}
+
+/* Links and dropdown triggers — identical treatment */
+
+.mq-nav-links a,
+.mq-nav-links .mq-nav-group > .mq-nav-group-trigger {
+  appearance: none; -webkit-appearance: none;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  color: #ffffff !important;
+  font-family: var(--mq-font-sans);
+  font-size: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  padding: 0 0.75em;
+  text-decoration: none;
+  opacity: 0.88;
+  transition: opacity 0.12s;
+}
+
+.mq-nav-links a:hover,
+.mq-nav-links .mq-nav-group > .mq-nav-group-trigger:hover {
+  opacity: 1;
+  text-decoration: underline;
+  background: none !important;
+  color: #ffffff !important;
+}
+
+.mq-nav-links a.mq-active {
+  opacity: 1;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Dropdown arrow — only visual difference allowed */
+
+.mq-nav-links .mq-nav-group > .mq-nav-group-trigger::after {
+  content: "▾";
+  margin-left: 0.3em;
+  font-size: 0.75em;
+  display: inline-block;
+  transition: transform 0.18s;
+}
+
+.mq-nav-links .mq-nav-group > .mq-nav-group-trigger[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+
+/* Floating submenu — white card, offset shadow */
+
+.mq-nav .mq-nav-submenu {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 0;
+  box-shadow: 5px 5px 0px 1px #cccccc;
+  min-width: 180px;
+}
+
+.mq-nav .mq-nav-submenu a {
+  color: var(--mq-primary) !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  opacity: 1;
+  font-size: 0.875rem;
+  padding: 0.45em 0.9em;
+  display: block;
+}
+
+.mq-nav .mq-nav-submenu a:hover {
+  background: var(--mq-surface-alt) !important;
+  color: var(--mq-secondary) !important;
+  text-decoration: none;
+}
+
+/* Search toggle — white outline button in the blue bar */
+
+.mq-search-toggle {
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,0.5) !important;
+  border-radius: 0 !important;
+  color: #ffffff !important;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.mq-search-toggle:hover {
+  background: rgba(255,255,255,0.15) !important;
+  border-color: #ffffff !important;
+}
+
+.mq-search-toggle svg {
+  color: #ffffff;
+}
+
+/* ── Sidebar summary panel ────────────────────────────────
+   Monospaced TOC. Primary blue = active, border-left marker.
+   Rust = nowhere in nav — that hue belongs to content only. */
+
+.mq-summary-panel {
+  font-family: var(--mq-font-mono);
+  font-size: 0.8rem;
+  background: var(--mq-surface);
+  border-right: 1px solid var(--mq-border);
+}
+
+.mq-summary-link {
+  color: var(--mq-muted);
+  display: block;
+  padding: 0.2em 0.6em;
+  border-left: 2px solid transparent;
+  text-decoration: none;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+  line-height: 1.5;
+}
+
+.mq-summary-link:hover,
+.mq-summary-link:focus-visible {
+  color: var(--mq-primary) !important;
+  background: var(--mq-surface-alt) !important;
+  border-left-color: #9dd4ef !important;
+  text-decoration: none;
+}
+
+/* Active item: solid primary left bar, primary text */
+
+.mq-summary-item.active > .mq-summary-link,
+.mq-summary-link[aria-current="location"] {
+  color: var(--mq-primary) !important;
+  background: var(--mq-surface-alt) !important;
+  border-left-color: var(--mq-primary) !important;
+  font-weight: 500;
+}
+
+/* Nested depth — indent only, no extra decoration */
+
+.mq-summary-item .mq-summary-item .mq-summary-link {
+  padding-left: 1.4em;
+  font-size: 0.78rem;
+  opacity: 0.85;
+}
+
+.mq-summary-item .mq-summary-item.active > .mq-summary-link,
+.mq-summary-item .mq-summary-link[aria-current="location"] {
+  opacity: 1;
+}
+
+/* ── Page nav (prev / next) ───────────────────────────────
+   Full elm button treatment: white bg, primary border,
+   offset shadow. On hover: fill blue, shadow shrinks.     */
+
+.mq-page-nav-link {
+  display: inline-block;
+  background: #ffffff;
+  color: var(--mq-primary);
+  border: 2px solid var(--mq-primary);
+  border-radius: 0;
+  box-shadow: 4px 4px 0px 0px var(--mq-primary);
+  padding: 0.45em 1.1em;
+  font-family: var(--mq-font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s, box-shadow 0.1s;
+}
+
+.mq-page-nav-link:hover {
+  background: var(--mq-primary);
+  color: #ffffff;
+  box-shadow: 2px 2px 0px 0px #0d6fa0;
+  text-decoration: none;
+}
+
+/* ── Headings ─────────────────────────────────────────── */
+
+.mq-main h1 {
+  font-weight: 400;
+  font-size: 2em;
+  letter-spacing: -0.01em;
+  color: var(--mq-text);
+  padding-bottom: 0.2em;
+}
+
+.mq-main h2 {
+  font-weight: 500;
+  font-size: 1.35em;
+  color: var(--mq-primary);
+  padding-bottom: 0.2em;
+}
+
+.mq-main h3 {
+  font-weight: 600;
+  color: var(--mq-tertiary);
+}
+
+.mq-main h4 {
+  font-weight: 600;
+  color: var(--mq-muted);
+}
+
+/* ── Cards ────────────────────────────────────────────── */
+
+.mq-card {
+  background: var(--mq-surface);
+  border: 1px solid var(--mq-border);
+  border-top: 3px solid var(--mq-tertiary);
+  border-radius: 0;
+  box-shadow: 5px 5px 0px 1px #cccccc;
+  padding: 1em 1.25em;
+  transition: border-top-color 0.15s;
+}
+
+.mq-card:hover {
+  border-top-color: var(--mq-secondary);
+}
+
+/* ── Code blocks — elm terminal (light) ───────────────── */
+
+.mq-code-block,
+.mq-main pre {
+  background: #ffffff !important;
+  color: #000E16 !important;
+  border: 1px solid #cccccc !important;
+  border-radius: 0 !important;
+  box-shadow: 5px 5px 0px 1px #cccccc;
+  font-family: var(--mq-font-mono);
+  font-size: 0.82em;
+  line-height: 1.6;
+  padding: 0.75em 1em;
+  overflow-x: auto;
+}
+
+.mq-code-head {
+  background: #f5f5f5 !important;
+  border-bottom: 1px solid #cccccc !important;
+  color: var(--mq-muted) !important;
+  font-family: var(--mq-font-mono);
+  font-size: 0.82em;
+  border-radius: 0 !important;
+}
+
+.mq-main pre code {
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* ── Inline code — tertiary tint ──────────────────────── */
+
+.mq-main :not(pre) > code {
+  background: #edfbf4;
+  color: #1a6e4a;
+  border: 1px solid #b2e0cc;
+  border-radius: 0;
+  padding: 0.05em 0.35em;
+  font-size: 87%;
+  font-family: var(--mq-font-mono);
+}
+
+/* ── Syntax highlighting — light, elm palette ─────────── */
+
+.hljs                       { background: transparent; color: #000E16; }
+.hljs-comment,
+.hljs-quote                 { color: #777777; font-style: italic; }
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-section               { color: #1293D8; font-weight: 500; }
+.hljs-title,
+.hljs-name                  { color: #1293D8; }
+.hljs-type,
+.hljs-number,
+.hljs-built_in,
+.hljs-literal               { color: #C75025; }
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition              { color: #2D9E6B; }
+.hljs-variable,
+.hljs-template-variable     { color: #0d6fa0; }
+.hljs-attribute,
+.hljs-meta                  { color: #8a5c00; }
+.hljs-deletion              { color: #C75025; text-decoration: line-through; }
+.hljs-emphasis              { font-style: italic; }
+.hljs-strong                { font-weight: bold; }
+
+/* ── Links ────────────────────────────────────────────── */
+
+.mq-main a             { color: var(--mq-primary); text-decoration: none; }
+.mq-main a:hover       { color: var(--mq-secondary); text-decoration: underline; }
+
+/* ── Buttons ──────────────────────────────────────────── */
+
+.mq-btn,
+.mq-main a.mq-btn,
+button.mq-btn {
+  display: inline-block;
+  background: #ffffff;
+  color: var(--mq-primary);
+  border: 2px solid var(--mq-primary) !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0px 0px var(--mq-primary);
+  padding: 0.45em 1.2em;
+  font-family: var(--mq-font-sans);
+  font-size: 1em;
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: background 0.12s, color 0.12s, box-shadow 0.1s;
+}
+
+.mq-btn:hover,
+.mq-main a.mq-btn:hover,
+button.mq-btn:hover {
+  background: var(--mq-primary);
+  color: #ffffff;
+  box-shadow: 2px 2px 0px 0px #0d6fa0;
+  text-decoration: none !important;
+}
+
+/* ── Blockquote ───────────────────────────────────────── */
+
+blockquote {
+  background: var(--mq-callout-info-bg);
+  border-left: 4px solid var(--mq-callout-info-border);
+  border-radius: 0;
+  color: var(--mq-callout-info-text);
+  padding: 0.6em 1em;
+  margin: 1em 0;
+}
+
+/* ── Misc ─────────────────────────────────────────────── */
+
+mark {
+  background: #fff3b0;
+  color: var(--mq-text);
+}
+
+.mq-divider {
+  height: 3px;
+  background: var(--mq-secondary);
+  border: none;
+  border-radius: 0;
+  width: 3rem;
+}
+
+
+/* Search */
+
+.mq-search-toggle svg {
+  filter: invert(1);
+}

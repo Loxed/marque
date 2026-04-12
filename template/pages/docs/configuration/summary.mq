@@ -26,13 +26,13 @@ The summary switches from one section to the next based on the scroll position o
 @card
 If you want to use a heading without it appearing in the summary, you can add a `*` symbol before it:
 
-@demo
+@demo .code
 #* This heading will not appear in the summary
 @end demo
 
 You can also use the `*` syntax with alternate heading styles:
 
-@demo
+@demo .code
 Heading level 1
 ===============*
 Heading level 2

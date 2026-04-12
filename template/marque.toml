@@ -1,7 +1,7 @@
 title = Marque
 description = Built with Marque
 layout = sidebar
-theme = gouda
+theme = rubyola
 width = normal
 align = center
 repo = https://github.com/Loxed/marque
@@ -26,7 +26,7 @@ summary = false
 #   false     -> hide it by default unless a page enables it
 #
 # theme options (built-in):
-#   comte, gouda, pycorino, rustique
+#   comte, gouda, pycorino, rustique, rubyola
 #   legacy/default, legacy/destiny, legacy/elmental
 #   legacy/gruyere, legacy/javarti, legacy/mida
 #   legacy/pycorino, legacy/rustique

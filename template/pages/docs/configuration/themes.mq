@@ -139,11 +139,10 @@ _"Yes I'm French, how did you guess?"_
 @row
 
   @card .primary
-    ## legacy/javarti.css
+    ## rubyola.css
+    Rubyola is a dark, modern theme for Marque inspired by [Ruby](https://ruby-lang.org/). Like [Robiola](https://en.wikipedia.org/wiki/Robiola), it's soft on the eyes.
 
-    Javarti is a classic light theme for Marque, influenced by [Java](https://java.com/). Like [Havarti](https://en.wikipedia.org/wiki/Havarti), it's old enough but ages well.
-
-    ![Javarti Theme](static/topnav.png)
+    ![Rubyola Theme](static/topnav.png)
   @end card
 
   @card .tertiary

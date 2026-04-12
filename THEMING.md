@@ -136,6 +136,7 @@ Requirements:
   --mq-font-sans
   --mq-font-serif
   --mq-font-mono
+
 - Include the compatibility aliases too:
   --bg
   --surface
@@ -150,6 +151,7 @@ Requirements:
   --font-sans
   --font-serif
   --font-mono
+
 - After the token block, add only a handful of theme-specific overrides for:
   body
   .mq-nav
@@ -157,6 +159,39 @@ Requirements:
   .mq-card
   .mq-code-block, .mq-main pre
   .mq-summary-panel, .mq-page-nav-link
+
+Nav dropdown rule (always apply this):
+  Dropdown triggers (.mq-nav-group-trigger) must be visually identical to plain nav
+  links at all times — same color, padding, hover, and active state. This follows the
+  go.dev pattern where there is zero visual distinction between a link and a dropdown
+  trigger. To achieve this:
+
+  1. Reset button chrome on the trigger so the browser does not add its own border,
+     background, or padding:
+       appearance: none; -webkit-appearance: none; background: none; border: none;
+       cursor: pointer; font-family: inherit; font-size: inherit; letter-spacing: inherit;
+
+  2. Every nav rule must target both elements together. Never write a rule for one
+     without the other:
+       .mq-nav-links a,
+       .mq-nav-links .mq-nav-group > .mq-nav-group-trigger { ... }
+
+  3. common.css ships its own specificity on these selectors. Use !important on
+     border-radius, border, color, and background overrides inside .mq-nav to win.
+
+  4. The only allowed visual difference is a small inline arrow appended via ::after
+     (e.g. content: "▾") that rotates when aria-expanded="true".
+
+  5. Set --mq-nav-bg to the dropdown surface color (e.g. --mq-surface), not the nav
+     bar color. Style the nav bar background directly on .mq-nav. This prevents the
+     nav bar color from leaking into floating submenus via common.css.
+
+  6. Submenu overrides (.mq-nav .mq-nav-submenu) must be written WITHOUT !important.
+     The sidebar layout already forces background: transparent !important and
+     border: none !important on submenus so its inline nested links are unaffected.
+     Topnav floating dropdowns have no such overrides and will pick up the theme
+     styles correctly.
+
 - Make the theme specific and memorable rather than generic.
 - Keep contrast readable and code blocks usable.
 - Keep the CSS cohesive and reasonably small.
