@@ -251,7 +251,7 @@ Layouts own the shared page shell and layout behavior:
 - `index.js` (shared runtime helpers)
 - `<name>.css` (layout-specific structure and responsive framing)
 
-`common.css` owns the shared component baseline. Themes should stay token-first and only add a few intentional overrides. Legacy built-ins still resolve by bare name for compatibility, but the canonical path is `legacy/<name>`.
+`common.css` owns the shared component baseline. Themes should stay token-first and only add a few intentional overrides. Use `legacy/<name>` when you specifically want an older bundled theme variant.
 
 Create a new theme with:
 

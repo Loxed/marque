@@ -88,7 +88,7 @@ themes/
     ...
 ```
 
-Legacy built-ins still resolve by bare name for compatibility, but the canonical reference is `legacy/<name>`.
+Use `legacy/<name>` when you specifically want one of the older full-size bundled theme variants.
 @end card
 
 @card

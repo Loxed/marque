@@ -155,7 +155,7 @@ Run commands from your site folder unless the example says otherwise.
   marque theme template . themes/custom.css --reference legacy/rustique
   ```
 
-  Use the advanced scaffold when you want a larger starting point based on directive selectors and an existing reference theme. Bare legacy names still work, but `legacy/<name>` is the canonical path.
+  Use the advanced scaffold when you want a larger starting point based on directive selectors and an existing reference theme. Use `legacy/<name>` when you specifically want one of the older full-size bundled theme variants.
 @end card
 
 ## Notes
