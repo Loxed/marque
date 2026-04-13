@@ -6,7 +6,7 @@
 :root {
   --mq-primary: #00a6c8;
   --mq-secondary: #7edcf4;
-  --mq-tertiary: #ffb454;
+  --mq-tertiary: #fddd00;
 
   --mq-background: #0f1418;
   --mq-surface: #171d22;
@@ -21,9 +21,8 @@
   --mq-nav-active-bg: rgba(5, 10, 14, 0.24);
   --mq-nav-active-text: #ffffff;
 
-  --mq-code-bg: #0a1014;
+  --mq-code-bg: #21282d;
   --mq-code-text: #bceeff;
-  --mq-code-border: rgba(0, 166, 200, 0.36);
   --mq-code-head-bg: #12191e;
   --mq-code-head-text: #82d8f5;
   --mq-code-copy-bg: rgba(0, 166, 200, 0.08);
@@ -130,6 +129,10 @@ body {
   border-bottom: 2px solid #ffffff !important;
 }
 
+.mq-nav-heading {
+  color: var(--mq-code-text);
+}
+
 .mq-main h1,
 .mq-main h2,
 .mq-main h3 {
@@ -178,13 +181,14 @@ body {
 }
 
 .mq-code-block {
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.28);
 }
 
 .mq-main pre,
 .mq-code-block pre {
   line-height: 1.72;
+  border-radius: 0px;
 }
 
 .mq-summary-panel {
@@ -206,11 +210,19 @@ body {
 
 a.mq-btn,
 .mq-page-nav-link {
-  border-radius: 999px;
+  border-radius: 0.125rem;
   font-family: var(--mq-font-mono);
   font-size: 0.76rem;
   letter-spacing: 0.05em;
 }
+
+a.mq-btn.primary:hover,
+a.mq-btn.secondary:hover,
+a.mq-btn.tertiary:hover{
+  color: white;
+}
+
+
 
 .mq-page-nav-link:hover {
   border-color: rgba(126, 220, 244, 0.3);

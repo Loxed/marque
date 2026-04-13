@@ -1,7 +1,7 @@
 title = Marque
 description = Built with Marque
 layout = sidebar
-theme = rubyola
+theme = elmental
 width = normal
 align = center
 repo = https://github.com/Loxed/marque
