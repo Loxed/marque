@@ -1,52 +1,200 @@
-/* comte — warm light serif theme */
+/* comte - warm editorial paper */
 /* depends on: common.css */
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,500;0,700;1,300&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&family=DM+Sans:wght@300;400;500;700&display=swap');
 
 :root {
-  --mq-primary:      #c85a2a;
-  --mq-secondary:    #3475f2;
-  --mq-tertiary:     #00975d;
+  --mq-primary: #c56331;
+  --mq-secondary: #4269d0;
+  --mq-tertiary: #2f8963;
 
-  --mq-background:   #f7f5f0;
-  --mq-surface:      #ffffff;
-  --mq-surface-alt:  #eeece7;
-  --mq-text:         #1a1916;
-  --mq-muted:        #6b6860;
-  --mq-border:       rgba(0,0,0,0.09);
+  --mq-background: #f6f1e8;
+  --mq-surface: #fffaf3;
+  --mq-surface-alt: #f1eadf;
+  --mq-text: #1d1914;
+  --mq-muted: #655c51;
+  --mq-border: rgba(69, 48, 24, 0.13);
 
-  --mq-nav-bg:          var(--mq-surface);
-  --mq-nav-active-bg:   color-mix(in srgb, var(--mq-primary) 10%, transparent);
+  --mq-nav-bg: rgba(255, 250, 243, 0.9);
+  --mq-nav-border: rgba(69, 48, 24, 0.12);
+  --mq-nav-link-text: #6f6559;
+  --mq-nav-active-bg: color-mix(in srgb, var(--mq-primary) 12%, transparent);
   --mq-nav-active-text: var(--mq-text);
 
-  --mq-code-bg:     #1e1c18;
-  --mq-code-text:   #e8e4dc;
-  --mq-code-border: #352c23;
+  --mq-code-bg: #1f1a15;
+  --mq-code-text: #efe7db;
+  --mq-code-border: #3d3125;
+  --mq-code-head-bg: #2a241d;
+  --mq-code-head-text: #d8c1a2;
+  --mq-code-copy-bg: rgba(216, 193, 162, 0.08);
+  --mq-code-copy-border: rgba(216, 193, 162, 0.22);
+  --mq-code-copy-bg-hover: rgba(216, 193, 162, 0.16);
 
-  --mq-callout-info-bg:     #eef3fb;
-  --mq-callout-info-border: #2a5ac8;
-  --mq-callout-info-text:   #1a3060;
-  --mq-callout-warn-bg:     #fdf5e8;
-  --mq-callout-warn-border: #c87a2a;
-  --mq-callout-warn-text:   #5a3510;
-  --mq-callout-danger-bg:   #fbeaea;
-  --mq-callout-danger-border: #c82a2a;
-  --mq-callout-danger-text:   #5a1010;
-  --mq-callout-ok-bg:     #eaf4ee;
-  --mq-callout-ok-border: #2ac852;
-  --mq-callout-ok-text:   #0e4020;
+  --mq-card-bg: rgba(255, 250, 243, 0.94);
+  --mq-card-border: rgba(69, 48, 24, 0.12);
+  --mq-card-radius: 18px;
+  --mq-card-shadow: 0 18px 40px rgba(82, 56, 22, 0.08);
 
-  --mq-radius:    8px;
+  --mq-hero-bg: linear-gradient(180deg, rgba(255, 250, 243, 0.97), rgba(241, 234, 223, 0.94));
+  --mq-hero-border: rgba(69, 48, 24, 0.12);
+  --mq-hero-radius: 22px;
+
+  --mq-table-bg: rgba(255, 250, 243, 0.95);
+  --mq-table-border: rgba(69, 48, 24, 0.12);
+  --mq-table-head-bg: rgba(197, 99, 49, 0.08);
+  --mq-table-row-alt-bg: rgba(66, 105, 208, 0.04);
+  --mq-table-row-hover-bg: rgba(197, 99, 49, 0.08);
+
+  --mq-summary-bg: rgba(255, 250, 243, 0.92);
+  --mq-summary-border: rgba(69, 48, 24, 0.11);
+  --mq-summary-shadow: 0 20px 40px rgba(82, 56, 22, 0.08);
+
+  --mq-search-surface: #fffaf3;
+  --mq-search-result-bg: rgba(197, 99, 49, 0.08);
+  --mq-search-result-border: rgba(197, 99, 49, 0.14);
+  --mq-search-chip-bg: rgba(66, 105, 208, 0.08);
+  --mq-search-mark-bg: rgba(197, 99, 49, 0.18);
+
+  --mq-btn-border: rgba(69, 48, 24, 0.15);
+  --mq-btn-bg-hover: rgba(66, 105, 208, 0.07);
+  --mq-btn-primary-text: #fff8ef;
+  --mq-btn-secondary-text: #fff8ef;
+  --mq-btn-tertiary-text: #fff8ef;
+
+  --mq-divider-bg: linear-gradient(90deg, var(--mq-primary), rgba(197, 99, 49, 0.2));
+
+  --mq-radius: 14px;
   --mq-max-width: 860px;
 
-  --mq-font-sans:  'DM Sans', system-ui, sans-serif;
+  --mq-font-sans: 'DM Sans', system-ui, sans-serif;
   --mq-font-serif: 'Fraunces', Georgia, serif;
-  --mq-font-mono:  'IBM Plex Mono', monospace;
+  --mq-font-mono: 'IBM Plex Mono', monospace;
 
-  /* compat aliases */
-  --bg: var(--mq-background); --surface: var(--mq-surface); --surface2: var(--mq-surface-alt);
-  --text: var(--mq-text); --muted: var(--mq-muted); --accent: var(--mq-primary);
-  --accent2: var(--mq-secondary); --border: var(--mq-border); --radius: var(--mq-radius);
-  --max-w: var(--mq-max-width); --font-sans: var(--mq-font-sans);
-  --font-serif: var(--mq-font-serif); --font-mono: var(--mq-font-mono);
+  --bg: var(--mq-background);
+  --surface: var(--mq-surface);
+  --surface2: var(--mq-surface-alt);
+  --text: var(--mq-text);
+  --muted: var(--mq-muted);
+  --accent: var(--mq-primary);
+  --accent2: var(--mq-secondary);
+  --border: var(--mq-border);
+  --radius: var(--mq-radius);
+  --max-w: var(--mq-max-width);
+  --font-sans: var(--mq-font-sans);
+  --font-serif: var(--mq-font-serif);
+  --font-mono: var(--mq-font-mono);
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(197, 99, 49, 0.12), transparent 32%),
+    linear-gradient(180deg, #fbf7f0 0%, var(--mq-background) 28%, var(--mq-background) 100%);
+  color: var(--mq-text);
+}
+
+.mq-nav {
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(82, 56, 22, 0.08);
+}
+
+.mq-nav-brand {
+  font-weight: 600;
+}
+
+.mq-main h1 {
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+
+.mq-main h2 {
+  color: var(--mq-text);
+  font-weight: 550;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(69, 48, 24, 0.1);
+}
+
+.mq-main p,
+.mq-main ul,
+.mq-main ol {
+  color: var(--mq-muted);
+}
+
+.mq-main a {
+  color: var(--mq-secondary);
+  text-decoration-line: underline;
+  text-decoration-color: rgba(197, 99, 49, 0.45);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.mq-main a:hover {
+  color: var(--mq-primary);
+}
+
+.mq-card,
+.mq-spotlight,
+.mq-hero,
+.mq-page-nav-link {
+  box-shadow: var(--mq-card-shadow);
+}
+
+.mq-main blockquote {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 1.1rem 1.25rem 1.1rem 1.5rem;
+  border: 1px solid rgba(69, 48, 24, 0.1);
+  border-left: none;
+  border-radius: 0 18px 18px 0;
+  background: rgba(197, 99, 49, 0.08);
+  color: #5f5347;
+  font-style: italic;
+}
+
+.mq-main blockquote::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.32rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--mq-primary), var(--mq-secondary));
+}
+
+.mq-main :not(pre) > code {
+  background: rgba(66, 105, 208, 0.08);
+  color: #27459a;
+  border: 1px solid rgba(66, 105, 208, 0.16);
+  border-radius: 999px;
+  padding: 0.12em 0.5em;
+}
+
+.mq-code-block {
+  border-radius: 18px;
+  box-shadow: 0 20px 45px rgba(20, 17, 13, 0.2);
+}
+
+.mq-code-head {
+  border: none;
+  padding-inline: 0.9rem;
+}
+
+.mq-main pre,
+.mq-code-block pre {
+  line-height: 1.75;
+}
+
+a.mq-btn {
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.mq-page-nav-link:hover {
+  background: rgba(197, 99, 49, 0.08);
+  border-color: rgba(197, 99, 49, 0.2);
+}
+
+.mq-summary-link,
+.mq-summary-fallback {
+  font-size: 0.84rem;
+  line-height: 1.4;
 }

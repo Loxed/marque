@@ -1,0 +1,24 @@
++++
+title = "Rubyola"
+nav = "rubyola"
+theme = rubyola
+layout = topnav
+width = full
++++
+
+@hero
+# Rubyola Theme Preview
+@divider
+
+Ruby is a dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant syntax that is natural to read and easy to write.
+
+@actions
+@[Download Ruby](https://www.ruby-lang.org/en/downloads/){.primary}
+@[Read the Docs](https://www.ruby-lang.org/en/documentation/){.tertiary}
+@end actions
+
+```rb
+say = "I love Ruby "
+puts say
+```
+@end hero

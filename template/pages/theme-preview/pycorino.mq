@@ -1,0 +1,26 @@
++++
+title = "Pycorino"
+nav = "pycorino"
+theme = pycorino
+layout = topnav
+width = full
++++
+
+@hero
+# Pycorino Theme Preview
+@divider
+
+Python is a high-level programming language that emphasizes code readability and simplicity, at the cost of performance and abstracting away low-level details.
+
+@actions
+@[Download Python](https://www.python.org/downloads/){.primary}
+@[Read the Docs](https://docs.python.org/3/){.tertiary}
+@end actions
+
+```py
+message = "Hello, Python!"
+
+for _ in range(3):
+    print(message)
+```
+@end hero

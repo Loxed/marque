@@ -76,17 +76,19 @@ That path is useful when you want selector placeholders and a heavier scaffold. 
 
 Use the root of `themes/` for new work:
 
-```text
+@filetree
 themes/
   my-theme.css
   comte.css
+  elmental.css
   gouda.css
-  rustique.css
   pycorino.css
+  rubyola.css
+  rustique.css
   legacy/
     mida.css
     ...
-```
+@end filetree
 
 Use `legacy/<name>` when you specifically want one of the older full-size bundled theme variants.
 @end card
@@ -105,6 +107,8 @@ Older showcase themes live in `themes/legacy/`, including `legacy/default`, `leg
 
 _"Yes I'm French, how did you guess?"_
 
+The current bundled themes all inherit `common.css`, but each one now pushes a different personality: editorial, flat handbook, utilitarian terminal, playful notebook, luxe dark, and industrial print.
+
 @end card
 
 @row classes
@@ -112,26 +116,26 @@ _"Yes I'm French, how did you guess?"_
   @card .secondary
     ## comté.css `(default)`
 
-    [Comté](https://en.wikipedia.org/wiki/Comté) is the default theme for Marque. It is the modern token-first base theme and lives at `themes/comte.css`.
+    [Comté](https://en.wikipedia.org/wiki/Comté) is the default Marque theme: warm editorial paper, soft serif headlines, and polished documentation chrome without a lot of noise.
 
-    ![Comté Theme](static/topnav.png)
+    ![Comté Theme](static/theme_preview/comte.png)
   @end card
 
   @card .primary
     ## rustique.css
 
-    Rustique is a modern, warm theme for Marque, based on [Rust](https://rust-lang.org/). (Rustique is a French brand of [Camembert](https://en.wikipedia.org/wiki/Camembert))
+    Rustique is the industrial field-guide theme: slab headings, dark workshop chrome, and copper accents that feel heavier and more mechanical than Comté.
 
-    ![Rustique Theme](static/topnav.png)
+    ![Rustique Theme](static/theme_preview/rustique.png)
 
   @end card
 
   @card .tertiary
     ## pycorino.css
 
-    Pycorino is a playful light theme inspired by [Python](https://python.org/). (Python + [Pecorino](https://en.wikipedia.org/wiki/Pecorino) = Pycorino ??? It's 4am when I'm writing this)
+    Pycorino is a bright notebook theme with friendly rounded surfaces, sunny highlights, and a playful [Python](https://python.org/)-ish blue and yellow palette.
 
-    ![Pycorino Theme](static/topnav.png)
+    ![Pycorino Theme](static/theme_preview/pycorino.png)
   @end card
 
 @end row
@@ -140,26 +144,26 @@ _"Yes I'm French, how did you guess?"_
 
   @card .primary
     ## rubyola.css
-    Rubyola is a dark, modern theme for Marque inspired by [Ruby](https://ruby-lang.org/). Like [Robiola](https://en.wikipedia.org/wiki/Robiola), it's soft on the eyes.
+    Rubyola is the default dark theme: ruby-red accents and warm gold typography inspired by [Ruby](https://ruby-lang.org/) without drifting into generic dark-mode styling.
 
-    ![Rubyola Theme](static/topnav.png)
+    ![Rubyola Theme](static/theme_preview/rubyola.png)
   @end card
 
   @card .tertiary
     ## gouda.css
 
-    [Gouda](https://en.wikipedia.org/wiki/Gouda_cheese) is a cool, simple dark theme for Marque, based on [Go](https://go.dev/). Gouda is a simple, pleasant cheese anyone can enjoy.
+    Gouda is the compact terminal handbook theme: cool teal chrome, restrained typography, and dark surfaces that feel closer to a tool than a magazine.
 
-    ![Gouda Theme](static/topnav.png)
+    ![Gouda Theme](static/theme_preview/gouda.png)
 
   @end card
 
   @card .secondary
-    ## legacy/elmental.css
+    ## elmental.css
 
-    Elmental is a bright, paper-like theme for Marque, inspired by [Elm](https://elm-lang.org/). [Emmental](https://en.wikipedia.org/wiki/Emmental_cheese) (not [Gruyère](https://en.wikipedia.org/wiki/Gruyère)!) has holes in it, Elm doesn't.
+    Elmental is the flat handbook theme inspired by [Elm](https://elm-lang.org/): crisp blue signage, monospaced labels, hard edges, and offset shadows instead of soft cards.
 
-    ![Mida Theme](static/topnav.png)
+    ![Elmental Theme](static/theme_preview/elmental.png)
   @end card
 @end row
 

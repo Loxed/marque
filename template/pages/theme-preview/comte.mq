@@ -1,0 +1,20 @@
++++
+title = "Comte"
+nav = "comte"
+theme = comte
+layout = topnav
+width = full
++++
+
+@hero
+# Comte Theme Preview
+@divider
+
+Comte is the default Marque look: warm editorial surfaces, serif display type, and enough contrast to feel polished without getting busy.
+
+@actions
+@[Themes](/docs/configuration/themes.mq){.primary}
+@[Quickstart](/quickstart.mq){.tertiary}
+@end actions
+
+@end hero

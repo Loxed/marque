@@ -1,0 +1,26 @@
++++
+title = "Rustique"
+nav = "rustique"
+theme = rustique
+layout = topnav
+width = full
++++
+
+@hero
+# Rustique Theme Preview
+@divider
+
+Rust's homepage currently highlights **Version 1.94.1** and still describes the language as empowering everyone to build reliable and efficient software.
+
+@actions
+@[Install Rust](https://www.rust-lang.org/tools/install){.primary}
+@[Learn Rust](https://www.rust-lang.org/learn){.tertiary}
+@end actions
+
+```rs
+fn main() {
+    println!("Hello, Rust!");
+}
+```
+@end hero
+

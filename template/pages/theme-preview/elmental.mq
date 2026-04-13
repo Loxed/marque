@@ -1,0 +1,21 @@
++++
+title = "Elmental"
+nav = "elmental"
+theme = elmental
+layout = topnav
+width = full
++++
+
+@hero
+# Elmental Theme Preview
+@divider
+
+The Elm language is a delightful language for reliable web applications, with strong tooling and no runtime exceptions.
+
+```elm
+import Html exposing (text)
+
+main =
+    text "Hello, Elm!"
+```
+@end hero

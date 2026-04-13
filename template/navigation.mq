@@ -30,3 +30,14 @@ Extra
 [Markdown Syntax](extra/markdown.mq)
 [FAQ](extra/faq.mq)
 [Author](extra/author.mq)
+
+
+Temp
+
+[Theme Preview](theme-preview.mq)
+[Comte](theme-preview/comte.mq)
+[Elmental](theme-preview/elmental.mq)
+[Gouda](theme-preview/gouda.mq)
+[Pycorino](theme-preview/pycorino.mq)
+[Rubyola](theme-preview/rubyola.mq)
+[Rustique](theme-preview/rustique.mq)

@@ -26,7 +26,7 @@ summary = false
 #   false     -> hide it by default unless a page enables it
 #
 # theme options (built-in):
-#   comte, gouda, pycorino, rustique, rubyola
+#   comte, elmental, gouda, pycorino, rubyola, rustique
 #   legacy/default, legacy/destiny, legacy/elmental
 #   legacy/gruyere, legacy/javarti, legacy/mida
 #   legacy/pycorino, legacy/rustique

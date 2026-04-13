@@ -1,350 +1,225 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap');
+/* gouda - cool terminal handbook */
+/* depends on: common.css */
 
-/* ============================================================
-   TOKENS
-   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap');
 
 :root {
-  /* Brand */
-  --mq-primary:   #007D9C;
-  --mq-secondary: #007D9C;
-  --mq-tertiary:  #00ACD7;
+  --mq-primary: #00a6c8;
+  --mq-secondary: #7edcf4;
+  --mq-tertiary: #ffb454;
 
-  /* Surfaces */
-  --mq-background:  #202224;
-  --mq-surface:     #2A2D2F;
-  --mq-surface-alt: #313538;
+  --mq-background: #0f1418;
+  --mq-surface: #171d22;
+  --mq-surface-alt: #1e262d;
+  --mq-text: #d7dfe6;
+  --mq-muted: #8c98a2;
+  --mq-border: #2b3840;
 
-  /* Text */
-  --mq-text:   #D4D8DA;
-  --mq-muted:  #8A9199;
-  --mq-border: #3A3E42;
+  --mq-nav-bg: #171d22;
+  --mq-nav-border: rgba(126, 220, 244, 0.16);
+  --mq-nav-link-text: rgba(255, 255, 255, 0.92);
+  --mq-nav-active-bg: rgba(5, 10, 14, 0.24);
+  --mq-nav-active-text: #ffffff;
 
-  /* Nav
-     --mq-nav-bg is intentionally set to --mq-surface so common.css
-     uses it for the submenu dropdown background. The nav bar itself
-     is colored directly via .mq-nav below. */
-  --mq-nav-bg:          var(--mq-surface);
-  --mq-nav-active-bg:   rgba(0, 0, 0, 0.2);
-  --mq-nav-active-text: white;
+  --mq-code-bg: #0a1014;
+  --mq-code-text: #bceeff;
+  --mq-code-border: rgba(0, 166, 200, 0.36);
+  --mq-code-head-bg: #12191e;
+  --mq-code-head-text: #82d8f5;
+  --mq-code-copy-bg: rgba(0, 166, 200, 0.08);
+  --mq-code-copy-border: rgba(0, 166, 200, 0.22);
+  --mq-code-copy-bg-hover: rgba(0, 166, 200, 0.18);
 
-  /* Code */
-  --mq-code-bg:     #181A1C;
-  --mq-code-text:   #A8D8E8;
-  --mq-code-border: #007D9C55;
+  --mq-card-bg: #171d22;
+  --mq-card-border: #2b3840;
+  --mq-card-radius: 0px;
+  --mq-card-shadow: inset 0 1px 0 rgba(126, 220, 244, 0.05);
 
-  /* Callouts */
-  --mq-callout-info-bg:     #00ACD710;
-  --mq-callout-info-border: #007D9C;
-  --mq-callout-info-text:   #A8D8E8;
+  --mq-hero-bg: linear-gradient(180deg, rgba(23, 29, 34, 0.98), rgba(30, 38, 45, 0.94));
+  --mq-hero-border: #2b3840;
+  --mq-hero-radius: 0px;
 
-  --mq-callout-warn-bg:     #B8860B18;
-  --mq-callout-warn-border: #C8960B;
-  --mq-callout-warn-text:   #E0C070;
+  --mq-table-bg: #171d22;
+  --mq-table-border: #2b3840;
+  --mq-table-head-bg: rgba(0, 166, 200, 0.08);
+  --mq-table-head-text: #bceeff;
+  --mq-table-row-alt-bg: rgba(255, 255, 255, 0.02);
+  --mq-table-row-hover-bg: rgba(0, 166, 200, 0.08);
 
-  --mq-callout-danger-bg:     #9B2C2C18;
-  --mq-callout-danger-border: #C53030;
-  --mq-callout-danger-text:   #FC8181;
+  --mq-summary-bg: #171d22;
+  --mq-summary-border: #2b3840;
+  --mq-summary-shadow: none;
 
-  --mq-callout-ok-bg:     #22543D18;
-  --mq-callout-ok-border: #276749;
-  --mq-callout-ok-text:   #68D391;
+  --mq-search-surface: #171d22;
+  --mq-search-result-bg: rgba(0, 166, 200, 0.08);
+  --mq-search-result-border: rgba(0, 166, 200, 0.18);
+  --mq-search-chip-bg: rgba(255, 255, 255, 0.04);
+  --mq-search-mark-bg: rgba(0, 166, 200, 0.22);
+  --mq-search-close-bg: rgba(255, 255, 255, 0.04);
+  --mq-search-close-border: rgba(126, 220, 244, 0.18);
 
-  /* Layout */
-  --mq-radius:    3px;
+  --mq-btn-border: #2b3840;
+  --mq-btn-bg-hover: rgba(0, 166, 200, 0.08);
+  --mq-btn-primary-text: #051015;
+  --mq-btn-secondary-text: #051015;
+  --mq-btn-tertiary-text: #051015;
+
+  --mq-divider-bg: linear-gradient(90deg, var(--mq-primary), rgba(126, 220, 244, 0.2));
+
+  --mq-radius: 4px;
   --mq-max-width: 72rem;
 
-  /* Typography */
-  --mq-font-sans:  'Work Sans', system-ui, sans-serif;
+  --mq-font-sans: 'Work Sans', system-ui, sans-serif;
   --mq-font-serif: 'Work Sans', system-ui, sans-serif;
-  --mq-font-mono:  'Source Code Pro', 'Menlo', 'Consolas', monospace;
+  --mq-font-mono: 'Source Code Pro', monospace;
 
-  /* Aliases for common.css compatibility */
-  --bg:         var(--mq-background);
-  --surface:    var(--mq-surface);
-  --surface2:   var(--mq-surface-alt);
-  --text:       var(--mq-text);
-  --muted:      var(--mq-muted);
-  --accent:     var(--mq-tertiary);
-  --accent2:    var(--mq-tertiary);
-  --border:     var(--mq-border);
-  --radius:     var(--mq-radius);
-  --max-w:      var(--mq-max-width);
-  --font-sans:  var(--mq-font-sans);
+  --bg: var(--mq-background);
+  --surface: var(--mq-surface);
+  --surface2: var(--mq-surface-alt);
+  --text: var(--mq-text);
+  --muted: var(--mq-muted);
+  --accent: var(--mq-primary);
+  --accent2: var(--mq-secondary);
+  --border: var(--mq-border);
+  --radius: var(--mq-radius);
+  --max-w: var(--mq-max-width);
+  --font-sans: var(--mq-font-sans);
   --font-serif: var(--mq-font-serif);
-  --font-mono:  var(--mq-font-mono);
+  --font-mono: var(--mq-font-mono);
 }
-
-/* ============================================================
-   BASE
-   ============================================================ */
 
 body {
-  background-color: var(--mq-background);
+  background:
+    radial-gradient(circle at top right, rgba(0, 166, 200, 0.1), transparent 28%),
+    linear-gradient(180deg, #13191d 0%, var(--mq-background) 30%, var(--mq-background) 100%);
   color: var(--mq-text);
-  font-family: var(--mq-font-sans);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  font-size: 0.95rem;
 }
-
-/* ============================================================
-   NAV — go.dev flat style
-   Overrides common.css rounded borders and border hover/active.
-   Nav bar bg is set directly here (not via --mq-nav-bg, which
-   is reserved for the submenu dropdown surface).
-   ============================================================ */
 
 .mq-nav {
-  background-color: var(--mq-primary);
-  border-bottom: 1px solid var(--mq-tertiary);
-  font-size: 0.85rem;
-  letter-spacing: 0.01em;
-  margin: 0;
+  background: linear-gradient(180deg, #00a8cb 0%, #0084a3 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
 }
 
-/* Shared base — links and triggers identical */
-.mq-nav-links a,
-.mq-nav-links .mq-nav-link,
-.mq-nav-links .mq-nav-group > .mq-nav-group-trigger,
-.mq-nav .mq-nav-group-trigger {
-  color: white !important;
-  padding: 10px;
-  margin: 0;
-  background: none;
-  border-radius: 0 !important;
-  border: 0 !important;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-/* Hover / focus */
-.mq-nav-links a:hover,
-.mq-nav-links a:focus,
-.mq-nav-links .mq-nav-group > .mq-nav-group-trigger:hover,
-.mq-nav-links .mq-nav-group > .mq-nav-group-trigger:focus,
-.mq-nav .mq-nav-group-trigger:hover,
-.mq-nav .mq-nav-group-trigger:focus {
-  color: var(--mq-tertiary) !important;
-  background-color: var(--mq-background) !important;
-  border-color: transparent !important;
-  outline: none;
-}
-
-/* Active / current page */
-.mq-nav [aria-current="page"],
-.mq-nav .active,
-.mq-nav-links a.active,
-.mq-nav-links .mq-nav-group > .mq-nav-group-trigger.active {
-  color: white !important;
-  background-color: var(--mq-nav-active-bg) !important;
-  border: 0 !important;
-  border-bottom: 2px solid white !important;
-  border-radius: 0 !important;
-}
-
-/* Group trigger — reset button chrome */
-.mq-nav .mq-nav-group-trigger {
-  appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-  font-family: var(--mq-font-sans);
-  font-size: 0.85rem;
-  letter-spacing: 0.01em;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2em;
-}
-
-.mq-nav .mq-nav-group-trigger::after {
-  content: "▾";
-  font-size: 0.75em;
-  opacity: 0.65;
-  transition: transform 0.15s ease;
-}
-
-.mq-nav .mq-nav-group-trigger[aria-expanded="true"]::after {
-  transform: rotate(180deg);
-}
-
-/* Nav heading label (sidebar layout) */
-.mq-nav-heading {
-  color: white;
-}
-
-/* Submenu dropdown — no rounding, teal top accent, dark surface.
-   Written WITHOUT !important so sidebar layout's own !important
-   rules (transparent bg, no border) correctly override these
-   for inline sidebar submenus. Topnav floating dropdowns have
-   no such overrides so they pick these styles up as intended. */
-.mq-nav .mq-nav-submenu {
-  border-radius: 0;
-  border-top: 2px solid var(--mq-tertiary);
-}
-
-.mq-nav .mq-nav-submenu a,
-.mq-nav .mq-nav-submenu .mq-nav-link {
-  border-radius: 0;
-  border: 0;
-}
-
-/* Search toggle */
-.mq-search-toggle {
-  background-color: var(--mq-tertiary);
-}
-
-/* ============================================================
-   TYPOGRAPHY
-   ============================================================ */
-
-.mq-main :is(h1, h2) {
-  font-family: var(--mq-font-sans);
+.mq-nav-brand {
+  color: #ffffff;
+  font-family: var(--mq-font-mono);
+  font-size: 0.98rem;
   font-weight: 600;
-  color: #E8ECEE;
-  letter-spacing: -0.015em;
-  padding-bottom: 0.4rem;
-  margin-top: 1.75rem;
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: #ffffff !important;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.mq-nav-links a:hover,
+.mq-nav-group > .mq-nav-group-trigger:hover {
+  background: rgba(5, 10, 14, 0.18) !important;
+  color: #ffffff !important;
+}
+
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
+  background: rgba(5, 10, 14, 0.24) !important;
+  border-bottom: 2px solid #ffffff !important;
+}
+
+.mq-main h1,
+.mq-main h2,
+.mq-main h3 {
+  font-family: var(--mq-font-sans);
+  letter-spacing: -0.02em;
 }
 
 .mq-main h1 {
-  font-size: 1.5rem;
-  color: var(--mq-tertiary);
+  font-size: clamp(1.7rem, 3vw, 2.25rem);
+  color: var(--mq-secondary);
 }
 
 .mq-main h2 {
+  color: #f3f7fa;
   font-size: 1.15rem;
 }
 
-/* ============================================================
-   CODE
-   ============================================================ */
-
-.mq-code-block,
-.mq-main pre {
-  color: var(--mq-code-text);
-  font-family: var(--mq-font-mono);
-  font-size: 0.8rem;
-  line-height: 1.55;
-  padding: 1rem;
-  overflow-x: auto;
+.mq-main h3 {
+  color: #a9d8e5;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
 }
 
-.mq-code-head {
-  border: 1px solid var(--mq-code-border);
+.mq-main a {
+  color: var(--mq-secondary);
+  text-decoration-color: rgba(126, 220, 244, 0.45);
+  text-underline-offset: 0.2em;
 }
 
-.mq-main pre code {
-  background: transparent;
-  border: none;
-  padding: 0;
-  font-size: inherit;
-  color: inherit;
+.mq-main a:hover {
+  color: var(--mq-primary);
+}
+
+.mq-card,
+.mq-spotlight,
+.mq-hero {
+  border-top: 1px solid rgba(126, 220, 244, 0.12);
 }
 
 .mq-main :not(pre) > code {
-  background-color: var(--mq-code-bg);
-  color: var(--mq-code-text);
-  border: 1px solid var(--mq-code-border);
-  border-radius: 2px;
-  font-family: var(--mq-font-mono);
-  font-size: 0.8em;
-  padding: 0.1em 0.35em;
+  background: rgba(0, 166, 200, 0.1);
+  color: #9fe7fb;
+  border: 1px solid rgba(0, 166, 200, 0.2);
+  border-radius: 3px;
 }
 
-/* ============================================================
-   CARDS
-   ============================================================ */
-
-.mq-card {
-  background-color: var(--mq-surface);
-  border: 1px solid var(--mq-border);
-  border-radius: var(--mq-radius);
-  padding: 0.875rem 1rem;
-  transition: border-color 0.15s ease;
+.mq-code-block {
+  border-radius: 8px;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.28);
 }
 
-/* ============================================================
-   SUMMARY PANEL (sidebar)
-   Bumped contrast vs common.css 14% color-mix on dark bg
-   ============================================================ */
+.mq-main pre,
+.mq-code-block pre {
+  line-height: 1.72;
+}
 
 .mq-summary-panel {
-  background-color: var(--mq-surface);
-  border-right: 1px solid var(--mq-border);
-  font-size: 0.8rem;
+  font-family: var(--mq-font-mono);
+  font-size: 0.79rem;
 }
 
-.mq-summary-panel a {
+.mq-summary-link,
+.mq-summary-fallback {
   color: var(--mq-muted);
-  border-radius: 2px;
-  padding: 0.15rem 0.4rem;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: color 0.1s ease, background-color 0.1s ease;
-}
-
-.mq-summary-panel a:hover {
-  color: var(--mq-tertiary);
-  background-color: var(--mq-nav-active-bg);
 }
 
 .mq-summary-link:hover,
-.mq-summary-link:focus-visible {
-  background: color-mix(in srgb, var(--mq-tertiary) 14%, transparent) !important;
-  color: var(--mq-tertiary) !important;
-}
-
+.mq-summary-link:focus-visible,
 .mq-summary-item.active > .mq-summary-link,
 .mq-summary-link[aria-current="location"] {
-  background: color-mix(in srgb, var(--mq-tertiary) 22%, transparent) !important;
-  color: var(--mq-tertiary) !important;
-  font-weight: 600;
+  color: var(--mq-secondary) !important;
 }
 
-.mq-summary-item.active > .mq-summary-link::before,
-.mq-summary-link[aria-current="location"]::before {
-  background: var(--mq-tertiary);
-  opacity: 1;
-  transform: scaleY(1);
-}
-
-/* ============================================================
-   PAGE NAV (prev / next)
-   ============================================================ */
-
+a.mq-btn,
 .mq-page-nav-link {
-  color: var(--mq-primary);
-  font-size: 0.8rem;
+  border-radius: 999px;
   font-family: var(--mq-font-mono);
-  letter-spacing: 0.02em;
-  border: 1px solid var(--mq-border);
-  border-radius: var(--mq-radius);
-  padding: 0.3rem 0.75rem;
-  background-color: var(--mq-surface);
-  transition: border-color 0.15s ease, color 0.15s ease;
+  font-size: 0.76rem;
+  letter-spacing: 0.05em;
 }
 
 .mq-page-nav-link:hover {
-  border-color: var(--mq-primary);
-  color: var(--mq-tertiary);
+  border-color: rgba(126, 220, 244, 0.3);
+  background: rgba(0, 166, 200, 0.06);
 }
 
-/* Divider */
 
-.mq-divider {
-  width: 5rem;
-  border-radius: 0;
-  height: 0.25rem;
-}
-
-/* Search */
-
-.mq-search-toggle {
-  color: white;
-  }
-
-.mq-search-toggle svg {
+.mq-search-toggle svg,
+.mq-footer-repo-link svg,
+.mq-nav-toggle {
   filter: invert(1);
 }

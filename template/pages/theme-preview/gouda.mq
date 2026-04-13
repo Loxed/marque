@@ -1,0 +1,25 @@
++++
+title = "Gouda"
+nav = "gouda"
+theme = gouda
+layout = topnav
+width = full
++++
+
+@hero
+# Gouda Theme Preview
+@divider
+
+The Go homepage currently frames the language as a way to build simple, secure, scalable systems, and that concise tool-like tone fits Gouda nicely.
+
+@actions
+@[Download Go](https://go.dev/dl/){.primary}
+@[Learn Go](https://go.dev/learn/){.tertiary}
+@end actions
+
+```go
+func main() {
+	fmt.Println("Hello, Go!")
+}
+```
+@end hero
