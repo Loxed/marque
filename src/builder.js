@@ -166,6 +166,7 @@ function build(siteDir, outDir, options = {}) {
       theme_switcher_config_json: serializeInlineJson(buildThemeSwitcherConfig({
         availableThemes,
         canSwitch: themeSwitcherEnabled,
+        currentPageHref: outName,
         defaultThemeName: defaultThemeKey,
         pageThemeHref: pageTheme.href,
         pageThemeName: pageThemeKey,
@@ -245,7 +246,6 @@ function loadConfig(configPath) {
 
 function resolveTheme(theme, siteDir) {
   const name = String(theme || 'comte').trim();
-  const themeRoots = getThemeRoots(siteDir);
   const builtinTemplateThemesDir = path.join(__dirname, '..', 'template', 'themes');
   const legacyBuiltinThemesDir = path.join(__dirname, '..', 'themes');
   return resolveThemePath(name, [
@@ -384,12 +384,14 @@ function renderThemeSwitcherOptions(choices, selectedThemeName) {
   }).join('');
 }
 
-function buildThemeSwitcherConfig({ availableThemes, canSwitch, defaultThemeName, pageThemeHref, pageThemeName, storageKey }) {
+function buildThemeSwitcherConfig({ availableThemes, canSwitch, currentPageHref, defaultThemeName, pageThemeHref, pageThemeName, storageKey }) {
   const themes = {};
+  const currentPage = normalizeRelPath(currentPageHref || 'index.html');
+
   for (const choice of availableThemes || []) {
     if (!choice || !choice.name || !choice.href) continue;
     themes[choice.name] = {
-      href: choice.href,
+      href: toRelativeOutputHref(currentPage, choice.href),
       label: getThemeChoiceLabel(choice.name, availableThemes),
     };
   }
@@ -398,7 +400,7 @@ function buildThemeSwitcherConfig({ availableThemes, canSwitch, defaultThemeName
     canSwitch: !!canSwitch,
     defaultTheme: normalizeThemeChoiceName(defaultThemeName),
     pageTheme: normalizeThemeChoiceName(pageThemeName),
-    pageThemeHref: String(pageThemeHref || ''),
+    pageThemeHref: pageThemeHref ? toRelativeOutputHref(currentPage, pageThemeHref) : '',
     storageKey: String(storageKey || 'mq:theme'),
     themes,
   };

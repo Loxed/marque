@@ -158,7 +158,8 @@ body {
   background: var(--mq-surface-alt) !important;
 }
 
-.mq-search-toggle {
+.mq-search-toggle,
+.mq-theme-toggle {
   border-radius: 0 !important;
   border-color: rgba(255, 255, 255, 0.5) !important;
   color: #ffffff !important;
@@ -308,10 +309,17 @@ a.mq-btn {
 a.mq-btn:hover {
   transform: translate(2px, 2px);
     box-shadow: 4px 4px 0 rgba(18, 147, 216, 0.16);
-
 }
 
+a.mq-btn.primary:hover,
+a.mq-btn.secondary:hover,
+a.mq-btn.tertiary:hover{
+  color: white;
+}
+
+
 .mq-search-toggle svg,
+/* .mq-theme-toggle svg, */
 .mq-nav-toggle {
   filter: invert(1);
 }

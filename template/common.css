@@ -96,7 +96,8 @@ body {
   display: none !important;
 }
 
-.mq-theme-toggle {
+.mq-theme-toggle,
+.mq-search-toggle {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -112,7 +113,8 @@ body {
   opacity: 0.88;
 }
 
-.mq-theme-toggle:hover {
+.mq-theme-toggle:hover,
+.mq-search-toggle:hover {
   background: var(--mq-theme-toggle-bg-hover, var(--mq-nav-active-bg, color-mix(in srgb, var(--mq-nav-text, currentColor) 8%, transparent)));
   color: var(--mq-theme-toggle-text-hover, var(--mq-nav-active-text, var(--mq-nav-text, inherit)));
   opacity: 1;

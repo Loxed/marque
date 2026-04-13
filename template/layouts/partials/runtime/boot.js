@@ -20,6 +20,11 @@ function mqHandleNavPointerIntent(event) {
 }
 
 function mqHandleDocumentClick(event) {
+  const themeSwitcher = document.querySelector('[data-theme-switcher][open]');
+  if (themeSwitcher && !event.target.closest('[data-theme-switcher]')) {
+    themeSwitcher.open = false;
+  }
+
   const nav = document.querySelector('.mq-nav.mq-nav-open');
   if (!nav) return;
   if (!event.target.closest('.mq-nav')) {
@@ -54,6 +59,13 @@ function mqHandleGlobalKeydown(event) {
   if (mqIsSearchOpen()) {
     event.preventDefault();
     mqCloseSearch();
+    return;
+  }
+
+  const themeSwitcher = document.querySelector('[data-theme-switcher][open]');
+  if (themeSwitcher) {
+    event.preventDefault();
+    themeSwitcher.open = false;
     return;
   }
 

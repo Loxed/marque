@@ -100,12 +100,12 @@
   --font-mono: var(--mq-font-mono);
 }
 
+
 body {
-  background:
-    radial-gradient(circle at top left, rgba(214, 60, 55, 0.12), transparent 26%),
-    radial-gradient(circle at bottom right, rgba(209, 181, 120, 0.08), transparent 24%),
-    linear-gradient(180deg, #1a1513 0%, var(--mq-background) 30%, var(--mq-background) 100%);
-  color: var(--mq-text);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='40.8' viewBox='0 0 48 40.8'><defs><pattern id='gem' width='48' height='40.8' patternUnits='userSpaceOnUse' patternTransform='rotate(0)'><polygon points='7.67,2.38 16.33,2.38 12.00,9.63' fill='rgba(230,41,35,0.035)'/><polygon points='7.67,2.38 12.00,9.63 3.34,9.63' fill='rgba(230,41,35,0.018)'/><polygon points='16.33,2.38 20.66,9.63 12.00,9.63' fill='rgba(230,41,35,0.010)'/><polygon points='3.34,9.63 12.00,9.63 12.00,19.66' fill='rgba(230,41,35,0.022)'/><polygon points='20.66,9.63 12.00,19.66 12.00,9.63' fill='rgba(230,41,35,0.030)'/><polygon points='7.67,2.38 16.33,2.38 20.66,9.63 12.00,19.66 3.34,9.63' fill='none' stroke='rgba(230,41,35,0.100)' stroke-width='0.7'/><polygon points='36.00,2.38 27.34,12.40 36.00,12.40' fill='rgba(230,41,35,0.022)'/><polygon points='36.00,2.38 36.00,12.40 44.66,12.40' fill='rgba(230,41,35,0.030)'/><polygon points='31.67,19.66 40.33,19.66 36.00,12.40' fill='rgba(230,41,35,0.035)'/><polygon points='27.34,12.40 36.00,12.40 31.67,19.66' fill='rgba(230,41,35,0.018)'/><polygon points='44.66,12.40 40.33,19.66 36.00,12.40' fill='rgba(230,41,35,0.010)'/><polygon points='36.00,2.38 44.66,12.40 40.33,19.66 31.67,19.66 27.34,12.40' fill='none' stroke='rgba(230,41,35,0.100)' stroke-width='0.7'/><polygon points='12.00,21.14 3.34,31.17 12.00,31.17' fill='rgba(230,41,35,0.022)'/><polygon points='12.00,21.14 12.00,31.17 20.66,31.17' fill='rgba(230,41,35,0.030)'/><polygon points='7.67,38.42 16.33,38.42 12.00,31.17' fill='rgba(230,41,35,0.035)'/><polygon points='3.34,31.17 12.00,31.17 7.67,38.42' fill='rgba(230,41,35,0.018)'/><polygon points='20.66,31.17 16.33,38.42 12.00,31.17' fill='rgba(230,41,35,0.010)'/><polygon points='12.00,21.14 20.66,31.17 16.33,38.42 7.67,38.42 3.34,31.17' fill='none' stroke='rgba(230,41,35,0.100)' stroke-width='0.7'/><polygon points='31.67,21.14 40.33,21.14 36.00,28.40' fill='rgba(230,41,35,0.035)'/><polygon points='31.67,21.14 36.00,28.40 27.34,28.40' fill='rgba(230,41,35,0.018)'/><polygon points='40.33,21.14 44.66,28.40 36.00,28.40' fill='rgba(230,41,35,0.010)'/><polygon points='27.34,28.40 36.00,28.40 36.00,38.42' fill='rgba(230,41,35,0.022)'/><polygon points='44.66,28.40 36.00,38.42 36.00,28.40' fill='rgba(230,41,35,0.030)'/><polygon points='31.67,21.14 40.33,21.14 44.66,28.40 36.00,38.42 27.34,28.40' fill='none' stroke='rgba(230,41,35,0.100)' stroke-width='0.7'/></pattern></defs><rect width='100%' height='100%' fill='url(%23gem)'/></svg>"),
+  radial-gradient(circle at top left, rgba(214, 60, 55, 0.12), transparent 26%),
+  radial-gradient(circle at bottom right, rgba(209, 181, 120, 0.08), transparent 24%),
+  linear-gradient(180deg, #1a1513 0%, var(--mq-background) 30%, var(--mq-background) 100%);
 }
 
 .mq-nav {
