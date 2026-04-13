@@ -7,6 +7,7 @@ function mqHandleWindowResize() {
 }
 
 function mqHandleDomReady() {
+  mqInitThemeSwitcher();
   mqPositionSubmenus();
   mqInitSearch();
   mqApplySearchShortcutHints();

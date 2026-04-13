@@ -21,7 +21,28 @@
 <!-- Stylesheets -->
 <link rel="stylesheet" href="{{ common_css }}">
 <link rel="stylesheet" href="{{ layout_css }}">
-<link rel="stylesheet" href="{{ theme_css }}">
+<link rel="stylesheet" id="mq-theme-stylesheet" href="{{ theme_css }}">
+<script>
+window.__mqThemeConfig = {{ theme_switcher_config_json }};
+(function () {
+  var config = window.__mqThemeConfig;
+  if (!config || !config.canSwitch || !config.themes) return;
+
+  var selected = config.pageTheme || config.defaultTheme;
+  try {
+    var stored = window.localStorage && window.localStorage.getItem(config.storageKey);
+    if (stored && config.themes[stored]) selected = stored;
+  } catch (_) {}
+
+  var theme = config.themes[selected];
+  var link = document.getElementById('mq-theme-stylesheet');
+  if (!theme || !theme.href || !link) return;
+
+  link.href = theme.href;
+  link.setAttribute('data-theme-name', selected);
+  document.documentElement.setAttribute('data-mq-theme', selected);
+}());
+</script>
 </head>
 
 <body>

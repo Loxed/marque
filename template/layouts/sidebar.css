@@ -74,6 +74,34 @@ body {
   display: none !important;
 }
 
+.mq-theme-switcher {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.mq-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+}
+
+.mq-theme-toggle-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.mq-theme-toggle-label,
+.mq-theme-toggle-value {
+  display: none;
+}
+
+.mq-theme-menu {
+  width: min(15rem, calc(100vw - 2rem));
+}
+
 .mq-nav-toggle {
   display: none !important;
 }
@@ -295,6 +323,11 @@ body {
   }
 
   .mq-search-toggle {
+    width: 2.05rem;
+    height: 2.05rem;
+  }
+
+  .mq-theme-toggle {
     width: 2.05rem;
     height: 2.05rem;
   }

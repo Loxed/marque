@@ -88,6 +88,118 @@ body {
   background: var(--mq-nav-border, var(--mq-border, var(--border, rgba(0, 0, 0, 0.14))));
 }
 
+.mq-theme-switcher {
+  position: relative;
+}
+
+.mq-theme-switcher[hidden] {
+  display: none !important;
+}
+
+.mq-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--mq-theme-toggle-border, color-mix(in srgb, var(--mq-nav-text, var(--text, currentColor)) 26%, transparent));
+  border-radius: 999px;
+  background: var(--mq-theme-toggle-bg, color-mix(in srgb, var(--mq-nav-active-bg, var(--mq-nav-bg, transparent)) 58%, transparent));
+  color: var(--mq-theme-toggle-text, var(--mq-nav-text, var(--text, inherit)));
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  list-style: none;
+  transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease, opacity 0.14s ease;
+  opacity: 0.88;
+}
+
+.mq-theme-toggle:hover {
+  background: var(--mq-theme-toggle-bg-hover, var(--mq-nav-active-bg, color-mix(in srgb, var(--mq-nav-text, currentColor) 8%, transparent)));
+  color: var(--mq-theme-toggle-text-hover, var(--mq-nav-active-text, var(--mq-nav-text, inherit)));
+  opacity: 1;
+}
+
+.mq-theme-switcher[open] > .mq-theme-toggle {
+  background: var(--mq-theme-toggle-bg-hover, var(--mq-nav-active-bg, color-mix(in srgb, var(--mq-nav-text, currentColor) 8%, transparent)));
+  color: var(--mq-theme-toggle-text-hover, var(--mq-nav-active-text, var(--mq-nav-text, inherit)));
+  opacity: 1;
+}
+
+.mq-theme-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.mq-theme-toggle::marker {
+  content: '';
+}
+
+.mq-theme-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mq-theme-toggle-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mq-theme-toggle-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.mq-theme-toggle-value {
+  max-width: 8.5rem;
+  overflow: hidden;
+  font-size: 0.72rem;
+  opacity: 0.68;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mq-theme-menu {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  z-index: 140;
+  width: min(17rem, 82vw);
+  padding: 0.8rem;
+  border: 1px solid var(--mq-theme-menu-border, var(--mq-nav-border, var(--mq-border, rgba(0, 0, 0, 0.14))));
+  border-radius: 14px;
+  background: var(--mq-theme-menu-bg, var(--mq-surface, var(--surface, #ffffff)));
+  color: var(--mq-theme-menu-text, var(--mq-text, var(--text, inherit)));
+  box-shadow: 0 20px 44px rgba(15, 23, 42, 0.16);
+}
+
+.mq-theme-switcher:not([open]) .mq-theme-menu {
+  display: none;
+}
+
+.mq-theme-field {
+  display: grid;
+  gap: 0.38rem;
+}
+
+.mq-theme-field-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  opacity: 0.72;
+  text-transform: uppercase;
+}
+
+.mq-theme-select {
+  width: 100%;
+  min-height: 2.3rem;
+  border: 1px solid var(--mq-theme-select-border, color-mix(in srgb, var(--mq-text, var(--text, currentColor)) 18%, transparent));
+  border-radius: 10px;
+  background: var(--mq-theme-select-bg, var(--mq-surface-alt, var(--surface2, rgba(0, 0, 0, 0.04))));
+  color: inherit;
+  font: inherit;
+  padding: 0.42rem 0.7rem;
+}
+
 .mq-footer {
   font-size: 0.8rem;
   color: var(--mq-muted, var(--muted, inherit));

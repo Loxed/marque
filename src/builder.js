@@ -9,7 +9,7 @@ const { collectDirectiveStyles, collectDirectiveScripts } = require('./directive
 const { loadProjectDirectives } = require('./directives/project-loader');
 const { printDiagnostic } = require('./utils/errors');
 const { parseFlatToml } = require('./utils/toml');
-const { resolveThemePath } = require('./utils/themes');
+const { listThemeEntries, resolveThemePath } = require('./utils/themes');
 
 function build(siteDir, outDir, options = {}) {
   const cleanDist = options.cleanDist !== false;
@@ -45,6 +45,7 @@ function build(siteDir, outDir, options = {}) {
 
   // keep a legacy alias for templates that still link /theme.css directly
   const defaultAssets = getThemeAssets(defaultThemeName, siteDir, outDir, themeCache, softFsErrors);
+  const availableThemes = getAvailableThemeChoices(siteDir, outDir, themeCache, defaultThemeName, softFsErrors);
   writeFileWithRetry(path.join(outDir, 'theme.css'), defaultAssets.css, softFsErrors);
 
   let defaultLayout;
@@ -140,6 +141,10 @@ function build(siteDir, outDir, options = {}) {
       ? normalizeBoolean(fm.summary)
       : defaultPageSummary;
     const pageSummaryAttr = pageSummaryEnabled ? ' data-page-summary="true"' : '';
+    const pageHasThemeOverride = Object.prototype.hasOwnProperty.call(fm || {}, 'theme') && String(fm.theme || '').trim() !== '';
+    const pageThemeKey = findThemeChoiceName(pageThemeName, availableThemes);
+    const defaultThemeKey = findThemeChoiceName(defaultThemeName, availableThemes);
+    const themeSwitcherEnabled = !pageHasThemeOverride && availableThemes.length > 1;
     let html = applyTemplate(pageTemplate, {
       document_title: documentTitle,
       title,
@@ -155,6 +160,17 @@ function build(siteDir, outDir, options = {}) {
       page_summary_attr: pageSummaryAttr,
       repo: siteRepo,
       footer_repo_hidden: siteRepo ? '' : ' hidden',
+      theme_switcher_hidden: themeSwitcherEnabled ? '' : ' hidden',
+      theme_switcher_current_label: getThemeChoiceLabel(pageThemeKey, availableThemes),
+      theme_switcher_options: renderThemeSwitcherOptions(availableThemes, pageThemeKey),
+      theme_switcher_config_json: serializeInlineJson(buildThemeSwitcherConfig({
+        availableThemes,
+        canSwitch: themeSwitcherEnabled,
+        defaultThemeName: defaultThemeKey,
+        pageThemeHref: pageTheme.href,
+        pageThemeName: pageThemeKey,
+        storageKey: `mq:theme:${safeName(siteTitle || 'site')}`,
+      })),
     });
 
     if (!/\{\{\s*common_css\s*\}\}/.test(pageTemplate)) {
@@ -229,6 +245,7 @@ function loadConfig(configPath) {
 
 function resolveTheme(theme, siteDir) {
   const name = String(theme || 'comte').trim();
+  const themeRoots = getThemeRoots(siteDir);
   const builtinTemplateThemesDir = path.join(__dirname, '..', 'template', 'themes');
   const legacyBuiltinThemesDir = path.join(__dirname, '..', 'themes');
   return resolveThemePath(name, [
@@ -257,6 +274,37 @@ function getThemeAssets(themeName, siteDir, outDir, cache, softFsErrors = false)
   return assets;
 }
 
+function getAvailableThemeChoices(siteDir, outDir, cache, defaultThemeName, softFsErrors = false) {
+  const seen = new Set();
+  const choices = [];
+  const normalizedDefault = normalizeThemeChoiceName(defaultThemeName);
+
+  for (const root of getThemeRoots(siteDir)) {
+    for (const entry of listThemeEntries(root)) {
+      const normalizedName = normalizeThemeChoiceName(entry.name);
+      if (!normalizedName || seen.has(normalizedName)) continue;
+      seen.add(normalizedName);
+
+      const assets = getThemeAssets(entry.name, siteDir, outDir, cache, softFsErrors);
+      choices.push({
+        href: assets.href,
+        label: formatThemeChoiceLabel(normalizedName, normalizedDefault, { annotateDefault: true }),
+        name: normalizedName,
+      });
+    }
+  }
+
+  return choices.sort((a, b) => compareThemeChoices(a, b, normalizedDefault));
+}
+
+function getThemeRoots(siteDir) {
+  return [
+    path.join(siteDir, 'themes'),
+    path.join(__dirname, '..', 'template', 'themes'),
+    path.join(__dirname, '..', 'themes'),
+  ];
+}
+
 function getCommonAssets(siteDir, outDir, softFsErrors = false) {
   const css = loadCommonStyle(siteDir);
   const cssFile = 'common.css';
@@ -266,6 +314,103 @@ function getCommonAssets(siteDir, outDir, softFsErrors = false) {
     css,
     href: `/${cssFile}`,
   };
+}
+
+function compareThemeChoices(a, b, defaultThemeName) {
+  const aDefault = a.name === defaultThemeName;
+  const bDefault = b.name === defaultThemeName;
+  if (aDefault !== bDefault) return aDefault ? -1 : 1;
+
+  const aLegacy = a.name.startsWith('legacy/');
+  const bLegacy = b.name.startsWith('legacy/');
+  if (aLegacy !== bLegacy) return aLegacy ? 1 : -1;
+
+  return a.label.localeCompare(b.label);
+}
+
+function normalizeThemeChoiceName(value) {
+  return String(value || '')
+    .trim()
+    .replace(/\\/g, '/')
+    .replace(/\.css$/i, '')
+    .replace(/\/theme$/i, '')
+    .replace(/^\/+/, '')
+    .replace(/\/+/g, '/')
+    .toLowerCase();
+}
+
+function formatThemeChoiceLabel(name, defaultThemeName, options = {}) {
+  const normalized = normalizeThemeChoiceName(name);
+  const annotateDefault = options.annotateDefault !== false;
+  const isLegacy = normalized.startsWith('legacy/');
+  const base = isLegacy ? normalized.replace(/^legacy\//, '') : normalized;
+  const titled = base
+    .split('/')
+    .filter(Boolean)
+    .map(part => String(part || '')
+      .replace(/[-_]+/g, ' ')
+      .replace(/\b\w/g, ch => ch.toUpperCase()))
+    .join(' / ') || 'Theme';
+
+  const prefix = isLegacy ? 'Legacy: ' : '';
+  const suffix = annotateDefault && normalized === normalizeThemeChoiceName(defaultThemeName)
+    ? ' (Default)'
+    : '';
+  return `${prefix}${titled}${suffix}`;
+}
+
+function findThemeChoiceName(themeName, choices) {
+  const normalized = normalizeThemeChoiceName(themeName);
+  const match = Array.isArray(choices) ? choices.find(choice => choice.name === normalized) : null;
+  return match ? match.name : normalized;
+}
+
+function getThemeChoiceLabel(themeName, choices) {
+  const normalized = normalizeThemeChoiceName(themeName);
+  const match = Array.isArray(choices) ? choices.find(choice => choice.name === normalized) : null;
+  if (match) {
+    return match.label.replace(/\s+\(Default\)$/i, '');
+  }
+  return formatThemeChoiceLabel(normalized, '', { annotateDefault: false });
+}
+
+function renderThemeSwitcherOptions(choices, selectedThemeName) {
+  const normalizedSelected = normalizeThemeChoiceName(selectedThemeName);
+  if (!Array.isArray(choices) || !choices.length) return '';
+
+  return choices.map(choice => {
+    const selected = choice.name === normalizedSelected ? ' selected' : '';
+    return `<option value="${escapeHtml(choice.name)}"${selected}>${escapeHtml(choice.label)}</option>`;
+  }).join('');
+}
+
+function buildThemeSwitcherConfig({ availableThemes, canSwitch, defaultThemeName, pageThemeHref, pageThemeName, storageKey }) {
+  const themes = {};
+  for (const choice of availableThemes || []) {
+    if (!choice || !choice.name || !choice.href) continue;
+    themes[choice.name] = {
+      href: choice.href,
+      label: getThemeChoiceLabel(choice.name, availableThemes),
+    };
+  }
+
+  return {
+    canSwitch: !!canSwitch,
+    defaultTheme: normalizeThemeChoiceName(defaultThemeName),
+    pageTheme: normalizeThemeChoiceName(pageThemeName),
+    pageThemeHref: String(pageThemeHref || ''),
+    storageKey: String(storageKey || 'mq:theme'),
+    themes,
+  };
+}
+
+function serializeInlineJson(value) {
+  return JSON.stringify(value || {})
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
 }
 
 function loadThemeStyle(themeDir, siteDir) {

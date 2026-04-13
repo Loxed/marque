@@ -6,6 +6,21 @@
       <span class="mq-search-toggle-label">Search</span>
       <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
     </button>
+    <details class="mq-theme-switcher" data-theme-switcher{{ theme_switcher_hidden }}>
+      <summary class="mq-theme-toggle" aria-label="Change theme">
+        <span class="mq-theme-toggle-icon" aria-hidden="true">{{> icons/theme }}</span>
+        <span class="mq-theme-toggle-label">Theme</span>
+        <span class="mq-theme-toggle-value" data-theme-current>{{ theme_switcher_current_label }}</span>
+      </summary>
+      <div class="mq-theme-menu">
+        <label class="mq-theme-field">
+          <span class="mq-theme-field-label">Change Theme</span>
+          <select class="mq-theme-select" data-theme-select aria-label="Choose theme">
+            {{ theme_switcher_options }}
+          </select>
+        </label>
+      </div>
+    </details>
   </div>
   <div class="mq-nav-links">
     {{ nav }}

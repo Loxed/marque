@@ -104,7 +104,7 @@ body {
 
 .mq-nav-brand {
   color: #ffffff;
-  font-family: var(--mq-font-mono);
+  font-family: var(--mq-font-sans);
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -137,8 +137,11 @@ body {
   box-shadow: 6px 6px 0 rgba(18, 147, 216, 0.16);
 }
 
-.mq-nav .mq-nav-submenu .mq-nav-heading {
-  color: var(--mq-muted);
+.mq-nav,
+.mq-nav-submenu,
+.mq-nav-heading,
+.mq-nav-level-1 {
+  color: var(--mq-btn-primary-text);
 }
 
 .mq-nav .mq-nav-submenu :is(a, .mq-nav-link) {
