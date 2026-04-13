@@ -1,0 +1,652 @@
+/* guardian theme — destiny 2 */
+/*
+  Visual language: Bungie's flat metro-style UI. Deep space navy
+  backgrounds, pale ghost-white text, Exotic gold as the hero accent,
+  Legendary amethyst as the secondary. Clean, hierarchical, minimal —
+  everything in service of the content. Never loud. Always precise.
+*/
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* core theme variables */
+:root {
+  --mq-primary: #c9a227;
+  --mq-secondary: #7b5ea7;
+  --mq-tertiary: #4a9e8a;
+  --mq-background: #0b0d12;
+  --mq-surface: #111520;
+  --mq-surface-alt: #191e2e;
+  --mq-text: #dde1ec;
+  --mq-muted: #6b7394;
+  --mq-border: rgba(221, 225, 236, 0.10);
+  --mq-nav-bg: #080a0f;
+  --mq-nav-text: #a8b0c8;
+  --mq-nav-border: #0d1018;
+  --mq-nav-active-bg: rgba(201, 162, 39, 0.14);
+  --mq-nav-active-text: #f0d980;
+  --mq-code-bg: #0f1219;
+  --mq-code-text: #dde1ec;
+  --mq-code-border: #1e2438;
+  --mq-code-head-bg: #13172a;
+  --mq-code-head-text: #c9a227;
+  --mq-code-copy-border: color-mix(in srgb, var(--mq-code-head-text) 35%, transparent);
+  --mq-code-copy-bg: color-mix(in srgb, var(--mq-code-head-text) 8%, transparent);
+  --mq-code-copy-bg-hover: color-mix(in srgb, var(--mq-code-head-text) 16%, transparent);
+  --mq-card-bg: #111520;
+  --mq-card-border: rgba(221, 225, 236, 0.09);
+  --mq-card-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+  --mq-card-radius: 3px;
+  --mq-callout-info-bg: #12161f;
+  --mq-callout-info-border: #c9a227;
+  --mq-callout-info-text: #dde1ec;
+  --mq-callout-warn-bg: #1a1510;
+  --mq-callout-warn-border: #b8732a;
+  --mq-callout-warn-text: #c9b08a;
+  --mq-callout-danger-bg: #1a1018;
+  --mq-callout-danger-border: #9c3358;
+  --mq-callout-danger-text: #c98aaa;
+  --mq-callout-ok-bg: #101a1a;
+  --mq-callout-ok-border: #4a9e8a;
+  --mq-callout-ok-text: #8ac4bb;
+  --mq-radius: 3px;
+  --mq-max-width: 980px;
+  --mq-font-sans: 'Inter', system-ui, sans-serif;
+  --mq-font-serif: 'Rajdhani', system-ui, sans-serif;
+  --mq-font-mono: 'JetBrains Mono', monospace;
+
+  /* compatibility aliases for existing themes/components */
+  --bg: var(--mq-background);
+  --surface: var(--mq-surface);
+  --surface2: var(--mq-surface-alt);
+  --text: var(--mq-text);
+  --muted: var(--mq-muted);
+  --accent: var(--mq-primary);
+  --accent2: var(--mq-secondary);
+  --border: var(--mq-border);
+  --radius: var(--mq-radius);
+  --max-w: var(--mq-max-width);
+  --font-sans: var(--mq-font-sans);
+  --font-serif: var(--mq-font-serif);
+  --font-mono: var(--mq-font-mono);
+}
+
+body {
+  font-family: var(--mq-font-sans);
+  background: var(--mq-background);
+  color: var(--mq-text);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.primary { --mq-tone: var(--mq-primary); }
+.secondary { --mq-tone: var(--mq-secondary); }
+.tertiary { --mq-tone: var(--mq-tertiary); }
+
+.mq-nav {
+  background: var(--mq-nav-bg);
+  border-bottom: 1px solid var(--mq-nav-border);
+}
+
+.mq-nav-brand {
+  font-family: var(--mq-font-serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--mq-nav-text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
+  font-size: 0.875rem;
+  color: var(--mq-muted);
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.mq-nav-links a:hover,
+.mq-nav-group > .mq-nav-group-trigger:hover {
+  color: var(--mq-nav-active-text);
+  border-color: var(--mq-nav-border);
+}
+
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
+  color: var(--mq-nav-active-text);
+  border-color: var(--mq-nav-border);
+  background: var(--mq-nav-active-bg);
+}
+
+.mq-nav-submenu {
+  background: var(--mq-nav-bg);
+  border: 1px solid var(--mq-nav-border);
+}
+
+.mq-footer {
+  font-size: 0.8rem;
+  color: var(--mq-muted);
+  border-top: 1px solid var(--mq-border);
+}
+
+.mq-footer a { color: var(--mq-muted); }
+
+.mq-main h1 {
+  font-family: var(--mq-font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+.mq-main h2 {
+  font-family: var(--mq-font-serif);
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+.mq-main h3 {
+  font-family: var(--mq-font-sans);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.mq-main p { margin-bottom: 1rem; color: var(--mq-muted); font-size: 0.95rem; }
+.mq-main a { color: var(--mq-secondary); text-decoration: none; }
+.mq-main a:hover { text-decoration: underline; }
+.mq-main hr { border: none; border-top: 1px solid var(--mq-border); margin: 2.5rem 0; }
+.mq-main ul, .mq-main ol { padding-left: 1.5rem; margin-bottom: 1rem; color: var(--mq-muted); font-size: 0.95rem; }
+.mq-main li { margin-bottom: 0.3rem; }
+.mq-main code { font-family: var(--mq-font-mono); font-size: 0.84em; background: var(--mq-surface-alt); padding: 2px 6px; border-radius: 3px; }
+.mq-main pre { background: var(--mq-code-bg); color: var(--mq-code-text); border: 1px solid var(--mq-code-border); padding: 1.25rem; border-radius: var(--mq-radius); overflow-x: auto; margin-bottom: 1rem; font-family: var(--mq-font-mono); font-size: 0.85rem; line-height: 1.7; }
+.mq-main pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+.mq-main blockquote { border-left: 3px solid var(--mq-primary); padding-left: 1rem; margin: 1rem 0; color: var(--mq-muted); font-style: italic; }
+.mq-main strong { font-weight: 500; color: var(--mq-text); }
+
+.mq-row {
+  display: grid;
+  gap: 1.25rem;
+  margin: 1.75rem 0;
+  align-items: stretch;
+}
+
+.mq-column {
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+}
+
+.mq-card {
+  background: var(--mq-card-bg);
+  border: 1px solid var(--mq-card-border);
+  border-radius: var(--mq-card-radius);
+  box-shadow: var(--mq-card-shadow);
+  padding: 1.5rem;
+}
+
+.mq-card.primary,
+.mq-card.accent { border-top: 3px solid var(--mq-primary); }
+
+.mq-card.secondary,
+.mq-card.accent2 { border-top: 3px solid var(--mq-secondary); }
+
+.mq-card.tertiary { border-top: 3px solid var(--mq-tertiary); }
+.mq-card.ghost { background: transparent; }
+.mq-card.dark { background: var(--mq-text); border-color: transparent; }
+.mq-card.dark h2,
+.mq-card.dark h3 { color: var(--mq-background); }
+.mq-card.dark p { color: rgba(247,245,240,0.6); }
+.mq-card.dark .mq-btn { border-color: rgba(255,255,255,0.2); color: var(--mq-background); }
+
+a.mq-btn {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid var(--mq-border);
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  color: var(--mq-text);
+  transition: background 0.15s;
+}
+
+a.mq-btn:hover { background: var(--mq-surface-alt); }
+a.mq-btn.primary { background: var(--mq-primary); border-color: var(--mq-primary); color: #fff; }
+a.mq-btn.secondary,
+a.mq-btn.blue { background: var(--mq-secondary); border-color: var(--mq-secondary); color: #fff; }
+a.mq-btn.tertiary { background: var(--mq-tertiary); border-color: var(--mq-tertiary); color: #fff; }
+a.mq-btn.primary:hover,
+a.mq-btn.secondary:hover,
+a.mq-btn.blue:hover,
+a.mq-btn.tertiary:hover { filter: brightness(0.92); }
+
+.mq-callout {
+  padding: 1rem 1.25rem;
+  border-radius: var(--mq-radius);
+  margin: 0.75rem 0 1rem;
+  border-left: 3px solid;
+}
+
+.mq-callout p { margin: 0; }
+.mq-callout > :first-child { margin-top: 0; }
+.mq-callout > :last-child { margin-bottom: 0; }
+.mq-callout.info,
+.mq-callout.secondary { background: var(--mq-callout-info-bg); border-color: var(--mq-callout-info-border); }
+.mq-callout.info p,
+.mq-callout.secondary p { color: var(--mq-callout-info-text); }
+.mq-callout.warn,
+.mq-callout.primary { background: var(--mq-callout-warn-bg); border-color: var(--mq-callout-warn-border); }
+.mq-callout.warn p,
+.mq-callout.primary p { color: var(--mq-callout-warn-text); }
+.mq-callout.danger { background: var(--mq-callout-danger-bg); border-color: var(--mq-callout-danger-border); }
+.mq-callout.danger p { color: var(--mq-callout-danger-text); }
+.mq-callout.ok,
+.mq-callout.tertiary { background: var(--mq-callout-ok-bg); border-color: var(--mq-callout-ok-border); }
+.mq-callout.ok p,
+.mq-callout.tertiary p { color: var(--mq-callout-ok-text); }
+
+.mq-divider {
+  width: 36px;
+  height: 3px;
+  background: var(--mq-primary);
+  margin: 0.75rem 0 1rem;
+  border-radius: 2px;
+}
+
+.mq-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.25rem;
+  background: var(--mq-surface);
+  border: 1px solid var(--mq-border);
+  border-radius: var(--mq-radius);
+}
+
+.mq-stat-value {
+  font-family: var(--mq-font-serif);
+  font-size: 2.6rem;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.mq-stat-label {
+  font-size: 0.78rem;
+  color: var(--mq-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.mq-step {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.7rem;
+  margin-bottom: 0.95rem;
+  align-items: start;
+}
+
+.mq-step-body > :first-child { margin-top: 0; }
+.mq-step-body > :last-child { margin-bottom: 0; }
+
+.mq-step-num {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--mq-surface-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mq-font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  flex-shrink: 0;
+  color: var(--mq-muted);
+}
+
+.mq-step-num::before { content: attr(data-step); }
+
+.mq-spotlight,
+.mq-hero {
+  padding: 2.2rem 1.3rem;
+  margin: 0 0 2rem;
+  border: 1px solid var(--mq-border);
+  border-radius: var(--mq-radius);
+  background: var(--mq-surface-alt);
+}
+
+.mq-spotlight.center,
+.mq-hero.center { text-align: center; }
+
+.mq-badge {
+  display: inline-block;
+  font-family: var(--mq-font-mono);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: var(--mq-surface-alt);
+  color: var(--mq-muted);
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+}
+
+.mq-badge.primary,
+.mq-badge.accent { background: #fdf0eb; color: var(--mq-primary); }
+.mq-badge.secondary,
+.mq-badge.blue { background: #eef3fb; color: var(--mq-secondary); }
+.mq-badge.tertiary { background: #eaf4ee; color: var(--mq-tertiary); }
+
+@media (max-width: 640px) {
+  .mq-row { grid-template-columns: 1fr !important; }
+}
+
+
+/* Body */
+body {
+  font-size: 16px;
+  line-height: 1.68;
+  font-family: var(--mq-font-sans);
+  letter-spacing: 0.01em;
+}
+
+/* Navigation */
+.mq-nav {
+  background: var(--mq-nav-bg);
+  color: var(--mq-nav-text);
+  border-color: var(--mq-nav-border);
+  border-bottom: 1px solid rgba(201, 162, 39, 0.18);
+}
+.mq-nav-brand {
+  font-family: var(--mq-font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e8d080;
+}
+.mq-nav-links a,
+.mq-nav-group > .mq-nav-group-trigger {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a93b0;
+  border-radius: 2px;
+}
+.mq-nav-links a:hover,
+.mq-nav-group > .mq-nav-group-trigger:hover {
+  color: #dde1ec;
+  border-color: rgba(221, 225, 236, 0.2);
+}
+.mq-nav-links a.active,
+.mq-nav-group > .mq-nav-group-trigger.active {
+  color: var(--mq-nav-active-text);
+  background: var(--mq-nav-active-bg);
+  border-color: rgba(201, 162, 39, 0.4);
+}
+.mq-nav-submenu {
+  background: #0c0e16;
+  border: 1px solid rgba(221, 225, 236, 0.12);
+}
+
+/* Headings — Rajdhani carries the Bungie feel */
+.mq-main h1 {
+  font-family: var(--mq-font-serif);
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #eee8d5;
+}
+.mq-main h2 {
+  font-family: var(--mq-font-serif);
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #cdd3e8;
+}
+.mq-main h3 {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mq-primary);
+}
+
+/* Cards */
+.mq-card {
+  background: var(--mq-card-bg);
+  border-radius: var(--mq-card-radius);
+  box-shadow: var(--mq-card-shadow);
+  border-top: 1px solid rgba(221, 225, 236, 0.06);
+}
+.mq-card.primary,
+.mq-card.accent {
+  border-left: 3px solid var(--mq-primary);
+  background: #141828;
+}
+.mq-card.secondary,
+.mq-card.accent2 {
+  border-left: 3px solid var(--mq-secondary);
+  background: #13112a;
+}
+
+/* Buttons */
+a.mq-btn {
+  font-family: var(--mq-font-serif);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+a.mq-btn.primary {
+  background: var(--mq-primary);
+  border-color: var(--mq-primary);
+  color: #0b0d12;
+}
+a.mq-btn.secondary,
+a.mq-btn.blue {
+  background: transparent;
+  border: 1px solid rgba(221, 225, 236, 0.25);
+  color: #a8b0c8;
+}
+a.mq-btn.secondary:hover,
+a.mq-btn.blue:hover {
+  border-color: rgba(221, 225, 236, 0.5);
+  color: #dde1ec;
+}
+
+/* Divider — thin ruled line, gold */
+.mq-divider {
+  width: 40px;
+  height: 2px;
+  background: var(--mq-primary);
+  opacity: 0.7;
+}
+
+/* Hero / Sections */
+.mq-hero {
+  background: linear-gradient(135deg, #0f1322 0%, #0d1118 60%, #0a0c14 100%);
+  border: 1px solid rgba(201, 162, 39, 0.15);
+  border-radius: 4px;
+}
+
+/* Badges — rarity system */
+.mq-badge {
+  font-family: var(--mq-font-serif);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: #1e2438;
+  color: #8a93b0;
+  border-radius: 2px;
+}
+.mq-badge.primary,
+.mq-badge.accent {
+  background: rgba(201, 162, 39, 0.18);
+  color: #e0c055;
+}
+.mq-badge.secondary {
+  background: rgba(123, 94, 167, 0.2);
+  color: #b09ad8;
+}
+
+/* Code blocks */
+pre, .mq-code-block {
+  background: var(--mq-code-bg);
+  border: 1px solid var(--mq-code-border);
+  border-radius: 2px;
+  font-family: var(--mq-font-mono);
+  font-size: 0.88rem;
+}
+
+/* Subtle horizontal rule */
+hr {
+  border-color: rgba(221, 225, 236, 0.08);
+}
+
+/* Links */
+.mq-main a {
+  color: #c9a227;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+  transition: border-color 0.15s;
+}
+.mq-main a:hover {
+  border-color: var(--mq-primary);
+}
+
+/* responsive normalization */
+:root {
+  --mq-page-gutter: clamp(1rem, 3vw, 2rem);
+  --mq-block-gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+.mq-nav-heading {
+  padding: 0.7rem 0.8rem 0.25rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mq-muted);
+}
+
+.mq-nav-divider {
+  height: 1px;
+  margin: 0.45rem 0;
+  background: var(--mq-nav-border);
+}
+
+.mq-main :where(h1, h2, h3, p, li, blockquote) {
+  overflow-wrap: anywhere;
+}
+
+.mq-main :where(h1, h2, h3, h4, h5, h6)[id] {
+  scroll-margin-top: 5rem;
+}
+
+a.mq-btn {
+  text-align: center;
+  white-space: normal;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.mq-spotlight,
+.mq-hero {
+  padding: clamp(1.4rem, 4vw, 2.2rem) clamp(1rem, 4vw, 1.3rem);
+  margin: 0 0 clamp(1.5rem, 4vw, 2rem);
+}
+
+.mq-row {
+  gap: var(--mq-block-gap, 1.25rem);
+}
+
+.mq-column {
+  gap: var(--mq-block-gap, 1.25rem);
+}
+
+.mq-stat-value {
+  font-size: clamp(2rem, 6vw, 2.6rem);
+}
+
+product-card {
+  min-width: 0;
+}
+
+@container mq-main (max-width: 960px) {
+  .mq-row {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)) !important;
+  }
+
+  .mq-main h1 {
+    margin-bottom: 0.85rem;
+  }
+
+  .mq-card,
+  .mq-callout,
+  .mq-stat,
+  product-card {
+    padding: 1.1rem;
+  }
+
+  .mq-dropdown > summary,
+  .mq-dropdown-content {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@container mq-main (max-width: 640px) {
+  .mq-main h2 {
+    font-size: 1.25rem;
+  }
+
+  .mq-main h3 {
+    font-size: 0.95rem;
+  }
+
+  .mq-card,
+  .mq-callout,
+  .mq-stat,
+  product-card {
+    padding: 1rem;
+  }
+
+  .mq-step {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+
+  .mq-step-num {
+    justify-self: start;
+  }
+}

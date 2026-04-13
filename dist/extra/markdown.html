@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marque — Marque</title>
+
+<meta name="description" content="Built with Marque">
+
+<!-- 16x16 and 32x32 PNG favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+
+<!-- Web manifest for PWA support -->
+<link rel="manifest" href="../favicon/site.webmanifest">
+
+<!-- Fallback for .ico (optional) -->
+<link rel="icon" href="../favicon/favicon.ico">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="../common.css">
+<link rel="stylesheet" href="../layout-sidebar.css">
+<link rel="stylesheet" id="mq-theme-stylesheet" href="../theme-comte.css">
+<script>
+window.__mqThemeConfig = {"canSwitch":true,"defaultTheme":"comte","pageTheme":"comte","pageThemeHref":"/theme-comte.css","storageKey":"mq:theme:marque","themes":{"comte":{"href":"/theme-comte.css","label":"Comte"},"elmental":{"href":"/theme-elmental.css","label":"Elmental"},"gouda":{"href":"/theme-gouda.css","label":"Gouda"},"pycorino":{"href":"/theme-pycorino.css","label":"Pycorino"},"rubyola":{"href":"/theme-rubyola.css","label":"Rubyola"},"rustique":{"href":"/theme-rustique.css","label":"Rustique"},"test-theme":{"href":"/theme-test-theme.css","label":"Test Theme"},"legacy/default":{"href":"/theme-legacy-default.css","label":"Legacy: Default"},"legacy/destiny":{"href":"/theme-legacy-destiny.css","label":"Legacy: Destiny"},"legacy/gruyere":{"href":"/theme-legacy-gruyere.css","label":"Legacy: Gruyere"},"legacy/javarti":{"href":"/theme-legacy-javarti.css","label":"Legacy: Javarti"},"legacy/mida":{"href":"/theme-legacy-mida.css","label":"Legacy: Mida"}}};
+(function () {
+  var config = window.__mqThemeConfig;
+  if (!config || !config.canSwitch || !config.themes) return;
+
+  var selected = config.pageTheme || config.defaultTheme;
+  try {
+    var stored = window.localStorage && window.localStorage.getItem(config.storageKey);
+    if (stored && config.themes[stored]) selected = stored;
+  } catch (_) {}
+
+  var theme = config.themes[selected];
+  var link = document.getElementById('mq-theme-stylesheet');
+  if (!theme || !theme.href || !link) return;
+
+  link.href = theme.href;
+  link.setAttribute('data-theme-name', selected);
+  document.documentElement.setAttribute('data-mq-theme', selected);
+}());
+</script>
+</head>
+
+<body>
+  <!-- Header -->
+  <nav class="mq-nav">
+  <div class="mq-nav-head">
+    <a class="mq-nav-brand" href="../">Marque</a>
+    <button class="mq-search-toggle" type="button" aria-expanded="false" aria-controls="mq-search" aria-label="Open search" onclick="mqToggleSearch(this)">
+      <?xml version="1.0" encoding="UTF-8"?><svg width="16px" height="16px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M17 17L21 21" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3 11C3 15.4183 6.58172 19 11 19C13.213 19 15.2161 18.1015 16.6644 16.6493C18.1077 15.2022 19 13.2053 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+
+      <span class="mq-search-toggle-label">Search</span>
+      <span class="mq-search-toggle-shortcut" data-search-shortcut aria-hidden="true" hidden></span>
+    </button>
+    <details class="mq-theme-switcher" data-theme-switcher>
+      <summary class="mq-theme-toggle" aria-label="Change theme">
+        <span class="mq-theme-toggle-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m14.622 17.897-10.68-2.913"/><path d="M18.376 2.622a1 1 0 1 1 3.002 3.002L17.36 9.643a.5.5 0 0 0 0 .707l.944.944a2.41 2.41 0 0 1 0 3.408l-.944.944a.5.5 0 0 1-.707 0L8.354 7.348a.5.5 0 0 1 0-.707l.944-.944a2.41 2.41 0 0 1 3.408 0l.944.944a.5.5 0 0 0 .707 0z"/><path d="M9 8c-1.804 2.71-3.97 3.46-6.583 3.948a.507.507 0 0 0-.302.819l7.32 8.883a1 1 0 0 0 1.185.204C12.735 20.405 16 16.792 16 15"/></svg>
+</span>
+        <span class="mq-theme-toggle-label">Theme</span>
+        <span class="mq-theme-toggle-value" data-theme-current>Comte</span>
+      </summary>
+      <div class="mq-theme-menu">
+        <label class="mq-theme-field">
+          <span class="mq-theme-field-label">Change Theme</span>
+          <select class="mq-theme-select" data-theme-select aria-label="Choose theme">
+            <option value="comte" selected>Comte (Default)</option><option value="elmental">Elmental</option><option value="gouda">Gouda</option><option value="pycorino">Pycorino</option><option value="rubyola">Rubyola</option><option value="rustique">Rustique</option><option value="test-theme">Test Theme</option><option value="legacy/default">Legacy: Default</option><option value="legacy/destiny">Legacy: Destiny</option><option value="legacy/gruyere">Legacy: Gruyere</option><option value="legacy/javarti">Legacy: Javarti</option><option value="legacy/mida">Legacy: Mida</option>
+          </select>
+        </label>
+      </div>
+    </details>
+  </div>
+  <div class="mq-nav-links">
+    <a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../"><span class="mq-nav-num">1.</span>Home</a>
+<div class="mq-nav-heading">Start Here</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../quickstart.html"><span class="mq-nav-num">2.</span>Quickstart</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../architecture.html"><span class="mq-nav-num">3.</span>Architecture</a>
+<div class="mq-nav-heading">Docs</div>
+<div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../docs.html"><span class="mq-nav-num">4.</span>Documentation</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../docs/cli.html"><span class="mq-nav-num">4.1</span>CLI Commands</a><div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../docs/configuration.html"><span class="mq-nav-num">4.2</span>Configuration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="../docs/configuration/nav.html"><span class="mq-nav-num">4.2.1</span>Navigation</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="../docs/configuration/frontmatter.html"><span class="mq-nav-num">4.2.2</span>Frontmatter</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="../docs/configuration/layouts.html"><span class="mq-nav-num">4.2.3</span>Layouts</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="../docs/configuration/themes.html"><span class="mq-nav-num">4.2.4</span>Themes</a><a class="mq-nav-link mq-nav-level-2 mq-nav-numbered-link" style="--mq-nav-level:2;" href="../docs/configuration/summary.html"><span class="mq-nav-num">4.2.5</span>Summary</a></div></div><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../docs/directives.html"><span class="mq-nav-num">4.3</span>Directives</a></div></div>
+<div class="mq-nav-heading">Migration</div>
+<div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../migration.html"><span class="mq-nav-num">5.</span>Migration</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../migration/mdbook.html"><span class="mq-nav-num">5.1</span>mdBook to Marque</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../migration/mkdocs.html"><span class="mq-nav-num">5.2</span>MkDocs to Marque</a></div></div>
+<div class="mq-nav-heading">Extra</div>
+<a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link active" style="--mq-nav-level:0;" href="markdown.html"><span class="mq-nav-num">6.</span>Markdown Syntax</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="faq.html"><span class="mq-nav-num">7.</span>FAQ</a><a class="mq-nav-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="author.html"><span class="mq-nav-num">8.</span>Author</a>
+<div class="mq-nav-heading">Temp</div>
+<div class="mq-nav-group mq-nav-summary-group"><a class="mq-nav-group-trigger mq-nav-group-trigger-link mq-nav-level-0 mq-nav-numbered-link" style="--mq-nav-level:0;" href="../theme-preview.html"><span class="mq-nav-num">9.</span>Theme Preview</a><div class="mq-nav-submenu"><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../theme-preview/comte.html"><span class="mq-nav-num">9.1</span>Comte</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../theme-preview/elmental.html"><span class="mq-nav-num">9.2</span>Elmental</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../theme-preview/gouda.html"><span class="mq-nav-num">9.3</span>Gouda</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../theme-preview/pycorino.html"><span class="mq-nav-num">9.4</span>Pycorino</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../theme-preview/rubyola.html"><span class="mq-nav-num">9.5</span>Rubyola</a><a class="mq-nav-link mq-nav-level-1 mq-nav-numbered-link" style="--mq-nav-level:1;" href="../theme-preview/rustique.html"><span class="mq-nav-num">9.6</span>Rustique</a></div></div>
+  </div>
+  <div class="mq-nav-actions">
+    <button class="mq-nav-toggle" type="button" aria-expanded="false" aria-label="Toggle navigation" onclick="mqToggleNav(this)">☰</button>
+  </div>
+</nav>
+
+
+  <!-- Search Container -->
+  <div class="mq-search" id="mq-search" hidden aria-hidden="true">
+  <button class="mq-search-backdrop" type="button" aria-label="Close search" onclick="mqCloseSearch()"></button>
+  <section class="mq-search-panel" role="dialog" aria-modal="true" aria-labelledby="mq-search-title">
+    <div class="mq-search-head">
+      <svg class="mq-search-panel-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M20 20l-3.5-3.5"></path>
+      </svg>
+      <label class="mq-search-input-wrap" for="mq-search-input">
+        <span class="mq-search-label" id="mq-search-title">Search this site</span>
+        <input id="mq-search-input" class="mq-search-input" type="search" placeholder="Search pages, headings, and content" autocomplete="off" spellcheck="false">
+      </label>
+      <button class="mq-search-close" type="button" aria-label="Close search" onclick="mqCloseSearch()">
+        <svg class="mq-search-close-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18"></path>
+          <path d="M6 6l12 12"></path>
+        </svg>
+        <span class="mq-search-close-label">Close</span>
+        <span class="mq-search-close-hint" data-search-close-hint aria-hidden="true" hidden></span>
+      </button>
+    </div>
+    <p class="mq-search-meta" id="mq-search-meta">Type to search titles, headings, and page content.</p>
+    <div class="mq-search-results" id="mq-search-results">
+      <div class="mq-search-empty">Search is ready. Try a page title, a section heading, or a phrase from the content.</div>
+    </div>
+  </section>
+</div>
+
+
+  <!-- Main Content -->
+  <div class="mq-page-shell" id="mq-page-shell" data-page-summary="true" style="--page-width: 82%; --page-max-w: none; --page-margin-left: auto; --page-margin-right: auto;">
+    <main class="mq-main">
+      <!-- dynamic mq content -->
+      <h1>Markdown Basic Syntax</h1>
+<div class="mq-divider"></div>
+<p>Here&#39;s the <a href="https://www.markdownguide.org/basic-syntax/">basic syntax of Markdown</a>, which you can use in your <code>.mq</code> files for content formatting. Marque supports standard Markdown syntax, as well as some extensions for enhanced functionality.</p>
+<h2>Headings and paragraphs</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><h3 data-mq-toc-hidden="true">Headings</h3><h1 data-mq-toc-hidden="true">Heading level 1</h1><h2 data-mq-toc-hidden="true">Heading level 2</h2><h3 data-mq-toc-hidden="true">Heading level 3</h3><h4 data-mq-toc-hidden="true">Heading level 4</h4><h5 data-mq-toc-hidden="true">Heading level 5</h5><h6 data-mq-toc-hidden="true">Heading level 6</h6></div>
+
+<div class="mq-card"><h3 data-mq-toc-hidden="true">Heading syntax</h3><div class="mq-code-block" data-lang="md"><div class="mq-code-head"><span class="mq-code-lang">md</span><button class="mq-code-copy" type="button" aria-label="Copy md code">Copy</button></div><pre><code class="hljs language-md"><span class="hljs-section"># Heading level 1</span>
+<span class="hljs-section">## Heading level 2</span>
+<span class="hljs-section">### Heading level 3</span>
+<span class="hljs-section">#### Heading level 4</span>
+<span class="hljs-section">##### Heading level 5</span>
+<span class="hljs-section">###### Heading level 6</span></code></pre></div></div>
+</div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><h3 data-mq-toc-hidden="true">Alternate headings</h3><h1 data-mq-toc-hidden="true">Heading level 1</h1><h2 data-mq-toc-hidden="true">Heading level 2</h2></div>
+
+<div class="mq-card"><h3 data-mq-toc-hidden="true">Alternate heading syntax</h3><div class="mq-code-block" data-lang="md"><div class="mq-code-head"><span class="mq-code-lang">md</span><button class="mq-code-copy" type="button" aria-label="Copy md code">Copy</button></div><pre><code class="hljs language-md"><span class="hljs-section">Heading level 1
+===============</span>
+
+<span class="hljs-section">Heading level 2
+---------------</span></code></pre></div></div></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="mq-card"><h3 data-mq-toc-hidden="true">Paragraphs</h3><p>This is a paragraph.</p>
+<p>This is another paragraph.</p>
+<p>First line.<br>Second line.</p>
+</div>
+
+<div class="mq-card"><h3 data-mq-toc-hidden="true">Paragraph and line break syntax</h3><div class="mq-code-block" data-lang="md"><div class="mq-code-head"><span class="mq-code-lang">md</span><button class="mq-code-copy" type="button" aria-label="Copy md code">Copy</button></div><pre><code class="hljs language-md">This is a paragraph.
+
+This is another paragraph.
+
+First line.
+Second line.</code></pre></div></div>
+</div>
+<h2>Emphasis and inline syntax</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card primary"><h3 data-mq-toc-hidden="true">Bold, italic, and both</h3><ul>
+<li><code>**bold text**</code> or <code>__bold text__</code> -&gt; <strong>bold text</strong></li>
+<li><code>*italic text*</code> or <code>_italic text_</code> -&gt; <em>italic text</em></li>
+<li><code>***bold and italic***</code> -&gt; <em><strong>bold and italic</strong></em></li>
+</ul>
+</div>
+
+<div class="mq-card secondary"><h3 data-mq-toc-hidden="true">Inline code and escaping</h3><ul>
+<li><code>Use `code` like this.</code> -&gt; Use <code>code</code> like this.</li>
+<li><code>\* Not italic \*</code> -&gt; * Not italic *</li>
+</ul>
+</div></div>
+<h2>Blockquotes and lists</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));"><div class="mq-card"><h3 data-mq-toc-hidden="true">Blockquotes</h3><p>Single-line blockquote syntax can stay inline: <code>&gt; This is a blockquote.</code></p>
+<blockquote>
+<p>This is a blockquote.</p>
+</blockquote>
+<p>Nested blockquote syntax:</p>
+<div class="mq-code-block" data-lang="md"><div class="mq-code-head"><span class="mq-code-lang">md</span><button class="mq-code-copy" type="button" aria-label="Copy md code">Copy</button></div><pre><code class="hljs language-md"><span class="hljs-quote">&gt; First level</span>
+<span class="hljs-quote">&gt;
+&gt; &gt; Second level</span></code></pre></div><blockquote>
+<p>First level</p>
+<blockquote>
+<p>Second level</p>
+</blockquote>
+</blockquote>
+</div>
+
+<div class="mq-card"><h3 data-mq-toc-hidden="true">Lists</h3><p>Ordered list syntax:</p>
+<div class="mq-code-block" data-lang="md"><div class="mq-code-head"><span class="mq-code-lang">md</span><button class="mq-code-copy" type="button" aria-label="Copy md code">Copy</button></div><pre><code class="hljs language-md"><span class="hljs-bullet">1.</span> First item
+<span class="hljs-bullet">2.</span> Second item
+<span class="hljs-bullet">3.</span> Third item</code></pre></div><ol>
+<li>First item</li>
+<li>Second item</li>
+<li>Third item</li>
+</ol>
+<p>Unordered list syntax:</p>
+<div class="mq-code-block" data-lang="md"><div class="mq-code-head"><span class="mq-code-lang">md</span><button class="mq-code-copy" type="button" aria-label="Copy md code">Copy</button></div><pre><code class="hljs language-md"><span class="hljs-bullet">-</span> First item
+<span class="hljs-bullet">-</span> Second item
+<span class="hljs-bullet">-</span> Third item</code></pre></div><ul>
+<li>First item</li>
+<li>Second item</li>
+<li>Third item</li>
+</ul>
+<p>Nested list syntax:</p>
+<div class="mq-code-block" data-lang="md"><div class="mq-code-head"><span class="mq-code-lang">md</span><button class="mq-code-copy" type="button" aria-label="Copy md code">Copy</button></div><pre><code class="hljs language-md"><span class="hljs-bullet">-</span> Item
+<span class="hljs-bullet">  -</span> Subitem</code></pre></div><ul>
+<li>Item<ul>
+<li>Subitem</li>
+</ul>
+</li>
+</ul>
+</div></div>
+<h2>Code, links, media, and rules</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-row" style="grid-template-columns: repeat(3, minmax(0, 1fr));"><div class="mq-card"><h3 data-mq-toc-hidden="true">Code</h3><p>Inline code: <code>Use `code` like this.</code></p>
+<p>Use <code>code</code> like this.</p>
+<p>Code block syntax:</p>
+<div class="mq-code-block" data-lang="md"><div class="mq-code-head"><span class="mq-code-lang">md</span><button class="mq-code-copy" type="button" aria-label="Copy md code">Copy</button></div><pre><code class="hljs language-md"><span class="hljs-code">```text
+code block
+```</span></code></pre></div><div class="mq-code-block" data-lang="text"><div class="mq-code-head"><span class="mq-code-lang">text</span><button class="mq-code-copy" type="button" aria-label="Copy text code">Copy</button></div><pre><code class="hljs language-text">code block</code></pre></div></div>
+
+<div class="mq-card"><h3 data-mq-toc-hidden="true">Links and images</h3><p>Link syntax:<br><code>[Google](https://www.google.com)</code> -&gt; <a href="https://www.google.com">Google</a></p>
+<p>Image syntax:</p>
+<div class="mq-code-block" data-lang="md"><div class="mq-code-head"><span class="mq-code-lang">md</span><button class="mq-code-copy" type="button" aria-label="Copy md code">Copy</button></div><pre><code class="hljs language-md">![<span class="hljs-string">Alt text</span>](<span class="hljs-link">https://placehold.co/600x400</span>)</code></pre></div><p><img src="https://placehold.co/600x400" alt="Alt text"></p>
+</div>
+
+<div class="mq-card"><h3 data-mq-toc-hidden="true">Horizontal rules</h3><p>Any of these will render a horizontal rule:</p>
+<ul>
+<li><code>---</code></li>
+<li><code>***</code></li>
+<li><code>___</code></li>
+</ul>
+
+<hr></div></div>
+<h2>Best Practices</h2>
+<div class="mq-divider"></div>
+
+<div class="mq-card"><ul>
+<li>Leave blank lines between elements</li>
+<li>Don&#39;t indent paragraphs</li>
+<li>Use consistent list markers</li>
+<li>Prefer <code>*</code> for emphasis compatibility</li>
+</ul>
+</div>
+      <!-- bottom previous/next navigation -->
+      <nav class="mq-page-nav" aria-label="Page navigation"><a class="mq-page-nav-link mq-page-nav-prev" href="../migration/mkdocs.html" aria-label="Previous page: MkDocs to Marque"><span class="mq-page-nav-kicker">Previous</span><span class="mq-page-nav-title">↩ MkDocs to Marque</span></a><a class="mq-page-nav-link mq-page-nav-next" href="faq.html" aria-label="Next page: FAQ"><span class="mq-page-nav-kicker">Next</span><span class="mq-page-nav-title">FAQ ↪</span></a></nav>
+    </main>
+    <!-- Sidebar summary (optional) -->
+    <aside class="mq-page-summary-slot" id="mq-page-summary-slot" hidden aria-label="Page summary"></aside>
+
+  </div>
+  
+  <!-- Footer -->
+  <footer class="mq-footer">
+    <!-- Remove if you wish, keeping it brings visibility to Marque :) -->
+    <span class="mq-footer-built">Built with <a href="https://getmarque.pages.dev">Marque</a></span>
+    
+    <!-- Repo button (Optional) -->
+    <span class="mq-footer-repo">  
+      <a class="mq-footer-repo-link" href="https://github.com/Loxed/marque" aria-label="Open repository">
+        <?xml version="1.0" encoding="UTF-8"?><svg width="16px" height="16px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M16 22.0268V19.1568C16.0375 18.68 15.9731 18.2006 15.811 17.7506C15.6489 17.3006 15.3929 16.8902 15.06 16.5468C18.2 16.1968 21.5 15.0068 21.5 9.54679C21.4997 8.15062 20.9627 6.80799 20 5.79679C20.4558 4.5753 20.4236 3.22514 19.91 2.02679C19.91 2.02679 18.73 1.67679 16 3.50679C13.708 2.88561 11.292 2.88561 8.99999 3.50679C6.26999 1.67679 5.08999 2.02679 5.08999 2.02679C4.57636 3.22514 4.54413 4.5753 4.99999 5.79679C4.03011 6.81549 3.49251 8.17026 3.49999 9.57679C3.49999 14.9968 6.79998 16.1868 9.93998 16.5768C9.61098 16.9168 9.35725 17.3222 9.19529 17.7667C9.03334 18.2112 8.96679 18.6849 8.99999 19.1568V22.0268" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9 20.0267C6 20.9999 3.5 20.0267 2 17.0267" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+    </span>
+</footer>
+
+  <script src="../index.js"></script>
+</body>
+</html>

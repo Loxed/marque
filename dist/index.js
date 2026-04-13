@@ -624,6 +624,111 @@ function mqSafeLocalStorage(work) {
   }
 }
 
+const mqThemeState = {
+  config: null,
+  currentLabel: null,
+  initialized: false,
+  select: null,
+  switcher: null,
+};
+
+function mqGetThemeConfig() {
+  if (mqThemeState.config) return mqThemeState.config;
+  const config = window.__mqThemeConfig;
+  if (!config || typeof config !== 'object') return null;
+  mqThemeState.config = config;
+  return config;
+}
+
+function mqGetThemeStylesheet() {
+  return document.getElementById('mq-theme-stylesheet');
+}
+
+function mqGetStoredThemeName(config) {
+  let value = '';
+
+  mqSafeLocalStorage(storage => {
+    value = String(storage.getItem(config.storageKey) || '').trim();
+  });
+
+  return value;
+}
+
+function mqPersistThemeName(config, themeName) {
+  mqSafeLocalStorage(storage => {
+    if (!themeName || themeName === config.defaultTheme) {
+      storage.removeItem(config.storageKey);
+      return;
+    }
+
+    storage.setItem(config.storageKey, themeName);
+  });
+}
+
+function mqResolveThemeName(config) {
+  if (!config || !config.themes) return '';
+
+  const pageTheme = String(config.pageTheme || config.defaultTheme || '').trim();
+  if (!config.canSwitch) return pageTheme;
+
+  const stored = mqGetStoredThemeName(config);
+  if (stored && config.themes[stored]) return stored;
+  return pageTheme;
+}
+
+function mqApplyThemeName(themeName, options) {
+  const config = mqGetThemeConfig();
+  if (!config || !config.themes) return;
+
+  const settings = options && typeof options === 'object' ? options : {};
+  const target = String(themeName || '').trim();
+  const theme = config.themes[target];
+  if (!theme || !theme.href) return;
+
+  const link = mqGetThemeStylesheet();
+  if (!link) return;
+
+  link.href = theme.href;
+  link.setAttribute('data-theme-name', target);
+  document.documentElement.setAttribute('data-mq-theme', target);
+
+  if (mqThemeState.select) {
+    mqThemeState.select.value = target;
+  }
+
+  if (mqThemeState.currentLabel) {
+    mqThemeState.currentLabel.textContent = theme.label || target;
+  }
+
+  if (settings.persist !== false && config.canSwitch) {
+    mqPersistThemeName(config, target);
+  }
+}
+
+function mqInitThemeSwitcher() {
+  const config = mqGetThemeConfig();
+  if (mqThemeState.initialized || !config || !config.themes) return;
+
+  mqThemeState.initialized = true;
+  mqThemeState.switcher = document.querySelector('[data-theme-switcher]');
+  mqThemeState.select = document.querySelector('[data-theme-select]');
+  mqThemeState.currentLabel = document.querySelector('[data-theme-current]');
+
+  mqApplyThemeName(mqResolveThemeName(config), { persist: false });
+
+  if (!config.canSwitch || !mqThemeState.select) return;
+
+  mqThemeState.select.addEventListener('change', event => {
+    const nextTheme = String(event.target && event.target.value || '').trim();
+    if (!nextTheme) return;
+    mqApplyThemeName(nextTheme);
+
+    if (mqThemeState.switcher) {
+      mqThemeState.switcher.open = false;
+    }
+  });
+}
+
 const mqSummaryTrackers = new Set();
 let mqSummaryTrackingBound = false;
 let mqSummaryTrackingScheduled = false;
@@ -957,6 +1062,7 @@ function mqHandleWindowResize() {
 }
 
 function mqHandleDomReady() {
+  mqInitThemeSwitcher();
   mqPositionSubmenus();
   mqInitSearch();
   mqApplySearchShortcutHints();
@@ -969,6 +1075,11 @@ function mqHandleNavPointerIntent(event) {
 }
 
 function mqHandleDocumentClick(event) {
+  const themeSwitcher = document.querySelector('[data-theme-switcher][open]');
+  if (themeSwitcher && !event.target.closest('[data-theme-switcher]')) {
+    themeSwitcher.open = false;
+  }
+
   const nav = document.querySelector('.mq-nav.mq-nav-open');
   if (!nav) return;
   if (!event.target.closest('.mq-nav')) {
@@ -1006,6 +1117,13 @@ function mqHandleGlobalKeydown(event) {
     return;
   }
 
+  const themeSwitcher = document.querySelector('[data-theme-switcher][open]');
+  if (themeSwitcher) {
+    event.preventDefault();
+    themeSwitcher.open = false;
+    return;
+  }
+
   document.querySelectorAll('.mq-nav.mq-nav-open').forEach(mqCloseNav);
 }
 
@@ -1039,3 +1157,147 @@ document.addEventListener('focusin', mqHandleNavPointerIntent);
 document.addEventListener('click', mqHandleDocumentClick);
 document.addEventListener('keydown', mqHandleGlobalKeydown);
 document.addEventListener('click', mqHandleCodeCopy);
+
+/* directive-script: @kbd */
+(function () {
+  var MAC_MAP = { ctrl: '⌘', alt: '⌥', shift: '⇧', meta: '⌘', win: '⌘' };
+
+  function detectPlatform() {
+    var ua = navigator.userAgent || '';
+    var platform = (navigator.userAgentData && navigator.userAgentData.platform)
+      || navigator.platform
+      || '';
+
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(ua) || /iPhone|iPad/.test(platform)) {
+      return 'mobile';
+    }
+    if (/Mac/i.test(platform) || /Mac OS X/i.test(ua)) {
+      return 'mac';
+    }
+    return 'win';
+  }
+
+  function applyPlatform() {
+    var platform = detectPlatform();
+
+    if (platform === 'mobile') {
+      document.documentElement.classList.add('mq-mobile');
+      return;
+    }
+
+    if (platform !== 'mac') return;
+
+    // Auto-swap: only touch elements with no forced platform
+    document.querySelectorAll('.mq-kbd:not([data-kbd-platform]) kbd[data-key]').forEach(function (kbd) {
+      var key = kbd.getAttribute('data-key');
+      var mapped = MAC_MAP[key];
+      if (mapped) kbd.textContent = mapped;
+    });
+
+    // Force-mac swap: always apply mac map
+    document.querySelectorAll('.mq-kbd[data-kbd-platform="mac"] kbd[data-key]').forEach(function (kbd) {
+      var key = kbd.getAttribute('data-key');
+      var mapped = MAC_MAP[key];
+      if (mapped) kbd.textContent = mapped;
+    });
+
+    // Force-win: no swap needed, already rendered as win keys
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyPlatform);
+  } else {
+    applyPlatform();
+  }
+})();
+/* end directive-script: @kbd */
+/* directive-script: @tab */
+(function () {
+  function groupTabs(root) {
+    var items = Array.from((root || document).querySelectorAll('.mq-tab-item'));
+    if (!items.length) return;
+
+    var visited = new WeakSet();
+
+    items.forEach(function (item) {
+      if (visited.has(item)) return;
+
+      // Collect the run of consecutive .mq-tab-item siblings
+      var group = [];
+      var node = item;
+      while (node && node.classList && node.classList.contains('mq-tab-item')) {
+        group.push(node);
+        visited.add(node);
+        // nextElementSibling only — any non-tab element breaks the group
+        node = node.nextElementSibling;
+      }
+
+      if (!group.length) return;
+
+      // Build tabs container
+      var tabs = document.createElement('div');
+      tabs.className = 'mq-tabs';
+
+      var bar = document.createElement('div');
+      bar.className = 'mq-tabs-bar';
+      bar.setAttribute('role', 'tablist');
+
+      var panels = [];
+
+      group.forEach(function (tabItem, i) {
+        var label = tabItem.getAttribute('data-label') || ('Tab ' + (i + 1));
+        var panelId = 'mq-tab-panel-' + Math.random().toString(36).slice(2);
+        var btnId = 'mq-tab-btn-' + Math.random().toString(36).slice(2);
+
+        // Button
+        var btn = document.createElement('button');
+        btn.className = 'mq-tabs-btn';
+        btn.type = 'button';
+        btn.textContent = label;
+        btn.id = btnId;
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-controls', panelId);
+        btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+        bar.appendChild(btn);
+
+        // Panel
+        var panel = document.createElement('div');
+        panel.className = 'mq-tab-panel' + (i === 0 ? ' active' : '');
+        panel.id = panelId;
+        panel.setAttribute('role', 'tabpanel');
+        panel.setAttribute('aria-labelledby', btnId);
+        panel.innerHTML = tabItem.innerHTML;
+        panels.push(panel);
+      });
+
+      // Click handling
+      bar.addEventListener('click', function (e) {
+        var btn = e.target.closest('.mq-tabs-btn');
+        if (!btn) return;
+        var btns = Array.from(bar.querySelectorAll('.mq-tabs-btn'));
+        var idx = btns.indexOf(btn);
+        if (idx < 0) return;
+        btns.forEach(function (b, i) {
+          b.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+        });
+        panels.forEach(function (p, i) {
+          p.classList.toggle('active', i === idx);
+        });
+      });
+
+      tabs.appendChild(bar);
+      panels.forEach(function (p) { tabs.appendChild(p); });
+
+      // Replace the first item with the tabs group, remove the rest
+      group[0].parentNode.insertBefore(tabs, group[0]);
+      group.forEach(function (el) { el.parentNode.removeChild(el); });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { groupTabs(document); });
+  } else {
+    groupTabs(document);
+  }
+})();
+/* end directive-script: @tab */
