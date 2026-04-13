@@ -40,6 +40,12 @@
   --mq-search-chip-bg: color-mix(in srgb, var(--accent) 12%, var(--surface));
   --mq-search-mark-bg: var(--accent);
   --mq-search-mark-text: var(--bg);
+
+  --mq-filetree-line: rgba(199, 255, 45, 0.18);
+  --mq-filetree-folder: var(--mq-primary);
+  --mq-filetree-file: rgba(237, 241, 245, 0.68);
+  --mq-filetree-file-text: #edf1f5;
+
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-serif: 'Merriweather', serif;
   --font-mono: 'Space Mono', monospace;
@@ -141,7 +147,8 @@ body {
   border-bottom: 2px solid rgba(184, 255, 0, 0.5);
 }
 .mq-main a:hover {
-  border-bottom-color: var(--accent);
+  border-bottom-color:2px solid var(--accent);
+  text-decoration: none;
 }
 
 /* a wrapping a code pill — underline lives on the <a>, tint on hover */
@@ -168,6 +175,7 @@ body {
   border-radius: 0;
   box-shadow: none;
   padding: 1.5rem;
+  margin: 0;
 }
 .mq-card.primary,
 .mq-card.accent,
@@ -260,27 +268,46 @@ body {
 }
 
 /* ========= CODE ========= */
-pre,
 .mq-code-block {
-  background: #050505;
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--accent);
   font-family: var(--font-mono);
   padding: 1rem;
+  border-color: #b8ff00;
+  border: 1px;
   overflow-x: auto;
 }
+
 .mq-main code {
   background: #050505;
-  border: 1px solid var(--border);
   color: var(--accent) !important;
   padding: 0.1em 0.3em;
 }
 
+.mq-main pre {
+  border-color: #b8ff00;
+  border: 1px solid var(--accent);
+}
+
+.mq-code-head {
+  color:#b8ff00;
+  border-color: #b8ff00;
+  border-bottom: 0px;
+}
+
+.mq-code-copy {
+  color:#b8ff00;
+  border-color: #b8ff00;
+}
+
+.mq-code-copy:hover {
+  background-color: #b8ff00;
+  color: #000;
+}
 /* ========= SMALL COMPONENTS ========= */
 .mq-spotlight {
   height: 3em;
   background: var(--bar-gradient);
   border: 5px;
+  margin-bottom: 0 !important;
 }
 .mq-divider {
   width: 200px;
@@ -482,4 +509,17 @@ product-card {
   .mq-step-num {
     justify-self: start;
   }
+}
+
+
+.mq-search-toggle svg,
+.mq-footer-repo-link svg,
+.mq-nav-toggle {
+  filter: invert(1);
+}
+
+
+
+.mq-search-toggle{
+  color: white;
 }

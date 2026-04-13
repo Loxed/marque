@@ -5,8 +5,7 @@ theme = legacy/mida
 +++
 
 # Themes 
-
-@spotlight
+@divider
 
 ## _[Marathon](https://marathonthegame.com/)-style, baby!_
 
@@ -29,9 +28,7 @@ The main theme used on your site is defined in the `marque.toml` file with the `
 @end card
 
 @end row
-
-----
-
+⠀<!-- Invisible braille on the leftmost character in this line to skip line between cards  -->
 @card .primary
 ## Quick flow
 @divider
@@ -57,51 +54,9 @@ Run `marque serve .` or `marque build .`.
 
 @end card
 
-@card
-## Advanced scaffold
-@divider
-
-If you want a larger starting point based on an existing theme, use the advanced generator instead:
-
-```sh
-marque theme template . themes/my-theme.css --reference legacy/rustique
-```
-
-That path is useful when you want selector placeholders and a heavier scaffold. The normal recommendation is still `marque theme new`.
-@end card
+@spotlight
 
 @card
-## Folder layout
-@divider
-
-Use the root of `themes/` for new work:
-
-@filetree
-themes/
-  my-theme.css
-  comte.css
-  elmental.css
-  gouda.css
-  pycorino.css
-  rubyola.css
-  rustique.css
-  legacy/
-    mida.css
-    ...
-@end filetree
-
-Use `legacy/<name>` when you specifically want one of the older full-size bundled theme variants.
-@end card
-
-@card
-## Legacy built-ins
-@divider
-
-Older showcase themes live in `themes/legacy/`, including `legacy/default`, `legacy/destiny`, `legacy/elmental`, `legacy/gruyere`, `legacy/javarti`, `legacy/mida`, plus the older full-size variants of `legacy/rustique` and `legacy/pycorino`.
-@end card
-
-
-@card .tertiary
 ## Bundled themes
 @divider
 
@@ -113,40 +68,12 @@ The current bundled themes all inherit `common.css`, but each one now pushes a d
 
 @row classes
 
-  @card .secondary
-    ## comté.css `(default)`
+  @card .primary
+    ## comte.css `(default)`
 
     [Comté](https://en.wikipedia.org/wiki/Comté) is the default Marque theme: warm editorial paper, soft serif headlines, and polished documentation chrome without a lot of noise.
 
     ![Comté Theme](static/theme_preview/comte.png)
-  @end card
-
-  @card .primary
-    ## rustique.css
-
-    Rustique is the industrial field-guide theme: slab headings, dark workshop chrome, and copper accents that feel heavier and more mechanical than Comté.
-
-    ![Rustique Theme](static/theme_preview/rustique.png)
-
-  @end card
-
-  @card .tertiary
-    ## pycorino.css
-
-    Pycorino is a bright notebook theme with friendly rounded surfaces, sunny highlights, and a playful [Python](https://python.org/)-ish blue and yellow palette.
-
-    ![Pycorino Theme](static/theme_preview/pycorino.png)
-  @end card
-
-@end row
-
-@row
-
-  @card .primary
-    ## rubyola.css
-    Rubyola is the default dark theme: ruby-red accents and warm gold typography inspired by [Ruby](https://ruby-lang.org/) without drifting into generic dark-mode styling.
-
-    ![Rubyola Theme](static/theme_preview/rubyola.png)
   @end card
 
   @card .tertiary
@@ -159,11 +86,39 @@ The current bundled themes all inherit `common.css`, but each one now pushes a d
   @end card
 
   @card .secondary
+    ## pycorino.css
+
+    Pycorino is a bright notebook theme with friendly rounded surfaces, sunny highlights, and a playful [Python](https://python.org/)-ish blue and yellow palette.
+
+    ![Pycorino Theme](static/theme_preview/pycorino.png)
+  @end card
+
+@end row
+
+@row
+
+  @card .tertiary
+    ## rubyola.css `(default dark)`
+    Rubyola is the default dark theme: ruby-red accents and warm gold typography inspired by [Ruby](https://ruby-lang.org/) without drifting into generic dark-mode styling.
+
+    ![Rubyola Theme](static/theme_preview/rubyola.png)
+  @end card
+
+
+  @card .secondary
     ## elmental.css
 
     Elmental is the flat handbook theme inspired by [Elm](https://elm-lang.org/): crisp blue signage, monospaced labels, hard edges, and offset shadows instead of soft cards.
 
     ![Elmental Theme](static/theme_preview/elmental.png)
+  @end card
+
+  @card .primary
+    ## rustique.css
+
+    Rustique is the industrial field-guide theme: slab headings, dark workshop chrome, and copper accents that feel heavier and more mechanical than Comté.
+
+    ![Rustique Theme](static/theme_preview/rustique.png)
   @end card
 @end row
 

@@ -1,0 +1,123 @@
+/* marque theme starter */
+/* theme: test-theme */
+/* reference theme: comte */
+/* reference file: D:\VS Projects\marque-new\template\themes\comte.css */
+/* common.css owns the shared component baseline. */
+/* Start by changing tokens, then add a few distinctive overrides below. */
+
+/* Imports */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&family=DM+Sans:wght@300;400;500;700&display=swap');
+
+/* Theme Tokens */
+:root {
+  /* Palette */
+  --mq-primary: #c56331;
+  --mq-secondary: #4269d0;
+  --mq-tertiary: #2f8963;
+
+  /* Surface And Text */
+  --mq-background: #f6f1e8;
+  --mq-surface: #fffaf3;
+  --mq-surface-alt: #f1eadf;
+  --mq-text: #1d1914;
+  --mq-muted: #655c51;
+  --mq-border: rgba(69, 48, 24, 0.13);
+
+  /* Navigation */
+  --mq-nav-bg: rgba(255, 250, 243, 0.9);
+  --mq-nav-border: rgba(69, 48, 24, 0.12);
+  --mq-nav-link-text: #6f6559;
+  --mq-nav-active-bg: color-mix(in srgb, var(--mq-primary) 12%, transparent);
+  --mq-nav-active-text: var(--mq-text);
+
+  /* Code */
+  --mq-code-bg: #1f1a15;
+  --mq-code-text: #efe7db;
+  --mq-code-border: #3d3125;
+  --mq-code-head-bg: #2a241d;
+  --mq-code-head-text: #d8c1a2;
+  --mq-code-copy-bg: rgba(216, 193, 162, 0.08);
+  --mq-code-copy-border: rgba(216, 193, 162, 0.22);
+  --mq-code-copy-bg-hover: rgba(216, 193, 162, 0.16);
+
+  /* Cards */
+  --mq-card-bg: rgba(255, 250, 243, 0.94);
+  --mq-card-border: rgba(69, 48, 24, 0.12);
+  --mq-card-radius: 18px;
+  --mq-card-shadow: 0 18px 40px rgba(82, 56, 22, 0.08);
+
+  /* Layout And Typography */
+  --mq-radius: 14px;
+  --mq-max-width: 860px;
+  --mq-font-sans: 'DM Sans', system-ui, sans-serif;
+  --mq-font-serif: 'Fraunces', Georgia, serif;
+  --mq-font-mono: 'IBM Plex Mono', monospace;
+
+  /* Additional Marque Tokens */
+  --mq-hero-bg: linear-gradient(180deg, rgba(255, 250, 243, 0.97), rgba(241, 234, 223, 0.94));
+  --mq-hero-border: rgba(69, 48, 24, 0.12);
+  --mq-hero-radius: 22px;
+  --mq-table-bg: rgba(255, 250, 243, 0.95);
+  --mq-table-border: rgba(69, 48, 24, 0.12);
+  --mq-table-head-bg: rgba(197, 99, 49, 0.08);
+  --mq-table-row-alt-bg: rgba(66, 105, 208, 0.04);
+  --mq-table-row-hover-bg: rgba(197, 99, 49, 0.08);
+  --mq-summary-bg: rgba(255, 250, 243, 0.92);
+  --mq-summary-border: rgba(69, 48, 24, 0.11);
+  --mq-summary-shadow: 0 20px 40px rgba(82, 56, 22, 0.08);
+  --mq-search-surface: #fffaf3;
+  --mq-search-result-bg: rgba(197, 99, 49, 0.08);
+  --mq-search-result-border: rgba(197, 99, 49, 0.14);
+  --mq-search-chip-bg: rgba(66, 105, 208, 0.08);
+  --mq-search-mark-bg: rgba(197, 99, 49, 0.18);
+  --mq-btn-border: rgba(69, 48, 24, 0.15);
+  --mq-btn-bg-hover: rgba(66, 105, 208, 0.07);
+  --mq-btn-primary-text: #fff8ef;
+  --mq-btn-secondary-text: #fff8ef;
+  --mq-btn-tertiary-text: #fff8ef;
+  --mq-divider-bg: linear-gradient(90deg, var(--mq-primary), rgba(197, 99, 49, 0.2));
+
+  /* Compatibility Aliases */
+  --bg: var(--mq-background);
+  --surface: var(--mq-surface);
+  --surface2: var(--mq-surface-alt);
+  --text: var(--mq-text);
+  --muted: var(--mq-muted);
+  --accent: var(--mq-primary);
+  --accent2: var(--mq-secondary);
+  --border: var(--mq-border);
+  --radius: var(--mq-radius);
+  --max-w: var(--mq-max-width);
+  --font-sans: var(--mq-font-sans);
+  --font-serif: var(--mq-font-serif);
+  --font-mono: var(--mq-font-mono);
+}
+
+/* Distinctive Overrides */
+/* Keep this file focused: tokens first, a handful of opinionated selectors second. */
+
+body {
+  /* Example: background-image: radial-gradient(circle at top, color-mix(in srgb, var(--mq-primary) 12%, transparent), transparent 55%); */
+}
+
+.mq-nav {
+  /* Example: add blur, tint, or stronger borders here. */
+}
+
+.mq-main :is(h1, h2) {
+  /* Example: swap typography, casing, or spacing. */
+}
+
+.mq-card {
+  /* Example: push surfaces, shadows, or radius in a clear direction. */
+}
+
+.mq-code-block,
+.mq-main pre {
+  /* Example: make code blocks feel like part of the theme, not a default panel. */
+}
+
+.mq-summary-panel,
+.mq-page-nav-link {
+  /* Example: tune supporting chrome so the theme feels consistent end to end. */
+}
