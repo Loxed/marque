@@ -303,7 +303,9 @@ a.mq-btn {
 
 .mq-page-nav-link:hover,
 a.mq-btn:hover {
-  transform: translate(-2px, -2px);
+  transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0 rgba(18, 147, 216, 0.16);
+
 }
 
 .mq-search-toggle svg,
