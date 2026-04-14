@@ -61,9 +61,7 @@
   --mq-btn-secondary-text: #fff8ef;
   --mq-btn-tertiary-text: #fff8ef;
 
-  --mq-divider-bg: linear-gradient(90deg, var(--mq-primary), rgba(197, 99, 49, 0.2));
-
-  --mq-radius: 14px;
+  --mq-radius: 10px;
   --mq-max-width: 860px;
 
   --mq-font-sans: 'DM Sans', system-ui, sans-serif;
@@ -110,7 +108,6 @@ body {
   color: var(--mq-text);
   font-weight: 550;
   padding-bottom: 0.35rem;
-  border-bottom: 1px solid rgba(69, 48, 24, 0.1);
 }
 
 .mq-main p,
@@ -129,6 +126,12 @@ body {
 
 .mq-main a:hover {
   color: var(--mq-primary);
+}
+
+a.mq-btn.primary:hover,
+a.mq-btn.secondary:hover,
+a.mq-btn.tertiary:hover{
+  color: white;
 }
 
 .mq-card,
@@ -163,18 +166,17 @@ body {
   background: rgba(66, 105, 208, 0.08);
   color: #27459a;
   border: 1px solid rgba(66, 105, 208, 0.16);
-  border-radius: 999px;
+  border-radius: 10px;
   padding: 0.12em 0.5em;
 }
-
-.mq-code-block {
-  border-radius: 18px;
-  box-shadow: 0 20px 45px rgba(20, 17, 13, 0.2);
-}
-
 .mq-code-head {
   border: none;
   padding-inline: 0.9rem;
+  
+}
+
+.mq-code-block {
+  border-radius: 0 0 var(--mq-radius) var(--mq-radius) !important;
 }
 
 .mq-main pre,
@@ -197,4 +199,36 @@ a.mq-btn {
 .mq-summary-fallback {
   font-size: 0.84rem;
   line-height: 1.4;
+}
+
+.mq-divider {
+  width: 100%;
+  height: 1px;
+  position: relative;
+  top:-13px;
+}
+
+h1:has(+ .mq-divider) + .mq-divider {
+  width: 10%;
+  height: 5px;
+  top:-5px;
+}
+
+h2:has(+ .mq-divider) + .mq-divider {
+  width: 10%;
+  height: 3px;
+}
+
+.mq-card:has(> h2:first-child):not(:has(> .mq-divider:nth-child(2))) > h2:first-child {
+    position: relative;
+}
+
+.mq-card:has(> h2:first-child):not(:has(> .mq-divider:nth-child(2))) > h2:first-child::after {
+    content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+
+  width: 100%;
+  border-bottom: 1px solid var(--mq-muted);
 }

@@ -499,8 +499,8 @@ Buttons don't use the `@button` directive; they are written using the markdown l
 | `.class` | optional extra CSS classes inside `{...}` |
 
 @demo
-@[Quickstart](/quickstart.mq){.primary} @[Read the docs](/docs.mq)
-@[Open migration guide](/migration.mq){.secondary}
+@[Quickstart](../quickstart.mq){.primary} @[Read the docs](../docs.mq)
+@[Open migration guide](../migration.mq){.secondary}
 
 @actions .center
 [Normal link](/)
@@ -579,7 +579,7 @@ Inline sparkle looks like this @sparkle and keeps flowing with the text.
 @divider
 
 @callout .warn
-Spotlight is a directive purely meant for the [mida theme](configuration/themes.mq) and works using that theme only. It will not make sense to use it outside of that context. Switch this page's theme to `mida` to see it in action!
+Spotlight is a directive purely meant for the [mida theme](../docs/configuration/themes.mq) and works using that theme only. It will not make sense to use it outside of that context. Switch this page's theme to `mida` to see it in action!
 @end callout 
 
 | parameter | description |

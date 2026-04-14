@@ -208,6 +208,15 @@ a.mq-btn {
   font-weight: 700;
 }
 
+
+a.mq-btn.primary:hover,
+a.mq-btn.tertiary:hover{
+  color: white;
+}
+a.mq-btn.secondary:hover{
+  color: black;
+}
+
 .mq-page-nav-link:hover {
   background: linear-gradient(135deg, #ffeb9a 0%, #ffd04d 100%);
   border-color: #e0b33a;

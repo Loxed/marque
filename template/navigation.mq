@@ -1,43 +1,31 @@
-# Navigation
-
 [Home](home.mq)
 
-Start Here
+Getting Started
 
 [Quickstart](quickstart.mq)
-[Architecture](architecture.mq)
+[How It Works](architecture.mq)
+[CLI](docs/cli.mq)
 
-Docs
+Configuring Marque
 
-[Documentation](docs.mq)
-    [CLI Commands](docs/cli.mq)
-    [Configuration](docs/configuration.mq)
-        [Navigation](docs/configuration/nav.mq)
-        [Frontmatter](docs/configuration/frontmatter.mq)
-        [Layouts](docs/configuration/layouts.mq)
-        [Themes](docs/configuration/themes.mq)
-        [Summary](docs/configuration/summary.mq)
-    [Directives](docs/directives.mq)
+[Configuration](docs.mq)
+    [Navigation](docs/configuration/nav.mq)
+    [Frontmatter](docs/configuration/frontmatter.mq)
+    [Layouts](docs/configuration/layouts.mq)
+    [Themes](docs/configuration/themes.mq)
+    [Summary](docs/configuration/summary.mq)
 
-Migration
+Creating Content
+
+[Markdown Syntax](extra/markdown.mq)
+[Directives](extra/directives.mq)
+
+Migration Guide
 
 [Migration](migration.mq)
-    [mdBook to Marque](migration/mdbook.mq)
-    [MkDocs to Marque](migration/mkdocs.mq)
+    [From mdBook](migration/mdbook.mq)
+    [From MkDocs](migration/mkdocs.mq)
 
 Extra
 
-[Markdown Syntax](extra/markdown.mq)
-[FAQ](extra/faq.mq)
 [Author](extra/author.mq)
-
-
-Temp
-
-[Theme Preview](theme-preview.mq)
-[Comte](theme-preview/comte.mq)
-[Elmental](theme-preview/elmental.mq)
-[Gouda](theme-preview/gouda.mq)
-[Pycorino](theme-preview/pycorino.mq)
-[Rubyola](theme-preview/rubyola.mq)
-[Rustique](theme-preview/rustique.mq)

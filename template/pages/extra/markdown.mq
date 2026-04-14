@@ -2,216 +2,446 @@
 width = normal
 summary = true
 +++
-
-# Markdown Basic Syntax
+# Markdown Syntax
 @divider
 
-Here's the [basic syntax of Markdown](https://www.markdownguide.org/basic-syntax/), which you can use in your `.mq` files for content formatting. Marque supports standard Markdown syntax, as well as some extensions for enhanced functionality.
+Marque supports standard Markdown syntax for content formatting, plus a set of extended syntax elements for tables, code highlighting, task lists, and more. Use the summary panel to jump to any element.
 
-## Headings and paragraphs
+@callout .info
+###* Basic vs. Extended
+Basic syntax is supported by nearly all Markdown processors. Extended syntax requires processor support — Marque supports all elements listed on this page.
+@end callout
+
+# Basic Syntax
 @divider
 
-@row
-@card
-###* Headings
-#* Heading level 1
-##* Heading level 2
-###* Heading level 3
-####* Heading level 4
-#####* Heading level 5
-######* Heading level 6
-@end card
+@card .primary
+## Headings
+@divider
 
-@card
-###* Heading syntax
-```md
-# Heading level 1
-## Heading level 2
-### Heading level 3
-#### Heading level 4
-##### Heading level 5
-###### Heading level 6
-```
-@end card
+| syntax | output |
+| --- | --- |
+| `# H1` through `###### H6` | `<h1>` through `<h6>` |
+| `===` underline | heading level 1 |
+| `---` underline | heading level 2 |
 
-@end row
+@demo "Hash syntax"
+#* Heading 1
+##* Heading 2
+###* Heading 3
+####* Heading 4
+#####* Heading 5
+######* Heading 6
+@end demo
 
-@row
-@card
-###* Alternate headings
+@demo "Alternate underline syntax"
 Heading level 1
 ===============*
 
 Heading level 2
 ---------------*
+@end demo
+
+@callout .warn
+Always put a space between `#` and the heading text. Put blank lines before and after headings for compatibility.
+@end callout
 @end card
 
-@card
-###* Alternate heading syntax
-```md
-Heading level 1
-===============
-
-Heading level 2
----------------
-```
-@end card
-@end row
-
-@row
-
-@card
-###* Paragraphs
-This is a paragraph.
-
-This is another paragraph.
-
-First line.
-Second line.
-
-@end card
-
-@card
-###* Paragraph and line break syntax
-```md
-This is a paragraph.
-
-This is another paragraph.
-
-First line.
-Second line.
-```
-@end card
-
-@end row
-
-## Emphasis and inline syntax
-@divider
-
-@row
+----
 @card .primary
-###* Bold, italic, and both
-- `**bold text**` or `__bold text__` -> **bold text**
-- `*italic text*` or `_italic text_` -> *italic text*
-- `***bold and italic***` -> ***bold and italic***
-@end card
-
-@card .secondary
-###* Inline code and escaping
-- ``Use `code` like this.`` -> Use `code` like this.
-- `\* Not italic \*` -> \* Not italic \*
-@end card
-@end row
-
-## Blockquotes and lists
+## Paragraphs
 @divider
 
-@row
-@card
-###* Blockquotes
-Single-line blockquote syntax can stay inline: ``> This is a blockquote.``
+| syntax | output |
+| --- | --- |
+| blank line between text | new `<p>` paragraph |
+| two trailing spaces + return | `<br>` line break |
 
+@demo "Paragraphs"
+This is the first paragraph.
+
+This is the second paragraph.
+@end demo
+
+@demo "Line breaks"
+First line with two trailing spaces.  
+Second line.
+@end demo
+
+@callout .warn
+Don't indent paragraphs with tabs or spaces — this can cause unexpected formatting.
+@end callout
+@end card
+
+----
+@card .primary
+## Emphasis
+@divider
+
+| syntax | output |
+| --- | --- |
+| `**text**` or `__text__` | **bold** |
+| `*text*` or `_text_` | *italic* |
+| `***text***` | ***bold and italic*** |
+
+@demo
+- `**bold**` → **bold**
+- `*italic*` → *italic*
+- `***bold and italic***` → ***bold and italic***
+- `Love**is**bold` → Love**is**bold
+@end demo
+
+@callout .warn
+For mid-word emphasis, use asterisks (`*`) not underscores — behavior with underscores varies between processors.
+@end callout
+@end card
+
+----
+@card .primary
+## Blockquotes
+@divider
+
+| syntax | output |
+| --- | --- |
+| `> text` | blockquote |
+| `>` on blank line | paragraph break within blockquote |
+| `>> text` | nested blockquote |
+
+@demo
 > This is a blockquote.
 
-Nested blockquote syntax:
-```md
-> First level
+> Multi-paragraph blockquote, first paragraph.
 >
-> > Second level
-```
+> Second paragraph.
 
-> First level
+> Outer level
 >
-> > Second level
+>> Nested level
+@end demo
 @end card
 
-@card
-###* Lists
-Ordered list syntax:
-```md
-1. First item
-2. Second item
-3. Third item
-```
-
-1. First item
-2. Second item
-3. Third item
-
-Unordered list syntax:
-```md
-- First item
-- Second item
-- Third item
-```
-
-- First item
-- Second item
-- Third item
-
-Nested list syntax:
-```md
-- Item
-  - Subitem
-```
-
-- Item
-  - Subitem
-@end card
-@end row
-
-## Code, links, media, and rules
+----
+@card .primary
+## Lists
 @divider
 
-@row
-@card
-###* Code
-Inline code: ``Use `code` like this.``
+| syntax | output |
+| --- | --- |
+| `1.` prefix | ordered list |
+| `-`, `*`, or `+` prefix | unordered list |
+| indent by 2–4 spaces | nested list |
 
-Use `code` like this.
+@demo "Ordered list"
+1. First item
+2. Second item
+3. Third item
+   1. Indented item
+   2. Another indented item
+4. Fourth item
+@end demo
 
-Code block syntax:
-````md
-```text
-code block
-```
-````
+@demo "Unordered list"
+- First item
+- Second item
+  - Nested item
+  - Another nested item
+- Third item
+@end demo
 
-```text
-code block
-```
+@callout .warn
+Use periods (`.`) not parentheses for ordered lists. Stick to one marker type (`-`, `*`, or `+`) per unordered list.
+@end callout
 @end card
 
-@card
-###* Links and images
-Link syntax:
-`[Google](https://www.google.com)` -> [Google](https://www.google.com)
+----
+@card .primary
+## Code
+@divider
 
-Image syntax:
-```md
-![Alt text](https://placehold.co/600x400)
+| syntax | output |
+| --- | --- |
+| `` `code` `` | inline code |
+| ` ``` ` fence | fenced code block |
+| 4 spaces indent | indented code block |
+| ` ``` lang ` | syntax highlighted block |
+
+@demo "Inline code"
+Use the `print()` function to output text.
+@end demo
+
+@demo "Code block"
+```py
+if __name__ == "__main__":
+    print("Hello, World!")
 ```
-
-![Alt text](https://placehold.co/600x400)
+@end demo
 @end card
 
-@card
-###* Horizontal rules
-Any of these will render a horizontal rule:
-- `---`
-- `***`
-- `___`
+----
+@card .primary
+## Links
+@divider
+
+| syntax | output |
+| --- | --- |
+| `[label](url)` | inline link |
+| `[label](url "title")` | link with tooltip |
+| `[label][ref]` + `[ref]: url` | reference-style link |
+| `<url>` | auto-linked URL |
+
+@demo
+[__Visit Google__](__https://www.google.com__)
+
+[__Hover for a title__](__https://www.google.com__ "I'm a tooltip!")
+@end demo
+@end card
+
+----
+@card .primary
+## Images
+@divider
+
+| syntax | output |
+| --- | --- |
+| `![alt](url)` | inline image |
+| `![alt][ref]` | reference-style image |
+
+@demo
+![A placeholder image](__https://placehold.co/600x200__)
+@end demo
+@end card
+
+----
+@card .primary
+## Horizontal Rules
+@divider
+
+| syntax | output |
+| --- | --- |
+| `---` | `<hr>` |
+| `***` | `<hr>` |
+| `___` | `<hr>` |
+
+@demo
+Above the rule.
 
 ---
-@end card
-@end row
 
-## Best Practices
+Below the rule.
+@end demo
+
+@callout .warn
+Put blank lines before and after horizontal rules to avoid them being interpreted as heading underlines.
+@end callout
+@end card
+
+----
+@card .primary
+## Escaping
+@divider
+
+Prefix any special character with a backslash (`\`) to render it literally.
+
+| characters you can escape |
+| --- |
+| `\` `` ` `` `*` `_` `{}` `[]` `()` `#` `+` `-` `.` `!` `\|` |
+
+@demo
+\* This is not italic \*
+
+\# This is not a heading
+@end demo
+@end card
+
+# Extended Syntax
+@divider
+
+@card .primary
+## Tables
+@divider
+
+| syntax | description |
+| --- | --- |
+| `\|` pipes | column separators |
+| `---` | header row separator |
+| `:---` | left-align column |
+| `:---:` | center-align column |
+| `---:` | right-align column |
+
+@demo "Basic table"
+| Name | Role | Status |
+| --- | --- | --- |
+| Alice | Engineer | Active |
+| Bob | Designer | Active |
+| Carol | Manager | Away |
+@end demo
+
+@demo "Aligned columns"
+| Left | Center | Right |
+| :--- | :---: | ---: |
+| apples | bananas | cherries |
+| one | two | three |
+@end demo
+
+@callout .info
+Tables support inline formatting: bold, italic, inline code, and links. Headings, block elements, and images inside cells are not supported.
+@end callout
+@end card
+
+----
+@card .primary
+## Syntax Highlighting
+@divider
+
+Add a language identifier after the opening fence to enable syntax highlighting.
+
+| common identifiers |
+| --- |
+| `js` `ts` `py` `html` `css` `json` `md` `bash` `sql` `yaml` |
+
+@demo
+```js
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+@end demo
+
+@demo
+```json
+{
+  "name": "Marque",
+  "version": "1.0.0",
+  "description": "A Markdown-based site builder"
+}
+```
+@end demo
+@end card
+
+----
+@card .primary
+## Strikethrough
+@divider
+
+| syntax | output |
+| --- | --- |
+| `~~text~~` | ~~strikethrough~~ |
+
+@demo
+~~The world is flat.~~ We now know that the world is round.
+@end demo
+@end card
+
+----
+@card .primary
+## Task Lists
+@divider
+
+| syntax | output |
+| --- | --- |
+| `- [ ] task` | unchecked checkbox |
+| `- [x] task` | checked checkbox |
+
+@demo
+- [x] Write the docs
+- [x] Add syntax highlighting
+- [ ] Add dark mode
+- [ ] Publish v1.0
+@end demo
+@end card
+
+----
+@card .primary
+## Footnotes
+@divider
+
+| syntax | description |
+| --- | --- |
+| `[^1]` | inline footnote reference |
+| `[^1]: text` | footnote definition (anywhere in doc) |
+| `[^label]` | word-based identifier |
+
+@demo
+Here's a sentence with a footnote.[^1]
+
+And one with a named reference.[^note]
+
+[^1]: This is the first footnote.
+[^note]: Named footnotes work too.
+@end demo
+@end card
+
+----
+@card .primary
+## Heading IDs
+@divider
+
+| syntax | description |
+| --- | --- |
+| `## Title {#custom-id}` | custom anchor ID on a heading |
+| `[link](#custom-id)` | link to that anchor |
+
+@demo
+### My Section {#my-section}
+
+[Jump to My Section](#my-section)
+@end demo
+@end card
+
+----
+@card .primary
+## Highlight
+@divider
+
+| syntax | output |
+| --- | --- |
+| `==text==` | highlighted text |
+
+@demo
+I need to highlight these ==very important words==.
+@end demo
+@end card
+
+----
+@card .primary
+## Subscript and Superscript
+@divider
+
+| syntax | output | example |
+| --- | --- | --- |
+| `~text~` | subscript | H~2~O |
+| `^text^` | superscript | X^2^ |
+
+@demo
+H~2~O is the chemical formula for water.
+
+$E = mc^2$ is Einstein's most famous equation.
+@end demo
+@end card
+
+----
+@card .primary
+## Automatic URL Linking
+@divider
+
+Most Markdown processors will auto-link bare URLs. Wrap in backticks to prevent linking.
+
+@demo
+https://www.marque.dev
+
+`https://www.marque.dev` — not linked
+@end demo
+@end card
+
+# Best Practices
 @divider
 
 @card
-* Leave blank lines between elements
-* Don't indent paragraphs
-* Use consistent list markers
-* Prefer `*` for emphasis compatibility
+- Leave blank lines before and after block elements (headings, lists, blockquotes, code blocks)
+- Don't indent paragraphs with spaces or tabs
+- Use `*` for emphasis rather than `_` for mid-word compatibility
+- Use `-` consistently as your unordered list marker
+- Use periods (`.`) not parentheses for ordered lists
+- Always add a space after `#` in headings
+- Prefer fenced code blocks (` ``` `) over indented ones
 @end card

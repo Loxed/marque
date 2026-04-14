@@ -284,7 +284,6 @@ body {
   color: var(--mq-code-text, #e8e4dc);
   border: 1px solid var(--mq-code-border, var(--mq-border, var(--border, rgba(0, 0, 0, 0.14))));
   padding: 1.25rem;
-  border-radius: var(--mq-radius, var(--radius, 8px));
   overflow-x: auto;
   margin-bottom: 1rem;
   font-family: var(--mq-font-mono, var(--font-mono, ui-monospace, monospace));
@@ -572,7 +571,7 @@ a.mq-btn.tertiary:hover {
 
 .mq-callout {
   padding: 1rem 1.25rem;
-  border-radius: var(--mq-radius, var(--radius, 8px));
+  border-radius: var(--mq-radius);
   margin: 0.75rem 0 1rem;
   border-left: 3px solid;
 }
@@ -1318,10 +1317,13 @@ a.mq-link-card:hover {
 
 .mq-code-block pre {
   margin: 0;
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
   min-width: 0;
   max-width: 100%;
+  border-radius: 0;
+}
+
+.mq-code-head pre {
+  border-radius: 0;
 }
 
 .hljs {

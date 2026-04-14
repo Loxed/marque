@@ -105,6 +105,14 @@ body {
   letter-spacing: 0.04em;
 }
 
+.mq-nav-heading {
+    color: var(--mq-tertiary);
+}
+
+.mq-nav-brand {
+  color: var(--mq-tertiary);
+}
+
 .mq-nav-links a,
 .mq-nav-group > .mq-nav-group-trigger {
   color: #e8dece !important;
@@ -215,6 +223,13 @@ a.mq-btn,
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+
+a.mq-btn.primary:hover,
+a.mq-btn.secondary:hover,
+a.mq-btn.tertiary:hover{
+  color: white;
 }
 
 .mq-page-nav-link:hover {

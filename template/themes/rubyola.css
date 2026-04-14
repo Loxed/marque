@@ -222,6 +222,13 @@ a.mq-btn {
   font-size: 0.82rem;
 }
 
+
+a.mq-btn.primary:hover,
+a.mq-btn.secondary:hover,
+a.mq-btn.tertiary:hover{
+  color: white;
+}
+
 .mq-page-nav-link:hover {
   border-color: rgba(214, 60, 55, 0.32);
   color: var(--mq-primary);

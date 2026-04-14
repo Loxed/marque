@@ -105,6 +105,14 @@ body {
   letter-spacing: 0.04em;
 }
 
+.mq-nav-heading {
+    color: var(--mq-tertiary);
+}
+
+.mq-nav-brand {
+  color: var(--mq-tertiary);
+}
+
 .mq-nav-links a,
 .mq-nav-group > .mq-nav-group-trigger {
   color: #e8dece !important;
@@ -135,7 +143,6 @@ body {
   color: var(--mq-secondary);
   font-size: clamp(1.35rem, 2vw, 1.6rem);
   padding-bottom: 0.24rem;
-  border-bottom: 2px solid rgba(180, 79, 47, 0.15);
 }
 
 .mq-main h3 {
@@ -218,6 +225,13 @@ a.mq-btn,
   text-transform: uppercase;
 }
 
+
+a.mq-btn.primary:hover,
+a.mq-btn.secondary:hover,
+a.mq-btn.tertiary:hover{
+  color: white;
+}
+
 .mq-page-nav-link:hover {
   background: rgba(180, 79, 47, 0.08);
   border-color: rgba(180, 79, 47, 0.24);
@@ -231,12 +245,14 @@ a.mq-btn,
 }
 
 
-.mq-search-toggle svg,
+.mq-search-toggle,
+.mq-theme-toggle,
 .mq-nav-toggle {
   filter: invert(1);
 }
 
 
-.mq-search-toggle{
-  color: white;
+.mq-search-toggle:hover,
+.mq-theme-toggle:hover {
+  background-color: #4bb0d0;
 }

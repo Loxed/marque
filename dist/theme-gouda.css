@@ -181,7 +181,8 @@ body {
 }
 
 .mq-code-block {
-  border-radius: 0px;
+  border-radius: 6px;
+  overflow: hidden;
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.28);
 }
 
@@ -189,6 +190,7 @@ body {
 .mq-code-block pre {
   line-height: 1.72;
   border-radius: 0px;
+  border-radius: 0 0 6px 6px; /* match bottom corners */
 }
 
 .mq-summary-panel {
@@ -229,8 +231,6 @@ a.mq-btn.tertiary:hover{
   background: rgba(0, 166, 200, 0.06);
 }
 
-
-.mq-search-toggle svg,
 .mq-footer-repo-link svg,
 .mq-nav-toggle {
   filter: invert(1);

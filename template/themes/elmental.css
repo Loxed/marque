@@ -214,6 +214,12 @@ a.mq-btn {
   border-width: 1px;
 }
 
+.mq-link-card:hover {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 4px 4px 0 rgba(18, 147, 216, 0.14) !important;
+
+
+}
 .mq-main blockquote {
   border-left: 4px solid var(--mq-secondary);
   border-radius: 0;
