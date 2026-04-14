@@ -10,16 +10,19 @@ This is the documentation for Marque. It is organized by goal, so you can jump t
 @row
   @link-card .primary /docs/cli.mq
     ## Command Line Interface
+    @divider
     Learn about the different commands that Marque provides and how to use them.
   @end link-card
 
   @link-card .secondary /docs/configuration.mq
     ## Configuration
+    @divider
     Learn how to configure your site, from the default settings to navigation, layouts and themes.
   @end link-card
 
   @link-card .tertiary /docs/directives.mq
     ## Directives
+    @divider
     Learn all about the custom `.mq` file, the extra syntax it supports, and custom Marque directives.
   @end link-card
 @end row

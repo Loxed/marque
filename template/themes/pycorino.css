@@ -214,13 +214,13 @@ a.mq-btn {
   color: #1a2332;
 }
 
-.mq-search-toggle svg,
 .mq-footer-repo-link svg,
 .mq-nav-toggle {
   filter: invert(1);
 }
 
-.mq-search-toggle{
+.mq-search-toggle, 
+.mq-theme-toggle{
   color: white;
   border-color: white;
 }

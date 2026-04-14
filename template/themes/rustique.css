@@ -135,7 +135,6 @@ body {
   color: var(--mq-secondary);
   font-size: clamp(1.35rem, 2vw, 1.6rem);
   padding-bottom: 0.24rem;
-  border-bottom: 2px solid rgba(180, 79, 47, 0.15);
 }
 
 .mq-main h3 {
@@ -231,12 +230,14 @@ a.mq-btn,
 }
 
 
-.mq-search-toggle svg,
+.mq-search-toggle,
+.mq-theme-toggle,
 .mq-nav-toggle {
   filter: invert(1);
 }
 
 
-.mq-search-toggle{
-  color: white;
+.mq-search-toggle:hover,
+.mq-theme-toggle:hover {
+  background-color: #4bb0d0;
 }

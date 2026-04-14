@@ -21,7 +21,7 @@
   --mq-nav-active-bg: rgba(214, 60, 55, 0.14);
   --mq-nav-active-text: #f6b6b3;
 
-  --mq-code-bg: #0f0c0b;
+  --mq-code-bg: transparent;
   --mq-code-text: #e7e0d5;
   --mq-code-border: rgba(209, 181, 120, 0.18);
   --mq-code-head-bg: #171311;
@@ -169,7 +169,7 @@ body {
   padding: 1.45rem 1.5rem 1.35rem 1.9rem;
   border: 1px solid rgba(209, 181, 120, 0.22);
   border-left: none;
-  border-radius: 0 24px 24px 0;
+  border-radius: var(--mq-radius);
   background: rgba(209, 181, 120, 0.05);
   color: #b4a898;
   font-style: normal;
@@ -189,12 +189,11 @@ body {
   background: rgba(209, 181, 120, 0.12);
   color: #e2cd9b;
   border: 1px solid rgba(209, 181, 120, 0.18);
-  border-radius: 999px;
 }
 
 .mq-code-block {
-  border-radius: 18px;
   box-shadow: 0 24px 55px rgba(0, 0, 0, 0.42);
+  border-radius: 0 0 var(--mq-radius) var(--mq-radius);
 }
 
 .mq-code-head {
@@ -202,9 +201,12 @@ body {
 }
 
 .mq-main pre,
-.mq-code-block pre {
+.mq-code-block pre,
+.mq-code-head pre {
   line-height: 1.78;
+  border-radius: 0 0 var(--mq-radius) var(--mq-radius);
 }
+
 
 .mq-summary-link:hover,
 .mq-summary-link:focus-visible,
@@ -226,7 +228,7 @@ a.mq-btn {
   background: rgba(214, 60, 55, 0.05);
 }
 
-.mq-search-toggle svg,
+/* .mq-search-toggle svg, */
 .mq-footer-repo-link svg,
 .mq-nav-toggle {
   filter: invert(1);

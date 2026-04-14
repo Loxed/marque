@@ -136,7 +136,8 @@ Content goes here.
 @end demo
 @end card
 
-----
+---- 
+
 @card .primary
 ## `@demo`
 @divider

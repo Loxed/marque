@@ -16,6 +16,7 @@ mdRenderer.code = (code, infostring) => {
   const lang = String(rawLang || '').trim().split(/\s+/)[0] || '';
   const safeLang = escapeAttr(lang.toLowerCase());
   const highlighted = highlightCode(String(rawCode || ''), safeLang);
+  const trimmed = highlighted.trimStart();
   return `<div class="mq-code-block" data-lang="${safeLang}"><div class="mq-code-head"><span class="mq-code-lang">${safeLang}</span><button class="mq-code-copy" type="button" aria-label="Copy ${safeLang} code">Copy</button></div><pre><code class="hljs language-${safeLang}">${highlighted}</code></pre></div>`;
 };
 mdRenderer.table = function (...args) {
